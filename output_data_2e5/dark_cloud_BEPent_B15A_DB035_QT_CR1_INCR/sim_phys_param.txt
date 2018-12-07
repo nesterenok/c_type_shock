@@ -1,0 +1,9 @@
+! p1 - total abundance of grain mantle molecules, [molecules/H]
+! p2 - abundance of hydrocarbon molecules in ice mantles, CnHm, n >=2,  [molecules/H]
+! p3 - parameter of H2 formation on grains (reaction *H+*H), rate = a*n_H_tot*n_H, a [cm3 s-1]
+! p4 - total electric charge of plasma, [cm-3]
+! p5 - total electric charge of grains, [cm-3]
+!1             2             3             4             5             6             7             8             9             
+!time(yrs)    T_n           T_i           T_e           p1            p2            p3            p4            p5            
+1.00000e+000  1.17005e+001  1.20796e+001  1.19407e+001  2.09001e-004  1.32436e-006  4.47003e-026  2.76354e-007  -2.76672e-007 
+1.07461e+000  1.17005e+001  1.20797e+001  1.19407e+001  2.09001e-004  1.32436e-006  4.46992e-026  2.76350e-007  -2.76669e-007 

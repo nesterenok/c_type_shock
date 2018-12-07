@@ -1,0 +1,1513 @@
+Tue Nov 27 15:29:38 2018
+Shock wave is simulated
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+H2 molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_h2.txt
+  nb of levels of molecule H2: 150
+H2 molecule radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_h2.txt
+H2 level has not radiative decay coefficient, (v,j): 0    0.0000e+00
+H2 level has not radiative decay coefficient, (v,j): 0    1.0000e+00
+H2 collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_he.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h2_wan2018.txt
+  temperature range 1 - 10000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_ph2.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h2_wan2018.txt
+  temperature range 1 - 10000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_oh2.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_l.txt
+  temperature range 100 - 5000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_b.txt
+  temperature range 100 - 10000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_w.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_m.txt
+  temperature range 100 - 10000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_e.txt
+  temperature range 5 - 30000
+  data have been read from file /disk2/nester/input_data/coll_h2/diss_h2_h_b.txt
+  temperature range 100 - 10000
+OI ion levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_OI.txt
+  nb of levels of ion OI: 5
+OI ion radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_OI.txt
+OI collisional rate coefficients are being initializing...
+  data for OI-pH2 collisions (approx. Glover & Jappsen, 2007; Jaquet et al., 1992)
+  temperature range 10 - 1359 (original data 20-1500 K)
+  data for OI-oH2 collisions (approx. Glover & Jappsen, 2007; Jaquet et al., 1992)
+  temperature range 10 - 1359 (original data 20-1500 K)
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_OI_he_monteiro1987.txt
+  temperature range 100 - 1000
+  data for OI-H collisions (Abrahamsson & Krems, 2007; Krems et al., 2006)
+  temperature range 30 - 10243
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_OI_e_bell1998.txt
+  temperature range 50 - 3000
+  data for OI-e collisions (Berrington & Burke 1982; Berrington, 1988)
+  temperature range 10 - 9999
+CI ion levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_CI.txt
+  nb of levels of ion CI: 3
+CI ion radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_CI.txt
+CI collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CI_he_staemmler1991.txt
+  temperature range 10 - 150
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CI_ph2_schroder1991.txt
+  temperature range 10 - 1200
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CI_oh2_schroder1991.txt
+  temperature range 10 - 1200
+  data for CI-H collisions (Abrahamsson & Krems, 2007)
+  temperature range 5 - 1077
+  data for CI-e collisions (Johnson et al., 1987)
+  temperature range 7 - 10195
+CII ion levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_CII.txt
+  nb of levels of ion CII: 2
+CII ion radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_CII.txt
+CII collisional rate coefficients are being initializing...
+  data for CII-H2 collisions (Lique et al. 2013)
+  temperature range 10 - 500
+  data for CII-H2 collisions (Lique et al. 2013)
+  temperature range 10 - 500
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CII_h_barinovs2005.txt
+  temperature range 20 - 2000
+  data for CII-e collisions (Tayal, 2008)
+  temperature range 3 - 87859
+H2O molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_h2o16.txt
+  nb of levels of molecule pH2O: 150
+H2O molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_h2o16.txt
+H2O collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_he.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_he_rovibr.txt
+  temperature range 120 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_ph2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_oh2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_h2_rovibr.txt
+  temperature range 200 - 5000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_h.txt
+  temperature range 5 - 1500
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_e_rovibr.txt
+  temperature range 200 - 5000
+H2O molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_h2o16.txt
+  nb of levels of molecule oH2O: 150
+H2O molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_h2o16.txt
+H2O collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_he.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_he_rovibr.txt
+  temperature range 120 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_ph2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_oh2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_h2_rovibr.txt
+  temperature range 200 - 5000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_h.txt
+  temperature range 5 - 1500
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_e_rovibr.txt
+  temperature range 200 - 5000
+CO molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_co.txt
+  nb of levels of molecule CO: 41
+CO molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_co.txt
+CO collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_he.txt
+  temperature range 5 - 500
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_ph2.txt
+  temperature range 2 - 3000
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_oh2.txt
+  temperature range 2 - 3000
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_h_vibr0-0.txt
+  temperature range 2 - 3000
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_h_vibr.txt
+  temperature range 10 - 3000
+OH molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_oh.txt
+  nb of levels of molecule OH: 20
+OH molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_oh.txt
+OH collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_oh/coll_oh_he.txt
+  temperature range 5 - 500
+  data have been read from file /disk2/nester/input_data/coll_oh/coll_oh_h2j0.txt
+  temperature range 10 - 150
+  data have been read from file /disk2/nester/input_data/coll_oh/coll_oh_h2j1.txt
+  temperature range 10 - 150
+NH3 molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_nh3.txt
+  nb of levels of molecule oNH3: 17
+NH3 molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_nh3.txt
+NH3 collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_onh3_he.txt
+  temperature range 5 - 300
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_onh3_ph2.txt
+  temperature range 10 - 200
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_onh3_oh2.txt
+  temperature range 10 - 200
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_onh3_h.txt
+  temperature range 10 - 200
+NH3 molecule levels are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/levels_nh3.txt
+  nb of levels of molecule pNH3: 34
+NH3 molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_nh3.txt
+NH3 collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_pnh3_he.txt
+  temperature range 5 - 300
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_pnh3_ph2.txt
+  temperature range 10 - 200
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_pnh3_oh2.txt
+  temperature range 10 - 200
+  data have been read from file /disk2/nester/input_data/coll_nh3/coll_pnh3_h.txt
+  temperature range 10 - 200
+The data on LVG method have been initialized.
+The data on LVG method have been initialized.
+Dust component is initializing: Sil
+  calculation of integrated emissivity for dust component Sil ...
+  calculation of photoelectron emission rate for dust component Sil ...
+  dust component is added to the model: Sil
+The element was added to the network list: H
+The element was added to the network list: He
+The element was added to the network list: O
+The element was added to the network list: C
+The element was added to the network list: N
+The element was added to the network list: Si
+The element was added to the network list: S
+The element was added to the network list: Fe
+The element was added to the network list: Na
+The element was added to the network list: Mg
+The element was added to the network list: Cl
+The data is read from file: /disk2/nester/input_data/chemistry/UMIST_2012/species_UMIST2012.txt
+The data is read from file: /disk2/nester/input_data/chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt
+  following grain mantle species are not identified: 
+   C2H4CN C3P C4P CCP CH2OHCHO CH2OHCO CH2PH CH3COOH CH3NH CH3NH2 COOCH3 CP HC2P HCCN HCP HF HNCHO HNOH HPO F NH2CHO NH2CO NH2OH O3 P PH PH2 PN PO
+
+Can't find neutral for the ion specimen: H3+, HeH+, CH5+, NH4+, H3O+, H2NC+, HCNH+, HOC+, N2H+, CH4N+, CH2NH2+, C2H7+, H3CO+, H2NO+, SiH5+, CH3OH2+, H3S+, H2Cl+, CNC+, C2NH+, C3H3+, C3H4+, C3H5+, C3H6+, CH3CNH+, C3H7+, NH2CNH+, H2CNO+, H2NCO+, H2OCN+, HCNOH+, HNCOH+, SiCH4+, SiNH2+, HCO2+, HN2O+, SiOH+, CH3CHOH+, HNS+, H3CS+, H3SiO+, HCOOH2+, C2H5OH2+, CH3OCH4+, HSO+, H2CCl+, C4H2+, C2N2+, C4H4+, HC3NH+, C4H5+, HC3O+, NCCNH+, C3H2O+, CH2CHCNH+, C4H7+, H3C3O+, SiNCH+, SiC2H3+, C2H5CNH+, HC2S+, CH3CS+, CH3COCH4+, COOCH4+, HOCS+, HSiS+, HSiO2+, H5C2O2+, C5H3+, HC4N+, H2C4N+, C5H5+, HSO2+, SiC3H2+, CH3C3NH+, H3S2+, NCCNCH3+, HC3S+, C6H3+, C6H4+, HC5NH+, C6H5+, H3C5N+, SiC4H+, C6H7+, HC4S+, C7H3+, C7H4+, C7H5+, CH3C5NH+, C8H3+, C8H4+, H2C7N+, C8H5+, H3C7N+, C9H3+, C9H4+, C9H5+, CH3C7NH+, C10H3+, H2C9N+, H3C9N+, 
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_UMIST2012.txt
+    undefined species:
+  CCP  CCP+  CP  CP+  HCP  HCP+  HPO  HPO+  P  P+  PH  PH+  PO  PO+  PN+  PN  C4P  C4P+  HC2P  HC2P+  PH2  PH2+  F+  F  C3P  CH2PH  HF  CF+  H2F+  H2PO+  HF+  HPN+  PC2H2+  PC2H3+  PC2H4+  PC3H+  PC4H+  PCH2+  PCH3+  PCH4+  PH3+  PNH2+  PNH3+  SiF+
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_update_CRphoto_Heys2017.txt
+1 reaction data were updated for C2 + CRPhoton -> C + C
+2 reaction data were updated for C2H2 + CRPhoton -> C2H2+ + e-
+3 reaction data were updated for C2H2 + CRPhoton -> C2H + H
+4 reaction data were updated for C2H4 + CRPhoton -> C2H2 + H2
+5 reaction data were updated for C2H4 + CRPhoton -> C2H4+ + e-
+6 reaction data were updated for C2H5OH + CRPhoton -> C2H5 + OH
+7 reaction data were updated for C2H5OH + CRPhoton -> C2H5OH+ + e-
+8 reaction data were updated for C2H + CRPhoton -> C2 + H
+9 reaction data were updated for C3 + CRPhoton -> C2 + C
+10 reaction data were updated for C3H2 + CRPhoton -> C3H + H
+11 reaction data were updated for C + CRPhoton -> C+ + e-
+12 reaction data were updated for CH+ + CRPhoton -> H + C+
+13 reaction data were updated for CH2 + CRPhoton -> CH + H
+14 reaction data were updated for CH3 + CRPhoton -> CH2 + H
+15 reaction data were updated for CH3 + CRPhoton -> CH3+ + e-
+16 reaction data were updated for CH3 + CRPhoton -> CH + H2
+17 reaction data were updated for CH3CH3 + CRPhoton -> C2H4 + H2
+18 reaction data were updated for CH3CH3 + CRPhoton -> CH3CH3+ + e-
+19 reaction data were updated for CH3CHO + CRPhoton -> CH3CHO+ + e-
+20 reaction data were updated for CH3CHO + CRPhoton -> CO + CH4
+21 reaction data were updated for CH3CHO + CRPhoton -> HCO + CH3
+22 reaction data were updated for CH3CN + CRPhoton -> CH3CN+ + e-
+23 reaction data were updated for CH3CN + CRPhoton -> CN + CH3
+24 reaction data were updated for CH3OH + CRPhoton -> CH3OH+ + e-
+25 reaction data were updated for CH3OH + CRPhoton -> H2CO + H2
+26 reaction data were updated for CH3OH + CRPhoton -> OH + CH3
+27 reaction data were updated for CH4 + CRPhoton -> CH2 + H2
+28 reaction data were updated for CH + CRPhoton -> C + H
+29 reaction data were updated for CN + CRPhoton -> N + C
+30 reaction data were updated for CO2 + CRPhoton -> CO + O
+31 reaction data were updated for CO + CRPhoton -> O + C
+32 reaction data were updated for CS + CRPhoton -> CS+ + e-
+33 reaction data were updated for CS + CRPhoton -> S + C
+34 reaction data were updated for Cl + CRPhoton -> Cl+ + e-
+35 reaction data were updated for Fe + CRPhoton -> Fe+ + e-
+36 reaction data were updated for H- + CRPhoton -> H + e-
+37 reaction data were updated for H2CCC + CRPhoton -> C3H + H
+38 reaction data were updated for H2CO + CRPhoton -> CO + H2
+39 reaction data were updated for H2O2 + CRPhoton -> OH + OH
+40 reaction data were updated for H2O + CRPhoton -> OH + H
+41 reaction data were updated for H2S + CRPhoton -> H2S+ + e-
+42 reaction data were updated for H2S + CRPhoton -> S + H2
+43 reaction data were updated for HC3N + CRPhoton -> CN + C2H
+44 reaction data were updated for HCN + CRPhoton -> CN + H
+45 reaction data were updated for HCO + CRPhoton -> CO + H
+46 reaction data were updated for HCl + CRPhoton -> Cl + H
+47 reaction data were updated for HS + CRPhoton -> S + H
+48 reaction data were updated for Mg + CRPhoton -> Mg+ + e-
+49 reaction data were updated for N2 + CRPhoton -> N + N
+50 reaction data were updated for N2O + CRPhoton -> NO + N
+51 reaction data were updated for N + CRPhoton -> N+ + e-
+52 reaction data were updated for NH2 + CRPhoton -> NH2+ + e-
+53 reaction data were updated for NH2 + CRPhoton -> NH + H
+54 reaction data were updated for NH3 + CRPhoton -> NH2 + H
+55 reaction data were updated for NH3 + CRPhoton -> NH3+ + e-
+56 reaction data were updated for NH3 + CRPhoton -> NH + H2
+57 reaction data were updated for NH + CRPhoton -> N + H
+58 reaction data were updated for NH + CRPhoton -> NH+ + e-
+59 reaction data were updated for NO2 + CRPhoton -> NO + O
+60 reaction data were updated for NO + CRPhoton -> NO+ + e-
+61 reaction data were updated for NO + CRPhoton -> O + N
+62 reaction data were updated for Na + CRPhoton -> Na+ + e-
+63 reaction data were updated for O2 + CRPhoton -> O2+ + e-
+64 reaction data were updated for O2 + CRPhoton -> O + O
+65 reaction data were updated for O2H + CRPhoton -> O2 + H
+66 reaction data were updated for O + CRPhoton -> O+ + e-
+67 reaction data were updated for OCS + CRPhoton -> OCS+ + e-
+68 reaction data were updated for OCS + CRPhoton -> S + CO
+69 reaction data were updated for OH + CRPhoton -> O + H
+70 reaction data were updated for S2 + CRPhoton -> S + S
+71 reaction data were updated for S + CRPhoton -> S+ + e-
+72 reaction data were updated for SO2 + CRPhoton -> SO + O
+73 reaction data were updated for SO + CRPhoton -> S + O
+74 reaction data were updated for SO + CRPhoton -> SO+ + e-
+75 reaction data were updated for Si + CRPhoton -> Si+ + e-
+76 reaction data were updated for SiH + CRPhoton -> Si + H
+77 reaction data were updated for SiO + CRPhoton -> Si + O
+78 reaction data were updated for C4 + CRPhoton -> C2 + C2
+79 reaction data were updated for C4 + CRPhoton -> C3 + C
+80 reaction data were updated for C4H + CRPhoton -> C2H + C2
+81 reaction data were updated for C4H + CRPhoton -> C4 + H
+82 reaction data were updated for C5H + CRPhoton -> C3 + C2H
+83 reaction data were updated for C5H + CRPhoton -> C3H + C2
+84 reaction data were updated for C5H + CRPhoton -> C5 + H
+85 reaction data were updated for H2 + CRP -> H + H
+    undefined species:
+  HF  F  P  P+  PH  PH+
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_update_ISRFphoto_Heys2017.txt
+1 reaction data were updated for C + ISPhoton -> C+ + e-
+2 reaction data were updated for C2 + ISPhoton -> C2+ + e-
+3 reaction data were updated for C2 + ISPhoton -> C + C
+4 reaction data were updated for C2H + ISPhoton -> C2 + H
+5 reaction data were updated for C2H2 + ISPhoton -> C2H2+ + e-
+6 reaction data were updated for C2H2 + ISPhoton -> C2H + H
+7 reaction data were updated for C2H4 + ISPhoton -> C2H2 + H2
+8 reaction data were updated for C2H4 + ISPhoton -> C2H4+ + e-
+9 reaction data were updated for C2H5OH + ISPhoton -> C2H5 + OH
+10 reaction data were updated for C2H5OH + ISPhoton -> C2H5OH+ + e-
+11 reaction data were updated for CH3CH3 + ISPhoton -> CH3CH3+ + e-
+12 reaction data were updated for C3 + ISPhoton -> C2 + C
+13 reaction data were updated for CH + ISPhoton -> C + H
+14 reaction data were updated for CH + ISPhoton -> CH+ + e-
+15 reaction data were updated for CH+ + ISPhoton -> C + H+
+16 reaction data were updated for CH2 + ISPhoton -> CH + H
+17 reaction data were updated for CH2+ + ISPhoton -> H2 + C+
+18 reaction data were updated for CH2+ + ISPhoton -> H + CH+
+19 reaction data were updated for CH2+ + ISPhoton -> CH + H+
+20 reaction data were updated for CH3 + ISPhoton -> CH2 + H
+21 reaction data were updated for CH3 + ISPhoton -> CH + H2
+22 reaction data were updated for CH3 + ISPhoton -> CH3+ + e-
+23 reaction data were updated for CH3CHO + ISPhoton -> CH3CHO+ + e-
+24 reaction data were updated for CH3CHO + ISPhoton -> CO + CH4
+25 reaction data were updated for CH3CHO + ISPhoton -> HCO + CH3
+26 reaction data were updated for CH3CN + ISPhoton -> CH3CN+ + e-
+27 reaction data were updated for CH3CN + ISPhoton -> CN + CH3
+28 reaction data were updated for CH3OH + ISPhoton -> CH3OH+ + e-
+29 reaction data were updated for CH3OH + ISPhoton -> H + H3CO+ + e-
+30 reaction data were updated for CH3OH + ISPhoton -> H2CO + H2
+31 reaction data were updated for CH3OH + ISPhoton -> OH + CH3
+32 reaction data were updated for CH4 + ISPhoton -> CH2 + H2
+33 reaction data were updated for CH4 + ISPhoton -> CH3 + H
+34 reaction data were updated for CH4 + ISPhoton -> CH + H2 + H
+35 reaction data were updated for CH4 + ISPhoton -> CH4+ + e-
+36 reaction data were updated for CH4+ + ISPhoton -> H2 + CH2+
+37 reaction data were updated for CH4+ + ISPhoton -> H + CH3+
+38 reaction data were updated for CN + ISPhoton -> N + C
+39 reaction data were updated for CO + ISPhoton -> O + C
+40 reaction data were updated for CO+ + ISPhoton -> O + C+
+41 reaction data were updated for CO2 + ISPhoton -> CO + O
+42 reaction data were updated for CS + ISPhoton -> CS+ + e-
+43 reaction data were updated for CS + ISPhoton -> S + C
+44 reaction data were updated for Cl + ISPhoton -> Cl+ + e-
+45 reaction data were updated for Fe + ISPhoton -> Fe+ + e-
+46 reaction data were updated for H- + ISPhoton -> H + e-
+47 reaction data were updated for H2+ + ISPhoton -> H + H+
+48 reaction data were updated for H2CO + ISPhoton -> CO + H2
+49 reaction data were updated for H2CO + ISPhoton -> CO + H + H
+50 reaction data were updated for H2CO + ISPhoton -> H2CO+ + e-
+51 reaction data were updated for H2CO + ISPhoton -> H + HCO+ + e-
+52 reaction data were updated for H2O + ISPhoton -> H2O+ + e-
+53 reaction data were updated for H2O + ISPhoton -> OH + H
+54 reaction data were updated for H2O2 + ISPhoton -> OH + OH
+55 reaction data were updated for H2S + ISPhoton -> H2S+ + e-
+56 reaction data were updated for H2S + ISPhoton -> HS + H
+57 reaction data were updated for H2S + ISPhoton -> S + H2
+58 reaction data were updated for HC3N + ISPhoton -> CN + C2H
+59 reaction data were updated for HCN + ISPhoton -> CN + H
+60 reaction data were updated for HCO + ISPhoton -> CO + H
+61 reaction data were updated for HCO+ + ISPhoton -> H + CO+
+62 reaction data were updated for HCl + ISPhoton -> Cl + H
+63 reaction data were updated for HCl + ISPhoton -> HCl+ + e-
+64 reaction data were updated for O2H + ISPhoton -> O2 + H
+65 reaction data were updated for O2H + ISPhoton -> OH + O
+66 reaction data were updated for Mg + ISPhoton -> Mg+ + e-
+67 reaction data were updated for N2 + ISPhoton -> N + N
+68 reaction data were updated for N2O + ISPhoton -> N2 + O
+69 reaction data were updated for N2O + ISPhoton -> NO + N
+70 reaction data were updated for N2O + ISPhoton -> N2O+ + e-
+71 reaction data were updated for NH + ISPhoton -> N + H
+72 reaction data were updated for NH + ISPhoton -> NH+ + e-
+73 reaction data were updated for NH+ + ISPhoton -> N + H+
+74 reaction data were updated for NH2 + ISPhoton -> NH2+ + e-
+75 reaction data were updated for NH2 + ISPhoton -> NH + H
+76 reaction data were updated for NH3 + ISPhoton -> NH2 + H
+77 reaction data were updated for NH3 + ISPhoton -> NH + H2
+78 reaction data were updated for NH3 + ISPhoton -> NH3+ + e-
+79 reaction data were updated for NO + ISPhoton -> NO+ + e-
+80 reaction data were updated for NO + ISPhoton -> O + N
+81 reaction data were updated for NO2 + ISPhoton -> NO2+ + e-
+82 reaction data were updated for NO2 + ISPhoton -> NO + O
+83 reaction data were updated for Na + ISPhoton -> Na+ + e-
+84 reaction data were updated for O2 + ISPhoton -> O2+ + e-
+85 reaction data were updated for O2 + ISPhoton -> O + O
+86 reaction data were updated for O2+ + ISPhoton -> O + O+
+87 reaction data were updated for OCS + ISPhoton -> OCS+ + e-
+88 reaction data were updated for OCS + ISPhoton -> S + CO
+89 reaction data were updated for OH + ISPhoton -> O + H
+90 reaction data were updated for OH+ + ISPhoton -> H + O+
+91 reaction data were updated for S + ISPhoton -> S+ + e-
+92 reaction data were updated for S2 + ISPhoton -> S2+ + e-
+93 reaction data were updated for S2 + ISPhoton -> S + S
+94 reaction data were updated for HS + ISPhoton -> H + S
+95 reaction data were updated for HS+ + ISPhoton -> H + S+
+96 reaction data were updated for HS+ + ISPhoton -> S + H+
+97 reaction data were updated for SO + ISPhoton -> S + O
+98 reaction data were updated for SO + ISPhoton -> SO+ + e-
+99 reaction data were updated for SO2 + ISPhoton -> SO + O
+100 reaction data were updated for Si + ISPhoton -> Si+ + e-
+101 reaction data were updated for SiH + ISPhoton -> Si + H
+102 reaction data were updated for SiH+ + ISPhoton -> H + Si+
+103 reaction data were updated for SiO + ISPhoton -> Si + O
+104 reaction data were updated for H2CCC + ISPhoton -> C3 + H2
+105 reaction data were updated for H2CCC + ISPhoton -> C3H + H
+106 reaction data were updated for C3H2 + ISPhoton -> C3H + H
+107 reaction data were updated for C4 + ISPhoton -> C2 + C2
+108 reaction data were updated for C4 + ISPhoton -> C3 + C
+109 reaction data were updated for C4H + ISPhoton -> C2H + C2
+110 reaction data were updated for C4H + ISPhoton -> C4 + H
+111 reaction data were updated for C5H + ISPhoton -> C3 + C2H
+112 reaction data were updated for C5H + ISPhoton -> C3H + C2
+113 reaction data were updated for C5H + ISPhoton -> C5 + H
+    undefined species:
+  HF  F  P  P+  PH  PH+
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_update_Chabot2013.txt
+1 reaction data were updated for C4- + C+ -> C + C4
+2 reaction data were updated for C5- + C+ -> C + C5
+3 reaction data were updated for C6- + C+ -> C + C6
+4 reaction data were updated for C7- + C+ -> C + C7
+5 reaction data were updated for C8- + C+ -> C + C8
+6 reaction data were updated for C9- + C+ -> C + C9
+7 reaction data were updated for C3- + C+ -> C + C3
+8 reaction data were updated for C4 + C+ -> C5+
+9 reaction data were updated for C5 + C+ -> C6+
+10 reaction data were updated for C6 + C+ -> C7+
+11 reaction data were updated for C7 + C+ -> C8+
+12 reaction data were updated for C8 + C+ -> C9+
+13 reaction data were updated for C9 + C+ -> C10+
+14 reaction data were updated for C5+ + e- -> C3 + C2
+15 reaction data were updated for C6+ + e- -> C4 + C2
+16 reaction data were updated for C6+ + e- -> C5 + C
+17 reaction data were updated for C7+ + e- -> C4 + C3
+18 reaction data were updated for C7+ + e- -> C5 + C2
+19 reaction data were updated for C7+ + e- -> C6 + C
+20 reaction data were updated for C8+ + e- -> C6 + C2
+21 reaction data were updated for C8+ + e- -> C7 + C
+22 reaction data were updated for C9+ + e- -> C7 + C2
+23 reaction data were updated for C9+ + e- -> C8 + C
+24 reaction data were updated for C10+ + e- -> C8 + C2
+25 reaction data were updated for C10+ + e- -> C9 + C
+26 reaction data were updated for C2H+ + e- -> C2 + H
+27 reaction data were updated for C2H+ + e- -> CH + C
+28 reaction data were updated for C3H+ + e- -> C2H + C
+29 reaction data were updated for C3H+ + e- -> C3 + H
+30 reaction data were updated for C4H+ + e- -> C4 + H
+31 reaction data were updated for C3H2+ + e- -> C2 + CH2
+32 reaction data were updated for C3H2+ + e- -> C2H2 + C
+33 reaction data were updated for C3H2+ + e- -> C3 + H2
+34 reaction data were updated for C3H2+ + e- -> C3 + H + H
+35 reaction data were updated for C3H2+ + e- -> C3H + H
+36 reaction data were updated for C4 + He+ -> C2 + He + C2+
+37 reaction data were updated for C4 + He+ -> C + He + C3+
+38 reaction data were updated for C4 + He+ -> C3 + He + C+
+39 reaction data were updated for C5 + He+ -> C2 + He + C3+
+40 reaction data were updated for C5 + He+ -> C + He + C4+
+41 reaction data were updated for C6 + He+ -> C2 + He + C4+
+42 reaction data were updated for C6 + He+ -> C + He + C5+
+43 reaction data were updated for C7 + He+ -> C2 + He + C5+
+44 reaction data were updated for C7 + He+ -> C + He + C6+
+45 reaction data were updated for C8 + He+ -> C2 + He + C6+
+46 reaction data were updated for C8 + He+ -> C + He + C7+
+47 reaction data were updated for C9 + He+ -> C2 + He + C7+
+48 reaction data were updated for C9 + He+ -> C + He + C8+
+49 reaction data were updated for C10 + He+ -> C5 + He + C5+
+50 reaction data were updated for C10 + He+ -> C3 + C + He + C6+
+51 reaction data were updated for C10 + He+ -> C4 + He + C6+
+52 reaction data were updated for C10 + He+ -> C3 + He + C7+
+53 reaction data were updated for C10 + He+ -> C + He + C9+
+54 reaction data were updated for C10 + He+ -> He + C10+
+55 reaction data were updated for C10 + He+ -> C2 + He + C8+
+56 reaction data were updated for C2H + He+ -> He + H + C2+
+57 reaction data were updated for C2H + He+ -> C + He + CH+
+58 reaction data were updated for C2H + He+ -> CH + He + C+
+59 reaction data were updated for C3H + He+ -> He + H + C3+
+60 reaction data were updated for C4H + He+ -> C2 + He + C2H+
+61 reaction data were updated for C4H + He+ -> He + H + C4+
+62 reaction data were updated for H2CCC + He+ -> He + H2 + C3+
+63 reaction data were updated for H2CCC + He+ -> He + H + C3H+
+64 reaction data were updated for C3H2 + He+ -> He + H + C3H+
+65 reaction data were updated for C3H + C+ -> H + C4+
+66 reaction data were updated for C2 + H+ -> H + C2+
+67 reaction data were updated for C4 + H+ -> H + C4+
+68 reaction data were updated for C3H + H+ -> H + C3H+
+69 reaction data were updated for C3H + H+ -> H2 + C3+
+70 reaction data were updated for C2 + C2+ -> C + C3+
+71 reaction data were updated for CH + C2+ -> H + C3+
+72 reaction data were updated for CH + C2+ -> C2 + CH+
+73 reaction data were updated for CH2 + C2+ -> H + C3H+
+74 reaction data were updated for CH2 + C2+ -> C2 + CH2+
+75 reaction data were updated for C + CH+ -> H + C2+
+76 reaction data were updated for C2 + CH+ -> H + C3+
+77 reaction data were updated for C2H + CH+ -> H2 + C3+
+78 reaction data were updated for C + C2H+ -> H + C3+
+79 reaction data were updated for CH + C2H+ -> H + C3H+
+80 reaction data were updated for CH + C2H+ -> C2 + CH2+
+81 reaction data were updated for C + C2H2+ -> H + C3H+
+82 reaction data were updated for C + C6 -> C2 + C5
+83 reaction data were updated for C + C6 -> C3 + C4
+84 reaction data were updated for C + C8 -> C2 + C7
+85 reaction data were updated for C + C3H -> C4 + H
+86 reaction data were updated for C + C2H2 -> C3 + H2
+87 reaction data were updated for C + C2H2 -> C3H + H
+    undefined species:
+
+Network /disk2/nester/input_data/chemistry/reactions_adsorp_desorption.txt
+    undefined species:
+  C2H4CN  *C2H4CN  C3P  *C3P  C4P  *C4P  CCP  *CCP  CH2OHCHO  *CH2OHCHO  CH2OHCO  *CH2OHCO  CH2PH  *CH2PH  CH3COOH  *CH3COOH  CH3NH  *CH3NH  CH3NH2  *CH3NH2  COOCH3  *COOCH3  CP  *CP  HC2P  *HC2P  HCCN  *HCCN  HCP  *HCP  HF  *HF  HNCHO  *HNCHO  HNOH  *HNOH  HPO  *HPO  F  *F  NH2CHO  *NH2CHO  NH2CO  *NH2CO  NH2OH  *NH2OH  O3  *O3  P  *P  PH  *PH  PH2  *PH2  PN  *PN  PO  *PO
+Network /disk2/nester/input_data/chemistry/reactions_ion_recomb_grains.txt
+    undefined species:
+  F+  F  HF+  HF  H2F+  P+  P  PH+  PH  PH2+  PH2  PH3+  CP+  CP  HCP+  HCP  PN+  PN  PCH2+  HPN+  PCH4+  CH2PH  PO+  PO  HPO+  HPO  H2PO+  CCP+  CCP  HC2P+  HC2P  PC2H2+  PC3H+  C3P  C4P+  C4P  PC4H+  CF+  PCH3+  SiF+  PNH2+  PNH3+  PC2H3+  PC2H4+
+Network /disk2/nester/input_data/chemistry/reactions_COM_Palau2017.txt
+1 reaction data were updated for CH3OH + CH3OH2+ -> H2O + CH3OCH4+
+    undefined species:
+
+Network /disk2/nester/input_data/chemistry/reactions_colldiss.txt
+    undefined species:
+
+Network /disk2/nester/input_data/chemistry/reactions_ion_radicals.txt
+    undefined species:
+
+Photo-reactions on grain surface (based on gas-phase chemistry)... 
+Network /disk2/nester/input_data/chemistry/nautilus_networks/bimolecular_gs_reactions.txt
+54   *C + *NO -> *CN + *O           branching ratio 5.0000e-01
+55   *C + *NO -> *OCN               branching ratio 5.0000e-01
+68   *CH + *C2H -> *C3H2            branching ratio 5.0000e-01
+70   *CH + *C2H -> *H2CCC           branching ratio 5.0000e-01
+105  *CH + *NH -> *HCN + *H         branching ratio 5.0000e-01
+106  *CH + *NH -> *HNC + *H         branching ratio 5.0000e-01
+198  *H + *CN -> *HCN               branching ratio 5.0000e-01
+208  *H + *H2O2 -> *H2O + *OH       activ. barrier 1.4000e+03  1.9000e+03  
+209  *H + *H2O2 -> *O2H + *H2       activ. barrier 1.9000e+03  1.4000e+03  
+211  *H + *HCO -> *H2CO             branching ratio 5.0000e-01
+324  *O + *HCO -> *CO2 + *H         branching ratio 5.0000e-01
+325  *O + *HCO -> *CO + *OH         branching ratio 5.0000e-01
+343  *OH + *CO -> *CO2 + *H         activ. barrier 1.5000e+02  1.5000e+02  
+363  *H + *CH2OH -> *CH3OH          branching ratio 5.0000e-01
+365  *H + *CH3O -> *CH3OH           branching ratio 5.0000e-01
+367  *H + *H2CO -> *CH2OH           activ. barrier 5.4000e+03  2.2000e+03  1.7400e+03  
+369  *H + *H2CO -> *CH3O            activ. barrier 2.2000e+03  5.4000e+03  1.7400e+03  
+371  *H + *H2CO -> *HCO + *H2       activ. barrier 1.7400e+03  5.4000e+03  2.2000e+03  
+396  *H + *HOCO -> *HCOOH           branching ratio 3.3333e-01
+398  *H + *HOCO -> *H2 + *CO2       branching ratio 3.3333e-01
+399  *H + *HOCO -> *H2O + *CO       branching ratio 3.3333e-01
+401  *N + *HOCO -> *OH + *OCN       branching ratio 5.0000e-01
+402  *N + *HOCO -> *NH + *CO2       branching ratio 5.0000e-01
+403  *OH + *CO -> *HOCO             activ. barrier 1.5000e+02  1.5000e+02  
+406  *H + *CN -> *HNC               branching ratio 5.0000e-01
+408  *H + *HCO -> *CO + *H2         branching ratio 5.0000e-01
+409  *H + *CH2OH -> *H2CO + *H2     branching ratio 5.0000e-01
+410  *H + *CH3O -> *H2CO + *H2      branching ratio 5.0000e-01
+411  *H + *CH3OH -> *CH2OH + *H2    activ. barrier 4.3800e+03  6.6400e+03  
+412  *H + *CH3OH -> *CH3O + *H2     activ. barrier 6.6400e+03  4.3800e+03  
+    undefined species:
+*l-C3H
+l-C3H
+*FeH
+FeH
+*MgH
+MgH
+*MgH2
+MgH2
+*NaH
+NaH
+*O3
+*CH3NH2
+CH3NH2
+*NH2CHO
+NH2CHO
+O3
+*F
+*HF
+HF
+*C5H3
+C5H3
+*C5H4
+C5H4
+*C6H3
+C6H3
+*C6H4
+C6H4
+*C7H3
+C7H3
+*C7H4
+C7H4
+*C8H3
+C8H3
+*C8H4
+C8H4
+*C9H3
+C9H3
+*C9H4
+C9H4
+*C-H2O
+*CH-H2O
+*C-CH3OH
+*CH-CH3OH
+*CH2NH2
+CH2NH2
+*C-NH3
+*CH-NH3
+*C-CO2
+*HCOCO
+HCOCO
+*CH-CO2
+*HCOCHO
+HCOCHO
+*CH2-CO2
+*CH3-CO2
+*CH4-CO2
+*C-CH4
+*O-CO
+
+Network /disk2/nester/input_data/chemistry/reactions_grain_mantle_sputt.txt
+Evaluating sputtering yield: *C + H2 -> C + H2
+Evaluating sputtering yield: *C + He -> C + He
+Evaluating sputtering yield: *C + CO -> C + CO
+Evaluating sputtering yield: *C2 + H2 -> C2 + H2
+Evaluating sputtering yield: *C2 + He -> C2 + He
+Evaluating sputtering yield: *C2 + CO -> C2 + CO
+Evaluating sputtering yield: *C2H + H2 -> C2H + H2
+Evaluating sputtering yield: *C2H + He -> C2H + He
+Evaluating sputtering yield: *C2H + CO -> C2H + CO
+Evaluating sputtering yield: *C2H2 + H2 -> C2H2 + H2
+Evaluating sputtering yield: *C2H2 + He -> C2H2 + He
+Evaluating sputtering yield: *C2H2 + CO -> C2H2 + CO
+Evaluating sputtering yield: *C2H3 + H2 -> C2H3 + H2
+Evaluating sputtering yield: *C2H3 + He -> C2H3 + He
+Evaluating sputtering yield: *C2H3 + CO -> C2H3 + CO
+Evaluating sputtering yield: *C2H4 + H2 -> C2H4 + H2
+Evaluating sputtering yield: *C2H4 + He -> C2H4 + He
+Evaluating sputtering yield: *C2H4 + CO -> C2H4 + CO
+Evaluating sputtering yield: *C2H5 + H2 -> C2H5 + H2
+Evaluating sputtering yield: *C2H5 + He -> C2H5 + He
+Evaluating sputtering yield: *C2H5 + CO -> C2H5 + CO
+Evaluating sputtering yield: *C2H5CN + H2 -> C2H5CN + H2
+Evaluating sputtering yield: *C2H5CN + He -> C2H5CN + He
+Evaluating sputtering yield: *C2H5CN + CO -> C2H5CN + CO
+Evaluating sputtering yield: *C2H5OH + H2 -> C2H5OH + H2
+Evaluating sputtering yield: *C2H5OH + He -> C2H5OH + He
+Evaluating sputtering yield: *C2H5OH + CO -> C2H5OH + CO
+Evaluating sputtering yield: *CH3CH3 + H2 -> CH3CH3 + H2
+Evaluating sputtering yield: *CH3CH3 + He -> CH3CH3 + He
+Evaluating sputtering yield: *CH3CH3 + CO -> CH3CH3 + CO
+Evaluating sputtering yield: *C2N + H2 -> C2N + H2
+Evaluating sputtering yield: *C2N + He -> C2N + He
+Evaluating sputtering yield: *C2N + CO -> C2N + CO
+Evaluating sputtering yield: *C2O + H2 -> C2O + H2
+Evaluating sputtering yield: *C2O + He -> C2O + He
+Evaluating sputtering yield: *C2O + CO -> C2O + CO
+Evaluating sputtering yield: *C2S + H2 -> C2S + H2
+Evaluating sputtering yield: *C2S + He -> C2S + He
+Evaluating sputtering yield: *C2S + CO -> C2S + CO
+Evaluating sputtering yield: *C3 + H2 -> C3 + H2
+Evaluating sputtering yield: *C3 + He -> C3 + He
+Evaluating sputtering yield: *C3 + CO -> C3 + CO
+Evaluating sputtering yield: *C3H + H2 -> C3H + H2
+Evaluating sputtering yield: *C3H + He -> C3H + He
+Evaluating sputtering yield: *C3H + CO -> C3H + CO
+Evaluating sputtering yield: *C3H2 + H2 -> C3H2 + H2
+Evaluating sputtering yield: *C3H2 + He -> C3H2 + He
+Evaluating sputtering yield: *C3H2 + CO -> C3H2 + CO
+Evaluating sputtering yield: *C3N + H2 -> C3N + H2
+Evaluating sputtering yield: *C3N + He -> C3N + He
+Evaluating sputtering yield: *C3N + CO -> C3N + CO
+Evaluating sputtering yield: *C3O + H2 -> C3O + H2
+Evaluating sputtering yield: *C3O + He -> C3O + He
+Evaluating sputtering yield: *C3O + CO -> C3O + CO
+Evaluating sputtering yield: *C3S + H2 -> C3S + H2
+Evaluating sputtering yield: *C3S + He -> C3S + He
+Evaluating sputtering yield: *C3S + CO -> C3S + CO
+Evaluating sputtering yield: *C4 + H2 -> C4 + H2
+Evaluating sputtering yield: *C4 + He -> C4 + He
+Evaluating sputtering yield: *C4 + CO -> C4 + CO
+Evaluating sputtering yield: *C4H + H2 -> C4H + H2
+Evaluating sputtering yield: *C4H + He -> C4H + He
+Evaluating sputtering yield: *C4H + CO -> C4H + CO
+Evaluating sputtering yield: *HC4H + H2 -> HC4H + H2
+Evaluating sputtering yield: *HC4H + He -> HC4H + He
+Evaluating sputtering yield: *HC4H + CO -> HC4H + CO
+Evaluating sputtering yield: *C4H3 + H2 -> C4H3 + H2
+Evaluating sputtering yield: *C4H3 + He -> C4H3 + He
+Evaluating sputtering yield: *C4H3 + CO -> C4H3 + CO
+Evaluating sputtering yield: *CH2CHCHCH2 + H2 -> CH2CHCHCH2 + H2
+Evaluating sputtering yield: *CH2CHCHCH2 + He -> CH2CHCHCH2 + He
+Evaluating sputtering yield: *CH2CHCHCH2 + CO -> CH2CHCHCH2 + CO
+Evaluating sputtering yield: *C4N + H2 -> C4N + H2
+Evaluating sputtering yield: *C4N + He -> C4N + He
+Evaluating sputtering yield: *C4N + CO -> C4N + CO
+Evaluating sputtering yield: *C4S + H2 -> C4S + H2
+Evaluating sputtering yield: *C4S + He -> C4S + He
+Evaluating sputtering yield: *C4S + CO -> C4S + CO
+Evaluating sputtering yield: *C5 + H2 -> C5 + H2
+Evaluating sputtering yield: *C5 + He -> C5 + He
+Evaluating sputtering yield: *C5 + CO -> C5 + CO
+Evaluating sputtering yield: *C5H + H2 -> C5H + H2
+Evaluating sputtering yield: *C5H + He -> C5H + He
+Evaluating sputtering yield: *C5H + CO -> C5H + CO
+Evaluating sputtering yield: *C5H2 + H2 -> C5H2 + H2
+Evaluating sputtering yield: *C5H2 + He -> C5H2 + He
+Evaluating sputtering yield: *C5H2 + CO -> C5H2 + CO
+Evaluating sputtering yield: *C5N + H2 -> C5N + H2
+Evaluating sputtering yield: *C5N + He -> C5N + He
+Evaluating sputtering yield: *C5N + CO -> C5N + CO
+Evaluating sputtering yield: *C6 + H2 -> C6 + H2
+Evaluating sputtering yield: *C6 + He -> C6 + He
+Evaluating sputtering yield: *C6 + CO -> C6 + CO
+Evaluating sputtering yield: *C6H + H2 -> C6H + H2
+Evaluating sputtering yield: *C6H + He -> C6H + He
+Evaluating sputtering yield: *C6H + CO -> C6H + CO
+Evaluating sputtering yield: *C6H2 + H2 -> C6H2 + H2
+Evaluating sputtering yield: *C6H2 + He -> C6H2 + He
+Evaluating sputtering yield: *C6H2 + CO -> C6H2 + CO
+Evaluating sputtering yield: *C6H6 + H2 -> C6H6 + H2
+Evaluating sputtering yield: *C6H6 + He -> C6H6 + He
+Evaluating sputtering yield: *C6H6 + CO -> C6H6 + CO
+Evaluating sputtering yield: *C7 + H2 -> C7 + H2
+Evaluating sputtering yield: *C7 + He -> C7 + He
+Evaluating sputtering yield: *C7 + CO -> C7 + CO
+Evaluating sputtering yield: *C7H + H2 -> C7H + H2
+Evaluating sputtering yield: *C7H + He -> C7H + He
+Evaluating sputtering yield: *C7H + CO -> C7H + CO
+Evaluating sputtering yield: *C7H2 + H2 -> C7H2 + H2
+Evaluating sputtering yield: *C7H2 + He -> C7H2 + He
+Evaluating sputtering yield: *C7H2 + CO -> C7H2 + CO
+Evaluating sputtering yield: *C7N + H2 -> C7N + H2
+Evaluating sputtering yield: *C7N + He -> C7N + He
+Evaluating sputtering yield: *C7N + CO -> C7N + CO
+Evaluating sputtering yield: *C8 + H2 -> C8 + H2
+Evaluating sputtering yield: *C8 + He -> C8 + He
+Evaluating sputtering yield: *C8 + CO -> C8 + CO
+Evaluating sputtering yield: *C8H + H2 -> C8H + H2
+Evaluating sputtering yield: *C8H + He -> C8H + He
+Evaluating sputtering yield: *C8H + CO -> C8H + CO
+Evaluating sputtering yield: *C8H2 + H2 -> C8H2 + H2
+Evaluating sputtering yield: *C8H2 + He -> C8H2 + He
+Evaluating sputtering yield: *C8H2 + CO -> C8H2 + CO
+Evaluating sputtering yield: *C9 + H2 -> C9 + H2
+Evaluating sputtering yield: *C9 + He -> C9 + He
+Evaluating sputtering yield: *C9 + CO -> C9 + CO
+Evaluating sputtering yield: *C9H + H2 -> C9H + H2
+Evaluating sputtering yield: *C9H + He -> C9H + He
+Evaluating sputtering yield: *C9H + CO -> C9H + CO
+Evaluating sputtering yield: *C9H2 + H2 -> C9H2 + H2
+Evaluating sputtering yield: *C9H2 + He -> C9H2 + He
+Evaluating sputtering yield: *C9H2 + CO -> C9H2 + CO
+Evaluating sputtering yield: *C9N + H2 -> C9N + H2
+Evaluating sputtering yield: *C9N + He -> C9N + He
+Evaluating sputtering yield: *C9N + CO -> C9N + CO
+Evaluating sputtering yield: *C10 + H2 -> C10 + H2
+Evaluating sputtering yield: *C10 + He -> C10 + He
+Evaluating sputtering yield: *C10 + CO -> C10 + CO
+Evaluating sputtering yield: *C10H + H2 -> C10H + H2
+Evaluating sputtering yield: *C10H + He -> C10H + He
+Evaluating sputtering yield: *C10H + CO -> C10H + CO
+Evaluating sputtering yield: *C10H2 + H2 -> C10H2 + H2
+Evaluating sputtering yield: *C10H2 + He -> C10H2 + He
+Evaluating sputtering yield: *C10H2 + CO -> C10H2 + CO
+Evaluating sputtering yield: *C11 + H2 -> C11 + H2
+Evaluating sputtering yield: *C11 + He -> C11 + He
+Evaluating sputtering yield: *C11 + CO -> C11 + CO
+Evaluating sputtering yield: *CCl + H2 -> CCl + H2
+Evaluating sputtering yield: *CCl + He -> CCl + He
+Evaluating sputtering yield: *CCl + CO -> CCl + CO
+Evaluating sputtering yield: *CH + H2 -> CH + H2
+Evaluating sputtering yield: *CH + He -> CH + He
+Evaluating sputtering yield: *CH + CO -> CH + CO
+Evaluating sputtering yield: *CH2 + H2 -> CH2 + H2
+Evaluating sputtering yield: *CH2 + He -> CH2 + He
+Evaluating sputtering yield: *CH2 + CO -> CH2 + CO
+Evaluating sputtering yield: *CH2CCH + H2 -> CH2CCH + H2
+Evaluating sputtering yield: *CH2CCH + He -> CH2CCH + He
+Evaluating sputtering yield: *CH2CCH + CO -> CH2CCH + CO
+Evaluating sputtering yield: *CH2CCH2 + H2 -> CH2CCH2 + H2
+Evaluating sputtering yield: *CH2CCH2 + He -> CH2CCH2 + He
+Evaluating sputtering yield: *CH2CCH2 + CO -> CH2CCH2 + CO
+Evaluating sputtering yield: *CH2CHCCH + H2 -> CH2CHCCH + H2
+Evaluating sputtering yield: *CH2CHCCH + He -> CH2CHCCH + He
+Evaluating sputtering yield: *CH2CHCCH + CO -> CH2CHCCH + CO
+Evaluating sputtering yield: *CH2CHCN + H2 -> CH2CHCN + H2
+Evaluating sputtering yield: *CH2CHCN + He -> CH2CHCN + He
+Evaluating sputtering yield: *CH2CHCN + CO -> CH2CHCN + CO
+Evaluating sputtering yield: *CH2CN + H2 -> CH2CN + H2
+Evaluating sputtering yield: *CH2CN + He -> CH2CN + He
+Evaluating sputtering yield: *CH2CN + CO -> CH2CN + CO
+Evaluating sputtering yield: *CH2CO + H2 -> CH2CO + H2
+Evaluating sputtering yield: *CH2CO + He -> CH2CO + He
+Evaluating sputtering yield: *CH2CO + CO -> CH2CO + CO
+Evaluating sputtering yield: *CH2NH + H2 -> CH2NH + H2
+Evaluating sputtering yield: *CH2NH + He -> CH2NH + He
+Evaluating sputtering yield: *CH2NH + CO -> CH2NH + CO
+Evaluating sputtering yield: *CH2OH + H2 -> CH2OH + H2
+Evaluating sputtering yield: *CH2OH + He -> CH2OH + He
+Evaluating sputtering yield: *CH2OH + CO -> CH2OH + CO
+Evaluating sputtering yield: *CH3 + H2 -> CH3 + H2
+Evaluating sputtering yield: *CH3 + He -> CH3 + He
+Evaluating sputtering yield: *CH3 + CO -> CH3 + CO
+Evaluating sputtering yield: *CH3C3N + H2 -> CH3C3N + H2
+Evaluating sputtering yield: *CH3C3N + He -> CH3C3N + He
+Evaluating sputtering yield: *CH3C3N + CO -> CH3C3N + CO
+Evaluating sputtering yield: *CH3C4H + H2 -> CH3C4H + H2
+Evaluating sputtering yield: *CH3C4H + He -> CH3C4H + He
+Evaluating sputtering yield: *CH3C4H + CO -> CH3C4H + CO
+Evaluating sputtering yield: *CH3C5N + H2 -> CH3C5N + H2
+Evaluating sputtering yield: *CH3C5N + He -> CH3C5N + He
+Evaluating sputtering yield: *CH3C5N + CO -> CH3C5N + CO
+Evaluating sputtering yield: *CH3C6H + H2 -> CH3C6H + H2
+Evaluating sputtering yield: *CH3C6H + He -> CH3C6H + He
+Evaluating sputtering yield: *CH3C6H + CO -> CH3C6H + CO
+Evaluating sputtering yield: *CH3C7N + H2 -> CH3C7N + H2
+Evaluating sputtering yield: *CH3C7N + He -> CH3C7N + He
+Evaluating sputtering yield: *CH3C7N + CO -> CH3C7N + CO
+Evaluating sputtering yield: *CH3CCH + H2 -> CH3CCH + H2
+Evaluating sputtering yield: *CH3CCH + He -> CH3CCH + He
+Evaluating sputtering yield: *CH3CCH + CO -> CH3CCH + CO
+Evaluating sputtering yield: *CH3CHCH2 + H2 -> CH3CHCH2 + H2
+Evaluating sputtering yield: *CH3CHCH2 + He -> CH3CHCH2 + He
+Evaluating sputtering yield: *CH3CHCH2 + CO -> CH3CHCH2 + CO
+Evaluating sputtering yield: *CH3CHO + H2 -> CH3CHO + H2
+Evaluating sputtering yield: *CH3CHO + He -> CH3CHO + He
+Evaluating sputtering yield: *CH3CHO + CO -> CH3CHO + CO
+Evaluating sputtering yield: *CH3CN + H2 -> CH3CN + H2
+Evaluating sputtering yield: *CH3CN + He -> CH3CN + He
+Evaluating sputtering yield: *CH3CN + CO -> CH3CN + CO
+Evaluating sputtering yield: *CH3CO + H2 -> CH3CO + H2
+Evaluating sputtering yield: *CH3CO + He -> CH3CO + He
+Evaluating sputtering yield: *CH3CO + CO -> CH3CO + CO
+Evaluating sputtering yield: *CH3COCH3 + H2 -> CH3COCH3 + H2
+Evaluating sputtering yield: *CH3COCH3 + He -> CH3COCH3 + He
+Evaluating sputtering yield: *CH3COCH3 + CO -> CH3COCH3 + CO
+Evaluating sputtering yield: *CH3O + H2 -> CH3O + H2
+Evaluating sputtering yield: *CH3O + He -> CH3O + He
+Evaluating sputtering yield: *CH3O + CO -> CH3O + CO
+Evaluating sputtering yield: *CH3OCH3 + H2 -> CH3OCH3 + H2
+Evaluating sputtering yield: *CH3OCH3 + He -> CH3OCH3 + He
+Evaluating sputtering yield: *CH3OCH3 + CO -> CH3OCH3 + CO
+Evaluating sputtering yield: *CH3OH + H2 -> CH3OH + H2
+Evaluating sputtering yield: *CH3OH + He -> CH3OH + He
+Evaluating sputtering yield: *CH3OH + CO -> CH3OH + CO
+Evaluating sputtering yield: *CH4 + H2 -> CH4 + H2
+Evaluating sputtering yield: *CH4 + He -> CH4 + He
+Evaluating sputtering yield: *CH4 + CO -> CH4 + CO
+Evaluating sputtering yield: *CN + H2 -> CN + H2
+Evaluating sputtering yield: *CN + He -> CN + He
+Evaluating sputtering yield: *CN + CO -> CN + CO
+Evaluating sputtering yield: *CNO + H2 -> CNO + H2
+Evaluating sputtering yield: *CNO + He -> CNO + He
+Evaluating sputtering yield: *CNO + CO -> CNO + CO
+Evaluating sputtering yield: *CO + H2 -> CO + H2
+Evaluating sputtering yield: *CO + He -> CO + He
+Evaluating sputtering yield: *CO + CO -> CO + CO
+Evaluating sputtering yield: *CO2 + H2 -> CO2 + H2
+Evaluating sputtering yield: *CO2 + He -> CO2 + He
+Evaluating sputtering yield: *CO2 + CO -> CO2 + CO
+Evaluating sputtering yield: *HOCO + H2 -> HOCO + H2
+Evaluating sputtering yield: *HOCO + He -> HOCO + He
+Evaluating sputtering yield: *HOCO + CO -> HOCO + CO
+Evaluating sputtering yield: *CS + H2 -> CS + H2
+Evaluating sputtering yield: *CS + He -> CS + He
+Evaluating sputtering yield: *CS + CO -> CS + CO
+Evaluating sputtering yield: *Cl + H2 -> Cl + H2
+Evaluating sputtering yield: *Cl + He -> Cl + He
+Evaluating sputtering yield: *Cl + CO -> Cl + CO
+Evaluating sputtering yield: *ClO + H2 -> ClO + H2
+Evaluating sputtering yield: *ClO + He -> ClO + He
+Evaluating sputtering yield: *ClO + CO -> ClO + CO
+Evaluating sputtering yield: *H + H2 -> H + H2
+Evaluating sputtering yield: *H + He -> H + He
+Evaluating sputtering yield: *H + CO -> H + CO
+Evaluating sputtering yield: *H2 + H2 -> H2 + H2
+Evaluating sputtering yield: *H2 + He -> H2 + He
+Evaluating sputtering yield: *H2 + CO -> H2 + CO
+Evaluating sputtering yield: *H2CCC + H2 -> H2CCC + H2
+Evaluating sputtering yield: *H2CCC + He -> H2CCC + He
+Evaluating sputtering yield: *H2CCC + CO -> H2CCC + CO
+Evaluating sputtering yield: *H2CN + H2 -> H2CN + H2
+Evaluating sputtering yield: *H2CN + He -> H2CN + He
+Evaluating sputtering yield: *H2CN + CO -> H2CN + CO
+Evaluating sputtering yield: *H2CO + H2 -> H2CO + H2
+Evaluating sputtering yield: *H2CO + He -> H2CO + He
+Evaluating sputtering yield: *H2CO + CO -> H2CO + CO
+Evaluating sputtering yield: *H2CS + H2 -> H2CS + H2
+Evaluating sputtering yield: *H2CS + He -> H2CS + He
+Evaluating sputtering yield: *H2CS + CO -> H2CS + CO
+Evaluating sputtering yield: *H2O + H2 -> H2O + H2
+Evaluating sputtering yield: *H2O + He -> H2O + He
+Evaluating sputtering yield: *H2O + CO -> H2O + CO
+Evaluating sputtering yield: *H2O2 + H2 -> H2O2 + H2
+Evaluating sputtering yield: *H2O2 + He -> H2O2 + He
+Evaluating sputtering yield: *H2O2 + CO -> H2O2 + CO
+Evaluating sputtering yield: *H2S + H2 -> H2S + H2
+Evaluating sputtering yield: *H2S + He -> H2S + He
+Evaluating sputtering yield: *H2S + CO -> H2S + CO
+Evaluating sputtering yield: *H2S2 + H2 -> H2S2 + H2
+Evaluating sputtering yield: *H2S2 + He -> H2S2 + He
+Evaluating sputtering yield: *H2S2 + CO -> H2S2 + CO
+Evaluating sputtering yield: *H2SiO + H2 -> H2SiO + H2
+Evaluating sputtering yield: *H2SiO + He -> H2SiO + He
+Evaluating sputtering yield: *H2SiO + CO -> H2SiO + CO
+Evaluating sputtering yield: *HC2O + H2 -> HC2O + H2
+Evaluating sputtering yield: *HC2O + He -> HC2O + He
+Evaluating sputtering yield: *HC2O + CO -> HC2O + CO
+Evaluating sputtering yield: *HC3N + H2 -> HC3N + H2
+Evaluating sputtering yield: *HC3N + He -> HC3N + He
+Evaluating sputtering yield: *HC3N + CO -> HC3N + CO
+Evaluating sputtering yield: *HC5N + H2 -> HC5N + H2
+Evaluating sputtering yield: *HC5N + He -> HC5N + He
+Evaluating sputtering yield: *HC5N + CO -> HC5N + CO
+Evaluating sputtering yield: *HC7N + H2 -> HC7N + H2
+Evaluating sputtering yield: *HC7N + He -> HC7N + He
+Evaluating sputtering yield: *HC7N + CO -> HC7N + CO
+Evaluating sputtering yield: *HC9N + H2 -> HC9N + H2
+Evaluating sputtering yield: *HC9N + He -> HC9N + He
+Evaluating sputtering yield: *HC9N + CO -> HC9N + CO
+Evaluating sputtering yield: *HCN + H2 -> HCN + H2
+Evaluating sputtering yield: *HCN + He -> HCN + He
+Evaluating sputtering yield: *HCN + CO -> HCN + CO
+Evaluating sputtering yield: *HCNO + H2 -> HCNO + H2
+Evaluating sputtering yield: *HCNO + He -> HCNO + He
+Evaluating sputtering yield: *HCNO + CO -> HCNO + CO
+Evaluating sputtering yield: *HCO + H2 -> HCO + H2
+Evaluating sputtering yield: *HCO + He -> HCO + He
+Evaluating sputtering yield: *HCO + CO -> HCO + CO
+Evaluating sputtering yield: *HCOOCH3 + H2 -> HCOOCH3 + H2
+Evaluating sputtering yield: *HCOOCH3 + He -> HCOOCH3 + He
+Evaluating sputtering yield: *HCOOCH3 + CO -> HCOOCH3 + CO
+Evaluating sputtering yield: *HCOOH + H2 -> HCOOH + H2
+Evaluating sputtering yield: *HCOOH + He -> HCOOH + He
+Evaluating sputtering yield: *HCOOH + CO -> HCOOH + CO
+Evaluating sputtering yield: *HCS + H2 -> HCS + H2
+Evaluating sputtering yield: *HCS + He -> HCS + He
+Evaluating sputtering yield: *HCS + CO -> HCS + CO
+Evaluating sputtering yield: *HCSi + H2 -> HCSi + H2
+Evaluating sputtering yield: *HCSi + He -> HCSi + He
+Evaluating sputtering yield: *HCSi + CO -> HCSi + CO
+Evaluating sputtering yield: *He + H2 -> He + H2
+Evaluating sputtering yield: *He + He -> He + He
+Evaluating sputtering yield: *He + CO -> He + CO
+Evaluating sputtering yield: *HNC + H2 -> HNC + H2
+Evaluating sputtering yield: *HNC + He -> HNC + He
+Evaluating sputtering yield: *HNC + CO -> HNC + CO
+Evaluating sputtering yield: *HNC3 + H2 -> HNC3 + H2
+Evaluating sputtering yield: *HNC3 + He -> HNC3 + He
+Evaluating sputtering yield: *HNC3 + CO -> HNC3 + CO
+Evaluating sputtering yield: *HNCO + H2 -> HNCO + H2
+Evaluating sputtering yield: *HNCO + He -> HNCO + He
+Evaluating sputtering yield: *HNCO + CO -> HNCO + CO
+Evaluating sputtering yield: *HNO + H2 -> HNO + H2
+Evaluating sputtering yield: *HNO + He -> HNO + He
+Evaluating sputtering yield: *HNO + CO -> HNO + CO
+Evaluating sputtering yield: *HNSi + H2 -> HNSi + H2
+Evaluating sputtering yield: *HNSi + He -> HNSi + He
+Evaluating sputtering yield: *HNSi + CO -> HNSi + CO
+Evaluating sputtering yield: *HOCN + H2 -> HOCN + H2
+Evaluating sputtering yield: *HOCN + He -> HOCN + He
+Evaluating sputtering yield: *HOCN + CO -> HOCN + CO
+Evaluating sputtering yield: *HONC + H2 -> HONC + H2
+Evaluating sputtering yield: *HONC + He -> HONC + He
+Evaluating sputtering yield: *HONC + CO -> HONC + CO
+Evaluating sputtering yield: *HS + H2 -> HS + H2
+Evaluating sputtering yield: *HS + He -> HS + He
+Evaluating sputtering yield: *HS + CO -> HS + CO
+Evaluating sputtering yield: *HS2 + H2 -> HS2 + H2
+Evaluating sputtering yield: *HS2 + He -> HS2 + He
+Evaluating sputtering yield: *HS2 + CO -> HS2 + CO
+Evaluating sputtering yield: *HCl + H2 -> HCl + H2
+Evaluating sputtering yield: *HCl + He -> HCl + He
+Evaluating sputtering yield: *HCl + CO -> HCl + CO
+Evaluating sputtering yield: *Fe + H2 -> Fe + H2
+Evaluating sputtering yield: *Fe + He -> Fe + He
+Evaluating sputtering yield: *Fe + CO -> Fe + CO
+Evaluating sputtering yield: *Mg + H2 -> Mg + H2
+Evaluating sputtering yield: *Mg + He -> Mg + He
+Evaluating sputtering yield: *Mg + CO -> Mg + CO
+Evaluating sputtering yield: *N + H2 -> N + H2
+Evaluating sputtering yield: *N + He -> N + He
+Evaluating sputtering yield: *N + CO -> N + CO
+Evaluating sputtering yield: *N2 + H2 -> N2 + H2
+Evaluating sputtering yield: *N2 + He -> N2 + He
+Evaluating sputtering yield: *N2 + CO -> N2 + CO
+Evaluating sputtering yield: *N2O + H2 -> N2O + H2
+Evaluating sputtering yield: *N2O + He -> N2O + He
+Evaluating sputtering yield: *N2O + CO -> N2O + CO
+Evaluating sputtering yield: *NCCN + H2 -> NCCN + H2
+Evaluating sputtering yield: *NCCN + He -> NCCN + He
+Evaluating sputtering yield: *NCCN + CO -> NCCN + CO
+Evaluating sputtering yield: *NH + H2 -> NH + H2
+Evaluating sputtering yield: *NH + He -> NH + He
+Evaluating sputtering yield: *NH + CO -> NH + CO
+Evaluating sputtering yield: *NH2 + H2 -> NH2 + H2
+Evaluating sputtering yield: *NH2 + He -> NH2 + He
+Evaluating sputtering yield: *NH2 + CO -> NH2 + CO
+Evaluating sputtering yield: *NH2CN + H2 -> NH2CN + H2
+Evaluating sputtering yield: *NH2CN + He -> NH2CN + He
+Evaluating sputtering yield: *NH2CN + CO -> NH2CN + CO
+Evaluating sputtering yield: *NH3 + H2 -> NH3 + H2
+Evaluating sputtering yield: *NH3 + He -> NH3 + He
+Evaluating sputtering yield: *NH3 + CO -> NH3 + CO
+Evaluating sputtering yield: *NO + H2 -> NO + H2
+Evaluating sputtering yield: *NO + He -> NO + He
+Evaluating sputtering yield: *NO + CO -> NO + CO
+Evaluating sputtering yield: *NO2 + H2 -> NO2 + H2
+Evaluating sputtering yield: *NO2 + He -> NO2 + He
+Evaluating sputtering yield: *NO2 + CO -> NO2 + CO
+Evaluating sputtering yield: *NS + H2 -> NS + H2
+Evaluating sputtering yield: *NS + He -> NS + He
+Evaluating sputtering yield: *NS + CO -> NS + CO
+Evaluating sputtering yield: *Na + H2 -> Na + H2
+Evaluating sputtering yield: *Na + He -> Na + He
+Evaluating sputtering yield: *Na + CO -> Na + CO
+Evaluating sputtering yield: *O + H2 -> O + H2
+Evaluating sputtering yield: *O + He -> O + He
+Evaluating sputtering yield: *O + CO -> O + CO
+Evaluating sputtering yield: *O2 + H2 -> O2 + H2
+Evaluating sputtering yield: *O2 + He -> O2 + He
+Evaluating sputtering yield: *O2 + CO -> O2 + CO
+Evaluating sputtering yield: *O2H + H2 -> O2H + H2
+Evaluating sputtering yield: *O2H + He -> O2H + He
+Evaluating sputtering yield: *O2H + CO -> O2H + CO
+Evaluating sputtering yield: *OCN + H2 -> OCN + H2
+Evaluating sputtering yield: *OCN + He -> OCN + He
+Evaluating sputtering yield: *OCN + CO -> OCN + CO
+Evaluating sputtering yield: *OCS + H2 -> OCS + H2
+Evaluating sputtering yield: *OCS + He -> OCS + He
+Evaluating sputtering yield: *OCS + CO -> OCS + CO
+Evaluating sputtering yield: *OH + H2 -> OH + H2
+Evaluating sputtering yield: *OH + He -> OH + He
+Evaluating sputtering yield: *OH + CO -> OH + CO
+Evaluating sputtering yield: *S + H2 -> S + H2
+Evaluating sputtering yield: *S + He -> S + He
+Evaluating sputtering yield: *S + CO -> S + CO
+Evaluating sputtering yield: *S2 + H2 -> S2 + H2
+Evaluating sputtering yield: *S2 + He -> S2 + He
+Evaluating sputtering yield: *S2 + CO -> S2 + CO
+Evaluating sputtering yield: *Si + H2 -> Si + H2
+Evaluating sputtering yield: *Si + He -> Si + He
+Evaluating sputtering yield: *Si + CO -> Si + CO
+Evaluating sputtering yield: *SiC + H2 -> SiC + H2
+Evaluating sputtering yield: *SiC + He -> SiC + He
+Evaluating sputtering yield: *SiC + CO -> SiC + CO
+Evaluating sputtering yield: *SiC2 + H2 -> SiC2 + H2
+Evaluating sputtering yield: *SiC2 + He -> SiC2 + He
+Evaluating sputtering yield: *SiC2 + CO -> SiC2 + CO
+Evaluating sputtering yield: *SiC2H + H2 -> SiC2H + H2
+Evaluating sputtering yield: *SiC2H + He -> SiC2H + He
+Evaluating sputtering yield: *SiC2H + CO -> SiC2H + CO
+Evaluating sputtering yield: *SiC2H2 + H2 -> SiC2H2 + H2
+Evaluating sputtering yield: *SiC2H2 + He -> SiC2H2 + He
+Evaluating sputtering yield: *SiC2H2 + CO -> SiC2H2 + CO
+Evaluating sputtering yield: *SiC3 + H2 -> SiC3 + H2
+Evaluating sputtering yield: *SiC3 + He -> SiC3 + He
+Evaluating sputtering yield: *SiC3 + CO -> SiC3 + CO
+Evaluating sputtering yield: *SiC3H + H2 -> SiC3H + H2
+Evaluating sputtering yield: *SiC3H + He -> SiC3H + He
+Evaluating sputtering yield: *SiC3H + CO -> SiC3H + CO
+Evaluating sputtering yield: *SiC4 + H2 -> SiC4 + H2
+Evaluating sputtering yield: *SiC4 + He -> SiC4 + He
+Evaluating sputtering yield: *SiC4 + CO -> SiC4 + CO
+Evaluating sputtering yield: *SiCH2 + H2 -> SiCH2 + H2
+Evaluating sputtering yield: *SiCH2 + He -> SiCH2 + He
+Evaluating sputtering yield: *SiCH2 + CO -> SiCH2 + CO
+Evaluating sputtering yield: *SiCH3 + H2 -> SiCH3 + H2
+Evaluating sputtering yield: *SiCH3 + He -> SiCH3 + He
+Evaluating sputtering yield: *SiCH3 + CO -> SiCH3 + CO
+Evaluating sputtering yield: *SiH + H2 -> SiH + H2
+Evaluating sputtering yield: *SiH + He -> SiH + He
+Evaluating sputtering yield: *SiH + CO -> SiH + CO
+Evaluating sputtering yield: *SiH2 + H2 -> SiH2 + H2
+Evaluating sputtering yield: *SiH2 + He -> SiH2 + He
+Evaluating sputtering yield: *SiH2 + CO -> SiH2 + CO
+Evaluating sputtering yield: *SiH3 + H2 -> SiH3 + H2
+Evaluating sputtering yield: *SiH3 + He -> SiH3 + He
+Evaluating sputtering yield: *SiH3 + CO -> SiH3 + CO
+Evaluating sputtering yield: *SiH4 + H2 -> SiH4 + H2
+Evaluating sputtering yield: *SiH4 + He -> SiH4 + He
+Evaluating sputtering yield: *SiH4 + CO -> SiH4 + CO
+Evaluating sputtering yield: *SiN + H2 -> SiN + H2
+Evaluating sputtering yield: *SiN + He -> SiN + He
+Evaluating sputtering yield: *SiN + CO -> SiN + CO
+Evaluating sputtering yield: *SiNC + H2 -> SiNC + H2
+Evaluating sputtering yield: *SiNC + He -> SiNC + He
+Evaluating sputtering yield: *SiNC + CO -> SiNC + CO
+Evaluating sputtering yield: *SiO + H2 -> SiO + H2
+Evaluating sputtering yield: *SiO + He -> SiO + He
+Evaluating sputtering yield: *SiO + CO -> SiO + CO
+Evaluating sputtering yield: *SiO2 + H2 -> SiO2 + H2
+Evaluating sputtering yield: *SiO2 + He -> SiO2 + He
+Evaluating sputtering yield: *SiO2 + CO -> SiO2 + CO
+Evaluating sputtering yield: *SiS + H2 -> SiS + H2
+Evaluating sputtering yield: *SiS + He -> SiS + He
+Evaluating sputtering yield: *SiS + CO -> SiS + CO
+Evaluating sputtering yield: *SO + H2 -> SO + H2
+Evaluating sputtering yield: *SO + He -> SO + He
+Evaluating sputtering yield: *SO + CO -> SO + CO
+Evaluating sputtering yield: *SO2 + H2 -> SO2 + H2
+Evaluating sputtering yield: *SO2 + He -> SO2 + He
+Evaluating sputtering yield: *SO2 + CO -> SO2 + CO
+Evaluating sputtering yield: *CH3OCH2 + H2 -> CH3OCH2 + H2
+Evaluating sputtering yield: *CH3OCH2 + He -> CH3OCH2 + He
+Evaluating sputtering yield: *CH3OCH2 + CO -> CH3OCH2 + CO
+    undefined species:
+  *C2H4CN  C2H4CN  *C3P  C3P  *C4P  C4P  *CCP  CCP  *CH2OHCHO  CH2OHCHO  *CH2OHCO  CH2OHCO  *CH2PH  CH2PH  *CH3COOH  CH3COOH  *CH3NH  CH3NH  *CH3NH2  CH3NH2  *COOCH3  COOCH3  *CP  CP  *HC2P  HC2P  *HCCN  HCCN  *HCP  HCP  *HF  HF  *HNCHO  HNCHO  *HNOH  HNOH  *HPO  HPO  *F  F  *NH2CHO  NH2CHO  *NH2CO  NH2CO  *NH2OH  NH2OH  *O3  O3  *P  P  *PH  PH  *PH2  PH2  *PN  PN  *PO  PO
+Warning: adsorbed specimen has not destruction other than desorption: *He
+Warning: adsorbed specimen has not destruction other than desorption: *Na
+Warning: adsorbed specimen has not destruction other than desorption: *Mg
+Warning: adsorbed specimen has not destruction other than desorption: *Fe
+CR induced photoreactions are absent for neutral species: 
+	H2 
+Interstellar UV induced photoreactions are absent for neutral species: 
+	H He N O CH3O CH2OH HC2O CH3CO HOCO CH3OCH2 
+Identical reactions:
+1   ISDGS1 *CH3OH + ISPhoton -> *CH + *H2O + *H *CH3OH + ISPhoton -> *H + *CH + *H2O
+2   ISDGS1 *CH3OH + ISPhoton -> *H2CO + *H + *H *CH3OH + ISPhoton -> *H + *H2CO + *H
+3   ISDGS1 *H2CO + ISPhoton -> *CO + *H + *H *H2CO + ISPhoton -> *H + *CO + *H
+Total nb of differential equations 1203
+The data on cloud parameters are read, evolution time 4.8697e+05
+Characteristic scale of magnetic precursor (cm): 8.1754e+15
+Characteristic value of velocity gradient (cm/s/cm): -3.0579e-10
+Magnetosonic speed (cm/s): 2.4847e+08
+Neutral gas sound speed (cm/s): 2.6115e+04
+Ion Alfven speed (cm/s): 2.4848e+08
+Alfven speed (cm/s): 1.8751e+05
+Ionization fraction: 7.0485e-08
+1    z (cm): 1.3451e+14    dz (cm): 1.3451e+14    calc time (s): 506       nb of steps: 13
+the largest change in variable: 530  9.8273e+76    *ClO
+2    z (cm): 6.53212e+14   dz (cm): 5.18704e+14   calc time (s): 508       nb of steps: 2
+the largest change in variable: 734  6.50042e+24   
+3    z (cm): 2.56556e+15   dz (cm): 1.91235e+15   calc time (s): 510       nb of steps: 3
+the largest change in variable: 601  5.70655e+05   
+4    z (cm): 8.00271e+15   dz (cm): 5.43715e+15   calc time (s): 511       nb of steps: 3
+the largest change in variable: 666  1.18344e+03   
+5    z (cm): 2.11675e+16   dz (cm): 1.31647e+16   calc time (s): 514       nb of steps: 3
+the largest change in variable: 606  1.94911e+04   
+6    z (cm): 4.75300e+16   dz (cm): 2.63626e+16   calc time (s): 516       nb of steps: 9
+the largest change in variable: 693  5.94087e+10   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.00000e-14 ions: -9.61279e-14
+7    z (cm): 7.87466e+16   dz (cm): 3.12166e+16   calc time (s): 678       nb of steps: 47
+the largest change in variable: 951  7.31318e+12   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.00000e-14 ions: -4.74194e-13
+8    z (cm): 9.44718e+16   dz (cm): 1.57252e+16   calc time (s): 1110      nb of steps: 66
+the largest change in variable: 818  1.91661e+38   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.00000e-14 ions: -1.83995e-12
+9    z (cm): 1.02340e+17   dz (cm): 7.86840e+15   calc time (s): 1491      nb of steps: 124
+the largest change in variable: 891  4.57873e+36   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.14307e-14 ions: -5.15553e-12
+10   z (cm): 1.06312e+17   dz (cm): 3.97210e+15   calc time (s): 1903      nb of steps: 229
+the largest change in variable: 612  1.29697e+22   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-5      4       4.61785e-11   8.15902e-10   4.30530e-09   6.87722e-09   3.42560e-09   6.16785e-10   6.05291e-11   3.88366e-12   1.84703e-13   7.03290e-15   
+    new distribution; z_min, z_max, conc (cm-3):
+-7      4       0.00000e+00   0.00000e+00   4.61785e-11   8.15902e-10   4.30530e-09   6.87722e-09   3.42560e-09   6.16785e-10   6.05291e-11   3.88366e-12   1.84703e-13   7.03290e-15   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -7.46949e-14 ions: -1.13857e-11
+11   z (cm): 1.08317e+17   dz (cm): 2.00521e+15   calc time (s): 2297      nb of steps: 174
+the largest change in variable: 1167 1.99156e+88   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-7      4       4.19521e-13   1.99156e-11   3.52591e-10   2.33117e-09   5.79426e-09   5.48575e-09   2.03801e-09   3.36429e-10   3.32334e-11   2.20587e-12   1.09744e-13   4.36884e-15   
+    new distribution; z_min, z_max, conc (cm-3):
+-9      4       0.00000e+00   0.00000e+00   4.19521e-13   1.99156e-11   3.52591e-10   2.33117e-09   5.79426e-09   5.48575e-09   2.03801e-09   3.36429e-10   3.32334e-11   2.20587e-12   1.09744e-13   4.36884e-15   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.33130e-13 ions: -1.89660e-11
+12   z (cm): 1.09342e+17   dz (cm): 1.02439e+15   calc time (s): 2637      nb of steps: 182
+the largest change in variable: 1167 5.99229e+85   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.88185e-13 ions: -2.54814e-11
+13   z (cm): 1.09855e+17   dz (cm): 5.12667e+14   calc time (s): 2886      nb of steps: 128
+the largest change in variable: 736  1.49015e+60   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.28255e-13 ions: -2.99144e-11
+14   z (cm): 1.10151e+17   dz (cm): 2.96798e+14   calc time (s): 3059      nb of steps: 93
+the largest change in variable: 1070 9.47135e+28   
+15   z (cm): 1.10484e+17   dz (cm): 3.32515e+14   calc time (s): 3129      nb of steps: 7
+the largest change in variable: 1162 4.33467e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.66693e-13 ions: -3.39523e-11
+16   z (cm): 1.10673e+17   dz (cm): 1.89113e+14   calc time (s): 3295      nb of steps: 96
+the largest change in variable: 728  6.26961e+13   
+17   z (cm): 1.10887e+17   dz (cm): 2.14353e+14   calc time (s): 3295      nb of steps: 7
+the largest change in variable: 1162 4.82130e+01   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.94552e-13 ions: -3.67611e-11
+18   z (cm): 1.11132e+17   dz (cm): 2.44208e+14   calc time (s): 3468      nb of steps: 95
+the largest change in variable: 1077 2.40352e+44   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-9      4       2.41503e-13   7.30502e-12   1.08551e-10   7.96600e-10   2.90275e-09   5.29220e-09   4.88304e-09   2.31897e-09   5.84417e-10   8.55549e-11   8.58273e-12   6.05848e-13   3.28390e-14   1.43929e-15   
+    new distribution; z_min, z_max, conc (cm-3):
+-11     4       0.00000e+00   0.00000e+00   2.41503e-13   7.30502e-12   1.08551e-10   7.96600e-10   2.90275e-09   5.29220e-09   4.88304e-09   2.31897e-09   5.84417e-10   8.55549e-11   8.58273e-12   6.05848e-13   3.28390e-14   1.43929e-15   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.28775e-13 ions: -4.01104e-11
+19   z (cm): 1.11398e+17   dz (cm): 2.66325e+14   calc time (s): 3640      nb of steps: 91
+the largest change in variable: 1167 1.33326e+85   
+20   z (cm): 1.11669e+17   dz (cm): 2.71442e+14   calc time (s): 3721      nb of steps: 18
+the largest change in variable: 1162 1.33122e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.82562e-13 ions: -4.51143e-11
+21   z (cm): 1.11944e+17   dz (cm): 2.74459e+14   calc time (s): 3897      nb of steps: 103
+the largest change in variable: 741  4.28886e+24   
+22   z (cm): 1.12221e+17   dz (cm): 2.77381e+14   calc time (s): 3969      nb of steps: 13
+the largest change in variable: 618  1.61746e+06   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -4.55620e-13 ions: -5.15097e-11
+23   z (cm): 1.12502e+17   dz (cm): 2.80504e+14   calc time (s): 4145      nb of steps: 104
+the largest change in variable: 739  9.00307e+10   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-11     4       5.59570e-14   1.52528e-12   2.35354e-11   2.06211e-10   1.03045e-09   2.95024e-09   4.87033e-09   4.67430e-09   2.63783e-09   8.90486e-10   1.85381e-10   2.55263e-11   2.59140e-12   1.90853e-13   1.09704e-14   5.15228e-16   
+    new distribution; z_min, z_max, conc (cm-3):
+-13     4       0.00000e+00   0.00000e+00   5.59570e-14   1.52528e-12   2.35354e-11   2.06211e-10   1.03045e-09   2.95024e-09   4.87033e-09   4.67430e-09   2.63783e-09   8.90486e-10   1.85381e-10   2.55263e-11   2.59140e-12   1.90853e-13   1.09704e-14   5.15228e-16   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -4.99619e-13 ions: -5.51504e-11
+24   z (cm): 1.12647e+17   dz (cm): 1.45218e+14   calc time (s): 4322      nb of steps: 85
+the largest change in variable: 1167 3.41828e+84   
+25   z (cm): 1.12812e+17   dz (cm): 1.65571e+14   calc time (s): 4322      nb of steps: 7
+the largest change in variable: 1163 5.93148e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -5.52056e-13 ions: -5.92918e-11
+26   z (cm): 1.12981e+17   dz (cm): 1.69025e+14   calc time (s): 4500      nb of steps: 88
+the largest change in variable: 670  3.54692e+04   
+27   z (cm): 1.13163e+17   dz (cm): 1.81714e+14   calc time (s): 4502      nb of steps: 12
+the largest change in variable: 1163 1.11943e+03   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -6.31193e-13 ions: -6.51905e-11
+28   z (cm): 1.13349e+17   dz (cm): 1.85508e+14   calc time (s): 4681      nb of steps: 102
+the largest change in variable: 664  3.17060e+15   
+29   z (cm): 1.13537e+17   dz (cm): 1.88199e+14   calc time (s): 4681      nb of steps: 10
+the largest change in variable: 1080 2.01532e+03   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-13     4       4.14453e-14   8.34441e-13   1.07139e-11   8.77655e-11   4.59592e-10   1.54324e-09   3.33330e-09   4.64678e-09   4.20713e-09   2.49075e-09   9.74731e-10   2.56243e-10   4.65487e-11   6.15168e-12   6.34993e-13   4.89560e-14   2.99442e-15   1.51271e-16   
+    new distribution; z_min, z_max, conc (cm-3):
+-15     4       0.00000e+00   0.00000e+00   4.14453e-14   8.34441e-13   1.07139e-11   8.77655e-11   4.59592e-10   1.54324e-09   3.33330e-09   4.64678e-09   4.20713e-09   2.49075e-09   9.74731e-10   2.56243e-10   4.65487e-11   6.15168e-12   6.34993e-13   4.89560e-14   2.99442e-15   1.51271e-16   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -7.16205e-13 ions: -7.10805e-11
+30   z (cm): 1.13728e+17   dz (cm): 1.91291e+14   calc time (s): 4856      nb of steps: 98
+the largest change in variable: 1167 8.07973e+84   
+31   z (cm): 1.13938e+17   dz (cm): 2.09898e+14   calc time (s): 4857      nb of steps: 11
+the largest change in variable: 1082 1.62421e+04   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -8.24972e-13 ions: -7.80564e-11
+32   z (cm): 1.14163e+17   dz (cm): 2.24890e+14   calc time (s): 5029      nb of steps: 105
+the largest change in variable: 739  5.39300e+14   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-15     4       1.55801e-14   2.78550e-13   3.41759e-12   2.87485e-11   1.65949e-10   6.58073e-10   1.79717e-09   3.38618e-09   4.41160e-09   3.99090e-09   2.51758e-09   1.11547e-09   3.50419e-10   7.92498e-11   1.32541e-11   1.70422e-12   1.77372e-13   1.40695e-14   8.96103e-16   4.75169e-17   
+    new distribution; z_min, z_max, conc (cm-3):
+-17     4       0.00000e+00   0.00000e+00   1.55801e-14   2.78550e-13   3.41759e-12   2.87485e-11   1.65949e-10   6.58073e-10   1.79717e-09   3.38618e-09   4.41160e-09   3.99090e-09   2.51758e-09   1.11547e-09   3.50419e-10   7.92498e-11   1.32541e-11   1.70422e-12   1.77372e-13   1.40695e-14   8.96103e-16   4.75169e-17   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -9.24401e-13 ions: -8.40106e-11
+33   z (cm): 1.14391e+17   dz (cm): 2.28171e+14   calc time (s): 5206      nb of steps: 109
+the largest change in variable: 1167 7.40141e+84   
+34   z (cm): 1.14626e+17   dz (cm): 2.34472e+14   calc time (s): 5276      nb of steps: 16
+the largest change in variable: 1163 6.16266e+03   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-17     4       6.31558e-15   1.01326e-13   1.18065e-12   9.96509e-12   6.09325e-11   2.70009e-10   8.67512e-10   2.02192e-09   3.42461e-09   4.22077e-09   3.79148e-09   2.49158e-09   1.20216e-09   4.28778e-10   1.14097e-10   2.29877e-11   3.59650e-12   4.50309e-13   4.68967e-14   3.78357e-15   2.47594e-16   1.35817e-17   
+    new distribution; z_min, z_max, conc (cm-3):
+-19     4       0.00000e+00   0.00000e+00   6.31558e-15   1.01326e-13   1.18065e-12   9.96509e-12   6.09325e-11   2.70009e-10   8.67512e-10   2.02192e-09   3.42461e-09   4.22077e-09   3.79148e-09   2.49158e-09   1.20216e-09   4.28778e-10   1.14097e-10   2.29877e-11   3.59650e-12   4.50309e-13   4.68967e-14   3.78357e-15   2.47594e-16   1.35817e-17   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.10553e-12 ions: -9.38612e-11
+35   z (cm): 1.14862e+17   dz (cm): 2.36229e+14   calc time (s): 5454      nb of steps: 115
+the largest change in variable: 1167 6.11809e+84   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-19     4       3.03624e-16   6.11809e-15   9.10347e-14   9.98517e-13   8.07790e-12   4.82329e-11   2.12728e-10   6.93956e-10   1.67712e-09   3.00669e-09   4.00519e-09   3.97283e-09   2.94473e-09   1.63556e-09   6.84551e-10   2.17319e-10   5.28496e-11   9.99691e-12   1.50820e-12   1.86211e-13   1.94292e-14   1.58612e-15   1.05707e-16   5.93171e-18   
+    new distribution; z_min, z_max, conc (cm-3):
+-21     4       0.00000e+00   0.00000e+00   3.03624e-16   6.11809e-15   9.10347e-14   9.98517e-13   8.07790e-12   4.82329e-11   2.12728e-10   6.93956e-10   1.67712e-09   3.00669e-09   4.00519e-09   3.97283e-09   2.94473e-09   1.63556e-09   6.84551e-10   2.17319e-10   5.28496e-11   9.99691e-12   1.50820e-12   1.86211e-13   1.94292e-14   1.58612e-15   1.05707e-16   5.93171e-18   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.21737e-12 ions: -9.94132e-11
+36   z (cm): 1.14986e+17   dz (cm): 1.24374e+14   calc time (s): 5631      nb of steps: 99
+the largest change in variable: 1167 8.25008e+82   
+37   z (cm): 1.15112e+17   dz (cm): 1.25364e+14   calc time (s): 5631      nb of steps: 12
+the largest change in variable: 1082 3.19493e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.35003e-12 ions: -1.05537e-10
+38   z (cm): 1.15245e+17   dz (cm): 1.33875e+14   calc time (s): 5808      nb of steps: 103
+the largest change in variable: 662  1.62747e+15   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-21     4       4.36356e-16   6.83801e-15   8.29000e-14   7.74704e-13   5.57991e-12   3.09835e-11   1.32669e-10   4.38239e-10   1.11722e-09   2.19911e-09   3.34475e-09   3.93743e-09   3.59109e-09   2.54110e-09   1.39929e-09   6.01353e-10   2.02696e-10   5.39370e-11   1.14390e-11   1.96199e-12   2.78784e-13   3.34285e-14   3.46440e-15   2.84885e-16   1.93031e-17   1.10842e-18   
+    new distribution; z_min, z_max, conc (cm-3):
+-23     4       0.00000e+00   0.00000e+00   4.36356e-16   6.83801e-15   8.29000e-14   7.74704e-13   5.57991e-12   3.09835e-11   1.32669e-10   4.38239e-10   1.11722e-09   2.19911e-09   3.34475e-09   3.93743e-09   3.59109e-09   2.54110e-09   1.39929e-09   6.01353e-10   2.02696e-10   5.39370e-11   1.14390e-11   1.96199e-12   2.78784e-13   3.34285e-14   3.46440e-15   2.84885e-16   1.93031e-17   1.10842e-18   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.39198e-12 ions: -1.07323e-10
+39   z (cm): 1.15383e+17   dz (cm): 1.37724e+14   calc time (s): 5980      nb of steps: 85
+the largest change in variable: 1167 2.58789e+83   
+40   z (cm): 1.15530e+17   dz (cm): 1.47161e+14   calc time (s): 5982      nb of steps: 14
+the largest change in variable: 1082 6.58034e+02   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-23     4       1.91912e-16   2.90651e-15   3.46962e-14   3.25242e-13   2.39496e-12   1.38617e-11   6.31038e-11   2.26118e-10   6.38270e-10   1.42150e-09   2.50062e-09   3.47849e-09   3.83151e-09   3.34675e-09   2.32401e-09   1.28611e-09   5.68597e-10   2.01782e-10   5.77530e-11   1.34277e-11   2.56278e-12   4.07631e-13   5.53172e-14   6.49192e-15   6.70978e-16   5.57018e-17   3.84264e-18   2.26031e-19   
+    new distribution; z_min, z_max, conc (cm-3):
+-25     4       0.00000e+00   0.00000e+00   1.91912e-16   2.90651e-15   3.46962e-14   3.25242e-13   2.39496e-12   1.38617e-11   6.31038e-11   2.26118e-10   6.38270e-10   1.42150e-09   2.50062e-09   3.47849e-09   3.83151e-09   3.34675e-09   2.32401e-09   1.28611e-09   5.68597e-10   2.01782e-10   5.77530e-11   1.34277e-11   2.56278e-12   4.07631e-13   5.53172e-14   6.49192e-15   6.70978e-16   5.57018e-17   3.84264e-18   2.26031e-19   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.64965e-12 ions: -1.17820e-10
+41   z (cm): 1.15683e+17   dz (cm): 1.52233e+14   calc time (s): 6235      nb of steps: 117
+the largest change in variable: 1167 3.08294e+83   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-25     4       1.88918e-17   3.08294e-16   4.04947e-15   4.26185e-14   3.59311e-13   2.42681e-12   1.31323e-11   5.69509e-11   1.98074e-10   5.52664e-10   1.23758e-09   2.22524e-09   3.21471e-09   3.73398e-09   3.48988e-09   2.62945e-09   1.59924e-09   7.86391e-10   3.13634e-10   1.01779e-10   2.70153e-11   5.90575e-12   1.07384e-12   1.64784e-13   2.18389e-14   2.52722e-15   2.59494e-16   2.15027e-17   1.48551e-18   8.77070e-20   
+    new distribution; z_min, z_max, conc (cm-3):
+-27     4       0.00000e+00   0.00000e+00   1.88918e-17   3.08294e-16   4.04947e-15   4.26185e-14   3.59311e-13   2.42681e-12   1.31323e-11   5.69509e-11   1.98074e-10   5.52664e-10   1.23758e-09   2.22524e-09   3.21471e-09   3.73398e-09   3.48988e-09   2.62945e-09   1.59924e-09   7.86391e-10   3.13634e-10   1.01779e-10   2.70153e-11   5.90575e-12   1.07384e-12   1.64784e-13   2.18389e-14   2.52722e-15   2.59494e-16   2.15027e-17   1.48551e-18   8.77070e-20   
+    grain charge lost dz = 0.00000e+00
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.76171e-12 ions: -1.21904e-10
+42   z (cm): 1.15844e+17   dz (cm): 1.61038e+14   calc time (s): 6411      nb of steps: 99
+the largest change in variable: 1167 3.99796e+82   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-27     4       2.30044e-18   3.99796e-17   5.66888e-16   6.53035e-15   6.11251e-14   4.64964e-13   2.87469e-12   1.44477e-11   5.90372e-11   1.96203e-10   5.30473e-10   1.16725e-09   2.09109e-09   3.05111e-09   3.62756e-09   3.51814e-09   2.78656e-09   1.80413e-09   9.56029e-10   4.15673e-10   1.48662e-10   4.38894e-11   1.07480e-11   2.19889e-12   3.79492e-13   5.60582e-14   7.24902e-15   8.27503e-16   8.45506e-17   7.01045e-18   4.86525e-19   2.89396e-20   
+    new distribution; z_min, z_max, conc (cm-3):
+-28     3       9.04363e-22   2.30135e-18   3.99805e-17   5.66889e-16   6.53035e-15   6.11251e-14   4.64964e-13   2.87469e-12   1.44477e-11   5.90372e-11   1.96203e-10   5.30473e-10   1.16725e-09   2.09109e-09   3.05111e-09   3.62756e-09   3.51814e-09   2.78656e-09   1.80413e-09   9.56029e-10   4.15673e-10   1.48662e-10   4.38894e-11   1.07480e-11   2.19889e-12   3.79492e-13   5.60582e-14   7.24902e-15   8.27504e-16   8.45515e-17   7.01135e-18   4.87429e-19   
+    grain charge lost dz = 4.77503e-19
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -4.77503e-19
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.88872e-12 ions: -1.26240e-10
+43   z (cm): 1.16007e+17   dz (cm): 1.63549e+14   calc time (s): 6872      nb of steps: 117
+the largest change in variable: 739  4.04816e+04   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-28     3       5.01381e-18   7.73205e-17   9.81878e-16   1.02258e-14   8.73391e-14   6.11919e-13   3.51784e-12   1.65993e-11   6.43120e-11   2.04666e-10   5.35220e-10   1.15065e-09   2.03465e-09   2.96077e-09   3.54994e-09   3.51036e-09   2.86530e-09   1.93263e-09   1.07856e-09   4.99286e-10   1.92100e-10   6.15907e-11   1.65269e-11   3.73024e-12   7.13198e-13   1.16705e-13   1.65865e-14   2.09310e-15   2.35954e-16   2.40389e-17   2.00000e-18   1.39900e-19   
+    new distribution; z_min, z_max, conc (cm-3):
+-29     2       4.37186e-21   5.01818e-18   7.73249e-17   9.81883e-16   1.02258e-14   8.73391e-14   6.11919e-13   3.51784e-12   1.65993e-11   6.43120e-11   2.04666e-10   5.35220e-10   1.15065e-09   2.03465e-09   2.96077e-09   3.54994e-09   3.51036e-09   2.86530e-09   1.93263e-09   1.07856e-09   4.99286e-10   1.92100e-10   6.15907e-11   1.65269e-11   3.73024e-12   7.13198e-13   1.16705e-13   1.65866e-14   2.09310e-15   2.35959e-16   2.40433e-17   2.00438e-18   
+    grain charge lost dz = 2.30834e-18
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -2.30834e-18
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.03247e-12 ions: -1.30812e-10
+44   z (cm): 1.16172e+17   dz (cm): 1.64792e+14   calc time (s): 7126      nb of steps: 102
+the largest change in variable: 697  1.30406e+04   
+45   z (cm): 1.16337e+17   dz (cm): 1.64806e+14   calc time (s): 7129      nb of steps: 19
+the largest change in variable: 1082 5.02148e+02   
+dust component: 0
+    old distribution; z_min, z_max, conc (cm-3):
+-29     2       6.20580e-16   5.69058e-15   4.42501e-14   2.89921e-13   1.59959e-12   7.43177e-12   2.90807e-11   9.58804e-11   2.66402e-10   6.23882e-10   1.23169e-09   2.05044e-09   2.87925e-09   3.41141e-09   3.41185e-09   2.88144e-09   2.05586e-09   1.24094e-09   6.34251e-10   2.74746e-10   1.01016e-10   3.16161e-11   8.44133e-12   1.93085e-12   3.80258e-13   6.49389e-14   9.71382e-15   1.29119e-15   1.55770e-16   1.70901e-17   1.71985e-18   1.42638e-19   
+    new distribution; z_min, z_max, conc (cm-3):
+-30     1       4.45745e-21   6.20584e-16   5.69059e-15   4.42501e-14   2.89921e-13   1.59959e-12   7.43177e-12   2.90807e-11   9.58804e-11   2.66402e-10   6.23882e-10   1.23169e-09   2.05044e-09   2.87925e-09   3.41141e-09   3.41185e-09   2.88144e-09   2.05586e-09   1.24094e-09   6.34251e-10   2.74746e-10   1.01016e-10   3.16161e-11   8.44133e-12   1.93085e-12   3.80258e-13   6.49389e-14   9.71383e-15   1.29119e-15   1.55774e-16   1.70945e-17   1.72431e-18   
+    grain charge lost dz = 2.35353e-18
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -2.35353e-18
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.37235e-12 ions: -1.40364e-10
+46   z (cm): 1.16507e+17   dz (cm): 1.69995e+14   calc time (s): 7382      nb of steps: 117
+the largest change in variable: 734  2.63158e+13   
+dust componet: 0
+    old distribution; min z, max z, conc (cm-3):
+-30     1       1.59155e-15   1.28346e-14   8.85746e-14   5.19851e-13   2.59324e-12   1.09957e-11   3.96368e-11   1.21492e-10   3.16704e-10   7.02272e-10   1.32496e-09   2.12739e-09   2.90775e-09   3.38422e-09   3.35495e-09   2.83450e-09   2.04322e-09   1.25735e-09   6.60990e-10   2.97147e-10   1.14388e-10   3.77965e-11   1.07376e-11   2.63120e-12   5.58242e-13   1.03110e-13   1.66988e-14   2.39531e-15   3.08699e-16   3.64957e-17   3.95847e-18   3.96702e-19   
+    average parameters; z, conc (cm-3), vel (cm/s): -1.65430e+01  2.15530e-08   1.77224e+06   
+Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): -0.00000e+00
+New ranges for grain charge distribution were adopted
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.57410e-12 ions: -1.45304e-10
+47   z (cm): 1.16683e+17   dz (cm): 1.76254e+14   calc time (s): 7542      nb of steps: 109
+the largest change in variable: 694  1.72595e+14   
+48   z (cm): 1.16860e+17   dz (cm): 1.76631e+14   calc time (s): 7796      nb of steps: 32
+the largest change in variable: 685  3.76278e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.05007e-12 ions: -1.55209e-10
+49   z (cm): 1.17040e+17   dz (cm): 1.80632e+14   calc time (s): 8014      nb of steps: 122
+the largest change in variable: 738  5.67212e+07   
+50   z (cm): 1.17225e+17   dz (cm): 1.84266e+14   calc time (s): 8017      nb of steps: 16
+the largest change in variable: 1082 1.78486e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.64587e-12 ions: -1.64898e-10
+51   z (cm): 1.17415e+17   dz (cm): 1.90213e+14   calc time (s): 8237      nb of steps: 127
+the largest change in variable: 734  2.17690e+08   
+52   z (cm): 1.17511e+17   dz (cm): 9.59498e+13   calc time (s): 8242      nb of steps: 16
+the largest change in variable: 650  7.00504e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -4.28081e-12 ions: -1.72889e-10
+53   z (cm): 1.17608e+17   dz (cm): 9.68862e+13   calc time (s): 8463      nb of steps: 115
+the largest change in variable: 722  6.18715e+13   
+54   z (cm): 1.17705e+17   dz (cm): 9.73264e+13   calc time (s): 9103      nb of steps: 55
+the largest change in variable: 699  6.46672e+05   
+55   z (cm): 1.17806e+17   dz (cm): 1.01327e+14   calc time (s): 9306      nb of steps: 66
+the largest change in variable: 739  1.49047e+10   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -4.82584e-12 ions: -1.78071e-10
+56   z (cm): 1.17912e+17   dz (cm): 1.06033e+14   calc time (s): 9464      nb of steps: 112
+the largest change in variable: 722  2.52936e+05   
+57   z (cm): 1.18021e+17   dz (cm): 1.09152e+14   calc time (s): 9527      nb of steps: 16
+the largest change in variable: 632  6.41311e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -5.57357e-12 ions: -1.83671e-10
+58   z (cm): 1.18134e+17   dz (cm): 1.12411e+14   calc time (s): 9942      nb of steps: 171
+the largest change in variable: 717  1.40570e+10   
+59   z (cm): 1.18250e+17   dz (cm): 1.15982e+14   calc time (s): 9946      nb of steps: 17
+the largest change in variable: 701  1.97395e+05   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -6.17443e-12 ions: -1.86777e-10
+60   z (cm): 1.18368e+17   dz (cm): 1.17894e+14   calc time (s): 10174     nb of steps: 144
+the largest change in variable: 732  7.57393e+02   
+61   z (cm): 1.18488e+17   dz (cm): 1.20753e+14   calc time (s): 10247     nb of steps: 51
+the largest change in variable: 1082 5.38783e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -6.87579e-12 ions: -1.89255e-10
+62   z (cm): 1.18614e+17   dz (cm): 1.25296e+14   calc time (s): 10406     nb of steps: 122
+the largest change in variable: 689  4.15792e+15   
+63   z (cm): 1.18740e+17   dz (cm): 1.26176e+14   calc time (s): 10470     nb of steps: 15
+the largest change in variable: 1082 4.33413e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -7.69986e-12 ions: -1.90899e-10
+64   z (cm): 1.18867e+17   dz (cm): 1.27386e+14   calc time (s): 10696     nb of steps: 127
+the largest change in variable: 650  5.12441e+01   
+65   z (cm): 1.18998e+17   dz (cm): 1.30532e+14   calc time (s): 10700     nb of steps: 28
+the largest change in variable: 738  2.47113e+03   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -8.64985e-12 ions: -1.91517e-10
+66   z (cm): 1.19133e+17   dz (cm): 1.34884e+14   calc time (s): 10923     nb of steps: 125
+the largest change in variable: 670  1.47682e+07   
+67   z (cm): 1.19273e+17   dz (cm): 1.40680e+14   calc time (s): 10925     nb of steps: 21
+the largest change in variable: 676  5.67108e+02   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -9.75603e-12 ions: -1.90940e-10
+68   z (cm): 1.19419e+17   dz (cm): 1.45801e+14   calc time (s): 11146     nb of steps: 161
+the largest change in variable: 731  4.04745e+11   
+69   z (cm): 1.19567e+17   dz (cm): 1.48284e+14   calc time (s): 11210     nb of steps: 25
+the largest change in variable: 646  5.80585e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.13021e-11 ions: -1.88434e-10
+70   z (cm): 1.19721e+17   dz (cm): 1.53045e+14   calc time (s): 11437     nb of steps: 138
+the largest change in variable: 696  3.01852e+04   
+71   z (cm): 1.19876e+17   dz (cm): 1.55310e+14   calc time (s): 11505     nb of steps: 38
+the largest change in variable: 649  6.98942e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.26891e-11 ions: -1.84632e-10
+72   z (cm): 1.20039e+17   dz (cm): 1.62971e+14   calc time (s): 11728     nb of steps: 129
+the largest change in variable: 721  1.08885e+14   
+73   z (cm): 1.20205e+17   dz (cm): 1.66407e+14   calc time (s): 11794     nb of steps: 22
+the largest change in variable: 689  2.01783e+01   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.41636e-11 ions: -1.79231e-10
+74   z (cm): 1.20375e+17   dz (cm): 1.69869e+14   calc time (s): 12084     nb of steps: 146
+the largest change in variable: 654  4.68415e+00   
+75   z (cm): 1.20545e+17   dz (cm): 1.70041e+14   calc time (s): 12651     nb of steps: 73
+the largest change in variable: 729  7.16206e+10   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.57247e-11 ions: -1.72349e-10
+76   z (cm): 1.20720e+17   dz (cm): 1.75298e+14   calc time (s): 12870     nb of steps: 146
+the largest change in variable: 661  7.42369e+00   
+77   z (cm): 1.20901e+17   dz (cm): 1.80476e+14   calc time (s): 12943     nb of steps: 39
+the largest change in variable: 677  6.88239e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.74824e-11 ions: -1.64068e-10
+78   z (cm): 1.21086e+17   dz (cm): 1.84952e+14   calc time (s): 13162     nb of steps: 180
+the largest change in variable: 736  1.64517e+09   
+79   z (cm): 1.21274e+17   dz (cm): 1.88108e+14   calc time (s): 13227     nb of steps: 36
+the largest change in variable: 724  1.80851e+01   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -1.94831e-11 ions: -1.54778e-10
+80   z (cm): 1.21466e+17   dz (cm): 1.92283e+14   calc time (s): 13580     nb of steps: 261
+the largest change in variable: 722  3.64936e+06   
+81   z (cm): 1.21660e+17   dz (cm): 1.93395e+14   calc time (s): 13645     nb of steps: 40
+the largest change in variable: 739  5.15844e+01   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.17030e-11 ions: -1.44686e-10
+82   z (cm): 1.21854e+17   dz (cm): 1.94735e+14   calc time (s): 13931     nb of steps: 183
+the largest change in variable: 732  1.03428e+01   
+83   z (cm): 1.22049e+17   dz (cm): 1.94900e+14   calc time (s): 14246     nb of steps: 55
+the largest change in variable: 736  5.16660e+03   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.39788e-11 ions: -1.34249e-10
+84   z (cm): 1.22246e+17   dz (cm): 1.96415e+14   calc time (s): 14539     nb of steps: 205
+the largest change in variable: 726  6.83948e+01   
+85   z (cm): 1.22444e+17   dz (cm): 1.97910e+14   calc time (s): 14607     nb of steps: 56
+the largest change in variable: 735  1.09989e+01   
+86   z (cm): 1.22643e+17   dz (cm): 1.99198e+14   calc time (s): 14871     nb of steps: 79
+the largest change in variable: 741  8.19054e+00   
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -2.72141e-11 ions: -1.18760e-10
+87   z (cm): 1.22701e+17   dz (cm): 5.80369e+13   calc time (s): 24095     nb of steps: 1000
+the largest change in variable: 430  1.16763e+19   *H
+New velocity gradients are assigned (cm/s/cm),
+neutrals: -3.98814e-09 ions: -1.15520e-10
+88   z (cm): 1.22701e+17   dz (cm): 2.72451e+02   calc time (s): 24695     nb of steps: 1
+Error ocurred in solver-4
+Total nb of steps: 7872

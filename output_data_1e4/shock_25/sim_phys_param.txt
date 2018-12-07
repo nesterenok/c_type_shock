@@ -1,0 +1,11 @@
+! nh - concentration of H nuclei, [cm-3]
+! aic- abundance of molecules adsorbed on grains, mol/H
+! ae - abundance of electrons, e/H
+! aio- abundance of ions, ions/H
+! vg - velocity gradient of neutral component, [cm/s/cm]
+! p1 - parameter of H2 formation on grains (reaction *H+*H), rate = a*n_H_tot*n_H, a [cm3 s-1]
+! p2 - is equal to add_Ne/Ne, add_Ne is the term added to electron production rate Ne to compensate 
+!	the velocity difference between ions and charge grains,
+! p3 - total electric charge of grains, [cm-3]
+!1             2             3             4             5             6             7             8             9             10            11            12            13            14            15            
+!z(cm)            time(yr)      T_n           T_i           T_e           v_n           v_i           nh            aic           ae            aio           vg            p1            p2            p3            

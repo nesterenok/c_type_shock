@@ -1,0 +1,25 @@
+! na - neutral gas cooling by atomic emission, cooling < 0., [erg cm-3 s-1]
+! nh2 - neutral gas cooling by H2 emission
+! nh2o - neutral gas cooling by H2O emission
+! nco - neutral gas cooling by CO emission
+! noh - neutral gas cooling by OH emission
+! nnh3 - neutral gas cooling by p- and o-NH3 emission
+! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission
+! ni - neutral gas heating by neutral-ion collisions
+! ne - neutral gas heating by neutral-electron collisions
+! nd - neutral gas heating by neutral-dust collisions
+! nch - neutral gas heating by chemical reactions
+! ph - heating by photoeffect on dust grains
+! cr - heating by cosmic rays
+! rlh2 - radiative energy loss by H2 molecule
+! in - ion gas component heating by neutral-ion collisions
+! ie - ion gas component heating by ion-electron collisions
+! ich - ion gas component heating by chemical reactions
+! ea - electron component cooling by atomic emission
+! eh2 - electron component cooling by H2 emission
+! eh2o - electron component cooling by H2O emission
+! en - electron component heating by neutral-electron collisions
+! ei - electron component heating by ion-electron collisions
+! ech - electron component heating by chemical reactions
+!1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17          18          19          20          21          22          23          24          
+!t(yr)/z(cm) na          nh2         nh2o        nco         noh         nnh3        nch3oh      ni          ne          nd          nch         ph          cr          rlh2        in          ie          ich         ea          eh2         eh2o        en          ei          ech         

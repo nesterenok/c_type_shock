@@ -1,0 +1,3 @@
+! three parameters are given: shock speed (cm/s), turbulent velocity (cm/s), number of specimen levels: 
+2.5000e+06    2.0000e+04    2
+!depth(cm)        gas_temp(K)   el_temp       dust_temp(K)  gas_vel(cm/s) conc_He(cm-3) conc_pH2      conc_oH2      conc_H        conc_e        conc_H_nucl   conc_mol      1           2           

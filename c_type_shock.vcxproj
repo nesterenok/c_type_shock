@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{A4C5BE9F-3E84-4ADD-A0BF-DB101446901A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-3.2.1-install\include;C:\input_data\mathematics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-3.2.1-install\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sundials_cvode.lib;sundials_nvecopenmp.lib;sundials_nvecserial.lib;sundials_sunlinsolband.lib;sundials_sunlinsoldense.lib;sundials_sunlinsolpcg.lib;sundials_sunlinsolspbcgs.lib;sundials_sunlinsolspfgmr.lib;sundials_sunlinsolspgmr.lib;sundials_sunlinsolsptfqmr.lib;sundials_sunmatrixband.lib;sundials_sunmatrixdense.lib;sundials_sunmatrixsparse.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\input_data\mathematics\interpolation.cpp" />
+    <ClCompile Include="..\..\..\..\..\input_data\mathematics\linear_algebra.cpp" />
+    <ClCompile Include="c_type_shock\chemical_reaction_data.cpp" />
+    <ClCompile Include="c_type_shock\chemistry.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_ch3oh.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_co.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_h2.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_h2o.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_ions.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_nh3.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_oh.cpp" />
+    <ClCompile Include="c_type_shock\c_type_shock.cpp" />
+    <ClCompile Include="c_type_shock\differential_equations.cpp" />
+    <ClCompile Include="c_type_shock\dust_model.cpp" />
+    <ClCompile Include="c_type_shock\elastic_scattering.cpp" />
+    <ClCompile Include="c_type_shock\lvg_method_functions.cpp" />
+    <ClCompile Include="c_type_shock\photoelectric_emission.cpp" />
+    <ClCompile Include="c_type_shock\radiation_field.cpp" />
+    <ClCompile Include="c_type_shock\reaction_rate_analyzer.cpp" />
+    <ClCompile Include="c_type_shock\special_functions.cpp" />
+    <ClCompile Include="c_type_shock\spectroscopy.cpp" />
+    <ClCompile Include="c_type_shock\stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\input_data\mathematics\constants.h" />
+    <ClInclude Include="..\..\..\..\..\input_data\mathematics\integration.h" />
+    <ClInclude Include="..\..\..\..\..\input_data\mathematics\interpolation.h" />
+    <ClInclude Include="..\..\..\..\..\input_data\mathematics\linear_algebra.h" />
+    <ClInclude Include="c_type_shock\chemical_reaction_data.h" />
+    <ClInclude Include="c_type_shock\chemistry.h" />
+    <ClInclude Include="c_type_shock\coll_rates.h" />
+    <ClInclude Include="c_type_shock\coll_rates_ch3oh.h" />
+    <ClInclude Include="c_type_shock\coll_rates_co.h" />
+    <ClInclude Include="c_type_shock\coll_rates_h2.h" />
+    <ClInclude Include="c_type_shock\coll_rates_h2o.h" />
+    <ClInclude Include="c_type_shock\coll_rates_ions.h" />
+    <ClInclude Include="c_type_shock\coll_rates_nh3.h" />
+    <ClInclude Include="c_type_shock\coll_rates_oh.h" />
+    <ClInclude Include="c_type_shock\differential_equations.h" />
+    <ClInclude Include="c_type_shock\dust_model.h" />
+    <ClInclude Include="c_type_shock\elastic_scattering.h" />
+    <ClInclude Include="c_type_shock\lvg_method_functions.h" />
+    <ClInclude Include="c_type_shock\parameters.h" />
+    <ClInclude Include="c_type_shock\photoelectric_emission.h" />
+    <ClInclude Include="c_type_shock\radiation_field.h" />
+    <ClInclude Include="c_type_shock\reaction_rate_analyzer.h" />
+    <ClInclude Include="c_type_shock\spectroscopy.h" />
+    <ClInclude Include="c_type_shock\stdafx.h" />
+    <ClInclude Include="c_type_shock\targetver.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
