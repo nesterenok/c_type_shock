@@ -110,7 +110,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
 int main(int argc, char** argv)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
-	int nb_processors;
+	int i, nb_processors;
 	double conc_h_tot, visual_extinct, shock_vel, magnetic_field, cr_ioniz_rate, c_abund_pah, uv_field_strength, ir_field_strength, 
 		ty, cr_ir_factor, incr_time;
 	
@@ -308,6 +308,15 @@ int main(int argc, char** argv)
 			{ 
 				calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty); 
 			}
+            else if (mode == "CS_")
+            {
+                for (i = 0; i < 10; i++) {
+                    shock_vel = 1.5e+6 + i * 5.0e+5;
+                    output_path += static_cast<int>(1.e-5*shock_vel+0.1);
+                    output_path += "/";
+                    calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty);
+                }
+            }
 			else
 			{
 				do
@@ -415,17 +424,27 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	nb_lev_co = 30; // number of levels lower than first vibrationally excited level is 33;
 	
 	nb_vibr_ch3oh = 0;
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	nb_lev_ch3oh = 100;
 #else
 	nb_lev_ch3oh = 1;
+#endif
+
+#if (CALCULATE_POPUL_NH3_OH)
+    nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 34;
+    nb_lev_oh = 20;
+#else
+    nb_lev_onh3 = 1; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 1;
+    nb_lev_oh = 1;
 #endif
 
 	timer = time(NULL);
 	cout << ctime(&timer) << "Chemical evolution of static cloud is simulated" << endl;
 
 	chemistry_evolution_data user_data(data_path, output_path, nb_lev_h2, nb_vibr_h2o, nb_lev_h2o, nb_vibr_co, nb_lev_co, 
-		nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verbosity);
+        nb_lev_pnh3, nb_lev_onh3, nb_lev_oh, nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verbosity);
 
 	user_data.set_parameters(visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength);
 	
@@ -541,7 +560,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	}
 
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
-	void *cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+	void *cvode_mem = CVodeCreate(CV_BDF);
 
 	// Call CVodeInit to initialize the integrator memory and specify the user's right hand side function in y'=f(t,y), 
 	// the inital time t0, and the initial dependent variable vector y;
@@ -684,7 +703,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 			SUNMatDestroy(A);
 			CVodeFree(&cvode_mem);
 			
-			cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+			cvode_mem = CVodeCreate(CV_BDF);
 			flag = CVodeInit(cvode_mem, f_chem, t, y);
 			flag = CVodeSStolerances(cvode_mem, rtol, atol);
 			
@@ -1087,7 +1106,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	nb_vibr_co = 0;
 	nb_lev_co = 41;
 	
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	nb_vibr_ch3oh = 1;
 	nb_lev_ch3oh = 300;
 #else
@@ -1095,9 +1114,18 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	nb_lev_ch3oh = 1;
 #endif
 
+#if (CALCULATE_POPUL_NH3_OH)
+    nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 34;
+    nb_lev_oh = 20;
+#else
+    nb_lev_onh3 = 1; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 1;
+    nb_lev_oh = 1;
+#endif
 	// initialization of the data necessary for differential equation integration:
-	mhd_shock_data user_data(data_path, output_path2, nb_lev_h2, nb_vibr_h2o, nb_lev_h2o, nb_vibr_co, nb_lev_co, nb_vibr_ch3oh, 
-		nb_lev_ch3oh, c_abund_pah, verbosity);
+	mhd_shock_data user_data(data_path, output_path2, nb_lev_h2, nb_vibr_h2o, nb_lev_h2o, nb_vibr_co, nb_lev_co, 
+        nb_lev_pnh3, nb_lev_onh3, nb_lev_oh, nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verbosity);
 
 	nb_of_species = user_data.get_nb_of_species();
 	user_data.get_nb_of_levels(nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_lev_ch3oh, 
@@ -1176,7 +1204,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	zfin = 1000.*shock_length;
 	
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
-	void *cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+	void *cvode_mem = CVodeCreate(CV_BDF);
 
 	// Call CVodeInit to initialize the integrator memory and specify the user's right hand side function in y'=f(t,y), 
 	// the inital time z, and the initial dependent variable vector y:
@@ -1445,7 +1473,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 			SUNMatDestroy(A);
 			CVodeFree(&cvode_mem);
 			
-			cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+			cvode_mem = CVodeCreate(CV_BDF);
 
 			flag = CVodeInit(cvode_mem, f_mhd, z, y);
 			flag = CVodeSStolerances(cvode_mem, rtol, atol);
@@ -1533,15 +1561,24 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	nb_lev_co = 30; 
 
 	nb_vibr_ch3oh = 0;
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	nb_lev_ch3oh = 100;
 #else
 	nb_lev_ch3oh = 1;
 #endif
 
+#if (CALCULATE_POPUL_NH3_OH)
+    nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 34;
+    nb_lev_oh = 20;
+#else
+    nb_lev_onh3 = 1; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 1;
+    nb_lev_oh = 1;
+#endif
 	// initialization of the data necessary for differential equation integration:
 	chemistry_evolution_data user_data(data_path, output_path2, nb_lev_h2, nb_vibr_h2o, nb_lev_h2o, nb_vibr_co, nb_lev_co, 
-		nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verbosity);
+        nb_lev_pnh3, nb_lev_onh3, nb_lev_oh, nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verbosity);
 
 	nb_of_species = user_data.get_nb_of_species();
 	user_data.get_nb_of_levels(nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_lev_ch3oh, 
@@ -1578,7 +1615,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	atol = ABS_ERROR_SOLVER;
 	
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
-	void *cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+	void *cvode_mem = CVodeCreate(CV_BDF);
 
 	// Call CVodeInit to initialize the integrator memory and specify the user's right hand side function in y'=f(t,y), 
 	// the inital time t0, and the initial dependent variable vector y;
@@ -1727,7 +1764,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 			SUNMatDestroy(A);
 			CVodeFree(&cvode_mem);
 
-			cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+			cvode_mem = CVodeCreate(CV_BDF);
 		
 			flag = CVodeInit(cvode_mem, f_chem, t, y);
 			flag = CVodeSStolerances(cvode_mem, rtol, atol);
@@ -1798,7 +1835,7 @@ void save_cloud_parameters(const evolution_data *user_data, const string &output
 	output.precision(6); 
 			
 	output << "# Evolution age (years):" << endl;
-	output << ty << endl;
+	output << ty << endl; 
 
 	output << "# Visual extinction, CR ionization rate, UV and IR field strength, H nuclei concentration, carbon abundance in PAH:" << endl;
 	output << left << setw(15) << visual_extinct << setw(15) << cr_ioniz_rate << setw(15) << uv_field_strength << setw(15) << ir_field_strength
@@ -2768,6 +2805,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	}
 	output.close();
 
+#if (CALCULATE_POPUL_NH3_OH)
 	fname = output_path + "sim_data_oh.txt";
 	output.open(fname.c_str());
 	
@@ -2778,8 +2816,9 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 		output << left << setw(12) << i;
 	}
 	output.close();
+#endif
 
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	fname = output_path + "sim_data_ch3oh_a.txt";
 	output.open(fname.c_str());
 	
@@ -2962,6 +3001,8 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	// OH molecule
 	nb += nb_lev_co;
+
+#if (CALCULATE_POPUL_NH3_OH)
 	conc_mol = NV_Ith_S(y, network->find_specimen("OH"));
 
 	fname = output_path + "sim_data_oh.txt";
@@ -2979,13 +3020,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(12) << a;
 	}
 	output.close();
-	
+#endif
+
 	nb += nb_lev_oh;
 	nb += nb_lev_pnh3;
 	nb += nb_lev_onh3;
 
 	// CH3OH molecule
-#if (CALCULATE_METHANOL_POPUL)	
+#if (CALCULATE_POPUL_METHANOL)	
 	conc_mol = 0.;
 	for (i = 0; i < nb_lev_ch3oh; i++) {
 		conc_mol += NV_Ith_S(y, nb + i);
@@ -3009,7 +3051,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	nb += nb_lev_ch3oh;
 
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	conc_mol = 0.;
 	for (i = 0; i < nb_lev_ch3oh; i++) {
 		conc_mol += NV_Ith_S(y, nb + i);

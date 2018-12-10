@@ -65,6 +65,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -76,14 +78,15 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-3.2.1-install\include;C:\input_data\mathematics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-4.0.0-install\include;C:\input_data\mathematics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-3.2.1-install\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sundials_cvode.lib;sundials_nvecopenmp.lib;sundials_nvecserial.lib;sundials_sunlinsolband.lib;sundials_sunlinsoldense.lib;sundials_sunlinsolpcg.lib;sundials_sunlinsolspbcgs.lib;sundials_sunlinsolspfgmr.lib;sundials_sunlinsolspgmr.lib;sundials_sunlinsolsptfqmr.lib;sundials_sunmatrixband.lib;sundials_sunmatrixdense.lib;sundials_sunmatrixsparse.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-4.0.0-install\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sundials_cvode.lib;sundials_nvecopenmp.lib;sundials_nvecserial.lib;sundials_sunlinsolband.lib;sundials_sunlinsoldense.lib;sundials_sunlinsolpcg.lib;sundials_sunlinsolspbcgs.lib;sundials_sunlinsolspfgmr.lib;sundials_sunlinsolspgmr.lib;sundials_sunlinsolsptfqmr.lib;sundials_sunmatrixband.lib;sundials_sunmatrixdense.lib;sundials_sunmatrixsparse.lib;sundials_sunnonlinsolfixedpoint.lib;sundials_sunnonlinsolnewton.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

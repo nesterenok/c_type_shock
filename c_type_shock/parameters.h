@@ -167,7 +167,10 @@
 #define SAVE_RADIATIVE_TRANSFER_FACTORS 1
 
 // Calculate methanol levels, 1 - yes
-#define CALCULATE_METHANOL_POPUL 0
+#define CALCULATE_POPUL_METHANOL 0
+
+// Calculate OH and NH3 populations, 1 - yes
+#define CALCULATE_POPUL_NH3_OH 0
 
 // 1 - data are used by Bossion et al. MNRAS 480, p.3718 (2018);
 #define H2_H_DISSIOCIATION_DATA 1

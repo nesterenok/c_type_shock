@@ -186,7 +186,7 @@ public:
 	// path - path to the data files;
 	// maximal values for para-H2O - 413, ortho-H2O - 411, H2 - 298 (restriction by the data on the Einstein coeff.):
 	evolution_data(const std::string &path, const std::string &output_path, int nb_lev_h2, int nb_vibr_h2o, int nb_lev_h2o, 
-		int nb_vibr_co, int nb_lev_co, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verbosity = 1);
+		int nb_vibr_co, int nb_lev_co, int nb_lev_pnh3, int nb_lev_onh3, int nb_lev_oh, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verbosity = 1);
 	virtual ~evolution_data();
 };
 
@@ -196,7 +196,7 @@ public:
 	// vector defining the ODE system for the chemistry evolution of the stationary gas cloud.
 	int f(realtype t, N_Vector y, N_Vector ydot);
 	chemistry_evolution_data(const std::string &path, const std::string &output_path, int nb_lev_h2, int nb_vibr_h2o, int nb_lev_h2o, 
-		int nb_vibr_co, int nb_lev_co, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verbosity = 1);
+		int nb_vibr_co, int nb_lev_co, int nb_lev_pnh3, int nb_lev_onh3, int nb_lev_oh, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verbosity = 1);
 
 	~chemistry_evolution_data();
 };
@@ -216,7 +216,7 @@ public:
 	int f(realtype t, N_Vector y, N_Vector ydot);
 
 	mhd_shock_data(const std::string &path, const std::string &output_path, int nb_lev_h2, int nb_vibr_h2o, int nb_lev_h2o, 
-		int nb_vibr_co, int nb_lev_co, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verbosity = 1);
+		int nb_vibr_co, int nb_lev_co, int nb_lev_pnh3, int nb_lev_onh3, int nb_lev_oh, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verbosity = 1);
 	~mhd_shock_data();
 };
 

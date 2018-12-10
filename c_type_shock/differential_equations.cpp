@@ -71,8 +71,8 @@ int f_mhd(realtype t, N_Vector y, N_Vector ydot, void *user_data) {
 //
 
 evolution_data::evolution_data(const string &path, const std::string &output_path, int nb_h2, int nb_vibr_h2o, int nb_h2o, 
-	int nb_vibr_co, int nb_co, int nb_vibr_ch3oh, int nb_ch3oh, double c_abund_pah, int verb) 
-	: nb_lev_h2(nb_h2), nb_lev_h2o(nb_h2o), nb_lev_co(nb_co), nb_lev_ch3oh(nb_ch3oh), verbosity(verb), nb_rtd(0),
+	int nb_vibr_co, int nb_co, int nb_pnh3, int nb_onh3, int nb_oh, int nb_vibr_ch3oh, int nb_ch3oh, double c_abund_pah, int verb)
+	: nb_lev_h2(nb_h2), nb_lev_h2o(nb_h2o), nb_lev_co(nb_co), nb_lev_pnh3(nb_pnh3), nb_lev_onh3(nb_onh3), nb_lev_oh(nb_oh), nb_lev_ch3oh(nb_ch3oh), verbosity(verb), nb_rtd(0),
 	cr_ioniz_rate(1.), ir_field_strength(1.), uv_field_strength(1.), visual_extinct(0.), magn_field_0(0.), magn_field(0.), 
 	shock_vel(0.), rad_energy_loss_h2(0.), neut_heat_h2(0.), neut_heat_atoms(0.), neut_heat_ph2o(0.), neut_heat_oh2o(0.), 
 	neut_heat_co(0.), neut_heat_oh(0.), neut_heat_pnh3(0.), neut_heat_onh3(0.), neut_heat_ch3oh_a(0.), neut_heat_ch3oh_e(0.),
@@ -215,22 +215,29 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	co_coll = new co_collisions(path, co_di, verbosity);
 
 	// OH molecule data:
-	nb_lev_oh = 20;
-	mass = 17.*ATOMIC_MASS_UNIT;
+	if (nb_lev_oh > 20)
+        nb_lev_oh = 20;
+	
+    mass = 17.*ATOMIC_MASS_UNIT;
 	molecule oh_mol("OH", isotope = 1, mass, spin = 0.);
 
+#if (CALCULATE_POPUL_NH3_OH)
 	oh_di = new oh_diagram(path, oh_mol, nb_lev_oh, verbosity);
 	oh_einst = new oh_einstein_coeff(path, oh_di, verbosity);
 	oh_coll = new oh_collisions(path, oh_di, verbosity);
-
+#endif
 	// NH3 molecule data
-	nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
-	nb_lev_pnh3 = 34; // para-NH3: He coll data - 16, H2 coll data - 34
+	if (nb_lev_onh3 > 17)
+        nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
+	
+    if (nb_lev_pnh3 > 34)
+        nb_lev_pnh3 = 34; // para-NH3: He coll data - 16, H2 coll data - 34
 
 	mass = 17.*ATOMIC_MASS_UNIT;
 	molecule onh3_mol("oNH3", isotope = 1, mass, spin = 1.5);
 	molecule pnh3_mol("pNH3", isotope = 1, mass, spin = 0.5);
 
+#if (CALCULATE_POPUL_NH3_OH)
 	onh3_di = new nh3_diagram(path, onh3_mol, nb_lev_onh3, verbosity);
 	onh3_einst = new nh3_einstein_coeff(path, onh3_di, verbosity);
 	onh3_coll = new nh3_collisions(path, onh3_di, verbosity);
@@ -238,7 +245,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	pnh3_di = new nh3_diagram(path, pnh3_mol, nb_lev_pnh3, verbosity);
 	pnh3_einst = new nh3_einstein_coeff(path, pnh3_di, verbosity);
 	pnh3_coll = new nh3_collisions(path, pnh3_di, verbosity);
-
+#endif
 	// CH3OH molecule data
 	angm_ch3oh_max = 15; // the available collisional data is restricted to this value;
 	mass = 32.*ATOMIC_MASS_UNIT;
@@ -246,7 +253,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	molecule ch3oh_a_mol("ch3oh_a", isotope = 1, mass, spin = 1.5);
 	molecule ch3oh_e_mol("ch3oh_e", isotope = 1, mass, spin = 0.5);
 
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	ch3oh_a_di = new ch3oh_diagram(path, ch3oh_a_mol, nb_lev_ch3oh, nb_vibr_ch3oh, angm_ch3oh_max);
 	ch3oh_a_einst = new ch3oh_einstein_coeff(path, ch3oh_a_di); 
 	ch3oh_a_coll = new ch3oh_collisions(path, ch3oh_a_di, verbosity);
@@ -1310,54 +1317,64 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	nb += nb_lev_co;
 	nb2 += nb_lev_co*(nb_lev_co-1)/2;
 
-	// calculation of the level population gain for OH molecule
+	// calculation of the level population gain for OH molecule	
+    c = oh_prod/conc_oh;
+
+#if (CALCULATE_POPUL_NH3_OH)
 	oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_h2j0, conc_h2-conc_h2j0, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_heating_calc(y_data, ydot_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_oh, a, a, dust_heat_mline, gamma_factors, delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 
-	c = oh_prod/conc_oh;
+    energy_gain_n += neut_heat_oh;
+#endif
+
 	for (i = 0; i < nb_lev_oh; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
-	energy_gain_n += neut_heat_oh;
-
+	
 	nb += nb_lev_oh;
 	nb2 += nb_lev_oh*(nb_lev_oh-1)/2;
 
 	// calculation of the level population gain for para-NH3 molecule;
+    c = nh3_prod/conc_nh3;
+
+#if (CALCULATE_POPUL_NH3_OH)
 	pnh3_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_heating_calc(y_data, ydot_data, nb, pnh3_di, pnh3_einst, pnh3_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_pnh3, a, a, dust_heat_mline, gamma_factors, delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 	
-	c = nh3_prod/conc_nh3;
-	for (i = 0; i < nb_lev_pnh3; i++) {
+    energy_gain_n += neut_heat_pnh3;
+#endif	
+	
+    for (i = 0; i < nb_lev_pnh3; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
-	energy_gain_n += neut_heat_pnh3;
 	
 	nb += nb_lev_pnh3;
 	nb2 += nb_lev_pnh3*(nb_lev_pnh3-1)/2;
 
 	// calculation of the level population gain for ortho-NH3 molecule
-	onh3_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
+#if (CALCULATE_POPUL_NH3_OH)
+    onh3_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_heating_calc(y_data, ydot_data, nb, onh3_di, onh3_einst, onh3_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_onh3, a, a, dust_heat_mline, gamma_factors, delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 
+    energy_gain_n += neut_heat_onh3;
+#endif
 	for (i = 0; i < nb_lev_onh3; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c; // c is defined higher
 	}
-	energy_gain_n += neut_heat_onh3;
-
+	
 	nb += nb_lev_onh3;
 	nb2 += nb_lev_onh3*(nb_lev_onh3-1)/2;
 
 	// calculation of the level population gain for CH3OH A and E
 	c = ch3oh_prod/conc_ch3oh;
 
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	ch3oh_a_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_heating_calc(y_data, ydot_data, nb, ch3oh_a_di, ch3oh_a_einst, ch3oh_a_coll, coll_partn_conc, indices, vel_n_grad, 
@@ -1372,7 +1389,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	nb += nb_lev_ch3oh;
 	nb2 += nb_lev_ch3oh*(nb_lev_ch3oh-1)/2;
 
-#if (CALCULATE_METHANOL_POPUL)
+#if (CALCULATE_POPUL_METHANOL)
 	ch3oh_e_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_heating_calc(y_data, ydot_data, nb, ch3oh_e_di, ch3oh_e_einst, ch3oh_e_coll, coll_partn_conc, indices, vel_n_grad, 
@@ -2616,8 +2633,9 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 }
 
 chemistry_evolution_data::chemistry_evolution_data(const std::string &input_path, const std::string &output_path, int nb_h2, 
-	int nb_vibr_h2o, int nb_h2o, int nb_vibr_co, int nb_co, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verb)
-	: evolution_data(input_path, output_path, nb_h2, nb_vibr_h2o, nb_h2o, nb_vibr_co, nb_co, nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verb)
+	int nb_vibr_h2o, int nb_h2o, int nb_vibr_co, int nb_co, int nb_pnh3, int nb_onh3, int nb_oh, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verb)
+	: evolution_data(input_path, output_path, nb_h2, nb_vibr_h2o, nb_h2o, nb_vibr_co, nb_co, nb_pnh3, nb_onh3, nb_oh, 
+        nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verb)
 {
 	// please, check the nb of equations. For chemical evolution calculations:
 	nb_of_equat = nb_of_species + nb_lev_h2 + 2*nb_lev_h2o + nb_lev_co + nb_lev_oh + nb_lev_pnh3 + nb_lev_onh3  
@@ -2675,8 +2693,9 @@ int chemistry_evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 //
 
 mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &output_path, int nb_h2, int nb_vibr_h2o, int nb_h2o, 
-	int nb_vibr_co, int nb_co, int nb_vibr_ch3oh, int nb_lev_ch3oh, double c_abund_pah, int verb) 
-	: evolution_data(input_path, output_path, nb_h2, nb_vibr_h2o, nb_h2o, nb_vibr_co, nb_co, nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verb), 
+	int nb_vibr_co, int nb_co, int nb_pnh3, int nb_onh3, int nb_oh, int nb_vibr_ch3oh, int nb_ch3oh, double c_abund_pah, int verb)
+	: evolution_data(input_path, output_path, nb_h2, nb_vibr_h2o, nb_h2o, nb_vibr_co, nb_co, nb_pnh3, nb_onh3, nb_oh, 
+        nb_vibr_ch3oh, nb_ch3oh, c_abund_pah, verb),
 	deg_free_i(3.), magn_field_energy(0.), add_el_source(0.), velg_mhd_n(0.), velg_mhd_i(0.)
 {
 	// calculation of the number of equations:

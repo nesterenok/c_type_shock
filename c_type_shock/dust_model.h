@@ -17,7 +17,7 @@
 #define SILICATE_MATERIAL_DENSITY 3.5
 
 // size of large dust grains and PAH molecules, in cm:
-#define RADIUS_OF_LARGE_GRAINS 1.e-5
+#define RADIUS_OF_LARGE_GRAINS 0.5e-5
 #define RADIUS_OF_PAH_MOLECULES 4.e-8 // Draine, Li, ApJ 657, pp. 810-837 (2007); PAH radius must be < 20 A;
 
 
