@@ -67,7 +67,7 @@ public:
 class energy_diagram
 {
 public:
-	int nb_lev;
+	int nb_lev, verbosity;
 	const molecule mol;
 	std::vector<energy_level> lev_array;
 
@@ -75,8 +75,10 @@ public:
 	virtual int get_nb(int v, double j, double k) const {return 0;}
 	virtual int get_nb(const std::string, int stat_w) const {return 0;}
 	virtual int get_nb(int syminv, int v, double j, double k) const {return 0;}
+    
+    void report(const std::string & fname);
 
-	energy_diagram(molecule m);
+	energy_diagram(molecule m, int vebosity = 1);
 	virtual ~energy_diagram();
 };
 
@@ -84,7 +86,7 @@ public:
 class h2_diagram : public energy_diagram
 {
 public:
-	h2_diagram(const std::string &path, molecule m, int &n_l, int verbosity =1);
+	h2_diagram(const std::string &path, molecule m, int &n_l, int verbosity = 1);
 	int get_nb(int v, double j) const;
 };
 

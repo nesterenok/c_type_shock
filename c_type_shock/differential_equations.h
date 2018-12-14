@@ -137,11 +137,14 @@ public:
 	// Note: some functions of the classes use internal variables;
 	// the heating rate variable > 0 for heating and < 0 for cooling;
 	// the dimension of heating efficiency dh_eff[] is cm-1 cm-3 s-1, dimension of grain heating rate heating_d[] is cm-1 s-1
-	void specimen_heating_calc(const realtype *y_data, realtype *ydot_data, int nb, const energy_diagram *, const einstein_coeff *, 
-		const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double & heating_n, 
-		double & heating_e, double & rad_energy_loss, double *heating_d, double *g_factors = 0, double *d_factors = 0, double *dh_eff = 0, 
-		double *ep_int1 = 0, double *ep_int2 = 0, int nb2 = 0);
+    void specimen_population_derivative(const realtype *y_data, realtype *ydot_data, int nb, const energy_diagram *, const einstein_coeff *,
+        const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double & heating_n,
+        double & heating_e, double & rad_energy_loss, double *heating_d);
 	
+    void calc_radiative_coeff(const realtype *y_data, int nb, const energy_diagram *, const einstein_coeff *, 
+        const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double *g_factors, 
+        double *d_factors, double *dh_eff, double *ep_int1, double *ep_int2, int nb2);
+
 	double calc_ice_conc(const N_Vector &y) const; // calculation of adsorbed atom/molecule concentration in cm-3
 	double calc_conc_ph2(const N_Vector &y) const; // calculation of p-H2 concentration, cm-3
 	double calc_conc_h_tot(const N_Vector &y) const;
@@ -204,9 +207,8 @@ public:
 class mhd_shock_data : public evolution_data
 {
 public:
-	double magn_field_energy, deg_free_i, add_el_source, velg_mhd_n, velg_mhd_i;
+	double magn_field_energy, add_el_source, velg_mhd_n, velg_mhd_i;
 
-	void set_deg_free_i(double d) { deg_free_i = d; }
 	void set_shock_vel(double v) { shock_vel = v; } // in cm/s
 	double get_add_electron_sterm() { return add_el_source; }
 	double get_velg_mhd_n() { return velg_mhd_n; }

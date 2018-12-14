@@ -1,0 +1,27 @@
+# Evolution age (years):
+1.00e+04
+# Dust heating rate by H2 [cm-1 cm-3 s-1]: 1.09e-08
+# Dust heating rate by other molecules [cm-1 cm-3 s-1]: 4.85e-10
+# nb v_u  j_u  t_u  v_l  j_l  t_l  en(cm-1)  g         d         effici    ep_int1   ep_int2   
+# Radiative transfer data for H2
+# Radiative transfer for p-H2O
+# Radiative transfer for o-H2O
+# Radiative transfer for CO
+# Evolution age (years):
+1.07e+04
+# Dust heating rate by H2 [cm-1 cm-3 s-1]: 1.09e-08
+# Dust heating rate by other molecules [cm-1 cm-3 s-1]: 5.14e-10
+# nb v_u  j_u  t_u  v_l  j_l  t_l  en(cm-1)  g         d         effici    ep_int1   ep_int2   
+# Radiative transfer data for H2
+# Radiative transfer for p-H2O
+# Radiative transfer for o-H2O
+# Radiative transfer for CO
+# Evolution age (years):
+1.15e+04
+# Dust heating rate by H2 [cm-1 cm-3 s-1]: 1.09e-08
+# Dust heating rate by other molecules [cm-1 cm-3 s-1]: 5.46e-10
+# nb v_u  j_u  t_u  v_l  j_l  t_l  en(cm-1)  g         d         effici    ep_int1   ep_int2   
+# Radiative transfer data for H2
+# Radiative transfer for p-H2O
+# Radiative transfer for o-H2O
+# Radiative transfer for CO

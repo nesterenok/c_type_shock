@@ -600,7 +600,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	create_file_nautilus_data(output_path);
 	create_file_mhd_vode(output_path);
 
-#ifdef SAVE_RADIATIVE_TRANSFER_FACTORS
+#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
 	user_data.create_file_radiative_transfer(output_path);
 #endif
 
@@ -674,7 +674,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 			save_chem_heating_rates(output_path, &user_data, ty);
 			save_mhd_vode(data_path, output_path, network, y, conc_h_tot, ty);
 
-#ifdef SAVE_RADIATIVE_TRANSFER_FACTORS
+#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
 			user_data.save_radiative_transfer_data(output_path, ty);
 #endif
 		}
@@ -1148,7 +1148,6 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	const chem_network *network 
 		= user_data.get_network();
 
-	user_data.set_deg_free_i(3.);
 	user_data.set_magn_field(magnetic_field);
 	user_data.set_shock_vel(shock_vel);
 	
@@ -1269,7 +1268,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	create_file_mol_data(output_path2, &user_data);
 	create_file_h2_chemistry(output_path2);
 
-#ifdef SAVE_RADIATIVE_TRANSFER_FACTORS
+#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
 
@@ -1358,7 +1357,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 			save_cloud_parameters(&user_data, output_path2, ty, visual_extinct, cr_ioniz_rate, uv_field_strength, 
 				ir_field_strength, c_abund_pah, y);
 			save_chem_heating_rates(output_path2, &user_data, ty);
-#ifdef SAVE_RADIATIVE_TRANSFER_FACTORS
+#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
 			user_data.save_radiative_transfer_data(output_path2, ty);
 #endif
 		}
@@ -1655,7 +1654,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	create_file_nautilus_data(output_path2);
 	create_file_mhd_vode(output_path2);
 
-#ifdef SAVE_RADIATIVE_TRANSFER_FACTORS
+#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
 
@@ -1729,7 +1728,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 			save_chem_heating_rates(output_path2, &user_data, evol_time + ty);
 			save_mhd_vode(data_path, output_path2, network, y, conc_h_tot, evol_time + ty);
 
-#ifdef SAVE_RADIATIVE_TRANSFER_FACTORS
+#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
 			user_data.save_radiative_transfer_data(output_path2, evol_time + ty);
 #endif
 		}
@@ -2421,19 +2420,21 @@ void create_file_reaction_rates(const string &output_path, const chem_network *n
 	output << network->nb_of_reactions << endl;
 	for (i = 0; i < network->nb_of_reactions; i++) 
 	{
-		output << left << setw(8) << i+1 << setw(5) << network->reaction_array[i].reactant[0];
-		if (network->reaction_array[i].nb_of_reactants > 1)
-			output << left << setw(5) << network->reaction_array[i].reactant[1];
+        const chem_reaction & reaction = network->reaction_array[i];
+		
+        output << left << setw(8) << i+1 << setw(5) << reaction.reactant[0];
+		if (reaction.nb_of_reactants > 1)
+			output << left << setw(5) << reaction.reactant[1];
 		else output << left << setw(5) << "-1";
 
 		// no more than four products can be in the reaction;
-		for (j = 0; j < network->reaction_array[i].nb_of_products; j++) {
-			output << left << setw(5) << network->reaction_array[i].product[j];
+		for (j = 0; j < reaction.nb_of_products; j++) {
+			output << left << setw(5) << reaction.product[j];
 		}
-		for (j = network->reaction_array[i].nb_of_products; j <= 3; j++) {
+		for (j = reaction.nb_of_products; j <= 3; j++) {
 			output << left << setw(5) << "-1";
 		}
-		output << network->reaction_array[i].name << endl;
+		output << reaction.name << endl;
 	}
 	output.close();
 	

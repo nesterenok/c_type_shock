@@ -54,31 +54,37 @@ energy_level::energy_level()
 : nb(0), v(0), syminv(0), g(0), j(0.), k1(0.), k2(0.), spin(0.), energy(0.), name("")
 {;}
 
-energy_diagram::energy_diagram(molecule m) : mol(m), nb_lev(0)
+energy_diagram::energy_diagram(molecule m, int verb) : mol(m), nb_lev(0), verbosity(verb)
 {;}
 
 energy_diagram::~energy_diagram() {
 	lev_array.clear();
 }
 
-h2_diagram::h2_diagram(const string &data_path, molecule m, int &n_l, int verbosity) : energy_diagram(m)
+void energy_diagram::report(const std::string & fname)
+{
+    if (verbosity > 0) {
+        cout << "Specimen levels have been initialized: " << mol.name << endl
+            << "    data have been read from file: " << fname << endl
+            << "    number of levels: " << nb_lev << endl;
+    }
+}
+
+h2_diagram::h2_diagram(const string &data_path, molecule m, int &n_l, int verb) : energy_diagram(m, verb)
 {	
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, i_max, v, j, nb;
 	double energy;
 
-	string file_name;
+	string fname;
 	ifstream input;
 	energy_level level;
 
-	if (verbosity) 
-		cout << "H2 molecule levels are being initializing..." << endl;
-	
-	file_name = data_path + "spectroscopy/levels_h2.txt";
-	input.open(file_name.c_str(), ios_base::in);
+	fname = data_path + "spectroscopy/levels_h2.txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input.is_open()) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 	
@@ -110,11 +116,7 @@ h2_diagram::h2_diagram(const string &data_path, molecule m, int &n_l, int verbos
 	}
 	input.close();
 	nb_lev = n_l = (int) lev_array.size();
-	
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl
-			<< "  nb of levels of molecule " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 int h2_diagram::get_nb(int v, double j) const
@@ -126,29 +128,26 @@ int h2_diagram::get_nb(int v, double j) const
 	return -1;
 }
 
-h2o_diagram::h2o_diagram(const string &data_path, molecule m, int &n_l, int nb_vibr, int verbosity) : energy_diagram(m)
+h2o_diagram::h2o_diagram(const string &data_path, molecule m, int &n_l, int nb_vibr, int verb) : energy_diagram(m, verb)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, i_max, v, v1, v2, v3, j, ka, kc, nb;	
 	double energy;
 
-	string file_name;
+	string fname;
 	ifstream input;
 	energy_level level;
-	
-	if (verbosity) 
-		cout << "H2O molecule levels are being initializing..." << endl;
 	
 	if (nb_vibr > NB_VIBR_EXCIT_H2O) 
 		nb_vibr = NB_VIBR_EXCIT_H2O;
 	
 	if (mol.isotop == 1) 
-		file_name = data_path + "spectroscopy/levels_h2o16.txt";
-	else file_name = data_path + "spectroscopy/levels_h2o18.txt";
+		fname = data_path + "spectroscopy/levels_h2o16.txt";
+	else fname = data_path + "spectroscopy/levels_h2o18.txt";
 
-	input.open(file_name.c_str(), ios_base::in);
+	input.open(fname.c_str(), ios_base::in);
 	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 	
@@ -183,11 +182,7 @@ h2o_diagram::h2o_diagram(const string &data_path, molecule m, int &n_l, int nb_v
 	}
 	input.close();
 	nb_lev = n_l = (int) lev_array.size();
-
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl 
-			<< "  nb of levels of molecule " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 int h2o_diagram::get_nb(int v, double j, double tau) const
@@ -210,25 +205,22 @@ int h2o_diagram::get_vibr_nb(int v1, int v2, int v3) const
 	return 5;
 }
 
-ch3oh_diagram::ch3oh_diagram(const string &data_path, molecule m, int &n_l, int nb_vibr, int ang_mom_max, int verbosity) 
-	: energy_diagram(m)
+ch3oh_diagram::ch3oh_diagram(const string &data_path, molecule m, int &n_l, int nb_vibr, int ang_mom_max, int verb) 
+	: energy_diagram(m, verb)
 {
 	char ch1, ch2, text_line[MAX_TEXT_LINE_WIDTH];
 	int i, l, j, k1, vt, vt_max;
 	double energy, energy_min;
 
-	string file_name;
+	string fname;
 	ifstream input;
 	energy_level level;
 	
-	if (verbosity) 
-		cout << "CH3OH molecule levels are being initializing..." << endl;
-
-	file_name = data_path + "spectroscopy/levels_ch3oh.txt";
-	input.open(file_name.c_str(), ios_base::in);
+	fname = data_path + "spectroscopy/levels_ch3oh.txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 	
@@ -303,11 +295,7 @@ ch3oh_diagram::ch3oh_diagram(const string &data_path, molecule m, int &n_l, int 
 	for (i = 0; i < nb_lev; i++) {
 		lev_array[i].nb = i;
 	}
-	
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl 
-			<< "  nb of levels of molecule " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 int ch3oh_diagram::get_nb(int v, double j, double k) const
@@ -319,25 +307,22 @@ int ch3oh_diagram::get_nb(int v, double j, double k) const
 	return -1;
 }
 
-ion_diagram::ion_diagram(const std::string &path, molecule m, int &n_l, int verbosity) : energy_diagram(m)
+ion_diagram::ion_diagram(const std::string &path, molecule m, int &n_l, int verb) : energy_diagram(m, verb)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i;
 
-	string str, file_name;
+	string str, fname;
 	ifstream input;
 	energy_level level;
 
-	if (verbosity) 
-		cout << mol.name << " ion levels are being initializing..." << endl;
-
-	file_name = path + "spectroscopy/levels_";
-	file_name += mol.name;
-	file_name += ".txt";
-	input.open(file_name.c_str(), ios_base::in);
+	fname = path + "spectroscopy/levels_";
+	fname += mol.name;
+	fname += ".txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 
@@ -358,11 +343,7 @@ ion_diagram::ion_diagram(const std::string &path, molecule m, int &n_l, int verb
 		lev_array.push_back(level);
 	}
 	input.close();
-	
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl 
-			<< "  nb of levels of ion " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 int ion_diagram::get_nb(const string name, int stat_w) const
@@ -374,27 +355,24 @@ int ion_diagram::get_nb(const string name, int stat_w) const
 	return -1;
 }
 
-co_diagram::co_diagram(const string &path, molecule m, int &n_l, int nb_vibr, int verbosity) : energy_diagram(m)
+co_diagram::co_diagram(const string &path, molecule m, int &n_l, int nb_vibr, int verb) : energy_diagram(m, verb)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, i_max, v, j, nb;	
 	double energy;
 
-	string file_name;
+	string fname;
 	ifstream input;
 	energy_level level;
-	
-	if (verbosity) 
-		cout << "CO molecule levels are being initializing..." << endl;
 	
 	if (nb_vibr > NB_VIBR_EXCIT_CO) 
 		nb_vibr = NB_VIBR_EXCIT_CO;
 	
-	file_name = path + "spectroscopy/levels_co.txt";
-	input.open(file_name.c_str(), ios_base::in);
+	fname = path + "spectroscopy/levels_co.txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 	
@@ -423,11 +401,7 @@ co_diagram::co_diagram(const string &path, molecule m, int &n_l, int nb_vibr, in
 	}
 	input.close();
 	nb_lev = n_l = (int) lev_array.size();
-
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl 
-			<< "  nb of levels of molecule " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 int co_diagram::get_nb(int v, double j) const
@@ -440,24 +414,21 @@ int co_diagram::get_nb(int v, double j) const
 }
 
 // OH
-oh_diagram::oh_diagram(const std::string &path, molecule m, int &n_l, int verbosity) : energy_diagram(m)
+oh_diagram::oh_diagram(const std::string &path, molecule m, int &n_l, int verb) : energy_diagram(m, verb)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i_max, v, nb, parity; 
 	double j, omega, energy; // j is float value here
 
-	string file_name;
+	string fname;
 	ifstream input;
 	energy_level level;
 	
-	if (verbosity) 
-		cout << "OH molecule levels are being initializing..." << endl;
-	
-	file_name = path + "spectroscopy/levels_oh.txt";
-	input.open(file_name.c_str(), ios_base::in);
+	fname = path + "spectroscopy/levels_oh.txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 	
@@ -484,11 +455,7 @@ oh_diagram::oh_diagram(const std::string &path, molecule m, int &n_l, int verbos
 	}
 	input.close();
 	nb_lev = n_l = (int) lev_array.size();
-
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl 
-			<< "  nb of levels of molecule " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 // note: the angular momentum is rational number,
@@ -503,24 +470,21 @@ int oh_diagram::get_nb(int parity, int v, double j, double omega) const
 }
 
 // NH3
-nh3_diagram::nh3_diagram(const std::string &path, molecule m, int &n_l, int verbosity) : energy_diagram(m)
+nh3_diagram::nh3_diagram(const std::string &path, molecule m, int &n_l, int verb) : energy_diagram(m, verb)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, i_max, v, nb, syminv; 
 	double j, k, energy; 
 
-	string file_name;
+	string fname;
 	ifstream input;
 	energy_level level;
 	
-	if (verbosity) 
-		cout << "NH3 molecule levels are being initializing..." << endl;
-	
-	file_name = path + "spectroscopy/levels_nh3.txt";
-	input.open(file_name.c_str(), ios_base::in);
+	fname = path + "spectroscopy/levels_nh3.txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
 		exit(1);
 	}
 	
@@ -554,11 +518,7 @@ nh3_diagram::nh3_diagram(const std::string &path, molecule m, int &n_l, int verb
 	}
 	input.close();
 	nb_lev = n_l = (int) lev_array.size();
-
-	if (verbosity) {
-		cout << "  data have been read from file " << file_name << endl 
-			<< "  nb of levels of molecule " << mol.name << ": " << nb_lev << endl;
-	}
+    report(fname);
 }
 
 int nh3_diagram::get_nb(int syminv, int v, double j, double k) const

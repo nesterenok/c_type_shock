@@ -162,9 +162,9 @@
 // 1 - gas and dust temperatures are fixed in chemical evolution simulations, for shock this parameter does not work;
 #define IS_TEMPERATURE_FIXED 0
 
-// if not saved - parameter must be commented;
 // the data on radiative transfer parameters gamma and delta, dust heating efficiencies of molecule lines are saved;
-#define SAVE_RADIATIVE_TRANSFER_FACTORS 1
+// 1 - radiative transfer factors are saved;
+#define SAVE_RADIATIVE_TRANSFER_FACTORS 0
 
 // Calculate methanol levels, 1 - yes
 #define CALCULATE_POPUL_METHANOL 0
