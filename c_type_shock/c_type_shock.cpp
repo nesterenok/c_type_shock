@@ -147,11 +147,11 @@ int main(int argc, char** argv)
 //	construct_ion_recomb_grains(path);
 
 //	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
-	path = "./output_data_1e4/shock_25_h2-h_lique-bossion/";
+	path = "./output_data_6e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-14/";
 	
-	const int nb = 33;
+	const int nb = 35;
 	string spls[nb] = 
-	{"C+",   "H",     "H2",    "OH",    "H2O",     "NH3",   "O2",  
+	{"e-", "H3+", "C+",   "H",     "H2",    "OH",    "H2O",     "NH3",   "O2",  
 	"CO",    "CO2",   "HCO",   "H2CO",  "CH3O",    "CH2OH", "CH3OH2+", "CH3OH", 
 	"C2O",   "HC2O",  "CH2CO", "CH3CO", "CH3CHO",  "C2H4",   "C2H5",  "CH3OCH2", "CH3OCH3", "CH3OCH4+",
 	"OCN",   "HNCO",  "HCOOH", "HCOOH2+","HCOOCH3","H5C2O2+","C2H5OH", "C2H5OH2+"};
@@ -309,12 +309,15 @@ int main(int argc, char** argv)
 				calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty); 
 			}
             else if (mode == "CS_")
-            {
+            {       
                 for (i = 0; i < 10; i++) {
                     shock_vel = 1.5e+6 + i * 5.0e+5;
-                    output_path += static_cast<int>(1.e-5*shock_vel+0.1);
-                    output_path += "/";
-                    calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty);
+                    ss.clear();
+                    ss.str("");
+                    ss << output_path;
+                    ss << static_cast<int>(1.e-5*shock_vel + 0.1);
+                    ss << "/";
+                    calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
                 }
             }
 			else
@@ -573,7 +576,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	flag = CVodeSetMaxNumSteps(cvode_mem, 10000);
 
 	// specifies the maximum number of error test failures permitted in attempting one step:
-	flag = CVodeSetMaxErrTestFails(cvode_mem, 7); // default value is 7; 
+	flag = CVodeSetMaxErrTestFails(cvode_mem, 14); // default value is 7; 
 
 	// Create dense SUNMatrix for use in linear solves 
 	A = SUNDenseMatrix(nb_of_equat, nb_of_equat);
@@ -683,10 +686,8 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		}
 
 		is_new_chd = user_data.recalc_grain_charge_ranges(y, new_y);
-		if (is_new_chd) {
-			if (verbosity) {
-				cout << "New ranges for grain charge distribution were adopted" << endl;
-			}
+		if (is_new_chd) 
+        {	
 			user_data.get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
 			
 			N_VDestroy_Serial(y);
@@ -712,7 +713,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 			flag = CVDlsSetLinearSolver(cvode_mem, LS, A);
 
 			flag = CVodeSetMaxNumSteps(cvode_mem, 10000);
-			flag = CVodeSetMaxErrTestFails(cvode_mem, 7);
+			flag = CVodeSetMaxErrTestFails(cvode_mem, 14);
 			flag = CVodeSetUserData(cvode_mem, &user_data);
 		}
 		nb++;
@@ -721,10 +722,10 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	print_stats(cvode_mem);
 
 	// Free memory;
+    CVodeFree(&cvode_mem);
 	SUNLinSolFree(LS);
 	SUNMatDestroy(A);
-	CVodeFree(&cvode_mem);
-
+	
 	N_VDestroy_Serial(y);
 	N_VDestroy_Serial(ydot);
 	delete [] chem_abund;
@@ -1081,7 +1082,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	long int tot_nb_steps;
 	double a, b, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, shock_length, magn_sonic_speed, 
 		sound_speed, conc_h_tot, temp_n, temp_i, temp_e, neut_dens, ion_dens, neut_conc, ion_conc, ion_pah_conc, rtol, atol, 
-		ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const;
+		ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop;
 	double *prev_y(0);
 	
 	string fname, sn;
@@ -1091,7 +1092,7 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	
 	SUNMatrix A(NULL);
 	SUNLinearSolver LS(NULL);
-	N_Vector y, ydot;
+	N_Vector y;
 
 	verbosity = 1;
 	cout << scientific;
@@ -1139,7 +1140,6 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	user_data.get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
 	
 	y = N_VNew_Serial(nb_of_equat);
-	ydot = N_VNew_Serial(nb_of_equat);
 	prev_y = new double [nb_of_equat];
 
 	const dust_model *dust 
@@ -1201,7 +1201,9 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	ty = z = 0.;
 	dz = zout = 0.01*shock_length; // cm
 	zfin = 1000.*shock_length;
-	
+    // relative difference between ion and neutral speeds, at which shock stop;
+    dvel_shock_stop = 0.005; // for studies of chemical evolution of post-shock gas, set 0.001
+
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
 	void *cvode_mem = CVodeCreate(CV_BDF);
 
@@ -1279,30 +1281,12 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 	veln_arr.push_back( NV_Ith_S(y, nb_mhd+3) );
 	veli_arr.push_back( NV_Ith_S(y, nb_mhd+4) );
 
-	double *pop = new double [nb_of_equat];
-
 	while (z < zfin && !must_be_stopped) 
 	{
 		i = 0;
 		flag = CV_SUCCESS;
 		while (i < 1000 && flag == CV_SUCCESS && z < zout){
 			flag = CVode(cvode_mem, zout, y, &z, CV_ONE_STEP); // CV_NORMAL or CV_ONE_STEP
-			
-			if (i == 998) {
-				for (k = 0; k < nb_of_equat; k++) {
-					pop[k] = NV_Ith_S(y, k);
-				}		
-			}
-			else if (i == 999) {
-				fname = output_path2 + "checking.txt";
-				output.open(fname.c_str(), std::ios_base::trunc);
-				output.precision(5);
-				output << left << setw(14) << zout << setw(14) << z << endl;
-				for (k = 0; k < nb_of_equat; k++) {
-					output << left << setw(6) << k << setw(14) << NV_Ith_S(y, k) << setw(14) << pop[k] << setw(14) << NV_Ith_S(y, k) - pop[k] << endl;
-				}
-				output.close();
-			}
 			i++;
 		}
 
@@ -1402,30 +1386,12 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 		else if (a > 0.1)
 			dz /= 2.;
 
-		// checking
-		a = 0.;
-		k = 0;
-		for (i = 0; i < nb_of_equat; i++) 
-		{
-			b = fabs(NV_Ith_S(y, i) - prev_y[i])/(prev_y[i] + 1.e-99);
-			if (b > a) {
-				a = b;
-				k = i;
-			}
-		}
-		if (verbosity) {
-			cout << left << "the largest change in variable: " << setw(5) << k << setw(14) << a;
-			if (k < nb_of_species)
-				cout << network->species[k].name;
-			cout << endl;
-		}
-
 		// shock begins:
 		if ( fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) > 0.01*NV_Ith_S(y, nb_mhd + 3) )
 			is_post_shock = true;
 		
 		// postshock gas comes to the equilibrium state:
-		if ( is_post_shock && fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) < 0.001*NV_Ith_S(y, nb_mhd + 3) )
+		if ( is_post_shock && fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) < dvel_shock_stop * NV_Ith_S(y, nb_mhd + 3) )
 			must_be_stopped = true;
 
 		is_new_vg = false;
@@ -1442,54 +1408,51 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 		is_new_chd = user_data.recalc_grain_charge_ranges(y, new_y);
 		if (is_new_chd)
 		{
-			if (verbosity) {
-				cout << "New ranges for grain charge distribution were adopted" << endl;
-			}
 			user_data.get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
 			
 			N_VDestroy_Serial(y);
-			N_VDestroy_Serial(ydot);
-
 			y = N_VNew_Serial(nb_of_equat);
-			ydot = N_VNew_Serial(nb_of_equat);
 
 			delete [] prev_y;
 			prev_y = new double [nb_of_equat];
 
 			for (i = 0; i < nb_of_equat; i++) {
+                // check for negative values of abundance and level populations of species: 
+                if (i < nb_dct - nb_of_grain_charges && new_y[i] < 0.) { 
+                    new_y[i] = 0.;
+                }
 				NV_Ith_S(y, i) = new_y[i];
 			}
 			if (!is_new_vg) {
 				user_data.set_veln_grad(vel_n_grad);
 				user_data.set_veli_grad(vel_i_grad);
 			}
+            
+            SUNLinSolFree(LS);
+			SUNMatDestroy(A);
+            
+            A = SUNDenseMatrix(nb_of_equat, nb_of_equat);
+			LS = SUNDenseLinearSolver(y, A);
 		}
 
 		// restart of the solver with new values of velocity gradients or charge distribution;
 		if (is_new_vg || is_new_chd)
 		{
-			SUNLinSolFree(LS);
-			SUNMatDestroy(A);
-			CVodeFree(&cvode_mem);
-			
+            CVodeFree(&cvode_mem);
 			cvode_mem = CVodeCreate(CV_BDF);
 
 			flag = CVodeInit(cvode_mem, f_mhd, z, y);
 			flag = CVodeSStolerances(cvode_mem, rtol, atol);
-			
-			A = SUNDenseMatrix(nb_of_equat, nb_of_equat);
-			LS = SUNDenseLinearSolver(y, A);
 			flag = CVDlsSetLinearSolver(cvode_mem, LS, A);
-
 			flag = CVodeSetMaxNumSteps(cvode_mem, 10000);
 			flag = CVodeSetMaxErrTestFails(cvode_mem, 14); // default value is 7; 
 			flag = CVodeSetUserData(cvode_mem, &user_data);
 
-			if (verbosity) {
-				cout << "New velocity gradients are assigned (cm/s/cm)," << endl 
-				<< "neutrals: " << user_data.get_veln_grad() 
-				<< " ions: " << user_data.get_veli_grad() << endl;
-			}
+            if (verbosity) {
+                cout << "new velocity gradients are assigned (cm/s/cm)," << endl
+                    << "    neutrals: " << user_data.get_veln_grad()
+                    << "    ions: " << user_data.get_veli_grad() << endl;
+            }
 		}
 		zout += dz;
 
@@ -1502,12 +1465,11 @@ void calc_shock(const string &data_path, const string &output_path1, const strin
 		cout << "Total nb of steps: " << tot_nb_steps << endl;
 
 	// Free memory:
+    CVodeFree(&cvode_mem);
 	SUNLinSolFree(LS);
 	SUNMatDestroy(A);
 	
-	CVodeFree(&cvode_mem);
 	N_VDestroy_Serial(y);
-	N_VDestroy_Serial(ydot);
 	delete [] prev_y;
 }
 
@@ -1542,7 +1504,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	
 	SUNMatrix A(NULL);
 	SUNLinearSolver LS(NULL);
-	N_Vector y(0), ydot;
+	N_Vector y(0), ydot(0);
 	vector<double> new_y;
 
 	verbosity = 1;
@@ -1627,7 +1589,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	flag = CVodeSetMaxNumSteps(cvode_mem, 10000);
 
 	// specifies the maximum number of error test failures permitted in attempting one step:
-	flag = CVodeSetMaxErrTestFails(cvode_mem, 7); // default value is 7; 
+	flag = CVodeSetMaxErrTestFails(cvode_mem, 14); // default value is 7; 
 
 	// Create dense SUNMatrix for use in linear solves
 	A = SUNDenseMatrix(nb_of_equat, nb_of_equat);
@@ -1737,10 +1699,8 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		}
 
 		is_new_chd = user_data.recalc_grain_charge_ranges(y, new_y);
-		if (is_new_chd) {
-			if (verbosity) {
-				cout << "New ranges for grain charge distribution were adopted" << endl;
-			}
+		if (is_new_chd) 
+        {	
 			user_data.get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
 			
 			N_VDestroy_Serial(y);
@@ -1752,28 +1712,28 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 			for (i = 0; i < nb_of_equat; i++) {
 				NV_Ith_S(y, i) = new_y[i];
 			}
+
+            SUNLinSolFree(LS);
+            SUNMatDestroy(A);
+
+            A = SUNDenseMatrix(nb_of_equat, nb_of_equat);
+            LS = SUNDenseLinearSolver(y, A);
 		}
 		
 		if (t < 1.0001*incr_time) {
 			cr_ioniz_rate = cr_ioniz_rate0 *(1. + (cr_ir_factor - 1)*t/incr_time); 
 			user_data.set_parameters(visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength);
 		}
-		if (is_new_chd || t < 1.0001*incr_time) {
-			SUNLinSolFree(LS);
-			SUNMatDestroy(A);
+		if (is_new_chd || t < 1.0001*incr_time) 
+        {
 			CVodeFree(&cvode_mem);
-
 			cvode_mem = CVodeCreate(CV_BDF);
 		
 			flag = CVodeInit(cvode_mem, f_chem, t, y);
 			flag = CVodeSStolerances(cvode_mem, rtol, atol);
-			
-			A = SUNDenseMatrix(nb_of_equat, nb_of_equat);
-			LS = SUNDenseLinearSolver(y, A);
 			flag = CVDlsSetLinearSolver(cvode_mem, LS, A);
-
 			flag = CVodeSetMaxNumSteps(cvode_mem, 10000);
-			flag = CVodeSetMaxErrTestFails(cvode_mem, 7);
+			flag = CVodeSetMaxErrTestFails(cvode_mem, 14);
 			flag = CVodeSetUserData(cvode_mem, &user_data);
 		}
 
@@ -1782,8 +1742,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 			tout += dt;
 		else tout = tout*tmult;
 	}
-	print_stats(cvode_mem);
-
+	
 	// Free memory;
 	SUNLinSolFree(LS);
 	SUNMatDestroy(A);
@@ -2758,9 +2717,9 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	comm1 << left << "! three parameters are given: shock speed (cm/s), turbulent velocity (cm/s), number of specimen levels: \n"
 		<< setw(14) << shock_vel << setw(14) << vturb;
 	
-	comm2 << left << setw(18) << "!depth(cm)" << setw(14) << "gas_temp(K)" << setw(14) << "el_temp" << setw(14) << "dust_temp(K)" 
-		<< setw(14) << "gas_vel(cm/s)" << setw(14) << "conc_He(cm-3)" << setw(14) << "conc_pH2" << setw(14) << "conc_oH2" 
-		<< setw(14) << "conc_H" << setw(14) << "conc_e" << setw(14) << "conc_H_nucl" << setw(14) << "conc_mol";
+	comm2 << left << setw(18) << "!depth(cm)" << setw(13) << "gas_temp(K)" << setw(13) << "el_temp" << setw(13) << "dust_temp(K)" 
+		<< setw(13) << "gasvel(cm/s)" << setw(13) << "concHe(cm-3)" << setw(13) << "conc_pH2" << setw(13) << "conc_oH2" 
+		<< setw(13) << "conc_H" << setw(13) << "conc_e" << setw(13) << "conc_H_nucl" << setw(13) << "conc_mol";
 	
 	fname = output_path + "sim_data_h2.txt";
 	output.open(fname.c_str());
@@ -2903,16 +2862,16 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	ss << left << setw(18) << var;
 	
 	ss.precision(5);
-	ss << left << setw(14) << NV_Ith_S(y, nb_mhd) 
-		<< setw(14) << NV_Ith_S(y, nb_mhd+2)
-		<< setw(14) << user_data->get_av_dust_temp() 	// average temperature of large grains (r > MIN_ADSORPTION_RADIUS),
-		<< setw(14) << NV_Ith_S(y, nb_mhd+3)			// neutral speed,
-		<< setw(14) << NV_Ith_S(y, network->find_specimen("He"))
-		<< setw(14) << conc_ph2
-		<< setw(14) << NV_Ith_S(y, network->find_specimen("H2")) - conc_ph2
-		<< setw(14) << NV_Ith_S(y, network->find_specimen("H"))
-		<< setw(14) << NV_Ith_S(y, network->find_specimen("e-"))
-		<< setw(14) << user_data->calc_conc_h_tot(y);
+	ss << left << setw(13) << NV_Ith_S(y, nb_mhd) 
+		<< setw(13) << NV_Ith_S(y, nb_mhd+2)
+		<< setw(13) << user_data->get_av_dust_temp() 	// average temperature of large grains (r > MIN_ADSORPTION_RADIUS),
+		<< setw(13) << NV_Ith_S(y, nb_mhd+3)			// neutral speed,
+		<< setw(13) << NV_Ith_S(y, network->find_specimen("He"))
+		<< setw(13) << conc_ph2
+		<< setw(13) << NV_Ith_S(y, network->find_specimen("H2")) - conc_ph2
+		<< setw(13) << NV_Ith_S(y, network->find_specimen("H"))
+		<< setw(13) << NV_Ith_S(y, network->find_specimen("e-"))
+		<< setw(13) << user_data->calc_conc_h_tot(y);
 
 	// H2 molecule
 	nb = nb_of_species;
@@ -2923,7 +2882,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_h2; i++) {
@@ -2946,7 +2905,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_h2o; i++) {
@@ -2969,7 +2928,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_h2o; i++) {
@@ -2989,7 +2948,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_co; i++) {
@@ -3011,7 +2970,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_oh; i++) {
@@ -3038,7 +2997,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_ch3oh; i++) {
@@ -3062,7 +3021,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_ch3oh; i++) {
@@ -3083,7 +3042,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_ci; i++) {
@@ -3103,7 +3062,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_oi; i++) {
@@ -3123,7 +3082,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 
 	output << scientific;
 	output.precision(5);
-	output << left << endl << ss.str() << setw(14) << conc_mol;
+	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
 	output.precision(4);
 	for (i = 0; i < nb_lev_cii; i++) {
@@ -3380,3 +3339,22 @@ void sputtering()
 	}
 }
 
+/*
+if (i == 998) {
+
+       
+         for (k = 0; k < nb_of_equat; k++) {
+                    pop[k] = NV_Ith_S(y, k);
+                }
+            }
+            else if (i == 999) {
+                fname = output_path2 + "checking.txt";
+                output.open(fname.c_str(), std::ios_base::trunc);
+                output.precision(5);
+                output << left << setw(14) << zout << setw(14) << z << endl;
+                for (k = 0; k < nb_of_equat; k++) {
+                    output << left << setw(6) << k << setw(14) << NV_Ith_S(y, k) << setw(14) << pop[k] << setw(14) << NV_Ith_S(y, k) - pop[k] << endl;
+                }
+                output.close();
+            }
+            */

@@ -1,0 +1,28 @@
+# Heating and cooling rates of neutral gas component due to chemical reactions, [erg cm-3 s-1]
+# Evolution age (years):
+6.042e-01
+8.634e-24
+2.061e-25    H2 + HOC+ -> H2 + HCO+
+9.111e-26    H2 + He+ -> He + H2+
+5.295e-25    H3+ + e- -> H2 + H
+5.106e-25    H3+ + e- -> H + H + H
+1.363e-24    HCO+ + e- -> CO + H
+1.076e-25    OH + C+ -> H + CO+
+1.878e-24    H2 + H2+ -> H + H3+
+3.269e-25    H2 + H2O+ -> H + H3O+
+1.078e-25    H2 + OH+ -> H + H2O+
+7.852e-25    CO + H3+ -> H2 + HCO+
+9.088e-26    OH + H3+ -> H2 + H2O+
+9.995e-26    CO + He+ -> O + He + C+
+9.563e-26    OH + He+ -> He + H + O+
+9.886e-26    H + HCO -> CO + H2
+-2.718e-26
+-3.248e-27   H2 + CRP -> H2+ + e-
+-3.170e-28   He + CRP -> He+ + e-
+-1.175e-26   He + H2+ -> H + HeH+
+-5.456e-28   H2 + C2H2+ -> H + C2H3+
+-3.680e-28   CH2CCH2 + H3+ -> H2 + H2 + C3H3+
+-4.139e-28   C3H2 + H3O+ -> H2O + C3H3+
+-4.606e-28   H + CH5+ -> H2 + CH4+
+-4.871e-28   C + C10H2 -> C5H + C6H
+-7.994e-27   H + OCN -> OH + CN

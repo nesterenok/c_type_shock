@@ -1764,25 +1764,25 @@ void chem_network::print_network(const string &path)
 		<< "index, name, mass, charge, formula (H He C N O Si S Fe Na Mg Cl P F), entalpy (erg);" << endl;
 
 	output.setf(ios_base::scientific, ios_base::floatfield);
-	output.precision(3);
+	output.precision(2);
 	
 	for (i = 0; i < (int) species.size(); i++)
 	{
 		output << left << setw(5) << i+1 << setw(15) << species[i].name << setw(8) << rounding(species[i].mass/ATOMIC_MASS_UNIT) 
-			<< setw(5) << species[i].charge;
+			<< setw(3) << species[i].charge;
 		
 		for (j = 0; j < NB_OF_CHEM_ELEMENTS; j++) {
-			output << left << setw(5) << species[i].formula[j];
+			output << left << setw(3) << species[i].formula[j];
 		}	
-		output << left << setw(11) << species[i].enthalpy << endl;
+		output << left << species[i].enthalpy << endl;
 	}
 	output << "Chemical reactions taken into account, nb = " << (int) reaction_array.size() << endl 
 		<< "name, energy released (erg per reaction), type, min and max rates:" << endl;
 
 	for (i = 0; i < (int) reaction_array.size(); i++) {
-		output << left << setw(5) << i+1 << setw(45) << reaction_array[i].name << setw(12) << reaction_array[i].energy_released 
-			<< setw(30) << get_reaction_type(reaction_array[i].type) << setw(12) << reaction_array[i].min_rate 
-			<< setw(12) << reaction_array[i].max_rate << endl;
+		output << left << setw(5) << i+1 << setw(45) << reaction_array[i].name << setw(11) << reaction_array[i].energy_released 
+			<< setw(30) << get_reaction_type(reaction_array[i].type) << setw(10) << reaction_array[i].min_rate 
+			<< setw(10) << reaction_array[i].max_rate << endl;
 	}
 }
 

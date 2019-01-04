@@ -301,7 +301,7 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-	input >> nb_lev;
+	input >> nb_lev; // number of levels for which data are given in the file,
 
 	jmax = 61; // point at 0 K;
 	imax = nb_lev*(nb_lev-1)/2;
@@ -341,7 +341,7 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 		{
 			i = li *nb_lev + lf;
 			f = lf *nb_lev + li;
-			nb = li*(li-1)/2 + lf;
+			nb = (li*(li-1) >> 1) + lf;
 
 			if (li < h2_di->nb_lev) {
 				for (j = 1; j < jmax; j++)
@@ -357,7 +357,7 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 	for (li = 1; li < h2_di->nb_lev && li < nb_lev; li++) {
 		for (lf = 0; lf < li; lf++)
 		{
-			nb = li*(li-1)/2 + lf;
+			nb = (li*(li-1) >> 1) + lf;
 			if (h2_di->lev_array[li].v == h2_di->lev_array[lf].v) {
 				if (h2_di->lev_array[li].j - h2_di->lev_array[lf].j == 2) {
 					for (j = 1; j < jmax; j++) {
@@ -367,12 +367,12 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 				else if (h2_di->lev_array[li].j - h2_di->lev_array[lf].j == 1) {
 					if (rounding(h2_di->lev_array[li].j)%2 == 0) {
 						for (j = 1; j < jmax; j++) {
-							coeff[nb][j] += 8.e-11*exp(-3900./tgrid[j]);
+							coeff[nb][j] = 8.e-11*exp(-3900./tgrid[j]);
 						}
 					}
 					else {
 						for (j = 1; j < jmax; j++) {
-							coeff[nb][j] += 2.67e-11*exp(-3900./tgrid[j]); // reduced by a factor of 3 when J_up is odd
+							coeff[nb][j] = 2.667e-11*exp(-3900./tgrid[j]); // reduced by a factor of 3 when J_up is odd
 						}
 					}
 				}					
@@ -383,26 +383,26 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 					if (de < 0.) 
 						de = 0.;
 				
-					if (abs(rounding(h2_di->lev_array[li].j - h2_di->lev_array[lf].j))%2 == 0) {		
+					if (abs(rounding(h2_di->lev_array[li].j - h2_di->lev_array[lf].j))%2 == 0) { // |j - j'| is even
 						coeff[nb][j] += coeff[nb][j]*exp(-de);
 					}
-					else {
+					else { // | j - j'| is odd
 						f = h2_di->get_nb(h2_di->lev_array[lf].v, h2_di->lev_array[lf].j-1);
 						k = h2_di->get_nb(h2_di->lev_array[lf].v, h2_di->lev_array[lf].j+1);
 						
 						a = 0.;
 						if (f >= 0 && f < nb_lev) {
-							f = li*(li-1)/2 + f;
+							f = (li*(li-1) >> 1) + f;
 							a = coeff[f][j];
 						}
-						if (k >= 0 && k < nb_lev) {	
-							k = li*(li-1)/2 + k;
+						if (k >= 0 && k < nb_lev) {
+							k = (li*(li-1) >> 1) + k;
 							a += coeff[k][j];
 						}
 						if (rounding(h2_di->lev_array[li].j)%2 == 0)
-							coeff[nb][j] += 0.5*a*exp(-de);
+							coeff[nb][j] = 0.5 *a *exp(-de);
 						else
-							coeff[nb][j] += 0.166666666666667*a*exp(-de);
+							coeff[nb][j] = 0.1667 *a *exp(-de);
 					}
 				}
 			}

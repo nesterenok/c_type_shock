@@ -26,6 +26,7 @@
 
 using namespace std;
 
+const double one_sixth_const = 1. / 6.;
 //
 // The classes that contain rate coefficient data
 //
@@ -79,6 +80,11 @@ int collision_data::locate(double temp) const
 	return l;
 }
 
+int collision_data::hunt_index(double temp, int old_index) const
+{
+    return 0;
+}
+
 
 void collision_data_cub_spline::calc_coeff_deriv()
 {
@@ -117,12 +123,12 @@ double collision_data_cub_spline::get_rate(int first_lev, int sec_lev, int lo, d
 	int i;
 	double a, b, h;
 	
-	i = first_lev*(first_lev -1)/2 + sec_lev;
+	i = ((first_lev*(first_lev -1)) >> 1) + sec_lev;
 	h = tgrid[lo+1] - tgrid[lo];
 	a = (tgrid[lo+1] - temp)/h;
 	b = 1. - a; // = (temp - tgrid[lo])/h;
 	
-	return a*coeff[i][lo] + b*coeff[i][lo+1] + ((a*a*a - a)*coeff_deriv[i][lo] + (b*b*b - b)*coeff_deriv[i][lo+1])*(h*h)/6.;
+	return a*coeff[i][lo] + b*coeff[i][lo+1] + one_sixth_const*((a*a*a - a)*coeff_deriv[i][lo] + (b*b*b - b)*coeff_deriv[i][lo+1])*(h*h);
 }
 
 void collision_data_cub_spline::check_spline(int ilev, int flev, const std::string & fname) const

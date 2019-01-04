@@ -1649,7 +1649,7 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
                 arr[i] += up_rate - down_rate;
                 arr[l] += down_rate - up_rate;
 
-                if (mol_einst->arr[i][l] > DBL_EPSILON)
+                if (mol_einst->arr[i][l] > 1.e-99)
                 {
                     c = 1. / (EIGHT_PI *vd*energy*energy*energy);
 
@@ -1739,12 +1739,11 @@ void evolution_data::calc_radiative_coeff(const realtype *y_data, int nb, const 
 
 #pragma omp for schedule(dynamic, 1)
 		for (l = 0; l < nb_lev - 1; l++) {
+            lowl = y_data[nb + l];
 			for (i = l + 1; i < nb_lev; i++) {					
-				if (mol_einst->arr[i][l] > DBL_EPSILON)
-				{	
-                    lowl = y_data[nb + l];
-                    upl = y_data[nb + i];
-                    
+				if (mol_einst->arr[i][l] > 1.e-99)
+				{        
+                    upl = y_data[nb + i];                    
                     energy = mol_di->lev_array[i].energy - mol_di->lev_array[l].energy; // level energy is in cm-1;
 					c = 1./(EIGHT_PI *vd*energy*energy*energy);
 				
@@ -2383,7 +2382,8 @@ bool evolution_data::recalc_grain_charge_ranges(N_Vector y, vector<double> & new
 		// a trick for charge conservation: 
 		new_y[network->e_nb] -= dz;
 		if (verbosity) {
-			cout << "Concentration of electrons was changed (to compensate grain charge lost) by (cm-3): " << -dz << endl;
+            cout << "new ranges for grain charge distribution were adopted," << endl 
+                << "concentration of electrons was changed (to compensate grain charge lost) by (cm-3): " << -dz << endl;
 		}
 
 		nb_of_equat += new_nb_dch[nb_of_dust_comp] - nb_dch[nb_of_dust_comp];
@@ -2751,7 +2751,7 @@ mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &outp
 	}
 	
 	network->check_reactions(); // must be called in all cases;
-	network->print_network(output_path);
+//	network->print_network(output_path); // the size of the file is about 1 Mbyte
 
 	chem_reaction_rates = new double [network->nb_of_reactions];
 	memset(chem_reaction_rates, 0, network->nb_of_reactions*sizeof(double));
@@ -2844,7 +2844,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
         / ion_vg_denominator;
 	
 	// 3. The derivative of the temperature of the neutral gas, the temperature unit is K:
-    ydot_data[nb_mhd] = -ion_vg_terms - temp_n_erg * nb_gain_n
+    ydot_data[nb_mhd] = -neut_vg_terms - temp_n_erg * nb_gain_n
         + (temp_n_erg * neut_nb_dens - neut_mass_dens * vel_n *vel_n) * velg_mhd_n;
 	
     ydot_data[nb_mhd] /= BOLTZMANN_CONSTANT * neut_nb_dens * vel_n;

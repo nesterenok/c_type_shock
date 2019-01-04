@@ -99,6 +99,7 @@ public:
 // Cosmic ray induced FUV radiation field;
 // the photon flux is assumed to be constant at 850 - 1750 A, or 57143 < E < 117650 cm-1, or 7.09 - 14.6 eV (Gredel et al. ApJ 347, p. 289, 1989);
 // it is assumed that the emission probability for photon of any energy is equal to a constant value;
+// Ibanez-Meja et al. 2019, MNRAS (accepted) used the energy range for CR induced UV radiation 11.2 - 13.6 eV (90330 - 109690 cm-1)
 class CR_induced_UV_field : public radiation_field
 {
 private:

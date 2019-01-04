@@ -1,0 +1,17 @@
+! na - integrated neutral gas cooling by atomic emission, cooling < 0., [erg cm-2 s-1]
+! nh2 - neutral gas cooling by H2 emission
+! nh2o - neutral gas cooling by H2O emission
+! nco - neutral gas cooling by CO emission
+! noh - neutral gas cooling by OH emission
+! nnh3 - neutral gas cooling by p- and o-NH3 emission
+! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission
+!1           2           3           4           5           6           7           8           
+!z(cm)       na          nh2         nh2o        nco         noh         nnh3        nch3oh      
+6.33445e+13  -2.843e-11  9.644e-12   -2.522e-11  -1.715e-10  0.000e+00   0.000e+00   0.000e+00   
+2.00715e+14  -1.517e-10  5.149e-11   -1.346e-10  -9.152e-10  0.000e+00   0.000e+00   0.000e+00   
+5.11795e+14  -4.309e-10  1.464e-10   -3.824e-10  -2.599e-09  0.000e+00   0.000e+00   0.000e+00   
+1.30751e+15  -1.145e-09  3.896e-10   -1.016e-09  -6.907e-09  0.000e+00   0.000e+00   0.000e+00   
+2.91563e+15  -2.588e-09  8.817e-10   -2.297e-09  -1.561e-08  0.000e+00   0.000e+00   0.000e+00   
+6.88929e+15  -6.155e-09  2.098e-09   -5.461e-09  -3.713e-08  0.000e+00   0.000e+00   0.000e+00   
+1.54280e+16  -1.382e-08  4.712e-09   -1.226e-08  -8.335e-08  0.000e+00   0.000e+00   0.000e+00   
+3.26269e+16  -2.934e-08  9.978e-09   -2.600e-08  -1.767e-07  0.000e+00   0.000e+00   0.000e+00   

@@ -148,8 +148,13 @@ double ISRF_UV_Draine1978::get_intensity(double energy) const
 CR_induced_UV_field::CR_induced_UV_field(double norm_factor)
 {
 	// 57143 < E < 117650 cm-1 or 7.09 - 14.6 eV, 
-	en_min = 5.71e+4;
-	en_max = 1.177e+5; // to round off these values?
+	en_min = 5.7e+4;
+	en_max = 1.18e+5; 
+
+    // Ibanez-Meja et al. 2019, E = 90330 - 109690 cm-1
+    // en_min = 9.0e+4;
+    // en_max = 1.1e+5;
+
 	a = norm_factor/(8.*M_PI*(en_max - en_min) *SPEED_OF_LIGHT); 
 	name = "CR_UV";
 }

@@ -1,0 +1,33 @@
+! na - neutral gas cooling by atomic emission, cooling < 0., [erg cm-3 s-1]
+! nh2 - neutral gas cooling by H2 emission
+! nh2o - neutral gas cooling by H2O emission
+! nco - neutral gas cooling by CO emission
+! noh - neutral gas cooling by OH emission
+! nnh3 - neutral gas cooling by p- and o-NH3 emission
+! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission
+! ni - neutral gas heating by neutral-ion collisions
+! ne - neutral gas heating by neutral-electron collisions
+! nd - neutral gas heating by neutral-dust collisions
+! nch - neutral gas heating by chemical reactions
+! ph - heating by photoeffect on dust grains
+! cr - heating by cosmic rays
+! rlh2 - radiative energy loss by H2 molecule
+! in - ion gas component heating by neutral-ion collisions
+! ie - ion gas component heating by ion-electron collisions
+! ich - ion gas component heating by chemical reactions
+! ea - electron component cooling by atomic emission
+! eh2 - electron component cooling by H2 emission
+! eh2o - electron component cooling by H2O emission
+! en - electron component heating by neutral-electron collisions
+! ei - electron component heating by ion-electron collisions
+! ech - electron component heating by chemical reactions
+!1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17          18          19          20          21          22          23          24          
+!t(yr)/z(cm) na          nh2         nh2o        nco         noh         nnh3        nch3oh      ni          ne          nd          nch         ph          cr          rlh2        in          ie          ich         ea          eh2         eh2o        en          ei          ech         
+6.33445e+13  -8.975e-25  3.045e-25   -7.964e-25  -5.414e-24  0.000e+00   0.000e+00   0.000e+00   1.448e-24   7.599e-27   -6.382e-24  8.606e-24   1.032e-25   3.083e-24   4.897e-24   -1.445e-24  -4.674e-27  1.450e-24   -6.748e-29  1.481e-29   -1.139e-28  -7.599e-27  4.674e-27   3.210e-27   
+2.00715e+14  -8.975e-25  3.048e-25   -7.964e-25  -5.414e-24  0.000e+00   0.000e+00   0.000e+00   1.448e-24   7.599e-27   -6.382e-24  8.606e-24   1.032e-25   3.083e-24   4.898e-24   -1.445e-24  -4.674e-27  1.450e-24   -6.748e-29  1.482e-29   -1.139e-28  -7.599e-27  4.674e-27   3.210e-27   
+5.11795e+14  -8.975e-25  3.053e-25   -7.964e-25  -5.414e-24  0.000e+00   0.000e+00   0.000e+00   1.448e-24   7.599e-27   -6.382e-24  8.606e-24   1.032e-25   3.083e-24   4.898e-24   -1.445e-24  -4.675e-27  1.450e-24   -6.748e-29  1.482e-29   -1.139e-28  -7.599e-27  4.675e-27   3.210e-27   
+1.30751e+15  -8.975e-25  3.059e-25   -7.964e-25  -5.414e-24  0.000e+00   0.000e+00   0.000e+00   1.449e-24   7.600e-27   -6.382e-24  8.606e-24   1.032e-25   3.083e-24   4.898e-24   -1.445e-24  -4.675e-27  1.450e-24   -6.748e-29  1.484e-29   -1.139e-28  -7.600e-27  4.675e-27   3.210e-27   
+2.91563e+15  -8.975e-25  3.061e-25   -7.964e-25  -5.414e-24  0.000e+00   0.000e+00   0.000e+00   1.451e-24   7.600e-27   -6.382e-24  8.606e-24   1.032e-25   3.083e-24   4.898e-24   -1.445e-24  -4.676e-27  1.450e-24   -6.748e-29  1.484e-29   -1.139e-28  -7.600e-27  4.676e-27   3.210e-27   
+6.88929e+15  -8.974e-25  3.061e-25   -7.964e-25  -5.414e-24  0.000e+00   0.000e+00   0.000e+00   1.464e-24   7.606e-27   -6.380e-24  8.606e-24   1.032e-25   3.083e-24   4.898e-24   -1.445e-24  -4.674e-27  1.450e-24   -6.750e-29  1.484e-29   -1.139e-28  -7.599e-27  4.674e-27   3.210e-27   
+1.54280e+16  -8.983e-25  3.062e-25   -7.964e-25  -5.413e-24  0.000e+00   0.000e+00   0.000e+00   1.636e-24   7.675e-27   -6.342e-24  8.605e-24   1.032e-25   3.083e-24   4.898e-24   -1.445e-24  -4.680e-27  1.450e-24   -6.815e-29  1.485e-29   -1.142e-28  -7.603e-27  4.680e-27   3.211e-27   
+3.26269e+16  -9.058e-25  3.062e-25   -8.015e-25  -5.437e-24  0.000e+00   0.000e+00   0.000e+00   2.194e-23   1.604e-26   -1.563e-24  8.517e-24   1.039e-25   3.083e-24   4.899e-24   -1.453e-24  -5.329e-27  1.459e-24   -1.228e-28  1.533e-29   -1.495e-28  -8.032e-27  5.329e-27   3.347e-27   

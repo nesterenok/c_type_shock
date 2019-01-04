@@ -22,8 +22,10 @@ public:
 // return the maximal temperature in the data set;
 	double get_max_temp() const { return tgrid[jmax-1]; }
 
-// this function finds the nb of the lower boundary of the interval l, such that tgrid[l] < temp < tgrid[l+1];
-	int locate(double temp) const;
+// these functions find the nb of the lower boundary of the interval l, such that tgrid[l] < temp < tgrid[l+1];
+	int locate(double temp) const; 
+    int hunt_index(double temp, int old_index) const; //
+
 // the function calculates the array of rate derivatives;
 	virtual void calc_coeff_deriv();
 
