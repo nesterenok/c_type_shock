@@ -116,11 +116,14 @@
 //-------------------------------------------------
 
 #define REL_ERROR_SOLVER 1.e-6
-#define ABS_ERROR_SOLVER 1.e-13
-#define MINIMAL_ABUNDANCE 1.e-99
+#define ABS_CONCENTRATION_ERROR_SOLVER 1.e-18 // specimen concentration (cm-3)
+#define ABS_POPULATION_ERROR_SOLVER 1.e-14 // specimen level population density (cm-3)
+#define ABS_PARAMETER_ERROR_SOLVER 1.e-11 // temperature (K), gas velocity (cm/s), average grain charge
+#define MAX_CONV_FAILS_SOLVER 100 // default value is 10;
+#define MAX_ERR_TEST_FAILS_SOLVER 14 // default value is 7;
+
+#define MINIMAL_ABUNDANCE 1.e-99 // for saving in file
 #define MINIMAL_REACTION_RATE 1.e-99
-
-
 //--------------------------------------------------
 // Switchers
 //--------------------------------------------------

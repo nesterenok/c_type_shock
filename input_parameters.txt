@@ -6,16 +6,16 @@ C:/input_data/
 # Computation mode: DC - dark cloud, 
 # CS - C-type shock, CS_ - a set of C-type shock models for a grid of velocities (check the directory name), 
 # CR - dark cloud with increasing cosmic ray ionization:
-CS_
+DC
 # carbon abundance in PAH molecules relative to H nuclei (typical value is 1.e-5).
 0.
 # 2. Parameters relevant for dark cloud simulations:
 # path to the directory for the output in dark cloud simulations:
-./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/
+./output_data_6e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-14/
 # cosmic ray ionization rate, in s-1 ('standard' value is 1.36e-17 s-1):
-1.e-16
+1.e-14
 # total concentration of H nuclei in cm-3:
-2.e+4
+6.e+4
 # visual extinction is extinction at 5500 A = 0.55 um; N_H/A_V = 1.8e+21 atoms cm-2 mag-1
 10
 # factor for the UV field scaling relative to UV field given by Draine, ApJ 231, 77 (1978):

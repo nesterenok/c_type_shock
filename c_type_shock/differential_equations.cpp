@@ -587,11 +587,16 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	y_data = NV_DATA_S(y);
 	ydot_data = NV_DATA_S(ydot);
 
+    // control unphysical negative specimen concentrations (and level population densities)
+ /*   for (k = 0; k < nb_of_species; k++) {
+        if (y_data[k] < 0.)
+            return 1;
+    }*/
 	for (k = 0; k < nb_of_equat; k++) {
 		ydot_data[k] = 0.;
 	}
 
-	// velocity values are initialized in the function of daughter class;
+	// velocity values are initialized in the function of daughter class
 	temp_n = y_data[nb_mhd];
 	temp_i = y_data[nb_mhd + 1];
 	temp_e = y_data[nb_mhd + 2];
@@ -775,6 +780,10 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 				visual_extinct, vel_n, vel_i, ads_dust_area, ads_grain_veln2, temp_n, temp_i, temp_e, temp_d, photoreact_factor_cr, 
 				desorption_factor_cr, photodes_factor_cr2, photodes_factor_is, conc_h_tot, nb_ads_sites_grain);
 		
+            if (rate < 0.) {
+                //cout << left << "warning, rate in reaction is negative: " << setw(13) << rate << network->reaction_array[i].name << endl;
+            }
+
 			switch (reaction.type)
 			{ 
 			// Unimolecular reactions:
@@ -2520,6 +2529,32 @@ void evolution_data::get_h2_chem(double & h2_gr, double & h2_gas, double & o_gra
 	h2_h_diss = h2_h_diss_rate;
 }
 
+void evolution_data::set_tolerances(N_Vector abs_tol)
+{
+    int i, j;
+    for (i = 0; i < nb_of_species; i++) {
+        NV_Ith_S(abs_tol, i) = ABS_CONCENTRATION_ERROR_SOLVER;
+    }
+
+    for (i = nb_of_species; i < nb_dch[0]; i++) {
+        NV_Ith_S(abs_tol, i) = ABS_POPULATION_ERROR_SOLVER;
+    }
+    for (i = 0; i < nb_of_dust_comp; i++) {
+        if (is_dust_charge_large[i]) {
+            NV_Ith_S(abs_tol, nb_dch[i]) = ABS_CONCENTRATION_ERROR_SOLVER; // grain concentration
+            NV_Ith_S(abs_tol, nb_dch[i] + 1) = ABS_PARAMETER_ERROR_SOLVER; // average grain charge
+        }
+        else {
+            for (j = nb_dch[i]; j < nb_dch[i + 1]; j++) {
+                NV_Ith_S(abs_tol, j) = ABS_CONCENTRATION_ERROR_SOLVER;
+            }
+        }
+    }
+    for (i = nb_dct; i < nb_of_equat; i++) {
+        NV_Ith_S(abs_tol, i) = ABS_PARAMETER_ERROR_SOLVER;
+    }
+}
+
 void evolution_data::set_parameters(double vis_ext, double cr_ion, double uv_field, double ir_field)
 {
 	visual_extinct = vis_ext;
@@ -2706,10 +2741,10 @@ chemistry_evolution_data::~chemistry_evolution_data()
 
 int chemistry_evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 {
-	int i;
+	int i, returned_val;
 	// must be defined before parent function call:
 	vel_ni_diff = vel_n = vel_i = 0.;
-	evolution_data::f(t, y, ydot);
+    returned_val = evolution_data::f(t, y, ydot);
 
 	// The equations for neutral gas, ions and electron temperatures:
 	if (IS_TEMPERATURE_FIXED) 
@@ -2728,7 +2763,7 @@ int chemistry_evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 		NV_Ith_S(ydot, nb_mhd + 1) = (2.*energy_gain_i/(3.*BOLTZMANN_CONSTANT) - temp_i* nb_gain_i)/conc_i;
 		NV_Ith_S(ydot, nb_mhd + 2) = (2.*energy_gain_e/(3.*BOLTZMANN_CONSTANT) - temp_e* nb_gain_e)/conc_e;
 	}
-	return 0;
+	return returned_val;
 }
 
 //
@@ -2739,7 +2774,7 @@ mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &outp
 	int nb_vibr_co, int nb_co, int nb_pnh3, int nb_onh3, int nb_oh, int nb_vibr_ch3oh, int nb_ch3oh, double c_abund_pah, int verb)
 	: evolution_data(input_path, output_path, nb_h2, nb_vibr_h2o, nb_h2o, nb_vibr_co, nb_co, nb_pnh3, nb_onh3, nb_oh, 
         nb_vibr_ch3oh, nb_ch3oh, c_abund_pah, verb),
-	magn_field_energy(0.), add_el_source(0.), velg_mhd_n(0.), velg_mhd_i(0.)
+	magn_field_energy(0.), add_el_source(0.), velg_mhd_n(0.), velg_mhd_i(0.), ion_vg_denominator(0.)
 {
 	// calculation of the number of equations:
 	nb_of_equat = nb_of_species + nb_lev_h2 + 2*nb_lev_h2o + nb_lev_co + nb_lev_oh + nb_lev_pnh3 + nb_lev_onh3 
@@ -2768,18 +2803,18 @@ mhd_shock_data::~mhd_shock_data()
 
 int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 {
-   	int i, k, l;
+   	int i, k, l, returned_val;
 	double a, b, c, d, e, en_n, nb_e, g_velg, neut_nb_dens, ion_conc, ion_pah_conc, neut_mass_dens, ion_mass_dens, 
-        ion_vg_denominator, ion_vg_terms, neut_vg_terms;
+        ion_vg_terms, neut_vg_terms;
 
 	vel_n = NV_Ith_S(y, nb_mhd + 3);
 	vel_i = NV_Ith_S(y, nb_mhd + 4);
 	vel_ni_diff = vel_n - vel_i;
 
-	magn_field = magn_field_0 *shock_vel/vel_i;
-	magn_field_energy = magn_field*magn_field/(4.*M_PI);
+	magn_field = magn_field_0 * shock_vel / vel_i;
+	magn_field_energy = magn_field * magn_field / (4. * M_PI);
 
-	evolution_data::f(t, y, ydot);
+    returned_val = evolution_data::f(t, y, ydot);
 	
 	realtype *y_data = NV_DATA_S(y);
 	realtype *ydot_data = NV_DATA_S(ydot);
@@ -2845,7 +2880,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	
 	// 3. The derivative of the temperature of the neutral gas, the temperature unit is K:
     ydot_data[nb_mhd] = -neut_vg_terms - temp_n_erg * nb_gain_n
-        + (temp_n_erg * neut_nb_dens - neut_mass_dens * vel_n *vel_n) * velg_mhd_n;
+        + (temp_n_erg * neut_nb_dens - neut_mass_dens * vel_n * vel_n) * velg_mhd_n;
 	
     ydot_data[nb_mhd] /= BOLTZMANN_CONSTANT * neut_nb_dens * vel_n;
 		
@@ -3012,7 +3047,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	for (i = 0; i < nb_of_dust_comp; i++) {
 		ydot_data[nb_dct + i] = ydot_data[nb_dct + i]/av_grain_velz[i];
 	}
-	return 0;
+	return returned_val;
 }
 
 

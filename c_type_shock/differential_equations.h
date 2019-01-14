@@ -87,6 +87,8 @@ public:
 	void set_grain_charge_ranges(bool *is_av_ch, int *min_gch, int *max_gch, int nb_of_chs);
 	void set_magn_field(double m) { magn_field = magn_field_0 = m; } // in Gauss
 
+    void set_tolerances(N_Vector abs_tol);
+
 	int get_nb_of_species() const { return nb_of_species; };
 	void get_nb_of_levels(int & nb_lev_h2, int & nb_lev_h2o, int & nb_lev_co, int & nb_lev_oh, int & nb_lev_pnh3, int & nb_lev_onh3,
 		int & nb_lev_ch3oh, int & nb_lev_ci, int & nb_lev_oi, int & nb_lev_cii) const;
@@ -117,7 +119,7 @@ public:
 
 	// dust heating normalized on one dust grain [erg s-1],
 	// by interstellar radiation field, surface chemistry, gas-dust collisions, H2 line emission, by all molecules (except H2);
-	void get_dust_heating_rates(int i, double & isrf, double & chem, double &coll, double &h2_mol, double & mol) const;
+	void get_dust_heating_rates(int i, double & isrf, double & chem, double & coll, double & h2_mol, double & mol) const;
 	// grain charging rates [cm-3 s-1]:
 	void get_dust_charging_rates(int i, double & el_att, double & ion_neutr, double & phel_uv, double & phel_vis, double & phel_cr) const;
 	
@@ -207,12 +209,13 @@ public:
 class mhd_shock_data : public evolution_data
 {
 public:
-	double magn_field_energy, add_el_source, velg_mhd_n, velg_mhd_i;
+	double magn_field_energy, add_el_source, velg_mhd_n, velg_mhd_i, ion_vg_denominator;
 
 	void set_shock_vel(double v) { shock_vel = v; } // in cm/s
 	double get_add_electron_sterm() { return add_el_source; }
 	double get_velg_mhd_n() { return velg_mhd_n; }
 	double get_velg_mhd_i() { return velg_mhd_i; }
+    double get_ionvg_deniminator() { return ion_vg_denominator; }
 
 	// vector defining the ODE system for the mhd shock.
 	int f(realtype t, N_Vector y, N_Vector ydot);
