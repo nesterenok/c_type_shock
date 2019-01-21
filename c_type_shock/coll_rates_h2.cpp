@@ -923,20 +923,26 @@ void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_l
 				*concentration[0];	
 		}
 		// collisions with p-H2
-		if (low_lev.v == 0 && up_lev.v == 0 && up_lev.nb < coll_data[1]->nb_lev) {
+#if (H2_H2_COLL_DATA == 1)
+		if (low_lev.v == 0 && up_lev.v == 0 && up_lev.nb < coll_data[1]->nb_lev) { // Wan et al. (2018)
 			down_rate += coll_data[1]->get_rate(up_lev.nb, low_lev.nb, indices[1], (temp_neutrals < max_temp[1]) ? temp_neutrals : max_temp[1]) 
 				*concentration[1];	
 		}
-		else if (up_lev.nb < coll_data[2]->nb_lev) {
+		else
+#endif
+        if (up_lev.nb < coll_data[2]->nb_lev) { // Flower & Roueff (1998)
 			down_rate += coll_data[2]->get_rate(up_lev.nb, low_lev.nb, indices[2], (temp_neutrals < max_temp[2]) ? temp_neutrals : max_temp[2]) 
 				*concentration[2];	
 		}
 		// collisions with o-H2
-		if (low_lev.v == 0 && up_lev.v == 0 && up_lev.nb < coll_data[3]->nb_lev) {
+#if (H2_H2_COLL_DATA == 1)
+		if (low_lev.v == 0 && up_lev.v == 0 && up_lev.nb < coll_data[3]->nb_lev) { // Wan et al. (2018)
 			down_rate += coll_data[3]->get_rate(up_lev.nb, low_lev.nb, indices[3], (temp_neutrals < max_temp[3]) ? temp_neutrals : max_temp[3]) 
 				*concentration[3];	
 		}
-		else if (up_lev.nb < coll_data[4]->nb_lev) {
+		else
+#endif
+        if (up_lev.nb < coll_data[4]->nb_lev) { // Flower & Roueff (1999)
 			down_rate += coll_data[4]->get_rate(up_lev.nb, low_lev.nb, indices[4], (temp_neutrals < max_temp[4]) ? temp_neutrals : max_temp[4]) 
 				*concentration[4];	
 		}

@@ -10,6 +10,9 @@
 // 1 - data by Lique (2015) for lowest 54 levels, data by Wrathmall et al. (2007), Martin & Mandy (1995);
 // 2 - data by Lique (2015) and by Bossion et al. (2018)
 #define H2_H_COLL_DATA 2
+// 0 - data by Flower & Roueff (1998, 1999);
+// 1 - data by Wan et al. (2018);
+#define H2_H2_COLL_DATA 1
 
 // the function reads the data for para-H2 and ortho-H2 rate coefficients and combine them in one table for h2 molecule;
 void h2_coll_data_process(const std::string &data_path);

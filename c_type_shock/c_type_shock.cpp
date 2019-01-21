@@ -55,6 +55,13 @@ Temperature is measured in K units; velocity - cm/s;
 #define SOURCE_NAME "c_type_shock.cpp"
 using namespace std;
 
+enum SHOCK_STATE_ID {
+    SHOCK_STATE_NORMAL = 0,
+    SHOCK_STATE_ION_SUPERSONIC,        // ion velocity changed the sign, ion fluid become supersonic
+    SHOCK_STATE_NEUTRAL_SUBSONIC,      // neutral gas velocity changed the sign, neutral fluid become subsonic,
+    SHOCK_STATE_H2_DISSOCIATION        // 99% of H2 is dissociated,
+};
+
 // path to the file with cloud parameters must be given,
 void assign_cloud_data(const string &path, evolution_data *user_data, vector<double> & iy, double & evol_time, 
 	double & visual_extinct, double & cr_ioniz_rate, double & uv_field_strength, double & ir_field_strength, double & conc_h_tot, 
@@ -63,7 +70,7 @@ void assign_cloud_data(const string &path, evolution_data *user_data, vector<dou
 void calc_chem_evolution(const string &data_path, const string &output_path, double conc_h_tot, double visual_extinct, double cr_ioniz_rate, 
 	double uv_field_strength, double ir_field_strength, double c_abund_pah);
 // path to data files, path to output for dark cloud simulations, path to output for shock simulations;
-bool calc_shock(const string &data_path, const string &output_path1, const string &output_path2, double shock_vel, 
+SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, const string &output_path2, double shock_vel,
 	double magnetic_field, double c_abund_pah, double evol_time);
 
 void calc_cr_dominated_region(const string &data_path, const string &output_path1, const string &output_path2, double c_abund_pah, 
@@ -73,7 +80,7 @@ void create_file_cloud_parameters(const string &output_path);
 void create_file_specimen_abund(const string & output_path, const chem_network *network);
 void create_file_ice_comp(const string & output_path);
 void create_file_heating_rates(const string & output_path);
-void create_file_heating_rates_integrated(const string & output_path);
+void create_file_energy_fluxes(const string & output_path);
 void create_file_chem_hating(const string & output_path);
 void create_file_dust_properties(const string & output_path, const dust_model *dust);
 void create_file_reaction_rates(const string & output_path, const chem_network *network);
@@ -87,7 +94,7 @@ void save_cloud_parameters(const evolution_data *user_data, const string &output
 void save_specimen_abund(const string &output_path, int nb_of_species, const N_Vector &y, double conc_h_tot, double var);
 void save_ice_comp(const string &output_path, const chem_network *network, const N_Vector &y, double var);
 void save_heating_rates(const string &output_path, const evolution_data *user_data, double var);
-void save_heating_rates_integrated(const string &output_path, const evolution_data *user_data, double var, double dvar);
+void save_energy_fluxes(const string &output_path, const evolution_data *user_data, const N_Vector &y, double var, double dvar);
 void save_chem_heating_rates(const string &output_path, const evolution_data *user_data, double ty);
 void save_dust_properties(const string &output_path, const evolution_data *user_data, const N_Vector &y, double conc_h_tot, double var);
 void save_reaction_rates(const string &output_path, const evolution_data *user_data, double var);
@@ -109,7 +116,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
 
 int main(int argc, char** argv)
 {
-    bool is_limit_vel;
+    SHOCK_STATE_ID shock_state;
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, nb_processors;
 	double conc_h_tot, visual_extinct, shock_vel, magnetic_field, cr_ioniz_rate, c_abund_pah, uv_field_strength, ir_field_strength, 
@@ -262,6 +269,7 @@ int main(int argc, char** argv)
 		{
 			calc_chem_evolution(data_path, output_path, conc_h_tot, visual_extinct, cr_ioniz_rate, uv_field_strength, 
 				ir_field_strength, c_abund_pah);
+            break;
 		}
 		else 
 		{
@@ -307,21 +315,26 @@ int main(int argc, char** argv)
 
 			if (mode == "CS") 
 			{ 
-                is_limit_vel = calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty);
-			}
+                cout << output_path << endl;
+                shock_state = calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty); 
+                cout << "Shock ended with the code: " << (int)shock_state;
+                break;
+            }
             else if (mode == "CS_")
             {
-                is_limit_vel = false;
-                for (i = 0; i < 10 && (!is_limit_vel); i++) {
-                    shock_vel = 1.5e+6 + i * 5.0e+5;
+                shock_state = SHOCK_STATE_NORMAL;
+                for (i = 0; i < 11 && (shock_state == SHOCK_STATE_NORMAL); i++) {
+                    shock_vel = 1.0e+6 + i * 5.0e+5;
                     ss.clear();
                     ss.str("");
                     ss << output_path;
                     ss << static_cast<int>(1.e-5*shock_vel + 0.1);
                     ss << "/";
                     cout << left << setw(5) << i+1 << ss.str() << endl;
-                    is_limit_vel = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
+                    shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
+                    cout << "Shock ended with the code: " << (int)shock_state;
                 }
+                break;
             }
 			else
 			{
@@ -368,6 +381,7 @@ int main(int argc, char** argv)
 				if (mode == "CR") 
 				{
 					calc_cr_dominated_region(data_path, input_path, output_path, c_abund_pah, ty, cr_ir_factor, incr_time);
+                    break;
 				}
 				else {
 					cout << " undefined mode";
@@ -1069,7 +1083,7 @@ void assign_cloud_data(const string &path, evolution_data *user_data, vector<dou
 	delete [] max_gch;
 }
 
-bool calc_shock(const string &data_path, const string &output_path1, const string &output_path2, double shock_vel, 
+SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, const string &output_path2, double shock_vel,
 	double magnetic_field, double c_abund_pah, double evol_time)
 {
 #ifdef __linux__
@@ -1089,12 +1103,13 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
     cout.rdbuf(out.rdbuf());
 #endif	
 
-	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg, is_limit_vel;
+    SHOCK_STATE_ID shock_state = SHOCK_STATE_NORMAL;
+	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg;
 	int i, nb_saved, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
 		nb_lev_ch3oh, nb_lev_oi, nb_lev_ci, nb_lev_cii, nb_of_species, nb_of_equat, nb_of_grain_charges, nb_dct, nb_mhd, flag, 
 		nb_saved_cloud_param, verbosity;
 	long int tot_nb_steps;
-	double a, b, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, shock_length, magn_sonic_speed, 
+	double a, b, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, magn_precursor_length, magn_sonic_speed, 
 		sound_speed, conc_h_tot, temp_n, temp_i, temp_e, neut_dens, ion_dens, neut_conc, ion_conc, ion_pah_conc, rel_tol, 
 		ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved;
 	double *prev_y(0);
@@ -1108,9 +1123,7 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 	SUNLinearSolver LS(NULL);
 	N_Vector y, abs_tol;
 
-	verbosity = 1;
-    is_limit_vel = false;
-	
+	verbosity = 1;	
     cout << scientific;
 	cout.precision(4);
 		
@@ -1188,7 +1201,7 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 	// Assesment of the magnetic precursor length - the distance that characterizes the decrease of the ion velocity, 
 	// Draine, ApJ 241, p. 1021, 1980; Flower & Pineau des Forets, MNRAS 275, p. 1049, 1995; 
 	// 'Langevin' cross section is approximately equal to sigma*vel = 2.e-9 cm3 s-1;
-	shock_length = magnetic_field*magnetic_field /(M_PI*neut_dens*shock_vel)
+	magn_precursor_length = magnetic_field*magnetic_field /(M_PI*neut_dens*shock_vel)
 		/(2.e-9*ion_conc + 0.5*dust->area_perH *conc_h_tot *shock_vel);
 
 	// magnetosonic speed, see Draine, ApJ 241, p. 1021, 1980;
@@ -1200,8 +1213,8 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 	sound_speed = sqrt(5.*neut_conc*BOLTZMANN_CONSTANT*temp_n/(3.*neut_dens));
 	
 	if (verbosity) {
-		cout << "Characteristic scale of magnetic precursor (cm): " << shock_length << endl
-			<< "Characteristic value of velocity gradient (cm/s/cm): " << -shock_vel/shock_length << endl
+		cout << "Characteristic scale of magnetic precursor (cm): " << magn_precursor_length << endl
+			<< "Characteristic value of ion velocity gradient (cm/s/cm): " << -shock_vel/magn_precursor_length << endl
 			<< "Magnetosonic speed (cm/s): " << magn_sonic_speed << endl
 			<< "Neutral gas sound speed (cm/s): " << sound_speed << endl 
 			<< "Ion Alfven speed (cm/s): " << magnetic_field/sqrt(4*M_PI*ion_dens) << endl
@@ -1216,8 +1229,8 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 	user_data.set_tolerances(abs_tol);
 	
 	ty = z = z_saved = 0.;
-	dz = zout = 0.01*shock_length; // cm
-	zfin = 1000.*shock_length;
+	dz = zout = 0.01*magn_precursor_length; // cm
+	zfin = 1000.*magn_precursor_length;
     // relative difference between ion and neutral speeds, at which shock stop;
     dvel_shock_stop = 0.01; // for studies of chemical evolution of post-shock gas, set 0.001
 
@@ -1279,7 +1292,7 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 	create_file_cloud_parameters(output_path2);
 	create_file_specimen_abund(output_path2, network);
 	create_file_heating_rates(output_path2);
-	create_file_heating_rates_integrated(output_path2);
+	create_file_energy_fluxes(output_path2);
 	create_file_chem_hating(output_path2);
 	create_file_dust_properties(output_path2, dust);
 	create_file_reaction_rates(output_path2, network);
@@ -1322,7 +1335,7 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 			i--;
 			a += dz_arr[i];
 		}
-		while (a < 0.05*shock_length && i > 0);
+		while (a < 0.05*magn_precursor_length && i > 0);
 		
 		vel_n_grad = (NV_Ith_S(y, nb_mhd+3) - veln_arr[i])/a;
 		vel_i_grad = (NV_Ith_S(y, nb_mhd+4) - veli_arr[i])/a;
@@ -1338,13 +1351,13 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
                 << "calc time (s): " << setw(10) << (int)(time(NULL) - timer) << "nb of steps: " << i << endl;
         }
         // Saving data
-        if (z - z_saved > 0.01 * shock_length) {
+        if (z - z_saved > 0.03 * magn_precursor_length) {
             nb_saved++;
             z_saved = z;
 
             save_specimen_abund(output_path2, nb_of_species, y, conc_h_tot, z);
             save_heating_rates(output_path2, &user_data, z);
-            save_heating_rates_integrated(output_path2, &user_data, z, dz);
+            save_energy_fluxes(output_path2, &user_data, y, z, dz);
             save_dust_properties(output_path2, &user_data, y, conc_h_tot, z);
             save_mol_data(output_path2, &user_data, y, z);
             save_file_h2_chemistry(output_path2, &user_data, y, z);
@@ -1388,9 +1401,19 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
 			cout << "Error ocurred in solver" << flag << endl;
 			break;
 		}
-        if (user_data.get_ionvg_deniminator() < 0.) {
-            cout << "Denominator of ion velocity has changed the sign" << endl;
-            is_limit_vel = true;
+        if (user_data.is_ion_fluid_supersonic()) {
+            cout << "Ion fluid is supersonic" << endl;
+            shock_state = SHOCK_STATE_ION_SUPERSONIC;
+            break;
+        }
+        if (user_data.is_neut_fluid_subsonic()) {
+            cout << "Neutral fluid is subsonic" << endl;
+            shock_state = SHOCK_STATE_NEUTRAL_SUBSONIC;
+            break;
+        }
+        if (NV_Ith_S(y, network->h_nb) > 198. * NV_Ith_S(y, network->h2_nb)) {
+            cout << "Almost total (99%) H2 dissociation took place" << endl;
+            shock_state = SHOCK_STATE_H2_DISSOCIATION;
             break;
         }
 
@@ -1507,7 +1530,7 @@ bool calc_shock(const string &data_path, const string &output_path1, const strin
     cout.rdbuf(orig_cout);
     cerr.rdbuf(orig_cerr);
 #endif
-    return is_limit_vel;
+    return shock_state;
 }
 
 void calc_cr_dominated_region(const string &data_path, const string &output_path1, const string &output_path2, double c_abund_pah, 
@@ -2228,41 +2251,49 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 	output.close();
 }
 
-void create_file_heating_rates_integrated(const string &output_path)
+void create_file_energy_fluxes(const string &output_path)
 {
 	int i;
 	string fname;
 	ofstream output;
 
-	fname = output_path + "sim_heating_cooling_int.txt";
+	fname = output_path + "sim_energy_fluxes.txt";
 	output.open(fname.c_str());
 
-	output << "! na - integrated neutral gas cooling by atomic emission, cooling < 0., [erg cm-2 s-1]" << endl
+	output << "! kin - kinetic energy flux (neutral and ions, without large dust grains), [erg cm-2 s-1]" << endl
+        << "! thm - thermal energy flux (neutrals and ions)" << endl
+        << "! mgn - magnetic energy flux" << endl
+        << "! ncool - total integrated gas cooling by emission, cooling < 0., [erg cm-2 s-1]" << endl
+        << "! na  - integrated neutral gas cooling by atomic emission" << endl
 		<< "! nh2 - neutral gas cooling by H2 emission" << endl
 		<< "! nh2o - neutral gas cooling by H2O emission" << endl
 		<< "! nco - neutral gas cooling by CO emission" << endl
 		<< "! noh - neutral gas cooling by OH emission" << endl
 		<< "! nnh3 - neutral gas cooling by p- and o-NH3 emission" << endl
-		<< "! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission" << endl;
+		<< "! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission" << endl
+        << "! totfl - total flux, [erg cm-2 s-1]" << endl;
 
 	output << left << "!";
-	for (i = 0; i < 8; i++) {
+	for (i = 0; i < 13; i++) {
 		output << left << setw(12) << i + 1;
 	}
 	output << endl;
 
-	output << left << setw(13) << "!z(cm)" << setw(12) << "na" << setw(12) << "nh2" << setw(12) << "nh2o" 
-		<< setw(12) << "nco" << setw(12) << "noh" << setw(12) << "nnh3" << setw(12) << "nch3oh" << endl;
+	output << left << setw(13) << "!z(cm)" << setw(12) << "kin" << setw(12) << "thm" << setw(12) << "mgn"
+        << setw(12) << "ncool" << setw(12) << "na" << setw(12) << "nh2" << setw(12) << "nh2o" 
+        << setw(12) << "nco" << setw(12) << "noh" << setw(12) << "nnh3" << setw(12) << "nch3oh" << setw(12) << "totfl" << endl;
 	output.close();
 }
 
-void save_heating_rates_integrated(const string &output_path, const evolution_data *user_data, double var, double dvar)
+void save_energy_fluxes(const string &output_path, const evolution_data *user_data, const N_Vector &y, double var, double dvar)
 {
+    int nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd;
 	static double neut_heat_atoms(0.), neut_heat_h2(0.), neut_heat_h2o(0.), neut_heat_co(0.), neut_heat_oh(0.), neut_heat_nh3(0.), 
 		neut_heat_ch3oh(0.), int_neut_heat_atoms(0.), int_neut_heat_h2(0.), int_neut_heat_h2o(0.), int_neut_heat_co(0.), int_neut_heat_oh(0.), 
 		int_neut_heat_nh3(0.), int_neut_heat_ch3oh(0.); 
 	double x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
-		neut_heat_scatt_el, rad_energy_loss_h2;
+		neut_heat_scatt_el, rad_energy_loss_h2, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc, 
+        ion_mass_dens, v_n, v_i, kinetic_energy_flux, thermal_energy_flux, magnetic_energy_flux;
 
 	string fname;
 	ofstream output;
@@ -2286,7 +2317,14 @@ void save_heating_rates_integrated(const string &output_path, const evolution_da
 	int_neut_heat_nh3 += (x6 + neut_heat_nh3) *0.5*dvar;
 	int_neut_heat_ch3oh += (x7 + neut_heat_ch3oh) *0.5*dvar;
 
-	fname = output_path + "sim_heating_cooling_int.txt";
+    total_mol_cooling = int_neut_heat_atoms + int_neut_heat_h2 + int_neut_heat_h2o + int_neut_heat_co +
+        int_neut_heat_oh + int_neut_heat_nh3 + int_neut_heat_ch3oh;
+
+    user_data->get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
+    user_data->calc_neutral_dens(y, neut_conc, neut_mass_dens);
+    user_data->calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens);
+
+	fname = output_path + "sim_energy_fluxes.txt";
 	output.open(fname.c_str(), ios::app);
 	output << scientific;
 
@@ -2294,13 +2332,27 @@ void save_heating_rates_integrated(const string &output_path, const evolution_da
 	output << left << setw(13) << var;
 	output.precision(3);
 	
-	output << left << setw(12) << int_neut_heat_atoms 
+    v_n = NV_Ith_S(y, nb_mhd + 3);
+    v_i = NV_Ith_S(y, nb_mhd + 4); 
+    
+    // large dust grains are not included
+    kinetic_energy_flux = 0.5 * (v_n * v_n * v_n * neut_mass_dens + v_i * v_i * v_i * ion_mass_dens);
+    thermal_energy_flux = 2.5 * BOLTZMANN_CONSTANT *(v_n * neut_conc * NV_Ith_S(y, nb_mhd) + v_i * (ion_conc + ion_pah_conc) * NV_Ith_S(y, nb_mhd + 1)
+        + v_i * NV_Ith_S(y, user_data->get_network()->e_nb) * NV_Ith_S(y, nb_mhd + 2));
+    magnetic_energy_flux = user_data->get_magnetic_field() * user_data->get_magnetic_field() * v_i / (4.*M_PI);
+    
+	output << left << setw(12) << kinetic_energy_flux
+        << setw(12) << thermal_energy_flux 
+        << setw(12) << magnetic_energy_flux
+        << setw(12) << total_mol_cooling
+        << setw(12) << int_neut_heat_atoms 
 		<< setw(12) << int_neut_heat_h2 
 		<< setw(12) << int_neut_heat_h2o 
 		<< setw(12) << int_neut_heat_co 
 		<< setw(12) << int_neut_heat_oh 
 		<< setw(12) << int_neut_heat_nh3 
-		<< setw(12) << int_neut_heat_ch3oh << endl;
+		<< setw(12) << int_neut_heat_ch3oh 
+        << setw(12) << fabs(total_mol_cooling) + kinetic_energy_flux + thermal_energy_flux + magnetic_energy_flux << endl;
 	output.close();
 }
 

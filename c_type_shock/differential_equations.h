@@ -104,6 +104,7 @@ public:
 	double get_vel_grad_min() const { return vel_grad_min; }
 	double get_vel_turb() const { return vel_turb; }
 	double get_shock_speed() const { return shock_vel; }
+    double get_magnetic_field() const { return magn_field; }
 
 	// the average temperature of grains that are able to adsorb species (averaging with surface area as a weight):
 	double get_av_dust_temp() const { return temp_d; }
@@ -152,7 +153,7 @@ public:
 	double calc_conc_h_tot(const N_Vector &y) const;
 	double calc_hydrocarbon_conc(const N_Vector &y) const;
 
-	// ion mass density include contribution from PAHs and small grains here:
+	// ion mass density include contribution from PAHs and small grains here, g/cm3:
 	void calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_mass_dens) const;
 	void calc_neutral_dens(const N_Vector &y, double & neut_conc, double & neut_mass_dens) const;
 
@@ -209,13 +210,15 @@ public:
 class mhd_shock_data : public evolution_data
 {
 public:
-	double magn_field_energy, add_el_source, velg_mhd_n, velg_mhd_i, ion_vg_denominator;
+	double magn_field_energy, add_el_source, velg_mhd_n, velg_mhd_i, ion_vg_denominator, neut_vg_denominator;
 
 	void set_shock_vel(double v) { shock_vel = v; } // in cm/s
 	double get_add_electron_sterm() { return add_el_source; }
 	double get_velg_mhd_n() { return velg_mhd_n; }
 	double get_velg_mhd_i() { return velg_mhd_i; }
-    double get_ionvg_deniminator() { return ion_vg_denominator; }
+    // supersonic - thermal and magnetic energy is lower then outflow kinetic energy
+    double is_ion_fluid_supersonic() { return (ion_vg_denominator < 0.); } 
+    double is_neut_fluid_subsonic() { return (neut_vg_denominator > 0.); } 
 
 	// vector defining the ODE system for the mhd shock.
 	int f(realtype t, N_Vector y, N_Vector ydot);

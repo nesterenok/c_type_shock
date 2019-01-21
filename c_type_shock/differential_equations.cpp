@@ -2774,7 +2774,7 @@ mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &outp
 	int nb_vibr_co, int nb_co, int nb_pnh3, int nb_onh3, int nb_oh, int nb_vibr_ch3oh, int nb_ch3oh, double c_abund_pah, int verb)
 	: evolution_data(input_path, output_path, nb_h2, nb_vibr_h2o, nb_h2o, nb_vibr_co, nb_co, nb_pnh3, nb_onh3, nb_oh, 
         nb_vibr_ch3oh, nb_ch3oh, c_abund_pah, verb),
-	magn_field_energy(0.), add_el_source(0.), velg_mhd_n(0.), velg_mhd_i(0.), ion_vg_denominator(0.)
+	magn_field_energy(0.), add_el_source(0.), velg_mhd_n(0.), velg_mhd_i(0.), ion_vg_denominator(0.), neut_vg_denominator(0.)
 {
 	// calculation of the number of equations:
 	nb_of_equat = nb_of_species + nb_lev_h2 + 2*nb_lev_h2o + nb_lev_co + nb_lev_oh + nb_lev_pnh3 + nb_lev_onh3 
@@ -2864,9 +2864,8 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	// adiabatic index of the neutral and ion gas is taken to be 5/3; 
 	// internal energy gain is taken into account implicitly in energy_gain_n;
     neut_vg_terms = -mom_gain_n * vel_n + mass_gain_n * vel_n * vel_n;
-
-    velg_mhd_n = ydot_data[nb_mhd + 3] = (0.66666667 *energy_gain_n + neut_vg_terms)
-        / (1.666666667 * temp_n_erg * neut_nb_dens - neut_mass_dens * vel_n * vel_n);
+    neut_vg_denominator = 1.666666667 * temp_n_erg * neut_nb_dens - neut_mass_dens * vel_n * vel_n;
+    velg_mhd_n = ydot_data[nb_mhd + 3] = (0.66666667 *energy_gain_n + neut_vg_terms) / neut_vg_denominator;
 
 	// 2. The derivative of ion velocity, 
 	// -mom_gain_n = mom_gain_i + mom_gain_e, 
