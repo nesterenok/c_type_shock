@@ -271,7 +271,6 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	// 2-component dust model:
 	dust = new two_component_dust_model(path, c_abund_pah, dg_ratio = 0.01, HE_TO_H_NB_RATIO, STANDARD_NB_CR_PHOTONS, 
 		verbosity);
-	dust->save_data(output_path);
 	nb_of_dust_comp = dust->nb_of_comp;
 
 	// Arrays for dust heating rates by interstellar radiation field:
@@ -295,8 +294,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 
 	dheat_isrf = new dust_heating_ISRF();
 	dheat_isrf->calculate(path, dust, STANDARD_NB_CR_PHOTONS);
-	dheat_isrf->save_data(output_path);
-
+  
 	// parameters have default values at this point:
 	dheat_isrf->get_heating(visual_extinct, ir_field_strength, uv_field_strength, cr_ioniz_rate, dh_isrf_arr, nb_of_dust_comp); 
 	
@@ -2183,9 +2181,9 @@ bool evolution_data::recalc_grain_charge_ranges(N_Vector y, vector<double> & new
 	bool must_be_restarted = false;
 	int i, j, k, l, n, zlim, zmin, zmax, *new_nb_dch;
 	double a, b, c, z, dz;
-	
-	cout << scientific;
-	cout.precision(5);
+
+    cout << scientific;
+    cout.precision(3);
 
 	dz = 0.;
 	new_y.clear();
@@ -2262,7 +2260,7 @@ bool evolution_data::recalc_grain_charge_ranges(N_Vector y, vector<double> & new
 							<< setw(8) << min_grain_charge[i] << setw(8) << max_grain_charge[i];
 
 						for (j = nb_dch[i]; j < nb_dch[i+1]; j++) {
-							cout << left << setw(14) << NV_Ith_S(y, j);
+							cout << left << setw(12) << NV_Ith_S(y, j);
 						}
 						cout << endl;
 
@@ -2270,7 +2268,7 @@ bool evolution_data::recalc_grain_charge_ranges(N_Vector y, vector<double> & new
 							<< setw(8) << k << setw(8) << l;
 
 						for (j = 0; j < l - k + 1; j++) {
-							cout << left << setw(14) << new_y[new_nb_dch[i] + j];
+							cout << left << setw(12) << new_y[new_nb_dch[i] + j];
 						}
 						cout << endl;
 						cout << "    grain charge lost dz = " << b << endl;
@@ -2306,11 +2304,11 @@ bool evolution_data::recalc_grain_charge_ranges(N_Vector y, vector<double> & new
 
 					cout << left << setw(8) << min_grain_charge[i] << setw(8) << max_grain_charge[i];
 					for (j = nb_dch[i]; j < nb_dch[i+1]; j++) {
-						cout << left << setw(14) << NV_Ith_S(y, j);
+						cout << left << setw(12) << NV_Ith_S(y, j);
 					}
 					cout << endl;
 					cout << left << "    average parameters; z, conc (cm-3), vel (cm/s): " 
-						<< setw(14) << z << setw(14) << a << setw(14) << calc_grain_velocity(y, z, dust->get_grain_area(i), c, c, c, c) << endl;
+						<< setw(12) << z << setw(12) << a << setw(12) << calc_grain_velocity(y, z, dust->get_grain_area(i), c, c, c, c) << endl;
 				}
 			}
 			else 
@@ -2365,11 +2363,11 @@ bool evolution_data::recalc_grain_charge_ranges(N_Vector y, vector<double> & new
 		
 				if (verbosity) {
 					cout << left << "dust componet: " << i << endl
-						 << "    average parameters; z, conc (cm-3): " << setw(14) << z << setw(14) << a << endl;
+						 << "    average parameters; z, conc (cm-3): " << setw(12) << z << setw(12) << a << endl;
 					
 					cout << left << "    new distribution; z_min, z_max, conc (cm-3): " << setw(8) << k << setw(8) << l;
 					for (j = 0; j < l - k + 1; j++) {
-						cout << left << setw(14) << new_y[new_nb_dch[i]+j];
+						cout << left << setw(12) << new_y[new_nb_dch[i]+j];
 					}
 					cout << endl;
 				}
@@ -2720,9 +2718,12 @@ chemistry_evolution_data::chemistry_evolution_data(const std::string &input_path
 		+ 2*nb_lev_ch3oh + nb_lev_ci + nb_lev_oi + nb_lev_cii + nb_of_grain_charges + nb_of_dust_comp + 3;
 
 	network->check_reactions(); // must be called in all cases;
-	network->print_network(output_path);
 	
 	// Saving data, only in dark cloud simulations:
+    network->print_network(output_path);
+    dust->save_data(output_path);
+    dheat_isrf->save_data(output_path);
+
 	// elastic_h2_ions->save_data(output_path + "el_scatt_h2_ions.txt"); // h2-ion scattering rates;
 	// accr_func->save(output_path); // charge particle accretion rates on dust grains;
 
@@ -2786,7 +2787,8 @@ mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &outp
 	}
 	
 	network->check_reactions(); // must be called in all cases;
-//	network->print_network(output_path); // the size of the file is about 1 Mbyte
+//  the size of the file is about 1 Mbyte, in order to save disk place - comment:
+//	network->print_network(output_path); 
 
 	chem_reaction_rates = new double [network->nb_of_reactions];
 	memset(chem_reaction_rates, 0, network->nb_of_reactions*sizeof(double));

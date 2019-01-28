@@ -1219,12 +1219,12 @@ double h2_excit_cosmic_rays::get_efficiency(int il, int fl, int index, double pa
 	if (il > nb_init_lev-1) return 0.;
 	double answ;
 
-	if (index < 0) {
+	if (index < 0)
 		answ = eff[0][il*nb_fin_lev+fl];
-	}
-	else if (index < nb_ion-1) {
-		answ = eff[index][il*nb_fin_lev + fl] + param *(eff[index+1][il*nb_fin_lev + fl] - eff[index][il*nb_fin_lev + fl]);
-	}
+    else if (index < nb_ion - 1) {
+        int i = il * nb_fin_lev + fl;
+        answ = eff[index][i] + param * (eff[index + 1][i] - eff[index][i]);
+    }
 	else // the case of large ionization fractions, > 0.01, must be considered accurately;
 		answ = 0.;
 	
@@ -1236,12 +1236,10 @@ double h2_excit_cosmic_rays::get_efficiency(int l, int index, double param) cons
 	if (l > nb_init_lev-1) return 0.;
 	
 	double answ;
-	if (index < 0) {
+	if (index < 0)
 		answ = exit_eff[0][l];
-	}
-	else if (index < nb_ion-1) {
+	else if (index < nb_ion-1)
 		answ = exit_eff[index][l] + param*(exit_eff[index+1][l] - exit_eff[index][l]);
-	}
 	else // the case of large ionization fractions, > 0.01, must be considered accurately;
 		answ = 0.;
 

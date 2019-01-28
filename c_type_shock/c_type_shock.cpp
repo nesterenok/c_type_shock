@@ -317,7 +317,7 @@ int main(int argc, char** argv)
 			{ 
                 cout << output_path << endl;
                 shock_state = calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty); 
-                cout << "Shock ended with the code: " << (int)shock_state;
+                cout << "   shock ended with the code: " << (int)shock_state;
                 break;
             }
             else if (mode == "CS_")
@@ -332,7 +332,7 @@ int main(int argc, char** argv)
                     ss << "/";
                     cout << left << setw(5) << i+1 << ss.str() << endl;
                     shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
-                    cout << "Shock ended with the code: " << (int)shock_state;
+                    cout << "   shock ended with the code " << (int)shock_state << endl;
                 }
                 break;
             }
@@ -1105,7 +1105,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
     SHOCK_STATE_ID shock_state = SHOCK_STATE_NORMAL;
 	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg;
-	int i, nb_saved, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
+	int i, nb_saved, nb_not_saved, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
 		nb_lev_ch3oh, nb_lev_oi, nb_lev_ci, nb_lev_cii, nb_of_species, nb_of_equat, nb_of_grain_charges, nb_dct, nb_mhd, flag, 
 		nb_saved_cloud_param, verbosity;
 	long int tot_nb_steps;
@@ -1123,10 +1123,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	SUNLinearSolver LS(NULL);
 	N_Vector y, abs_tol;
 
-	verbosity = 1;	
-    cout << scientific;
-	cout.precision(4);
-		
+	verbosity = 1;		
 	timer = time(NULL);
 	cout << ctime(&timer) << "Shock wave is simulated" << endl;
 
@@ -1211,9 +1208,12 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
 	// neutral gas sound speed
 	sound_speed = sqrt(5.*neut_conc*BOLTZMANN_CONSTANT*temp_n/(3.*neut_dens));
-	
+	 
 	if (verbosity) {
-		cout << "Characteristic scale of magnetic precursor (cm): " << magn_precursor_length << endl
+        cout << scientific;
+        cout.precision(3);
+        
+        cout << "Characteristic scale of magnetic precursor (cm): " << magn_precursor_length << endl
 			<< "Characteristic value of ion velocity gradient (cm/s/cm): " << -shock_vel/magn_precursor_length << endl
 			<< "Magnetosonic speed (cm/s): " << magn_sonic_speed << endl
 			<< "Neutral gas sound speed (cm/s): " << sound_speed << endl 
@@ -1303,7 +1303,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
 
-	nb_saved = tot_nb_steps = 0;
+	nb_saved = nb_not_saved = tot_nb_steps = 0;
 	nb_saved_cloud_param = -1;
 	is_post_shock = must_be_stopped = false;
 	
@@ -1326,6 +1326,14 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		zout = z;
 		tot_nb_steps += i;
 		ty += 2.*dz/(YEARS_TO_SECONDS*(prev_y[nb_mhd + 3] + NV_Ith_S(y, nb_mhd + 3)));
+  
+        if (verbosity) {
+            cout << scientific;
+            cout.precision(3);
+
+            cout << left << "z (cm): " << setw(12) << z << "dz (cm): " << setw(12) << dz
+                << "calc time (s): " << setw(8) << (int)(time(NULL) - timer) << "nb of steps: " << i << endl;
+        }
 
 		// Calculation of velocity gradients:
 		dz_arr.push_back(dz);
@@ -1346,12 +1354,10 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		conc_h_tot = user_data.calc_conc_h_tot(y);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
 
-        if (verbosity) {
-            cout << left << "z (cm): " << setw(14) << z << "dz (cm): " << setw(14) << dz
-                << "calc time (s): " << setw(10) << (int)(time(NULL) - timer) << "nb of steps: " << i << endl;
-        }
-        // Saving data
-        if (z - z_saved > 0.03 * magn_precursor_length) {
+        // Saving data,
+        // second condition - in order to look for the cause of crashes
+        if (z - z_saved > 0.03 * magn_precursor_length || nb_not_saved > 10) {
+            nb_not_saved = 0;
             nb_saved++;
             z_saved = z;
 
@@ -1396,6 +1402,9 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 << setw(14) << user_data.get_add_electron_sterm() << setw(14) << user_data.calc_total_grain_charge(y) << endl;
             output.close();
         }
+        else {
+            nb_not_saved++;
+        }
 		// first we save, than we break;
 		if (flag != CV_SUCCESS) {
 			cout << "Error ocurred in solver" << flag << endl;
@@ -1425,7 +1434,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 				a = b;
 		}
 		
-		if (a < 0.001)
+		if (a < 0.001) // to verify
 			dz *= 2;
 		else if (a < 0.02)
 			dz *= 1.15;
@@ -1453,6 +1462,9 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 			user_data.set_veli_grad(vel_i_grad);
 
             if (verbosity) {
+                cout << scientific;
+                cout.precision(3);
+
                 cout << "new velocity gradients are assigned (cm/s/cm)," << endl
                     << "    neutrals: " << user_data.get_veln_grad()
                     << "    ions: " << user_data.get_veli_grad() << endl;
@@ -1852,40 +1864,41 @@ void save_cloud_parameters(const evolution_data *user_data, const string &output
 
 	fname = output_path + "sim_cloud_data.txt";
 	output.open(fname.c_str(), ios::app);
-	output << scientific;
-	output.precision(6); 
+	
+    output << scientific;
+	output.precision(5); 
 			
 	output << "# Evolution age (years):" << endl;
 	output << ty << endl; 
 
 	output << "# Visual extinction, CR ionization rate, UV and IR field strength, H nuclei concentration, carbon abundance in PAH:" << endl;
-	output << left << setw(15) << visual_extinct << setw(15) << cr_ioniz_rate << setw(15) << uv_field_strength << setw(15) << ir_field_strength
-		<< setw(15) << conc_h_tot << setw(15) << c_abund_pah << endl;
+	output << left << setw(14) << visual_extinct << setw(14) << cr_ioniz_rate << setw(14) << uv_field_strength << setw(14) << ir_field_strength
+		<< setw(14) << conc_h_tot << setw(14) << c_abund_pah << endl;
 
 	output << "# Neutral gas temperature, ion and electron temperatures (in K):" << endl;
-	output << left << setw(15) << NV_Ith_S(y, nb_mhd) << setw(15) << NV_Ith_S(y, nb_mhd + 1) << 
-		setw(15) << NV_Ith_S(y, nb_mhd + 2) << endl;
+	output << left << setw(14) << NV_Ith_S(y, nb_mhd) << setw(14) << NV_Ith_S(y, nb_mhd + 1) << 
+		setw(14) << NV_Ith_S(y, nb_mhd + 2) << endl;
 
 	output << left << "# Dust temperatures and charges:" << endl << nb_of_dust_comp << endl
-		<< setw(5) << "Nb" << setw(10) << "name" << setw(15) << "temp(K)" << setw(15) << "conc(cm-3)" << setw(15) << "av.charge"
-		<< setw(11) << "distr(1/0)" << setw(8) << "zmin" << setw(8) << "zmax" << "distribution on charge" << endl;
+		<< setw(3) << "Nb" << setw(10) << "name" << setw(14) << "temp(K)" << setw(14) << "conc(cm-3)" << setw(14) << "av.charge"
+		<< setw(11) << "distr(1/0)" << setw(6) << "zmin" << setw(6) << "zmax" << "distribution on charge" << endl;
 				
 	for (i = 0; i < nb_of_dust_comp; i++) 
 	{
 		user_data->get_dust_component_nbs(i, j, k);
 		conc_g = user_data->calc_grain_conc(y, i);
 
-		output << left << setw(5) << i << setw(10) << dust->components[i]->name << setw(15) << NV_Ith_S(y, nb_dct + i) 
-			<< setw(15) << conc_g << setw(15) << user_data->calc_average_grain_charge(y, i) 
+		output << left << setw(3) << i << setw(10) << dust->components[i]->name << setw(14) << NV_Ith_S(y, nb_dct + i) 
+			<< setw(14) << conc_g << setw(14) << user_data->calc_average_grain_charge(y, i) 
 			<< setw(11) << ((k - j > 2) ? "1" : "0");
 
 		if (k - j > 2) {
-			output << left << setw(8) << user_data->get_dust_zmin(i) << setw(8) << user_data->get_dust_zmax(i);
+			output << left << setw(6) << user_data->get_dust_zmin(i) << setw(6) << user_data->get_dust_zmax(i);
 			for (l = 0; l < k - j; l++) 
 			{
 				if (fabs(NV_Ith_S(y, j + l)) > MINIMAL_ABUNDANCE*conc_g)
-					output << left << setw(15) << NV_Ith_S(y, j + l);
-				else output << left << setw(15) << "0.";
+					output << left << setw(14) << NV_Ith_S(y, j + l);
+				else output << left << setw(14) << "0.";
 			}
 		}
 		output << endl;
@@ -1896,164 +1909,127 @@ void save_cloud_parameters(const evolution_data *user_data, const string &output
 	{
 		output << left << setw(5) << i + 1 << setw(15) << network->species[i].name << " ";
 		if (NV_Ith_S(y, i) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i) << endl;
-		else
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i) << endl;
+		else output << "0." << endl;
 	}
 
-	output << "# The level population densities of H2 molecule:" << endl 
-		<< left << setw(7) << nb_lev_h2 << endl;
-
+	output << "# The level population densities of H2 molecule:" << endl << nb_lev_h2 << endl;
 	for (i = 0; i < nb_lev_h2; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb_of_species) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb_of_species) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb_of_species) << endl;
+		else output << "0." << endl;
 	}
 	nb = nb_of_species + nb_lev_h2;
 
-	output << "# The level population densities of para-H2O molecule:" << endl
-		<< left << setw(7) << nb_lev_h2o << endl;
-
+	output << "# The level population densities of para-H2O molecule:" << endl << nb_lev_h2o << endl;
 	for (i = 0; i < nb_lev_h2o; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_h2o;
 	
-	output << "# The level population densities of ortho-H2O molecule:" << endl 
-		<< left << setw(7) << nb_lev_h2o << endl;
-
+	output << "# The level population densities of ortho-H2O molecule:" << endl << nb_lev_h2o << endl;
 	for (i = 0; i < nb_lev_h2o; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_h2o;
 	
-	output << "# The level population densities of CO molecule:" << endl 
-		<< left << setw(7) << nb_lev_co << endl;
-
+	output << "# The level population densities of CO molecule:" << endl << nb_lev_co << endl;
 	for (i = 0; i < nb_lev_co; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_co;
 	
-	output << "# The level population densities of OH molecule:" << endl 
-		<< left << setw(7) << nb_lev_oh << endl;
-
+	output << "# The level population densities of OH molecule:" << endl << nb_lev_oh << endl;
 	for (i = 0; i < nb_lev_oh; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_oh;
 	
-	output << "# The level population densities of para-NH3 molecule:" << endl 
-		<< left << setw(7) << nb_lev_pnh3 << endl;
-
+	output << "# The level population densities of para-NH3 molecule:" << endl << nb_lev_pnh3 << endl;
 	for (i = 0; i < nb_lev_pnh3; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_pnh3;
 
-	output << "# The level population densities of ortho-NH3 molecule:" << endl 
-		<< left << setw(7) << nb_lev_onh3 << endl;
-
+	output << "# The level population densities of ortho-NH3 molecule:" << endl << nb_lev_onh3 << endl;
 	for (i = 0; i < nb_lev_onh3; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_onh3;
 
-	output << "# The level population densities of CH3OH-A molecule:" << endl 
-		<< left << setw(7) << nb_lev_ch3oh << endl;
-
+	output << "# The level population densities of CH3OH-A molecule:" << endl << nb_lev_ch3oh << endl;
 	for (i = 0; i < nb_lev_ch3oh; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_ch3oh;
 
-	output << "# The level population densities of CH3OH-E molecule:" << endl 
-		<< left << setw(7) << nb_lev_ch3oh << endl;
-
+	output << "# The level population densities of CH3OH-E molecule:" << endl << nb_lev_ch3oh << endl;
 	for (i = 0; i < nb_lev_ch3oh; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, i + nb) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, i + nb) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, i + nb) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_ch3oh;
 
-	output << "# The level population densities of CI:" << endl
-		<< left << setw(7) << nb_lev_ci << endl;
-
+	output << "# The level population densities of CI:" << endl << nb_lev_ci << endl;
 	for (i = 0; i < nb_lev_ci; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, nb + i) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, nb + i) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, nb + i) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_ci;
 	
-	output << "# The level population densities of OI:" << endl
-		<< left << setw(7) << nb_lev_oi << endl;
-
+	output << "# The level population densities of OI:" << endl << nb_lev_oi << endl;
 	for (i = 0; i < nb_lev_oi; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, nb + i) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, nb + i) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, nb + i) << endl;
+		else output << "0." << endl;
 	}
 	nb += nb_lev_oi;
 	
-	output << "# The level population densities of CII:" << endl
-		<< left << setw(7) << nb_lev_cii << endl;
-
+	output << "# The level population densities of CII:" << endl << nb_lev_cii << endl;
 	for (i = 0; i < nb_lev_cii; i++) 
 	{
-		output << left << setw(5) << i + 1;
+		output << left << setw(4) << i + 1;
 		if (NV_Ith_S(y, nb + i) > MINIMAL_ABUNDANCE *conc_h_tot)
-			output << left << setw(15) << NV_Ith_S(y, nb + i) << endl;
-		else 
-			output << left << setw(15) << "0." << endl;
+			output << NV_Ith_S(y, nb + i) << endl;
+		else output << "0." << endl;
 	}
 	output.close();
 }
@@ -2100,13 +2076,13 @@ void save_chem_heating_rates(const string &output_path, const evolution_data *us
 	output << chem_heat << endl;
 	for (i = 0; i < nb; i++) {
 		if (chem_heating_rates_n[i] >= 0.01*chem_heat)
-			output << left << setw(13) << chem_heating_rates_n[i] << network->reaction_array[i].name << endl;
+			output << left << setw(12) << chem_heating_rates_n[i] << network->reaction_array[i].name << endl;
 	}
 
 	output << chem_cool << endl;
 	for (i = 0; i < nb; i++) {
 		if (chem_heating_rates_n[i] <= 0.01*chem_cool)
-			output << left << setw(13) << chem_heating_rates_n[i] << network->reaction_array[i].name << endl;
+			output << left << setw(12) << chem_heating_rates_n[i] << network->reaction_array[i].name << endl;
 	}
 	output.close();
 }
@@ -2148,7 +2124,7 @@ void save_specimen_abund(const string &output_path, int nb_of_species, const N_V
 	output << left << setw(13) << var;
 	output.precision(3);
 
-	for (i = 0; i < nb_of_species; i++) {
+	for (i = 0; i < nb_of_species; i++) { // abundance values are supposed to have a form (-)x.xxxe-xx 
 		output << left << setw(11) << NV_Ith_S(y, i)/conc_h_tot;
 	}
 	output << endl;
@@ -2260,7 +2236,7 @@ void create_file_energy_fluxes(const string &output_path)
 	fname = output_path + "sim_energy_fluxes.txt";
 	output.open(fname.c_str());
 
-	output << "! kin - kinetic energy flux (neutral and ions, without large dust grains), [erg cm-2 s-1]" << endl
+	output << "! kin - kinetic energy flux (neutral and ions, dust grains), [erg cm-2 s-1]" << endl
         << "! thm - thermal energy flux (neutrals and ions)" << endl
         << "! mgn - magnetic energy flux" << endl
         << "! ncool - total integrated gas cooling by emission, cooling < 0., [erg cm-2 s-1]" << endl
@@ -2287,13 +2263,13 @@ void create_file_energy_fluxes(const string &output_path)
 
 void save_energy_fluxes(const string &output_path, const evolution_data *user_data, const N_Vector &y, double var, double dvar)
 {
-    int nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd;
+    int i, nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd;
 	static double neut_heat_atoms(0.), neut_heat_h2(0.), neut_heat_h2o(0.), neut_heat_co(0.), neut_heat_oh(0.), neut_heat_nh3(0.), 
 		neut_heat_ch3oh(0.), int_neut_heat_atoms(0.), int_neut_heat_h2(0.), int_neut_heat_h2o(0.), int_neut_heat_co(0.), int_neut_heat_oh(0.), 
 		int_neut_heat_nh3(0.), int_neut_heat_ch3oh(0.); 
 	double x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
 		neut_heat_scatt_el, rad_energy_loss_h2, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc, 
-        ion_mass_dens, v_n, v_i, kinetic_energy_flux, thermal_energy_flux, magnetic_energy_flux;
+        ion_mass_dens, v_n, v_i, kinetic_energy_flux, thermal_energy_flux, magnetic_energy_flux, large_grains_flux;
 
 	string fname;
 	ofstream output;
@@ -2335,8 +2311,15 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
     v_n = NV_Ith_S(y, nb_mhd + 3);
     v_i = NV_Ith_S(y, nb_mhd + 4); 
     
-    // large dust grains are not included
-    kinetic_energy_flux = 0.5 * (v_n * v_n * v_n * neut_mass_dens + v_i * v_i * v_i * ion_mass_dens);
+    // large dust grains must be included:
+    large_grains_flux = 0.;
+    const dust_model *dust = user_data->get_dust();
+    for (i = 0; i < dust->nb_of_comp; i++) {
+        large_grains_flux += user_data->calc_av_grain_velocity(y, i) * user_data->calc_grain_conc(y, i) 
+            *dust->components[i]->mass;
+    }
+
+    kinetic_energy_flux = 0.5 * (v_n * v_n * v_n * neut_mass_dens + v_i * v_i * v_i * ion_mass_dens) + large_grains_flux;
     thermal_energy_flux = 2.5 * BOLTZMANN_CONSTANT *(v_n * neut_conc * NV_Ith_S(y, nb_mhd) + v_i * (ion_conc + ion_pah_conc) * NV_Ith_S(y, nb_mhd + 1)
         + v_i * NV_Ith_S(y, user_data->get_network()->e_nb) * NV_Ith_S(y, nb_mhd + 2));
     magnetic_energy_flux = user_data->get_magnetic_field() * user_data->get_magnetic_field() * v_i / (4.*M_PI);
@@ -2807,7 +2790,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	comm1 << scientific;
 	comm1.precision(4);
 	comm1 << left << "! three parameters are given: shock speed (cm/s), turbulent velocity (cm/s), number of specimen levels: \n"
-		<< setw(14) << shock_vel << setw(14) << vturb;
+		<< setw(13) << shock_vel << setw(13) << vturb;
 	
 	comm2 << left << setw(18) << "!depth(cm)" << setw(13) << "gas_temp(K)" << setw(13) << "el_temp" << setw(13) << "dust_temp(K)" 
 		<< setw(13) << "gasvel(cm/s)" << setw(13) << "concHe(cm-3)" << setw(13) << "conc_pH2" << setw(13) << "conc_oH2" 
@@ -2820,7 +2803,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_h2; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	} // no '\n' symbol at the end 
 	output.close();
 
@@ -2831,7 +2814,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_h2o; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 
@@ -2842,7 +2825,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_h2o; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 
@@ -2853,7 +2836,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_co; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 
@@ -2865,7 +2848,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_oh; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 #endif
@@ -2878,7 +2861,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 	
 	for (i = 1; i <= nb_lev_ch3oh; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 
@@ -2889,7 +2872,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 	
 	for (i = 1; i <= nb_lev_ch3oh; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 #endif
@@ -2901,7 +2884,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_ci; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 
@@ -2912,7 +2895,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_oi; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 
@@ -2923,7 +2906,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output << comm2.str();
 
 	for (i = 1; i <= nb_lev_cii; i++) {
-		output << left << setw(12) << i;
+		output << left << setw(13) << i;
 	}
 	output.close();
 }
@@ -2953,7 +2936,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	ss.precision(10);
 	ss << left << setw(18) << var;
 	
-	ss.precision(5);
+	ss.precision(4);
 	ss << left << setw(13) << NV_Ith_S(y, nb_mhd) 
 		<< setw(13) << NV_Ith_S(y, nb_mhd+2)
 		<< setw(13) << user_data->get_av_dust_temp() 	// average temperature of large grains (r > MIN_ADSORPTION_RADIUS),
@@ -2973,15 +2956,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
+	output.precision(4);
 	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
-	output.precision(4);
 	for (i = 0; i < nb_lev_h2; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a; // level population densities are saved, [cm-3]
+		output << left << setw(13) << a; // level population densities are saved, [cm-3]
 	}
 	output.close();
 	
@@ -2996,15 +2978,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
+	output.precision(4);
 	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
-	output.precision(4);
 	for (i = 0; i < nb_lev_h2o; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 	
@@ -3019,15 +3000,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
+	output.precision(4);
 	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
-	output.precision(4);
 	for (i = 0; i < nb_lev_h2o; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 	
@@ -3039,15 +3019,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
+	output.precision(4);
 	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
-	output.precision(4);
 	for (i = 0; i < nb_lev_co; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 
@@ -3061,15 +3040,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
-	output << left << endl << ss.str() << setw(13) << conc_mol;
-	
 	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
 	for (i = 0; i < nb_lev_oh; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 #endif
@@ -3088,15 +3066,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
-	output << left << endl << ss.str() << setw(13) << conc_mol;
-	
 	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
 	for (i = 0; i < nb_lev_ch3oh; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 #endif
@@ -3112,15 +3089,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
+	output.precision(4);
 	output << left << endl << ss.str() << setw(13) << conc_mol;
 	
-	output.precision(4);
 	for (i = 0; i < nb_lev_ch3oh; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 #endif
@@ -3133,15 +3109,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
-	output << left << endl << ss.str() << setw(13) << conc_mol;
-	
 	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
 	for (i = 0; i < nb_lev_ci; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 
@@ -3153,15 +3128,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
-	output << left << endl << ss.str() << setw(13) << conc_mol;
-	
 	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
 	for (i = 0; i < nb_lev_oi; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 
@@ -3173,15 +3147,14 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	output.open(fname.c_str(), ios::app);
 
 	output << scientific;
-	output.precision(5);
-	output << left << endl << ss.str() << setw(13) << conc_mol;
-	
 	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
 	for (i = 0; i < nb_lev_cii; i++) {
 		a = NV_Ith_S(y, nb + i);
 		if (a < MINIMAL_ABUNDANCE *conc_mol) 
 			a = 0.;
-		output << left << setw(12) << a;
+		output << left << setw(13) << a;
 	}
 	output.close();
 }
@@ -3201,29 +3174,27 @@ void create_file_h2_chemistry(const string & output_path)
 		<< "! h2_gas - H2 formation rate due to gas-phase chemistry, [cm-3 s-1]" << endl
 		<< "! h2_h_diss - H2 dissociation rate in H2-H collisions, [cm-3 s-1]" << endl;
 	
-	output << left << setw(4) << "!";
-	for (i = 0; i < 8; i++) {
-		output << left << setw(14) << i;
+	output << left << setw(5) << "!";
+	for (i = 0; i < 6; i++) {
+		output << left << setw(13) << i;
 	}
-	output << endl << left << setw(18) << "! depth(cm)" << setw(14) << "o/p-H2" << setw(14) << "o_hcoll" << setw(14) << "h2_gr" 
-		<< setw(14) << "oh2_gr" << setw(14) << "h2_gas" << setw(14) << "oh2_gas" << setw(14) << "h2_h_diss" << endl;
+	output << endl << left << setw(18) << "! depth(cm)" << setw(13) << "o/p-H2" << setw(13) << "o_hcoll" << setw(13) << "h2_gr" 
+		<< setw(13) << "h2_gas" << setw(13) << "h2_h_diss" << endl;
 	output.close();
 }
 
 void save_file_h2_chemistry(const string & output_path, const evolution_data *user_data, const N_Vector &y, double var)
 {
 	double op_h2_ratio, h2_prod_gr, h2_prod_gas, oh2_form_gaschem, oh2_form_grains, oh2_form_hcoll, h2_h_diss_rate;
-
 	string fname;
 	ofstream output;
 
 	const chem_network *network 
 		= user_data->get_network();
 
-	user_data->get_h2_chem(h2_prod_gr, h2_prod_gas, oh2_form_grains, oh2_form_gaschem, oh2_form_hcoll, h2_h_diss_rate);
-
-	// ortho-para ratio of H2
+    // ortho-para ratio of H2
 	op_h2_ratio = NV_Ith_S(y, network->h2_nb)/user_data->calc_conc_ph2(y) - 1.;
+	user_data->get_h2_chem(h2_prod_gr, h2_prod_gas, oh2_form_grains, oh2_form_gaschem, oh2_form_hcoll, h2_h_diss_rate);
 
 	fname = output_path + "sim_data_h2_chemistry.txt";
 	output.open(fname.c_str(), ios::app);
@@ -3232,10 +3203,9 @@ void save_file_h2_chemistry(const string & output_path, const evolution_data *us
 	output.precision(10);
 	output << left << setw(18) << var;
 	
-	output.precision(5);
-	output << left << setw(14) << op_h2_ratio << setw(14) << oh2_form_hcoll << setw(14) << h2_prod_gr 
-		<< setw(14) << oh2_form_grains << setw(14) << h2_prod_gas << setw(14) << oh2_form_gaschem 
-		<< setw(14) << h2_h_diss_rate << endl;
+	output.precision(4);
+	output << left << setw(13) << op_h2_ratio << setw(13) << oh2_form_hcoll << setw(13) << h2_prod_gr 
+		<< setw(13) << h2_prod_gas << setw(13) << h2_h_diss_rate << endl;
 	output.close();
 }
 

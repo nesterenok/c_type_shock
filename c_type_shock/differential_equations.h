@@ -62,9 +62,9 @@ protected:
 	
 	const h2_h_dissociation_data *h2_h_diss_data;
 
-	const h2_excit_cosmic_rays *h2_excit_cr;
-	const h2_grain_formation *h2_excit_gf;
-	const h2_gasphase_formation *h2_excit_gasph;
+	const h2_excit_cosmic_rays *h2_excit_cr; 
+	const h2_grain_formation *h2_excit_gf; // not used
+	const h2_gasphase_formation *h2_excit_gasph; // not used
 	const accretion_rate_functions *accr_func;
 	
 	chem_network *network;
