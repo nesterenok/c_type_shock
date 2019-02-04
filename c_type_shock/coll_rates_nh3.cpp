@@ -285,6 +285,6 @@ void nh3_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_
 			+ coll_data[3]->get_rate(up_lev.nb, low_lev.nb, indices[3], (temp_neutrals < max_temp[3]) ? temp_neutrals : max_temp[3]) *concentration[3];
 	}
 	if (down_rate > MIN_COLLISION_RATE)
-		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g /low_lev.g;
+		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g /((double) low_lev.g);
 	else down_rate = 0.;
 }

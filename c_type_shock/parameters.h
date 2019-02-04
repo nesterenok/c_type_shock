@@ -180,3 +180,7 @@
 
 // 1 - data are used by Tine et al., ApJ 481, p.282 (1997)
 #define H2_CR_EXCITATION 1
+
+// 1 - data on H2-H+ collisions are used by Gonzalez-Lezana & Honvault (2017),
+// rates for collisions with H+ and H3+ are assumed to be equal,
+#define H2_IONS_EXCITATION 1

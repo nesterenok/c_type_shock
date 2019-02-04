@@ -1,1 +1,801 @@
 # Heating and cooling rates of neutral gas component due to chemical reactions, [erg cm-3 s-1]
+# Evolution age (years):
+1.000e+04
+2.451e-23
+2.576e-25   H3O+ + e- -> H2O + H
+7.492e-25   HCO+ + e- -> CO + H
+3.291e-25   H2O + C+ -> H + HOC+
+6.747e-25   O + CH3+ -> H2 + HCO+
+1.856e-24   H2 + H2+ -> H + H3+
+4.899e-25   H2 + CH2+ -> H + CH3+
+1.273e-24   H2 + H2O+ -> H + H3O+
+5.468e-25   H2 + OH+ -> H + H2O+
+6.744e-25   C + H3+ -> H2 + CH+
+3.001e-25   CO + H3+ -> H2 + HCO+
+3.794e-25   O + H3+ -> H + H2O+
+3.298e-25   O + H3+ -> H2 + OH+
+2.645e-25   C + CH -> C2 + H
+2.775e-25   C + NO -> CO + N
+1.709e-24   C + O2 -> CO + O
+2.123e-24   C + OH -> CO + H
+4.257e-25   CH2 + O -> CO + H2
+3.007e-25   CH2 + O -> CO + H + H
+6.422e-25   CH + N -> CN + H
+1.688e-24   CH + O -> CO + H
+1.262e-24   O + C2 -> CO + C
+3.182e-25   O + C2H -> CO + CH
+3.702e-25   O + C4 -> C3 + CO
+6.517e-25   O + CN -> CO + N
+-4.526e-26
+-3.006e-27  H2 + CRP -> H2+ + e-
+-7.048e-27  C + C3H2+ -> H2 + C4+
+-1.161e-26  He + H2+ -> H + HeH+
+-8.829e-27  H2 + C2H2+ -> H + C2H3+
+-7.330e-28  H + CH5+ -> H2 + CH4+
+-1.497e-27  C + C10H2 -> C5H + C6H
+-2.565e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-3.623e-27  H + OCN -> OH + CN
+-1.621e-27  N + C10 -> CN + C9
+-5.688e-28  H2 + C -> CH2
+# Evolution age (years):
+1.075e+04
+2.447e-23
+2.562e-25   H3O+ + e- -> H2O + H
+7.620e-25   HCO+ + e- -> CO + H
+3.293e-25   H2O + C+ -> H + HOC+
+6.799e-25   O + CH3+ -> H2 + HCO+
+1.855e-24   H2 + H2+ -> H + H3+
+4.874e-25   H2 + CH2+ -> H + CH3+
+1.266e-24   H2 + H2O+ -> H + H3O+
+5.439e-25   H2 + OH+ -> H + H2O+
+6.620e-25   C + H3+ -> H2 + CH+
+3.144e-25   CO + H3+ -> H2 + HCO+
+3.774e-25   O + H3+ -> H + H2O+
+3.280e-25   O + H3+ -> H2 + OH+
+2.587e-25   C + CH -> C2 + H
+2.804e-25   C + NO -> CO + N
+1.715e-24   C + O2 -> CO + O
+2.092e-24   C + OH -> CO + H
+4.116e-25   CH2 + O -> CO + H2
+2.907e-25   CH2 + O -> CO + H + H
+6.395e-25   CH + N -> CN + H
+1.672e-24   CH + O -> CO + H
+1.253e-24   O + C2 -> CO + C
+3.174e-25   O + C2H -> CO + CH
+3.664e-25   O + C4 -> C3 + CO
+6.540e-25   O + CN -> CO + N
+-4.582e-26
+-3.031e-27  H2 + CRP -> H2+ + e-
+-7.112e-27  C + C3H2+ -> H2 + C4+
+-1.160e-26  He + H2+ -> H + HeH+
+-8.824e-27  H2 + C2H2+ -> H + C2H3+
+-7.718e-28  H + CH5+ -> H2 + CH4+
+-1.600e-27  C + C10H2 -> C5H + C6H
+-2.600e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-3.735e-27  H + OCN -> OH + CN
+-1.722e-27  N + C10 -> CN + C9
+-5.578e-28  H2 + C -> CH2
+# Evolution age (years):
+1.155e+04
+2.443e-23
+2.547e-25   H3O+ + e- -> H2O + H
+7.757e-25   HCO+ + e- -> CO + H
+3.290e-25   H2O + C+ -> H + HOC+
+6.841e-25   O + CH3+ -> H2 + HCO+
+1.855e-24   H2 + H2+ -> H + H3+
+4.843e-25   H2 + CH2+ -> H + CH3+
+1.259e-24   H2 + H2O+ -> H + H3O+
+5.407e-25   H2 + OH+ -> H + H2O+
+6.484e-25   C + H3+ -> H2 + CH+
+3.298e-25   CO + H3+ -> H2 + HCO+
+3.752e-25   O + H3+ -> H + H2O+
+3.261e-25   O + H3+ -> H2 + OH+
+2.525e-25   C + CH -> C2 + H
+2.834e-25   C + NO -> CO + N
+1.721e-24   C + O2 -> CO + O
+2.058e-24   C + OH -> CO + H
+3.968e-25   CH2 + O -> CO + H2
+2.803e-25   CH2 + O -> CO + H + H
+6.364e-25   CH + N -> CN + H
+1.655e-24   CH + O -> CO + H
+1.244e-24   O + C2 -> CO + C
+3.162e-25   O + C2H -> CO + CH
+3.619e-25   O + C4 -> C3 + CO
+6.560e-25   O + CN -> CO + N
+-4.637e-26
+-3.057e-27  H2 + CRP -> H2+ + e-
+-7.142e-27  C + C3H2+ -> H2 + C4+
+-1.160e-26  He + H2+ -> H + HeH+
+-8.796e-27  H2 + C2H2+ -> H + C2H3+
+-8.130e-28  H + CH5+ -> H2 + CH4+
+-1.719e-27  C + C10H2 -> C5H + C6H
+-2.632e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-3.858e-27  H + OCN -> OH + CN
+-1.830e-27  N + C10 -> CN + C9
+-5.456e-28  H2 + C -> CH2
+# Evolution age (years):
+1.241e+04
+2.437e-23
+2.530e-25   H3O+ + e- -> H2O + H
+7.906e-25   HCO+ + e- -> CO + H
+3.280e-25   H2O + C+ -> H + HOC+
+6.874e-25   O + CH3+ -> H2 + HCO+
+1.854e-24   H2 + H2+ -> H + H3+
+4.806e-25   H2 + CH2+ -> H + CH3+
+1.252e-24   H2 + H2O+ -> H + H3O+
+5.371e-25   H2 + OH+ -> H + H2O+
+6.335e-25   C + H3+ -> H2 + CH+
+3.466e-25   CO + H3+ -> H2 + HCO+
+3.727e-25   O + H3+ -> H + H2O+
+3.239e-25   O + H3+ -> H2 + OH+
+2.456e-25   C + CH -> C2 + H
+2.866e-25   C + NO -> CO + N
+1.726e-24   C + O2 -> CO + O
+2.021e-24   C + OH -> CO + H
+3.814e-25   CH2 + O -> CO + H2
+2.694e-25   CH2 + O -> CO + H + H
+6.329e-25   CH + N -> CN + H
+1.636e-24   CH + O -> CO + H
+1.233e-24   O + C2 -> CO + C
+3.146e-25   O + C2H -> CO + CH
+3.565e-25   O + C4 -> C3 + CO
+6.579e-25   O + CN -> CO + N
+-4.690e-26
+-3.084e-27  H2 + CRP -> H2+ + e-
+-7.135e-27  C + C3H2+ -> H2 + C4+
+-1.160e-26  He + H2+ -> H + HeH+
+-8.742e-27  H2 + C2H2+ -> H + C2H3+
+-8.566e-28  H + CH5+ -> H2 + CH4+
+-1.856e-27  C + C10H2 -> C5H + C6H
+-2.663e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-3.995e-27  H + OCN -> OH + CN
+-1.946e-27  N + C10 -> CN + C9
+-5.322e-28  H2 + C -> CH2
+# Evolution age (years):
+1.334e+04
+2.430e-23
+2.512e-25   H3O+ + e- -> H2O + H
+8.066e-25   HCO+ + e- -> CO + H
+3.266e-25   H2O + C+ -> H + HOC+
+6.895e-25   O + CH3+ -> H2 + HCO+
+1.854e-24   H2 + H2+ -> H + H3+
+4.762e-25   H2 + CH2+ -> H + CH3+
+1.243e-24   H2 + H2O+ -> H + H3O+
+5.332e-25   H2 + OH+ -> H + H2O+
+6.173e-25   C + H3+ -> H2 + CH+
+3.647e-25   CO + H3+ -> H2 + HCO+
+3.700e-25   O + H3+ -> H + H2O+
+3.216e-25   O + H3+ -> H2 + OH+
+2.898e-25   C + NO -> CO + N
+1.731e-24   C + O2 -> CO + O
+1.981e-24   C + OH -> CO + H
+3.653e-25   CH2 + O -> CO + H2
+2.581e-25   CH2 + O -> CO + H + H
+6.288e-25   CH + N -> CN + H
+1.615e-24   CH + O -> CO + H
+1.220e-24   O + C2 -> CO + C
+3.126e-25   O + C2H -> CO + CH
+3.502e-25   O + C4 -> C3 + CO
+6.596e-25   O + CN -> CO + N
+-4.742e-26
+-3.111e-27  H2 + CRP -> H2+ + e-
+-7.088e-27  C + C3H2+ -> H2 + C4+
+-1.159e-26  He + H2+ -> H + HeH+
+-8.659e-27  H2 + C2H2+ -> H + C2H3+
+-9.030e-28  H + CH5+ -> H2 + CH4+
+-2.017e-27  C + C10H2 -> C5H + C6H
+-2.692e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-4.148e-27  H + OCN -> OH + CN
+-2.071e-27  N + C10 -> CN + C9
+-5.174e-28  H2 + C -> CH2
+# Evolution age (years):
+1.433e+04
+2.421e-23
+2.492e-25   H3O+ + e- -> H2O + H
+8.241e-25   HCO+ + e- -> CO + H
+3.245e-25   H2O + C+ -> H + HOC+
+6.904e-25   O + CH3+ -> H2 + HCO+
+1.853e-24   H2 + H2+ -> H + H3+
+4.710e-25   H2 + CH2+ -> H + CH3+
+1.233e-24   H2 + H2O+ -> H + H3O+
+5.289e-25   H2 + OH+ -> H + H2O+
+5.997e-25   C + H3+ -> H2 + CH+
+3.843e-25   CO + H3+ -> H2 + HCO+
+3.670e-25   O + H3+ -> H + H2O+
+3.190e-25   O + H3+ -> H2 + OH+
+2.930e-25   C + NO -> CO + N
+1.737e-24   C + O2 -> CO + O
+1.937e-24   C + OH -> CO + H
+3.486e-25   CH2 + O -> CO + H2
+2.462e-25   CH2 + O -> CO + H + H
+6.240e-25   CH + N -> CN + H
+1.591e-24   CH + O -> CO + H
+1.205e-24   O + C2 -> CO + C
+3.101e-25   O + C2H -> CO + CH
+3.429e-25   O + C4 -> C3 + CO
+6.610e-25   O + CN -> CO + N
+-4.793e-26
+-3.138e-27  H2 + CRP -> H2+ + e-
+-6.998e-27  C + C3H2+ -> H2 + C4+
+-1.159e-26  He + H2+ -> H + HeH+
+-8.545e-27  H2 + C2H2+ -> H + C2H3+
+-4.901e-28  C3H2 + H3O+ -> H2O + C3H3+
+-9.522e-28  H + CH5+ -> H2 + CH4+
+-2.205e-27  C + C10H2 -> C5H + C6H
+-2.717e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-4.322e-27  H + OCN -> OH + CN
+-2.207e-27  N + C10 -> CN + C9
+-5.012e-28  H2 + C -> CH2
+# Evolution age (years):
+1.540e+04
+2.410e-23
+2.419e-25   H2 + HOC+ -> H2 + HCO+
+2.470e-25   H3O+ + e- -> H2O + H
+8.430e-25   HCO+ + e- -> CO + H
+3.219e-25   H2O + C+ -> H + HOC+
+6.898e-25   O + CH3+ -> H2 + HCO+
+1.853e-24   H2 + H2+ -> H + H3+
+4.649e-25   H2 + CH2+ -> H + CH3+
+1.223e-24   H2 + H2O+ -> H + H3O+
+5.242e-25   H2 + OH+ -> H + H2O+
+5.805e-25   C + H3+ -> H2 + CH+
+4.055e-25   CO + H3+ -> H2 + HCO+
+3.637e-25   O + H3+ -> H + H2O+
+3.161e-25   O + H3+ -> H2 + OH+
+2.963e-25   C + NO -> CO + N
+1.741e-24   C + O2 -> CO + O
+1.889e-24   C + OH -> CO + H
+3.312e-25   CH2 + O -> CO + H2
+6.183e-25   CH + N -> CN + H
+1.565e-24   CH + O -> CO + H
+1.188e-24   O + C2 -> CO + C
+3.071e-25   O + C2H -> CO + CH
+3.345e-25   O + C4 -> C3 + CO
+6.621e-25   O + CN -> CO + N
+-4.843e-26
+-3.166e-27  H2 + CRP -> H2+ + e-
+-6.859e-27  C + C3H2+ -> H2 + C4+
+-1.159e-26  He + H2+ -> H + HeH+
+-8.394e-27  H2 + C2H2+ -> H + C2H3+
+-5.329e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.004e-27  H + CH5+ -> H2 + CH4+
+-2.426e-27  C + C10H2 -> C5H + C6H
+-2.739e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-4.522e-27  H + OCN -> OH + CN
+-2.353e-27  N + C10 -> CN + C9
+# Evolution age (years):
+1.655e+04
+2.398e-23
+2.457e-25   H2 + HOC+ -> H2 + HCO+
+2.446e-25   H3O+ + e- -> H2O + H
+8.637e-25   HCO+ + e- -> CO + H
+3.185e-25   H2O + C+ -> H + HOC+
+6.874e-25   O + CH3+ -> H2 + HCO+
+1.852e-24   H2 + H2+ -> H + H3+
+4.577e-25   H2 + CH2+ -> H + CH3+
+1.211e-24   H2 + H2O+ -> H + H3O+
+5.190e-25   H2 + OH+ -> H + H2O+
+5.596e-25   C + H3+ -> H2 + CH+
+4.286e-25   CO + H3+ -> H2 + HCO+
+3.601e-25   O + H3+ -> H + H2O+
+3.130e-25   O + H3+ -> H2 + OH+
+2.997e-25   C + NO -> CO + N
+1.746e-24   C + O2 -> CO + O
+1.837e-24   C + OH -> CO + H
+3.132e-25   CH2 + O -> CO + H2
+6.116e-25   CH + N -> CN + H
+1.536e-24   CH + O -> CO + H
+1.168e-24   O + C2 -> CO + C
+3.034e-25   O + C2H -> CO + CH
+3.248e-25   O + C4 -> C3 + CO
+6.630e-25   O + CN -> CO + N
+-4.894e-26
+-3.194e-27  H2 + CRP -> H2+ + e-
+-6.668e-27  C + C3H2+ -> H2 + C4+
+-1.158e-26  He + H2+ -> H + HeH+
+-8.204e-27  H2 + C2H2+ -> H + C2H3+
+-5.821e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.060e-27  H + CH5+ -> H2 + CH4+
+-2.689e-27  C + C10H2 -> C5H + C6H
+-2.756e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-4.753e-27  H + OCN -> OH + CN
+-2.512e-27  N + C10 -> CN + C9
+# Evolution age (years):
+1.778e+04
+2.384e-23
+2.497e-25   H2 + HOC+ -> H2 + HCO+
+2.420e-25   H3O+ + e- -> H2O + H
+8.863e-25   HCO+ + e- -> CO + H
+3.144e-25   H2O + C+ -> H + HOC+
+6.829e-25   O + CH3+ -> H2 + HCO+
+1.852e-24   H2 + H2+ -> H + H3+
+4.492e-25   H2 + CH2+ -> H + CH3+
+1.199e-24   H2 + H2O+ -> H + H3O+
+5.132e-25   H2 + OH+ -> H + H2O+
+5.369e-25   C + H3+ -> H2 + CH+
+4.536e-25   CO + H3+ -> H2 + HCO+
+3.561e-25   O + H3+ -> H + H2O+
+3.095e-25   O + H3+ -> H2 + OH+
+3.030e-25   C + NO -> CO + N
+1.750e-24   C + O2 -> CO + O
+1.780e-24   C + OH -> CO + H
+2.947e-25   CH2 + O -> CO + H2
+6.036e-25   CH + N -> CN + H
+1.504e-24   CH + O -> CO + H
+1.146e-24   O + C2 -> CO + C
+2.992e-25   O + C2H -> CO + CH
+3.138e-25   O + C4 -> C3 + CO
+6.635e-25   O + CN -> CO + N
+-4.946e-26
+-3.222e-27  H2 + CRP -> H2+ + e-
+-6.420e-27  C + C3H2+ -> H2 + C4+
+-1.158e-26  He + H2+ -> H + HeH+
+-7.967e-27  H2 + C2H2+ -> H + C2H3+
+-6.393e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.118e-27  H + CH5+ -> H2 + CH4+
+-3.003e-27  C + C10H2 -> C5H + C6H
+-2.769e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-5.024e-27  H + OCN -> OH + CN
+-2.684e-27  N + C10 -> CN + C9
+# Evolution age (years):
+1.911e+04
+2.368e-23
+2.539e-25   H2 + HOC+ -> H2 + HCO+
+2.392e-25   H3O+ + e- -> H2O + H
+9.110e-25   HCO+ + e- -> CO + H
+3.095e-25   H2O + C+ -> H + HOC+
+6.758e-25   O + CH3+ -> H2 + HCO+
+1.851e-24   H2 + H2+ -> H + H3+
+4.392e-25   H2 + CH2+ -> H + CH3+
+1.185e-24   H2 + H2O+ -> H + H3O+
+5.069e-25   H2 + OH+ -> H + H2O+
+5.123e-25   C + H3+ -> H2 + CH+
+4.807e-25   CO + H3+ -> H2 + HCO+
+3.517e-25   O + H3+ -> H + H2O+
+3.056e-25   O + H3+ -> H2 + OH+
+3.063e-25   C + NO -> CO + N
+1.754e-24   C + O2 -> CO + O
+1.719e-24   C + OH -> CO + H
+2.755e-25   CH2 + O -> CO + H2
+5.942e-25   CH + N -> CN + H
+1.468e-24   CH + O -> CO + H
+1.120e-24   O + C2 -> CO + C
+2.942e-25   O + C2H -> CO + CH
+3.013e-25   O + C4 -> C3 + CO
+6.637e-25   O + CN -> CO + N
+-5.000e-26
+-3.249e-27  H2 + CRP -> H2+ + e-
+-6.111e-27  C + C3H2+ -> H2 + C4+
+-1.158e-26  He + H2+ -> H + HeH+
+-7.679e-27  H2 + C2H2+ -> H + C2H3+
+-7.061e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.178e-27  H + CH5+ -> H2 + CH4+
+-3.382e-27  C + C10H2 -> C5H + C6H
+-2.774e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-5.340e-27  H + OCN -> OH + CN
+-2.868e-27  N + C10 -> CN + C9
+# Evolution age (years):
+2.054e+04
+2.349e-23
+2.582e-25   H2 + HOC+ -> H2 + HCO+
+2.361e-25   H3O+ + e- -> H2O + H
+9.381e-25   HCO+ + e- -> CO + H
+3.037e-25   H2O + C+ -> H + HOC+
+6.656e-25   O + CH3+ -> H2 + HCO+
+1.851e-24   H2 + H2+ -> H + H3+
+4.275e-25   H2 + CH2+ -> H + CH3+
+1.169e-24   H2 + H2O+ -> H + H3O+
+5.000e-25   H2 + OH+ -> H + H2O+
+4.855e-25   C + H3+ -> H2 + CH+
+5.101e-25   CO + H3+ -> H2 + HCO+
+3.468e-25   O + H3+ -> H + H2O+
+3.014e-25   O + H3+ -> H2 + OH+
+3.095e-25   C + NO -> CO + N
+1.757e-24   C + O2 -> CO + O
+1.651e-24   C + OH -> CO + H
+2.559e-25   CH2 + O -> CO + H2
+5.830e-25   CH + N -> CN + H
+1.427e-24   CH + O -> CO + H
+2.359e-25   N + CN -> N2 + C
+1.089e-24   O + C2 -> CO + C
+2.884e-25   O + C2H -> CO + CH
+2.872e-25   O + C4 -> C3 + CO
+6.634e-25   O + CN -> CO + N
+-5.058e-26
+-3.275e-27  H2 + CRP -> H2+ + e-
+-5.738e-27  C + C3H2+ -> H2 + C4+
+-1.157e-26  He + H2+ -> H + HeH+
+-7.333e-27  H2 + C2H2+ -> H + C2H3+
+-7.850e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.239e-27  H + CH5+ -> H2 + CH4+
+-3.844e-27  C + C10H2 -> C5H + C6H
+-2.771e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-5.713e-27  H + OCN -> OH + CN
+-3.066e-27  N + C10 -> CN + C9
+# Evolution age (years):
+2.207e+04
+2.328e-23
+2.626e-25   H2 + HOC+ -> H2 + HCO+
+9.679e-25   HCO+ + e- -> CO + H
+2.968e-25   H2O + C+ -> H + HOC+
+6.516e-25   O + CH3+ -> H2 + HCO+
+1.850e-24   H2 + H2+ -> H + H3+
+4.137e-25   H2 + CH2+ -> H + CH3+
+1.152e-24   H2 + H2O+ -> H + H3O+
+4.924e-25   H2 + OH+ -> H + H2O+
+4.565e-25   C + H3+ -> H2 + CH+
+5.419e-25   CO + H3+ -> H2 + HCO+
+3.414e-25   O + H3+ -> H + H2O+
+2.967e-25   O + H3+ -> H2 + OH+
+3.125e-25   C + NO -> CO + N
+1.760e-24   C + O2 -> CO + O
+1.577e-24   C + OH -> CO + H
+2.357e-25   CH2 + O -> CO + H2
+5.698e-25   CH + N -> CN + H
+1.381e-24   CH + O -> CO + H
+2.380e-25   N + CN -> N2 + C
+1.055e-24   O + C2 -> CO + C
+2.817e-25   O + C2H -> CO + CH
+2.715e-25   O + C4 -> C3 + CO
+6.627e-25   O + CN -> CO + N
+-5.124e-26
+-3.300e-27  H2 + CRP -> H2+ + e-
+-5.302e-27  C + C3H2+ -> H2 + C4+
+-1.157e-26  He + H2+ -> H + HeH+
+-6.924e-27  H2 + C2H2+ -> H + C2H3+
+-8.792e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.301e-27  H + CH5+ -> H2 + CH4+
+-4.413e-27  C + C10H2 -> C5H + C6H
+-2.758e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-6.153e-27  H + OCN -> OH + CN
+-3.276e-27  N + C10 -> CN + C9
+# Evolution age (years):
+2.371e+04
+2.303e-23
+2.671e-25   H2 + HOC+ -> H2 + HCO+
+1.000e-24   HCO+ + e- -> CO + H
+2.888e-25   H2O + C+ -> H + HOC+
+6.331e-25   O + CH3+ -> H2 + HCO+
+1.850e-24   H2 + H2+ -> H + H3+
+3.974e-25   H2 + CH2+ -> H + CH3+
+1.133e-24   H2 + H2O+ -> H + H3O+
+4.839e-25   H2 + OH+ -> H + H2O+
+4.251e-25   C + H3+ -> H2 + CH+
+5.765e-25   CO + H3+ -> H2 + HCO+
+3.354e-25   O + H3+ -> H + H2O+
+2.916e-25   O + H3+ -> H2 + OH+
+3.150e-25   C + NO -> CO + N
+1.762e-24   C + O2 -> CO + O
+1.496e-24   C + OH -> CO + H
+5.541e-25   CH + N -> CN + H
+1.328e-24   CH + O -> CO + H
+2.401e-25   N + CN -> N2 + C
+1.015e-24   O + C2 -> CO + C
+2.741e-25   O + C2H -> CO + CH
+2.542e-25   O + C4 -> C3 + CO
+6.614e-25   O + CN -> CO + N
+-5.202e-26
+-3.324e-27  H2 + CRP -> H2+ + e-
+-4.803e-27  C + C3H2+ -> H2 + C4+
+-1.157e-26  He + H2+ -> H + HeH+
+-6.445e-27  H2 + C2H2+ -> H + C2H3+
+-9.931e-28  C3H2 + H3O+ -> H2O + C3H3+
+-1.361e-27  H + CH5+ -> H2 + CH4+
+-5.118e-27  C + C10H2 -> C5H + C6H
+-2.734e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-6.678e-27  H + OCN -> OH + CN
+-3.494e-27  N + C10 -> CN + C9
+# Evolution age (years):
+2.548e+04
+2.276e-23
+2.717e-25   H2 + HOC+ -> H2 + HCO+
+1.036e-24   HCO+ + e- -> CO + H
+2.796e-25   H2O + C+ -> H + HOC+
+6.091e-25   O + CH3+ -> H2 + HCO+
+1.849e-24   H2 + H2+ -> H + H3+
+3.782e-25   H2 + CH2+ -> H + CH3+
+1.112e-24   H2 + H2O+ -> H + H3O+
+4.746e-25   H2 + OH+ -> H + H2O+
+3.910e-25   C + H3+ -> H2 + CH+
+6.139e-25   CO + H3+ -> H2 + HCO+
+3.289e-25   O + H3+ -> H + H2O+
+2.858e-25   O + H3+ -> H2 + OH+
+3.167e-25   C + NO -> CO + N
+1.762e-24   C + O2 -> CO + O
+1.406e-24   C + OH -> CO + H
+5.353e-25   CH + N -> CN + H
+1.269e-24   CH + O -> CO + H
+2.421e-25   N + CN -> N2 + C
+9.694e-25   O + C2 -> CO + C
+2.654e-25   O + C2H -> CO + CH
+2.351e-25   O + C4 -> C3 + CO
+6.593e-25   O + CN -> CO + N
+-5.297e-26
+-3.345e-27  H2 + CRP -> H2+ + e-
+-4.249e-27  C + C3H2+ -> H2 + C4+
+-1.157e-26  He + H2+ -> H + HeH+
+-5.892e-27  H2 + C2H2+ -> H + C2H3+
+-1.133e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.416e-27  H + CH5+ -> H2 + CH4+
+-6.001e-27  C + C10H2 -> C5H + C6H
+-2.696e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-7.305e-27  H + OCN -> OH + CN
+-3.714e-27  N + C10 -> CN + C9
+# Evolution age (years):
+2.738e+04
+2.245e-23
+2.764e-25   H2 + HOC+ -> H2 + HCO+
+1.075e-24   HCO+ + e- -> CO + H
+2.689e-25   H2O + C+ -> H + HOC+
+5.785e-25   O + CH3+ -> H2 + HCO+
+1.849e-24   H2 + H2+ -> H + H3+
+3.555e-25   H2 + CH2+ -> H + CH3+
+1.089e-24   H2 + H2O+ -> H + H3O+
+4.643e-25   H2 + OH+ -> H + H2O+
+3.542e-25   C + H3+ -> H2 + CH+
+6.544e-25   CO + H3+ -> H2 + HCO+
+3.216e-25   O + H3+ -> H + H2O+
+2.795e-25   O + H3+ -> H2 + OH+
+3.173e-25   C + NO -> CO + N
+1.759e-24   C + O2 -> CO + O
+1.306e-24   C + OH -> CO + H
+5.129e-25   CH + N -> CN + H
+1.201e-24   CH + O -> CO + H
+2.439e-25   N + CN -> N2 + C
+9.176e-25   O + C2 -> CO + C
+2.558e-25   O + C2H -> CO + CH
+6.564e-25   O + CN -> CO + N
+-5.418e-26
+-3.364e-27  H2 + CRP -> H2+ + e-
+-3.651e-27  C + C3H2+ -> H2 + C4+
+-1.156e-26  He + H2+ -> H + HeH+
+-5.263e-27  H2 + C2H2+ -> H + C2H3+
+-1.307e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.461e-27  H + CH5+ -> H2 + CH4+
+-7.114e-27  C + C10H2 -> C5H + C6H
+-2.641e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-8.062e-27  H + OCN -> OH + CN
+-3.924e-27  N + C10 -> CN + C9
+# Evolution age (years):
+2.943e+04
+2.209e-23
+2.810e-25   H2 + HOC+ -> H2 + HCO+
+1.118e-24   HCO+ + e- -> CO + H
+2.567e-25   H2O + C+ -> H + HOC+
+5.399e-25   O + CH3+ -> H2 + HCO+
+1.848e-24   H2 + H2+ -> H + H3+
+3.286e-25   H2 + CH2+ -> H + CH3+
+1.064e-24   H2 + H2O+ -> H + H3O+
+4.530e-25   H2 + OH+ -> H + H2O+
+3.145e-25   C + H3+ -> H2 + CH+
+6.981e-25   CO + H3+ -> H2 + HCO+
+3.136e-25   O + H3+ -> H + H2O+
+2.725e-25   O + H3+ -> H2 + OH+
+2.390e-25   C + C5H2 -> C6H + H
+2.547e-25   C + C7H2 -> C8H + H
+3.161e-25   C + NO -> CO + N
+1.752e-24   C + O2 -> CO + O
+1.194e-24   C + OH -> CO + H
+4.860e-25   CH + N -> CN + H
+1.124e-24   CH + O -> CO + H
+2.455e-25   N + CN -> N2 + C
+2.258e-25   N + OH -> NO + H
+8.587e-25   O + C2 -> CO + C
+2.452e-25   O + C2H -> CO + CH
+6.521e-25   O + CN -> CO + N
+-5.573e-26
+-3.380e-27  H2 + CRP -> H2+ + e-
+-3.025e-27  C + C3H2+ -> H2 + C4+
+-1.156e-26  He + H2+ -> H + HeH+
+-4.559e-27  H2 + C2H2+ -> H + C2H3+
+-1.531e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.490e-27  H + CH5+ -> H2 + CH4+
+-8.519e-27  C + C10H2 -> C5H + C6H
+-2.567e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-8.976e-27  H + OCN -> OH + CN
+-4.099e-27  N + C10 -> CN + C9
+# Evolution age (years):
+3.162e+04
+2.167e-23
+2.857e-25   H2 + HOC+ -> H2 + HCO+
+1.165e-24   HCO+ + e- -> CO + H
+2.430e-25   H2O + C+ -> H + HOC+
+4.917e-25   O + CH3+ -> H2 + HCO+
+1.848e-24   H2 + H2+ -> H + H3+
+2.967e-25   H2 + CH2+ -> H + CH3+
+1.035e-24   H2 + H2O+ -> H + H3O+
+4.406e-25   H2 + OH+ -> H + H2O+
+2.719e-25   C + H3+ -> H2 + CH+
+7.452e-25   CO + H3+ -> H2 + HCO+
+3.047e-25   O + H3+ -> H + H2O+
+2.648e-25   O + H3+ -> H2 + OH+
+2.618e-25   C + C5H2 -> C6H + H
+2.961e-25   C + C7H2 -> C8H + H
+3.125e-25   C + NO -> CO + N
+1.739e-24   C + O2 -> CO + O
+1.069e-24   C + OH -> CO + H
+4.536e-25   CH + N -> CN + H
+1.035e-24   CH + O -> CO + H
+2.463e-25   N + CN -> N2 + C
+2.306e-25   N + OH -> NO + H
+7.916e-25   O + C2 -> CO + C
+2.338e-25   O + C2H -> CO + CH
+6.454e-25   O + CN -> CO + N
+2.212e-25   O + OH -> O2 + H
+-5.771e-26
+-3.392e-27  H2 + CRP -> H2+ + e-
+-2.394e-27  C + C3H2+ -> H2 + C4+
+-1.156e-26  He + H2+ -> H + HeH+
+-3.786e-27  H2 + C2H2+ -> H + C2H3+
+-1.824e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.491e-27  H + CH5+ -> H2 + CH4+
+-1.028e-26  C + C10H2 -> C5H + C6H
+-2.469e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-1.007e-26  H + OCN -> OH + CN
+-4.194e-27  N + C10 -> CN + C9
+# Evolution age (years):
+3.398e+04
+2.115e-23
+2.904e-25   H2 + HOC+ -> H2 + HCO+
+1.216e-24   HCO+ + e- -> CO + H
+2.279e-25   H2O + C+ -> H + HOC+
+4.319e-25   O + CH3+ -> H2 + HCO+
+1.848e-24   H2 + H2+ -> H + H3+
+2.590e-25   H2 + CH2+ -> H + CH3+
+1.005e-24   H2 + H2O+ -> H + H3O+
+4.270e-25   H2 + OH+ -> H + H2O+
+2.264e-25   C + H3+ -> H2 + CH+
+7.956e-25   CO + H3+ -> H2 + HCO+
+2.950e-25   O + H3+ -> H + H2O+
+2.564e-25   O + H3+ -> H2 + OH+
+2.878e-25   C + C5H2 -> C6H + H
+3.440e-25   C + C7H2 -> C8H + H
+3.048e-25   C + NO -> CO + N
+1.715e-24   C + O2 -> CO + O
+9.270e-25   C + OH -> CO + H
+4.147e-25   CH + N -> CN + H
+9.329e-25   CH + O -> CO + H
+2.455e-25   N + CN -> N2 + C
+2.363e-25   N + OH -> NO + H
+7.152e-25   O + C2 -> CO + C
+2.219e-25   O + C2H -> CO + CH
+2.127e-25   O + C3H -> CO + C2H
+6.343e-25   O + CN -> CO + N
+2.235e-25   O + OH -> O2 + H
+-6.010e-26
+-3.400e-27  H2 + CRP -> H2+ + e-
+-1.786e-27  C + C3H2+ -> H2 + C4+
+-1.156e-26  He + H2+ -> H + HeH+
+-2.965e-27  H2 + C2H2+ -> H + C2H3+
+-2.219e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.450e-27  H + CH5+ -> H2 + CH4+
+-1.241e-26  C + C10H2 -> C5H + C6H
+-2.341e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-1.137e-26  H + OCN -> OH + CN
+-4.132e-27  N + C10 -> CN + C9
+# Evolution age (years):
+3.652e+04
+2.045e-23
+2.952e-25   H2 + HOC+ -> H2 + HCO+
+1.275e-24   HCO+ + e- -> CO + H
+2.120e-25   H2O + C+ -> H + HOC+
+3.591e-25   O + CH3+ -> H2 + HCO+
+1.847e-24   H2 + H2+ -> H + H3+
+2.148e-25   H2 + CH2+ -> H + CH3+
+9.713e-25   H2 + H2O+ -> H + H3O+
+4.124e-25   H2 + OH+ -> H + H2O+
+8.489e-25   CO + H3+ -> H2 + HCO+
+2.845e-25   O + H3+ -> H + H2O+
+2.473e-25   O + H3+ -> H2 + OH+
+3.139e-25   C + C5H2 -> C6H + H
+3.933e-25   C + C7H2 -> C8H + H
+2.225e-25   C + C9H2 -> C10H + H
+2.894e-25   C + NO -> CO + N
+1.668e-24   C + O2 -> CO + O
+7.668e-25   C + OH -> CO + H
+3.683e-25   CH + N -> CN + H
+8.168e-25   CH + O -> CO + H
+2.409e-25   N + CN -> N2 + C
+2.426e-25   N + OH -> NO + H
+6.285e-25   O + C2 -> CO + C
+2.097e-25   O + C2H -> CO + CH
+2.160e-25   O + C3H -> CO + C2H
+2.049e-25   O + C6H -> C5H + CO
+6.136e-25   O + CN -> CO + N
+2.263e-25   O + OH -> O2 + H
+-6.266e-26
+-3.403e-27  H2 + CRP -> H2+ + e-
+-1.234e-27  C + C3H2+ -> H2 + C4+
+-1.155e-26  He + H2+ -> H + HeH+
+-2.137e-27  H2 + C2H2+ -> H + C2H3+
+-2.762e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.346e-27  H + CH5+ -> H2 + CH4+
+-1.479e-26  C + C10H2 -> C5H + C6H
+-2.171e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-1.281e-26  H + OCN -> OH + CN
+-3.798e-27  N + C10 -> CN + C9
+# Evolution age (years):
+3.924e+04
+1.941e-23
+3.003e-25   H2 + HOC+ -> H2 + HCO+
+1.950e-25   H3O+ + e- -> H2O + H
+1.345e-24   HCO+ + e- -> CO + H
+1.957e-25   H2O + C+ -> H + HOC+
+2.744e-25   O + CH3+ -> H2 + HCO+
+1.847e-24   H2 + H2+ -> H + H3+
+9.366e-25   H2 + H2O+ -> H + H3O+
+3.973e-25   H2 + OH+ -> H + H2O+
+9.039e-25   CO + H3+ -> H2 + HCO+
+2.735e-25   O + H3+ -> H + H2O+
+2.377e-25   O + H3+ -> H2 + OH+
+3.303e-25   C + C5H2 -> C6H + H
+4.276e-25   C + C7H2 -> C8H + H
+2.410e-25   C + C9H2 -> C10H + H
+2.596e-25   C + NO -> CO + N
+1.576e-24   C + O2 -> CO + O
+5.878e-25   C + OH -> CO + H
+3.140e-25   CH + N -> CN + H
+6.869e-25   CH + O -> CO + H
+2.281e-25   N + CN -> N2 + C
+2.493e-25   N + OH -> NO + H
+5.311e-25   O + C2 -> CO + C
+1.965e-25   O + C2H -> CO + CH
+2.149e-25   O + C3H -> CO + C2H
+2.186e-25   O + C6H -> C5H + CO
+5.730e-25   O + CN -> CO + N
+2.293e-25   O + OH -> O2 + H
+-6.450e-26
+-3.399e-27  H2 + CRP -> H2+ + e-
+-7.690e-28  C + C3H2+ -> H2 + C4+
+-1.155e-26  He + H2+ -> H + HeH+
+-1.379e-27  H2 + C2H2+ -> H + C2H3+
+-3.515e-27  C3H2 + H3O+ -> H2O + C3H3+
+-1.161e-27  H + CH5+ -> H2 + CH4+
+-8.218e-28  C3H2 + HCO+ -> CO + C3H3+
+-1.678e-26  C + C10H2 -> C5H + C6H
+-1.943e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-1.420e-26  H + OCN -> OH + CN
+-3.080e-27  N + C10 -> CN + C9
+# Evolution age (years):
+4.217e+04
+1.784e-23
+3.059e-25   H2 + HOC+ -> H2 + HCO+
+1.910e-25   H3O+ + e- -> H2O + H
+1.435e-24   HCO+ + e- -> CO + H
+1.809e-25   H2O + C+ -> H + HOC+
+1.852e-25   O + CH3+ -> H2 + HCO+
+1.847e-24   H2 + H2+ -> H + H3+
+9.029e-25   H2 + H2O+ -> H + H3O+
+3.828e-25   H2 + OH+ -> H + H2O+
+9.582e-25   CO + H3+ -> H2 + HCO+
+2.626e-25   O + H3+ -> H + H2O+
+2.283e-25   O + H3+ -> H2 + OH+
+3.138e-25   C + C5H2 -> C6H + H
+1.838e-25   C + C6H2 -> C7H + H
+4.119e-25   C + C7H2 -> C8H + H
+2.287e-25   C + C9H2 -> C10H + H
+2.144e-25   C + NO -> CO + N
+1.405e-24   C + O2 -> CO + O
+4.015e-25   C + OH -> CO + H
+2.527e-25   CH + N -> CN + H
+5.466e-25   CH + O -> CO + H
+2.006e-25   N + CN -> N2 + C
+1.844e-25   N + NO -> N2 + O
+2.568e-25   N + OH -> NO + H
+4.267e-25   O + C2 -> CO + C
+1.791e-25   O + C2H -> CO + CH
+2.005e-25   O + C3H -> CO + C2H
+2.062e-25   O + C6H -> C5H + CO
+4.984e-25   O + CN -> CO + N
+2.335e-25   O + OH -> O2 + H
+-6.365e-26
+-3.387e-27  H2 + CRP -> H2+ + e-
+-1.155e-26  He + H2+ -> H + HeH+
+-7.966e-28  H2 + C2H2+ -> H + C2H3+
+-4.516e-27  C3H2 + H3O+ -> H2O + C3H3+
+-8.976e-28  H + CH5+ -> H2 + CH4+
+-1.147e-27  C3H2 + HCO+ -> CO + C3H3+
+-1.689e-26  C + C10H2 -> C5H + C6H
+-1.639e-27  C + CH3CHCH2 -> C4H3 + H + H2
+-1.504e-26  H + OCN -> OH + CN
+-2.038e-27  N + C10 -> CN + C9

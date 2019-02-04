@@ -32,12 +32,12 @@ protected:
 	// heating and cooling variables have negative values for cooling process by definition;
 	double neut_heat_chem, neut_heat_dust_coll, pheff_gas_heat, neut_cr_heat, neut_heat_h2, neut_heat_atoms, neut_heat_ph2o, 
 		neut_heat_oh2o, neut_heat_co, neut_heat_oh, neut_heat_pnh3, neut_heat_onh3, neut_heat_ch3oh_a, neut_heat_ch3oh_e,
-		neut_heat_scatt_ions, neut_heat_scatt_el, el_heat_atoms, el_heat_h2, el_heat_ph2o, el_heat_oh2o, el_heat_scatt_neut, 
+		neut_heat_scatt_ions, neut_heat_scatt_el, el_heat_atoms, el_heat_h2, el_heat_ph2o, el_heat_oh2o, ion_heat_h2, el_heat_scatt_neut, 
 		el_heat_scatt_ions, el_heat_chem, ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem, rad_energy_loss_h2;
 	double vel_n, vel_i, vel_ni_diff, vel_turb, vel_n_grad, vel_i_grad, vel_grad_min;
 	double temp_n, temp_i, temp_e, temp_d, temp_n_erg, temp_i_erg, temp_e_erg, temp_d_erg;
 	double conc_n, conc_i, conc_e, conc_he, conc_h2, conc_ph2, conc_oh2, conc_h2j0, conc_h, conc_h_tot, conc_h2o, conc_co, 
-		conc_oh, conc_nh3, conc_ch3oh, conc_oi, conc_ci, conc_cii, conc_ice;
+		conc_oh, conc_nh3, conc_ch3oh, conc_oi, conc_ci, conc_cii, conc_ice, conc_hp, conc_h3p;
 	double h2_prod, h2_prod_gr, h2_prod_gas, h2o_prod, co_prod, oh_prod, nh3_prod, ch3oh_prod, ci_prod, cii_prod, oi_prod;
 	double nb_gain_n, nb_gain_i, nb_gain_e, mass_gain_n, mass_gain_i, mass_gain_e, mom_gain_n, mom_gain_i, mom_gain_e, 
 		energy_gain_n, energy_gain_i, energy_gain_e, energy_gain_d;
@@ -116,7 +116,7 @@ public:
 		double & ch3oh_n, double & coll_h, double & chem_h, double & pheff_h, double & cr, double & scatt_i, double & scatt_e, 
 		double & rad_en_loss_h2) const;	
 	void get_electron_heating(double & atomic_e, double & h2_e, double & h2o_e, double & scatt_n, double & scatt_i, double & chem) const;
-	void get_ion_heating(double & scatt_n, double & scatt_e, double & chem) const;
+	void get_ion_heating(double & h2_i, double & scatt_n, double & scatt_e, double & chem) const;
 
 	// dust heating normalized on one dust grain [erg s-1],
 	// by interstellar radiation field, surface chemistry, gas-dust collisions, H2 line emission, by all molecules (except H2);
@@ -142,7 +142,7 @@ public:
 	// the dimension of heating efficiency dh_eff[] is cm-1 cm-3 s-1, dimension of grain heating rate heating_d[] is cm-1 s-1
     void specimen_population_derivative(const realtype *y_data, realtype *ydot_data, int nb, const energy_diagram *, const einstein_coeff *,
         const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double & heating_n,
-        double & heating_e, double & rad_energy_loss, double *heating_d);
+        double & heating_e, double & heating_i, double & rad_energy_loss, double *heating_d);
 	
     void calc_radiative_coeff(const realtype *y_data, int nb, const energy_diagram *, const einstein_coeff *, 
         const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double *g_factors, 
@@ -153,8 +153,9 @@ public:
 	double calc_conc_h_tot(const N_Vector &y) const;
 	double calc_hydrocarbon_conc(const N_Vector &y) const;
 
-	// ion mass density include contribution from PAHs and small grains here, g/cm3:
-	void calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_mass_dens) const;
+    // ion concentration (cm-3) and density (g/cm3) do not include PAH and small grains,
+	// ionized PAH concentration and density include contribution from PAHs and small grains:
+	void calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_dens, double & ion_pah_dens) const;
 	void calc_neutral_dens(const N_Vector &y, double & neut_conc, double & neut_mass_dens) const;
 
 	// grain charge (in module of electron charge) and grain area (cm2) must be given, 
@@ -166,6 +167,9 @@ public:
 
 	// calculation of the average velocity of the grains of dust component i (in z direction), cm/s:
 	double calc_av_grain_velocity(const N_Vector &y, int i) const;
+
+    // calculation of the kinetic energy flux for the dust 
+    double calc_dust_kinetic_energy_flux(const N_Vector & y) const;
 
 	// calculation of the average charge of one grain of dust component i:
 	double calc_average_grain_charge(const N_Vector &y, int i) const;

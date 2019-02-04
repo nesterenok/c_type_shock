@@ -115,7 +115,7 @@ ch3oh_he_coll_data::ch3oh_he_coll_data(const string &path, const energy_diagram 
 						else if (i1 < i2)
 						{
 							l = i2*(i2-1)/2 + i1;
-							coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /ch3oh_levels->lev_array[i2].g
+							coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /((double) ch3oh_levels->lev_array[i2].g)
 								*exp((ch3oh_levels->lev_array[i2].energy - ch3oh_levels->lev_array[i1].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]);
 						}
 					}
@@ -205,7 +205,7 @@ ch3oh_he_coll_data::ch3oh_he_coll_data(const string &path, const energy_diagram 
 						if (k > i && ch3oh_levels->lev_array[i1].v == ch3oh_levels->lev_array[i2].v) 
 							coeff[l][j] = 0.;
 
-						coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /ch3oh_levels->lev_array[i2].g
+						coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /((double) ch3oh_levels->lev_array[i2].g)
 							*exp((ch3oh_levels->lev_array[i2].energy - ch3oh_levels->lev_array[i1].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]);
 					}
 				}
@@ -315,7 +315,7 @@ ch3oh_ph2_coll_data::ch3oh_ph2_coll_data(const string &path, const energy_diagra
 						else if (i1 < i2)
 						{
 							l = i2*(i2-1)/2 + i1;
-							coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /ch3oh_levels->lev_array[i2].g
+							coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /((double) ch3oh_levels->lev_array[i2].g)
 								*exp((ch3oh_levels->lev_array[i2].energy - ch3oh_levels->lev_array[i1].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]);
 						}
 					}
@@ -422,7 +422,7 @@ ch3oh_oh2_coll_data::ch3oh_oh2_coll_data(const string &path, const energy_diagra
 					else if (i1 < i2)
 					{
 						l = i2*(i2-1)/2 + i1;
-						coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /ch3oh_levels->lev_array[i2].g
+						coeff[l][j] += 0.5*rate *ch3oh_levels->lev_array[i1].g /((double) ch3oh_levels->lev_array[i2].g)
 							*exp((ch3oh_levels->lev_array[i2].energy - ch3oh_levels->lev_array[i1].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]);
 					}
 				}
@@ -509,6 +509,6 @@ void ch3oh_collisions::get_rate_neutrals(const energy_level &up_lev, const energ
 	}
 
 	if (down_rate > MIN_COLLISION_RATE)
-		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g /low_lev.g;
+		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g /((double) low_lev.g);
 	else up_rate = down_rate = 0.;
 }

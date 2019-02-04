@@ -94,7 +94,7 @@ h2_oh2_flower_data::h2_oh2_flower_data(const std::string &data_path, const energ
 				for (j = 1; j < jmax; j++)
 				{
 					coeff[nb][j] = 0.5*(temp[i][j] + temp[f][j] *exp( (h2_di->lev_array[li].energy - h2_di->lev_array[lf].energy) *CM_INVERSE_TO_KELVINS/tgrid[j] ) 
-						*h2_di->lev_array[lf].g /h2_di->lev_array[li].g); 
+						*h2_di->lev_array[lf].g / ((double) h2_di->lev_array[li].g)); 
 				}
 			}
 		}
@@ -177,7 +177,7 @@ h2_ph2_flower_data::h2_ph2_flower_data(const std::string &data_path, const energ
 				for (j = 1; j < jmax; j++)
 				{
 					coeff[nb][j] = 0.5*(temp[i][j] + temp[f][j] *exp((h2_di->lev_array[li].energy - h2_di->lev_array[lf].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]) 
-						*h2_di->lev_array[lf].g /h2_di->lev_array[li].g); 
+						*h2_di->lev_array[lf].g / ((double) h2_di->lev_array[li].g)); 
 				}
 			}
 		}
@@ -260,7 +260,7 @@ h2_he_flower_data::h2_he_flower_data(const std::string &data_path, const energy_
 				for (j = 1; j < jmax; j++)
 				{
 					coeff[nb][j] = 0.5*(temp[i][j] + temp[f][j] *exp((h2_di->lev_array[li].energy - h2_di->lev_array[lf].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]) 
-						*h2_di->lev_array[lf].g /h2_di->lev_array[li].g); 
+						*h2_di->lev_array[lf].g /((double) h2_di->lev_array[li].g)); 
 				}
 			}
 		}
@@ -347,7 +347,7 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 				for (j = 1; j < jmax; j++)
 				{
 					coeff[nb][j] = 0.5*(temp[i][j] + temp[f][j] *exp((h2_di->lev_array[li].energy - h2_di->lev_array[lf].energy) *CM_INVERSE_TO_KELVINS/tgrid[j]) 
-						*h2_di->lev_array[lf].g/h2_di->lev_array[li].g); 
+						*h2_di->lev_array[lf].g/ ((double) h2_di->lev_array[li].g)); 
 				}
 			}
 		}
@@ -851,6 +851,106 @@ h2_e_data::h2_e_data(const string &data_path, const energy_diagram *h2_di, int v
 	}
 }
 
+h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, const energy_diagram *h2_di, int verbosity)
+{
+    const int nb_files = 23;
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int i, j, n, li, lf, f, vi, vf, ji, jf, t, nb_lines;
+    double temp, rate;
+    
+    string file_name;
+    string file_suff[nb_files] = { "Fig3_rateEQM_H3p_v0j1_vf0jf0", "Fig3_rateEQM_H3p_v0j1_vf1jf0", "Fig3_rateEQM_H3p_v0j1_vf2jf0", "Fig3_rateEQM_H3p_v0j1_vf3jf0",
+                            "Fig4_rateEQM_H3p_v1j1_vf1jf0", "Fig4_rateEQM_H3p_v2j1_vf2jf0", "Fig4_rateEQM_H3p_v3j1_vf3jf0",
+                            "Fig5_rateEQM_H3p_v1j1_vf0jf0", "Fig5_rateEQM_H3p_v1j1_vf2jf0", "Fig5_rateEQM_H3p_v1j1_vf3jf0",
+                            "Fig6_rateSQM_H3p_v0j0_vf0jf2", "Fig6_rateSQM_H3p_v0j0_vf0jf3",
+                            "Fig7_rateSQM_H3p_v1j0_vf0jf2", "Fig7_rateSQM_H3p_v1j0_vf0jf3", "Fig7_rateSQM_H3p_v1j0_vf1jf2", "Fig7_rateSQM_H3p_v1j0_vf1jf3",
+                            //"Fig7_rateSQM_H3p_v1j0_vf2jf1", "Fig7_rateSQM_H3p_v1j0_vf2jf2", "Fig7_rateSQM_H3p_v1j0_vf2jf3", 
+                            "Fig7_rateSQM_H3p_v1j0_vf3jf1", "Fig7_rateSQM_H3p_v1j0_vf3jf2", "Fig7_rateSQM_H3p_v1j0_vf3jf3", 
+                            "Fig8_rateSQM_H3p_v2j0_vf2jf2", "Fig8_rateSQM_H3p_v2j0_vf2jf3", 
+                            "Fig9_rate_SQM_H3p_v3j0_vf3jf2", "Fig9_rate_SQM_H3p_v3j0_vf3jf3"};
+    ifstream input;
+
+    nb_lev = 42; // maximal H2 level, for which data exist, is (v=3,j=3)
+    imax = nb_lev * (nb_lev - 1) / 2;
+    jmax = 302; // T = 0, 1, 10, 20,..., 3000 K
+    
+    tgrid = new double[jmax];  
+    tgrid[0] = 0.;
+    tgrid[1] = 1.;
+    for (j = 1; j < jmax-1; j++) {
+        tgrid[j+1] = 10.*j;
+    }
+    
+    coeff = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff, 0, jmax *imax * sizeof(double));
+
+    coeff_deriv = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff_deriv, 0, jmax *imax * sizeof(double));
+ 
+    for (f = 0; f < nb_files; f++) {
+        file_name = path + "coll_h2/gonzalez_lezana2017/";
+        file_name += file_suff[f];
+        file_name += ".dat";
+        
+        input.open(file_name.c_str(), std::ios_base::in);
+        if (!input) {
+            cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
+            exit(1);
+        }
+        input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+        input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+        
+        input >> vi >> ji >> vf >> jf;
+        input >> nb_lines;
+
+        li = h2_di->get_nb(vi, ji); // initial level
+        lf = h2_di->get_nb(vf, jf); // final
+
+        if (li != -1 && lf != -1) {
+            if (li > lf) {
+                i = li * (li - 1) / 2 + lf;
+                for (j = 0; j < nb_lines; j++) {
+                    input >> temp >> rate;
+                    t = rounding(temp);
+
+                    if (t == 1 || t % 10 == 0) {
+                        coeff[i][t / 10 + 1] = rate;
+                    }
+                }
+            }
+            else if (li < lf) {
+                n = 0;
+                i = lf * (lf - 1) / 2 + li;
+                
+                for (j = 0; j < nb_lines; j++) {
+                    input >> temp >> rate;
+                    t = rounding(temp);
+                   
+                    if (t == 1 || t % 10 == 0) { 
+                        if (rate < 1.e-99)
+                            n = t / 10 + 1;
+                        rate *= exp((h2_di->lev_array[lf].energy - h2_di->lev_array[li].energy) *CM_INVERSE_TO_KELVINS / t)
+                            * h2_di->lev_array[li].g / ((double) h2_di->lev_array[lf].g);
+                        coeff[i][t / 10 + 1] = rate;
+                    }
+                }
+                // please, be carefull - the rate value may be very low at low temperatures,
+                n++;
+                for (j = 1; j < n; j++) {
+                    coeff[i][j] = coeff[i][n];
+                }
+            }
+        }
+        input.close();
+    }
+    calc_coeff_deriv();
+    if (verbosity) {
+        cout << "  data have been read for H2-H+ " << endl
+            << "  temperature range " << (int)tgrid[1] << " - " << (int)tgrid[jmax - 1] << endl;
+    }
+}
+
+
 //
 // The class that calculates collisional rates
 //
@@ -883,6 +983,7 @@ h2_collisions::h2_collisions(const std::string &data_path, const energy_diagram 
 	nb2 = (int) coll_data.size();
 
 	// data on H+ collisions must be here;
+    coll_data.push_back( new h2_hp_gonzalez_lezana_data(data_path, h2_di, verbosity));
 	nb3 = (int) coll_data.size();
 
 	max_temp = new double [nb3];
@@ -898,24 +999,30 @@ void h2_collisions::check_spline(int ilev, int flev, const std::string & fname) 
 #endif
 }
 
-void h2_collisions::set_gas_param(double temp_neutrals, double temp_el, double he_conc, double ph2_conc, double oh2_conc, 
-	double h_conc, double el_conc, double *&concentration, int *&indices) const
+void h2_collisions::set_gas_param(double temp_neutrals, double temp_el, double he_conc, double ph2_conc, double oh2_conc, double h_conc, 
+    double el_conc, double *&concentration, int *&indices) const
 {
 	// must be called first:
-	collisional_transitions::set_gas_param(temp_neutrals, temp_el, he_conc, ph2_conc, oh2_conc, h_conc, el_conc, concentration, 
-		indices);
+	collisional_transitions::set_gas_param(temp_neutrals, temp_el, he_conc, ph2_conc, oh2_conc, h_conc, el_conc, concentration, indices);
 
 	concentration[0] = he_conc;
 	concentration[1] = concentration[2] = ph2_conc;
 	concentration[3] = concentration[4] = oh2_conc;
-	concentration[5] = concentration[6] = concentration[7] = concentration[8] = h_conc;
+	concentration[5] = concentration[6] = concentration[7] = concentration[8] = h_conc;  
+}
+
+void h2_collisions::set_ion_param(double temp_neutrals, double temp_ions, double hp_conc, double h3p_conc, double *&concentration, int *&indices) const
+{
+    // H2-H+ data 
+    indices[nb2] = coll_data[nb2]->locate( 0.333333*(temp_neutrals + 2.*temp_ions) );
+    concentration[nb2] = hp_conc + h3p_conc;
 }
 
 // The energy of the first level is higher, up_lev.nb > low_lev.nb;
 void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, 
 	double &up_rate, double temp_neutrals, const double *concentration, const int *indices) const
 {
-	down_rate = 0.;
+	down_rate = up_rate = 0.;
 	if (rounding(low_lev.spin - up_lev.spin) == 0) {
 		// collisions with He
 		if (up_lev.nb < coll_data[0]->nb_lev) {
@@ -988,9 +1095,26 @@ void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_l
 #endif
 
 	if (down_rate > MIN_COLLISION_RATE) {
-		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g /low_lev.g;
+		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g / ((double) low_lev.g);
 	}
 	else down_rate = up_rate = 0.;
+}
+
+void h2_collisions::get_rate_ions(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, double &up_rate,
+    double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const
+{
+    down_rate = 0.;
+    if (up_lev.nb < coll_data[nb2]->nb_lev) 
+    {
+        // t = (t_n*m_i + t_i*m_n)/(m_n + m_i)
+        temp_ions = 0.333333*(temp_neutrals + 2.*temp_ions);
+        down_rate = coll_data[nb2]->get_rate(up_lev.nb, low_lev.nb, indices[nb2], (temp_ions < max_temp[nb2]) ? temp_ions : max_temp[nb2])
+            *concentration[nb2];   
+    } 
+    if (down_rate > MIN_COLLISION_RATE) {
+        up_rate = down_rate * exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS / temp_ions) *up_lev.g / ((double)low_lev.g);
+    }
+    else down_rate = up_rate = 0.;
 }
 
 //
@@ -1551,168 +1675,4 @@ void h2_coll_data_process_bossion(const std::string &data_path)
 	}
 	input.close();
 	output.close(); 
-}
-
-void h2_coll_data_check(const std::string &data_path)
-{
-	char text_line[MAX_TEXT_LINE_WIDTH];
-	int i, j, l, v, k, imax, jmax, nb_lev;
-	int *indices(0);
-	double o, p, tot_h_conc;
-	double **coeff, *tgrid, *rates, *pop, *concentration(0);
-	
-	string file_name;
-	ifstream input;
-	
-	nb_lev = 54; //
-	molecule h2_mol("H2", 1, 2.*ATOMIC_MASS_UNIT);
-	
-	h2_diagram *h2_di 
-		= new h2_diagram(data_path, h2_mol, nb_lev);
- 
-	h2_einstein_coeff *h2_einst 
-		= new h2_einstein_coeff(data_path, h2_di);
-	
-	h2_collisions *h2_coll 
-		= new h2_collisions(data_path, h2_di);
-
-	
-	file_name = data_path + "coll_h2/coll_h2_h_l.txt";
-	input.open(file_name.c_str(), std::ios_base::in);
-
-	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
-		exit(1);
-	}
-
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-
-	input >> k;
-	jmax = 51; // +1 for zero point;
-	imax = nb_lev*(nb_lev-1)/2;
-	
-	tgrid = new double [jmax];
-	coeff = alloc_2d_array<double>(imax, jmax);
-	memset(*coeff, 0, jmax *imax *sizeof(double));
-	
-	for (j = 0; j < jmax; j++) {
-		tgrid[j] = 100.*j;
-	}
-	
-	for (l = 0; l < imax; l++)
-	{
-		input >> v >> j;
-		i = h2_di->get_nb(v, j);
-
-		input >> v >> j;
-		k = h2_di->get_nb(v, j);
-
-		if (i <= k)
-			cout << "!";
-
-		i = i*(i-1)/2 + k;
-		for (j = 1; j < jmax; j++) {
-			input >> coeff[i][j];
-		}
-	}
-	input.close();
-
-	rates = new double [nb_lev];
-	memset(rates, 0, nb_lev*sizeof(double));
-
-	pop = new double [nb_lev];
-	memset(pop, 0, nb_lev*sizeof(double));
-
-	j = 44;
-	tot_h_conc = 2.45e+4;
-//	boltzmann_populations(tgrid[j], pop, h2_di);
-	
-	file_name = "h2_pop_test.txt";
-	input.open(file_name.c_str(), std::ios_base::in);
-
-	if (!input) {
-		cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
-		exit(1);
-	}
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-	input >> k;
-	
-	for (i = 0; i < k && i < nb_lev; i++) {
-		input >> v >> pop[i];
-	}
-
-	h2_coll->set_gas_param(tgrid[j], tgrid[j], 0.1*tot_h_conc, 0.125*tot_h_conc, 0.375*tot_h_conc, 0.002*tot_h_conc, 1.e-7*tot_h_conc,
-		concentration, indices);
-
-//	opt_thin_pop(pop, h2_di, h2_einst, h2_coll, tgrid[j], tgrid[j], concentration, indices);
-/*	double down1, down2, up1, up2;
-	double **matrix = alloc_2d_array<double>(nb_lev, nb_lev);
-	memset(*matrix, 0, nb_lev*nb_lev*sizeof(double));
-	
-	for (v = 1; v < nb_lev; v++) {
-		for (k = 0; k < v; k++)
-		{
-			h2_coll->get_rate_neutrals(h2_di->lev_array[v], h2_di->lev_array[k], down1, up1,
-				tgrid[j], concentration, indices);
-
-			h2_coll->get_rate_electrons(h2_di->lev_array[v], h2_di->lev_array[k], down2, up2,
-				tgrid[j], concentration, indices);
-
-			matrix[k][v] = h2_einst->arr[v][k] + down1 + down2;	// v->k
-			matrix[v][v] -= h2_einst->arr[v][k] + down1 + down2;
-		
-			matrix[v][k] = up1 + up2;	// k->v
-			matrix[k][k] -= up1 + up2;
-		}
-	}
-
-	for (v = 0; v < nb_lev; v++) {
-		matrix[0][v] = 1.;
-	}
-	pop[0] = 1.;
-	
-	lu_matrix_solve(matrix, pop, nb_lev);
-	free_2d_array<double>(matrix);
-
-*/
-
-	j = 44;
-	for (v = 1; v < nb_lev; v++) {
-		for (k = 0; k < v; k++) 
-		{
-			if (abs(rounding(h2_di->lev_array[v].spin - h2_di->lev_array[k].spin)) > DBL_EPSILON) 
-			{
-				i = v*(v-1)/2 + k;
-				p = (coeff[i][j] + h2_einst->arr[v][k])*pop[v]; // radiative transitions does not matter here
-				rates[v] -= p;
-				rates[k] += p;
-
-				p = coeff[i][j]*pop[k] 
-					*exp((h2_di->lev_array[k].energy - h2_di->lev_array[v].energy)*CM_INVERSE_TO_KELVINS/tgrid[j]) 
-					*h2_di->lev_array[v].g /h2_di->lev_array[k].g;
-					
-				rates[v] += p;
-				rates[k] -= p;
-			}
-		}
-	}
-	o = p = 0.;
-	for (v = 0; v < nb_lev; v++) {
-		if (rounding(h2_di->lev_array[v].spin) == 0)
-			o += rates[v];
-		else p += rates[v];
-	}
-	cout << "H2 molecule excitation by H - checking ortho-para conversion, gas temperature (K) - " << tgrid[j] << endl
-		<< "Ortho to para conversion, rate [cm3/s] - " << o << endl
-		<< "Para to ortho conversion, rate [cm3/s] - " << p << endl;
-
-	for (v = 0; v < nb_lev; v++) {
-		cout << left << setw(5) << h2_di->lev_array[v].v << setw(5) << h2_di->lev_array[v].j << setw(12) << rates[v] << endl;
-	}
-
-	delete [] tgrid;
-	delete [] rates;
-	free_2d_array(coeff);
 }

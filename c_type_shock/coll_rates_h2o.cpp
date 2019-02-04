@@ -263,7 +263,7 @@ h2o_he_coll_data::h2o_he_coll_data(const string &data_path, const energy_diagram
 			if (li < h2o_di->nb_lev) {
 				for (j = 1; j < jmax; j++)
 				{
-					coeff[nb][j] = 0.5*(temp[i][j] + temp[f][j] *h2o_di->lev_array[lf].g /h2o_di->lev_array[li].g
+					coeff[nb][j] = 0.5*(temp[i][j] + temp[f][j] *h2o_di->lev_array[lf].g / ((double) h2o_di->lev_array[li].g)
 						*exp((h2o_di->lev_array[li].energy - h2o_di->lev_array[lf].energy) *CM_INVERSE_TO_KELVINS/tgrid[j])); 
 				}
 			}
@@ -543,7 +543,7 @@ void h2o_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_
 	}
 
 	if (down_rate > MIN_COLLISION_RATE)
-		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g /low_lev.g;
+		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g / ((double) low_lev.g);
 	else up_rate = down_rate = 0.;
 }
 

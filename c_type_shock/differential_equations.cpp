@@ -78,7 +78,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	neut_heat_co(0.), neut_heat_oh(0.), neut_heat_pnh3(0.), neut_heat_onh3(0.), neut_heat_ch3oh_a(0.), neut_heat_ch3oh_e(0.),
 	neut_heat_dust_coll(0.), neut_heat_chem(0.), pheff_gas_heat(0.), neut_cr_heat(0.), neut_heat_scatt_ions(0.), 
 	neut_heat_scatt_el(0.), el_heat_atoms(0.), el_heat_h2(0.), el_heat_ph2o(0.), el_heat_oh2o(0.), el_heat_scatt_neut(0.), 
-	el_heat_scatt_ions(0.), el_heat_chem(0.), ion_heat_scatt_n(0.), ion_heat_scatt_el(0.), ion_heat_chem(0.), ads_dust_area(0.), 
+	el_heat_scatt_ions(0.), el_heat_chem(0.), ion_heat_h2(0.), ion_heat_scatt_n(0.), ion_heat_scatt_el(0.), ion_heat_chem(0.), ads_dust_area(0.),
 	ads_grain_velz(0.), ads_grain_veln2(0.), desorption_factor_cr(0.), photodes_factor_cr(0.), photodes_factor_is(0.), 
 	oh2_form_gaschem(0.), oh2_form_grains(0.), oh2_form_hcoll(0.), h2_h_diss_rate(0.),
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
@@ -617,6 +617,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	conc_ci = y_data[network->ci_nb]; 
 	conc_cii = y_data[network->cii_nb];
 
+    conc_hp = y_data[network->hp_nb];
+    conc_h3p = y_data[network->h3p_nb];
 	// only H2, H are taken into account in the calculation of H nuclei concentration:
 	conc_h_tot = 2.*conc_h2 + conc_h;
 	
@@ -1222,9 +1224,10 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	// calculation of the heating (cooling) due to H2: 
 	h2_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
-	
+    h2_coll->set_ion_param(temp_n, temp_i, conc_hp, conc_h3p, coll_partn_conc, indices);
+
 	specimen_population_derivative(y_data, ydot_data, nb_of_species, h2_di, h2_einst, h2_coll, coll_partn_conc, indices, vel_n_grad,
-		neut_heat_h2, el_heat_h2, rad_energy_loss_h2, dust_heat_h2_line);
+		neut_heat_h2, el_heat_h2, ion_heat_h2, rad_energy_loss_h2, dust_heat_h2_line);
 
 #if (SAVE_RADIATIVE_TRANSFER_FACTORS)
     calc_radiative_coeff(y_data, nb_of_species, h2_di, h2_einst, h2_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
@@ -1284,7 +1287,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	ph2o_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, ph2o_di, ph2o_einst, ph2o_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_ph2o, el_heat_ph2o, a, dust_heat_mline);
+		neut_heat_ph2o, el_heat_ph2o, a, a, dust_heat_mline);
 
 #if (SAVE_RADIATIVE_TRANSFER_FACTORS)
     nb2 = nb_lev_h2*(nb_lev_h2-1)/2;
@@ -1306,7 +1309,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	oh2o_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, oh2o_di, oh2o_einst, oh2o_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_oh2o, el_heat_oh2o, a, dust_heat_mline);
+		neut_heat_oh2o, el_heat_oh2o, a, a, dust_heat_mline);
 
 #if (SAVE_RADIATIVE_TRANSFER_FACTORS)
     nb2 += nb_lev_h2o * (nb_lev_h2o - 1) / 2;
@@ -1326,7 +1329,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	co_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, co_di, co_einst, co_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_co, a, a, dust_heat_mline);
+		neut_heat_co, a, a, a, dust_heat_mline);
 
 #if (SAVE_RADIATIVE_TRANSFER_FACTORS)
     nb2 += nb_lev_h2o*(nb_lev_h2o-1)/2;
@@ -1348,7 +1351,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_h2j0, conc_h2-conc_h2j0, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_oh, a, a, dust_heat_mline);
+		neut_heat_oh, a, a, a, dust_heat_mline);
 
     energy_gain_n += neut_heat_oh;
 #endif
@@ -1365,7 +1368,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	pnh3_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, pnh3_di, pnh3_einst, pnh3_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_pnh3, a, a, dust_heat_mline);
+		neut_heat_pnh3, a, a, a, dust_heat_mline);
 	
     energy_gain_n += neut_heat_pnh3;
 #endif	
@@ -1380,7 +1383,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     onh3_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, onh3_di, onh3_einst, onh3_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_onh3, a, a, dust_heat_mline);
+		neut_heat_onh3, a, a, a, dust_heat_mline);
 
     energy_gain_n += neut_heat_onh3;
 #endif
@@ -1396,7 +1399,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	ch3oh_a_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, ch3oh_a_di, ch3oh_a_einst, ch3oh_a_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_ch3oh_a, a, a, dust_heat_mline);
+		neut_heat_ch3oh_a, a, a, a, dust_heat_mline);
 	
 	energy_gain_n += neut_heat_ch3oh_a;
 #endif
@@ -1410,7 +1413,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	ch3oh_e_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, ch3oh_e_di, ch3oh_e_einst, ch3oh_e_coll, coll_partn_conc, indices, vel_n_grad, 
-		neut_heat_ch3oh_e, a, a, dust_heat_mline);
+		neut_heat_ch3oh_e, a, a, a, dust_heat_mline);
 	
 	energy_gain_n += neut_heat_ch3oh_e;
 #endif
@@ -1424,7 +1427,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	CI_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, CI_di, CI_einst, CI_coll, coll_partn_conc, indices, vel_n_grad, 
-		en_n, en_e, a, dust_heat_mline);
+		en_n, en_e, a, a, dust_heat_mline);
 
 	c = ci_prod/conc_ci;
 	for (i = 0; i < nb_lev_ci; i++) {
@@ -1439,7 +1442,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	OI_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, OI_di, OI_einst, OI_coll, coll_partn_conc, indices, vel_n_grad, 
-		en_n, en_e, a, dust_heat_mline);
+		en_n, en_e, a, a, dust_heat_mline);
 
 	c = oi_prod/conc_oi;
 	for (i = 0; i < nb_lev_oi; i++) {
@@ -1454,7 +1457,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	CII_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, CII_di, CII_einst, CII_coll, coll_partn_conc, indices, vel_i_grad, 
-		en_n, en_e, a, dust_heat_mline);
+		en_n, en_e, a, a, dust_heat_mline);
 
 	c = cii_prod/conc_cii;
 	for (i = 0; i < nb_lev_cii; i++) {
@@ -1603,16 +1606,16 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 // the dimension of heating efficiency dh_eff[] is cm-1 cm-3 s-1, dimension of grain heating rate heating_d[] is cm-1 s-1
 void evolution_data::specimen_population_derivative(const realtype *y_data, realtype *ydot_data, int nb, const energy_diagram *mol_di,
     const einstein_coeff *mol_einst, const collisional_transitions *mol_coll, double *coll_partn_conc, int *indices,
-    double vel_grad, double & heating_n, double & heating_e, double & rad_energy_loss, double *heating_d)
+    double vel_grad, double & heating_n, double & heating_e, double & heating_i, double & rad_energy_loss, double *heating_d)
 {
     int i, l, k, nb_lev;
-    double upl, lowl, ep1, ep2, delta, gamma, c, d, vd, down_rate, up_rate, energy, line_em, line_op, dust_op, h_e, h_n, r_e_l;
+    double upl, lowl, ep1, ep2, delta, gamma, c, d, vd, down_rate, up_rate, energy, line_em, line_op, dust_op, h_n, h_e, h_i, r_e_l;
 
     nb_lev = mol_di->nb_lev;
     vd = pow(2.*BOLTZMANN_CONSTANT*temp_n / mol_di->mol.mass + vel_turb * vel_turb, 0.5);
-    r_e_l = h_e = h_n = 0.;
+    r_e_l = h_e = h_n = h_i = 0.;
 
-#pragma omp parallel reduction(+: h_e, h_n, r_e_l) private(i, l, k, upl, lowl, c, d, delta, gamma, ep1, ep2, down_rate, up_rate, energy, line_em, line_op, dust_op)
+#pragma omp parallel reduction(+: h_n, h_e, h_i, r_e_l) private(i, l, k, upl, lowl, c, d, delta, gamma, ep1, ep2, down_rate, up_rate, energy, line_em, line_op, dust_op)
     {
         double *arr = new double[nb_lev];
         memset(arr, 0, nb_lev * sizeof(double));
@@ -1626,6 +1629,8 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
             lowl = y_data[nb + l];
             for (i = l + 1; i < nb_lev; i++)
             {
+                // level energy is in cm-1;
+                energy = mol_di->lev_array[i].energy - mol_di->lev_array[l].energy;
                 upl = y_data[nb + i];
 
                 mol_coll->get_rate_neutrals(mol_di->lev_array[i], mol_di->lev_array[l], down_rate, up_rate, temp_n,
@@ -1634,12 +1639,10 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
                 down_rate *= upl;
                 up_rate *= lowl;
 
+                h_n += (down_rate - up_rate) *energy; // level energy is in cm-1;	
+ 
                 c = down_rate;
                 d = up_rate;
-
-                // level energy is in cm-1;
-                energy = mol_di->lev_array[i].energy - mol_di->lev_array[l].energy;
-                h_n += (down_rate - up_rate) *energy;
 
                 mol_coll->get_rate_electrons(mol_di->lev_array[i], mol_di->lev_array[l], down_rate, up_rate, temp_e,
                     coll_partn_conc, indices);
@@ -1647,8 +1650,20 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
                 down_rate *= upl;
                 up_rate *= lowl;
 
-                // level energy is in cm-1;	
                 h_e += (down_rate - up_rate) *energy;
+
+#if (H2_IONS_EXCITATION)
+                c += down_rate;
+                d += up_rate;
+                
+                mol_coll->get_rate_ions(mol_di->lev_array[i], mol_di->lev_array[l], down_rate, up_rate, temp_n, temp_i,
+                    coll_partn_conc, indices);
+
+                down_rate *= upl;
+                up_rate *= lowl;
+
+                h_i += (down_rate - up_rate) *energy;
+#endif
 
                 down_rate += c;
                 up_rate += d;
@@ -1713,6 +1728,7 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
     }
     heating_n = h_n * CM_INVERSE_TO_ERG; // heating/cooling units are erg cm-3 s-1;
     heating_e = h_e * CM_INVERSE_TO_ERG;
+    heating_i = h_i * CM_INVERSE_TO_ERG;
     rad_energy_loss = r_e_l * CM_INVERSE_TO_ERG;
 }
 
@@ -1849,6 +1865,28 @@ double evolution_data::calc_av_grain_velocity(const N_Vector &y, int i) const
 	return vel;
 }
 
+double evolution_data::calc_dust_kinetic_energy_flux(const N_Vector & y) const
+{
+    int i, k;
+    double a, b, c, d, vel, flux;
+
+    flux = 0.;
+    for (i = 0; i < nb_of_dust_comp; i++) {
+        if (is_dust_charge_large[i]) {
+            vel = calc_grain_velocity(y, NV_Ith_S(y, nb_dch[i] + 1), dust->get_grain_area(i), a, b, c, d);
+            flux += 0.5 * vel * vel * vel * NV_Ith_S(y, nb_dch[i]) * dust->components[i]->mass;
+        }
+        else {
+            for (k = 0; k < max_grain_charge[i] - min_grain_charge[i] + 1; k++)
+            {
+                vel = calc_grain_velocity(y, min_grain_charge[i] + k, dust->get_grain_area(i), a, b, c, d);
+                flux += 0.5 * vel * vel * vel * NV_Ith_S(y, nb_dch[i] + k) * dust->components[i]->mass;
+            }
+        }
+    }
+    return flux;
+}
+
 double evolution_data::calc_conc_ph2(const N_Vector &y) const
 {
 	const realtype *y_data = NV_DATA_S(y);
@@ -1905,37 +1943,38 @@ double evolution_data::calc_hydrocarbon_conc(const N_Vector &y) const
 	return a;
 }
 
-void evolution_data::calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_mass_dens) const
+void evolution_data::calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_dens, 
+    double & ion_pah_dens) const
 {
 	int i, k;
 	const realtype *y_data = NV_DATA_S(y);
 
 	// calculation of ion mass density and concentration due to chemical species:
-	ion_pah_conc = ion_mass_dens = 0.;
+	ion_conc = ion_dens = 0.;
 	for (i = 0; i < nb_of_gas_species; i++) { 
 		if (network->species[i].charge != 0 && i != network->e_nb) 
 		{
-			ion_pah_conc += y_data[i];
-			ion_mass_dens += y_data[i] *network->species[i].mass;
+			ion_conc += y_data[i];
+			ion_dens += y_data[i] *network->species[i].mass;
 		}
 	}
 
-	ion_conc = ion_pah_conc;
+	ion_pah_conc = ion_pah_dens = 0.;
 	// calculation of charged dust contribution to ion mass:
 	for (i = 0; i < dust->nb_of_comp; i++) 
 	{ 
 		if (is_charged_dust_as_ions[i]) {
 			if (is_dust_charge_large[i]) 
 			{
-				ion_conc += y_data[nb_dch[i]];
-				ion_mass_dens += y_data[nb_dch[i]] *dust->get_grain_mass(i);
+				ion_pah_conc += y_data[nb_dch[i]];
+				ion_pah_dens += y_data[nb_dch[i]] *dust->get_grain_mass(i);
 			}
 			else {
 				for (k = 0; k < max_grain_charge[i] - min_grain_charge[i] + 1; k++) {
 					if (min_grain_charge[i] + k != 0) 
 					{
-						ion_conc += y_data[nb_dch[i] + k];
-						ion_mass_dens += y_data[nb_dch[i] + k] *dust->get_grain_mass(i);
+						ion_pah_conc += y_data[nb_dch[i] + k];
+						ion_pah_dens += y_data[nb_dch[i] + k] *dust->get_grain_mass(i);
 					}
 				}
 			}
@@ -2469,8 +2508,9 @@ void evolution_data::get_electron_heating(double & atomic_e, double & h2_e, doub
 	chem = el_heat_chem;
 }
 
-void evolution_data::get_ion_heating(double & scatt_n, double & scatt_e, double & chem) const
+void evolution_data::get_ion_heating(double & h2_i, double & scatt_n, double & scatt_e, double & chem) const
 {
+    h2_i = ion_heat_h2;
 	scatt_n = ion_heat_scatt_n; 
 	scatt_e = ion_heat_scatt_el;
 	chem = ion_heat_chem;
@@ -2806,7 +2846,7 @@ mhd_shock_data::~mhd_shock_data()
 int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 {
    	int i, k, l, returned_val;
-	double a, b, c, d, e, en_n, nb_e, g_velg, neut_nb_dens, ion_conc, ion_pah_conc, neut_mass_dens, ion_mass_dens, 
+	double a, b, c, d, e, en_n, nb_e, g_velg, neut_nb_dens, ion_conc, ion_pah_conc, neut_mass_dens, ion_mass_dens, ion_pah_dens,
         ion_vg_terms, neut_vg_terms;
 
 	vel_n = NV_Ith_S(y, nb_mhd + 3);
@@ -2858,7 +2898,8 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	// nb+4 ion velocity;
 
 	calc_neutral_dens(y, neut_nb_dens, neut_mass_dens);
-	calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens);
+	calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens, ion_pah_dens);
+    ion_mass_dens += ion_pah_dens;
 
 	// The MHD equations are given by Draine et al., ApJ 264, p.485 (1983); Draine, MNRAS, 220, p.133 (1986);
 	// The derivation of derivatives see in Roberge & Draine, ApJ 350, p.700 (1990);

@@ -18,8 +18,6 @@
 void h2_coll_data_process(const std::string &data_path);
 // rewrite data given by Dr. Bossion in more compact form; 
 void h2_coll_data_process_bossion(const std::string &data_path);
-// check for ortho-para conversion in H2-H data;
-void h2_coll_data_check(const std::string &data_path);
 
 // H2 - ortho-H2 rate coefficients. The data from Flower & Roueff, J. Phys. B 32, 3399 (1999);
 // original data at 100-6000 K.
@@ -135,16 +133,30 @@ public:
 	h2_e_data(const std::string &path, const energy_diagram *, int verbosity=1);
 };
 
+// Gonzalez-Lezana & Honvault, MNRAS 467, 1294 (2017),
+// there is problem with the data from fig.7
+class h2_hp_gonzalez_lezana_data : public collision_data
+{
+public:
+    h2_hp_gonzalez_lezana_data(const std::string &path, const energy_diagram *, int verbosity = 1);
+};
+
 // The class that calculates collisional rates;
 class h2_collisions : public collisional_transitions
 {
 public:
 	void get_rate_neutrals(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, double &up_rate,
-		double gas_temp, const double *concentration, const int *indices) const;
+		double temp_neutrals, const double *concentration, const int *indices) const;
+
+    void get_rate_ions(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, double &up_rate,
+        double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const;
 	
-	void set_gas_param(double temp_neutrals, double el_temp, double he_conc, double ph2_conc, double oh2_conc, double h_conc,
-		double el_conc, double *&concentration, int *&indices) const;
+	void set_gas_param(double temp_neutrals, double el_temp, double he_conc, double ph2_conc, double oh2_conc, double h_conc, 
+        double el_conc, double *&concentration, int *&indices) const;
 	
+    void set_ion_param(double temp_neutrals, double temp_ions, double hp_conc, double h3p_conc, 
+        double *&concentration, int *&indices) const;
+
 	void check_spline(int ilev, int flev, const std::string & fname) const;
 	h2_collisions(const std::string &, const energy_diagram *, int verbosity =1);
 };

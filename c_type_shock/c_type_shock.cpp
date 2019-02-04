@@ -317,7 +317,7 @@ int main(int argc, char** argv)
 			{ 
                 cout << output_path << endl;
                 shock_state = calc_shock(data_path, input_path, output_path, shock_vel, magnetic_field, c_abund_pah, ty); 
-                cout << "   shock ended with the code: " << (int)shock_state;
+                cout << "   shock ended with the code " << (int) shock_state << endl;
                 break;
             }
             else if (mode == "CS_")
@@ -332,7 +332,7 @@ int main(int argc, char** argv)
                     ss << "/";
                     cout << left << setw(5) << i+1 << ss.str() << endl;
                     shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
-                    cout << "   shock ended with the code " << (int)shock_state << endl;
+                    cout << "   shock ended with the code " << (int) shock_state << endl;
                 }
                 break;
             }
@@ -417,7 +417,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		nb_dct, nb_mhd, verbosity;
 	long int nb_steps;
 	double a, init_temp, conc_e, h2_form_const, t, ty, tfin, tout, rel_tol, tmult, op_ratio_h2, ion_conc, 
-		ion_pah_conc, ion_dens;
+		ion_pah_conc, ion_dens, ion_pah_dens;
 	
 	double *chem_abund(0);
 	vector<double> new_y, init_ch;
@@ -672,7 +672,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		save_dust_properties(output_path, &user_data, y, conc_h_tot, ty);
 		save_nautilus_data(output_path, ty, visual_extinct, conc_h_tot, NV_Ith_S(y, nb_mhd), user_data.get_av_dust_temp());
 		
-		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens);
+		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
 
 		fname = output_path + "sim_phys_param.txt";
@@ -1110,8 +1110,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		nb_saved_cloud_param, verbosity;
 	long int tot_nb_steps;
 	double a, b, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, magn_precursor_length, magn_sonic_speed, 
-		sound_speed, conc_h_tot, temp_n, temp_i, temp_e, neut_dens, ion_dens, neut_conc, ion_conc, ion_pah_conc, rel_tol, 
-		ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved;
+		sound_speed, conc_h_tot, temp_n, temp_i, temp_e, neut_dens, ion_dens, neut_conc, ion_conc, ion_pah_conc, ion_pah_dens, 
+        rel_tol, ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved;
 	double *prev_y(0);
 	
 	string fname, sn;
@@ -1192,7 +1192,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	NV_Ith_S(y, network->e_nb) += a;
 
 	// calculation of the mass and number densities for the neutral and ion fluids;
-	user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens);
+	user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 	user_data.calc_neutral_dens(y, neut_conc, neut_dens);
 
 	// Assesment of the magnetic precursor length - the distance that characterizes the decrease of the ion velocity, 
@@ -1204,7 +1204,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	// magnetosonic speed, see Draine, ApJ 241, p. 1021, 1980;
 	a = magnetic_field*magnetic_field/(4*M_PI);
 	magn_sonic_speed = sqrt((a + 5./3.*ion_conc*BOLTZMANN_CONSTANT*(temp_i + temp_e))
-			/(ion_dens + a/(SPEED_OF_LIGHT*SPEED_OF_LIGHT)));
+			/(ion_dens + ion_pah_dens + a/(SPEED_OF_LIGHT*SPEED_OF_LIGHT)));
 
 	// neutral gas sound speed
 	sound_speed = sqrt(5.*neut_conc*BOLTZMANN_CONSTANT*temp_n/(3.*neut_dens));
@@ -1217,7 +1217,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 			<< "Characteristic value of ion velocity gradient (cm/s/cm): " << -shock_vel/magn_precursor_length << endl
 			<< "Magnetosonic speed (cm/s): " << magn_sonic_speed << endl
 			<< "Neutral gas sound speed (cm/s): " << sound_speed << endl 
-			<< "Ion Alfven speed (cm/s): " << magnetic_field/sqrt(4*M_PI*ion_dens) << endl
+			<< "Ion Alfven speed (cm/s): " << magnetic_field/sqrt(4*M_PI*(ion_dens + ion_pah_dens)) << endl
 			<< "Alfven speed (cm/s): " << magnetic_field/sqrt(4*M_PI*neut_dens) << endl
 			<< "Ionization fraction: " << ion_conc/neut_conc << endl;
 	}
@@ -1382,7 +1382,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 user_data.save_radiative_transfer_data(output_path2, ty);
 #endif
             }
-            user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens);
+            user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 
             fname = output_path2 + "sim_phys_param.txt";
             output.open(fname.c_str(), ios::app);
@@ -1567,7 +1567,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	int i, flag, nb, nb_of_species, nb_lev_h2o, nb_lev_h2, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3,
 		nb_vibr_ch3oh, nb_lev_ch3oh, nb_lev_ci, nb_lev_cii, nb_lev_oi, nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd, verbosity;
 	double h2_form_const, t, dt, ty, tfin, tout, rel_tol, tmult, visual_extinct, cr_ioniz_rate, cr_ioniz_rate0, 
-		uv_field_strength, ir_field_strength, conc_h_tot, ion_conc, ion_pah_conc, ion_dens;
+		uv_field_strength, ir_field_strength, conc_h_tot, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens;
 	long int nb_steps;
 	
 	time_t timer;
@@ -1736,7 +1736,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		save_dust_properties(output_path2, &user_data, y, conc_h_tot, evol_time + ty);
 		save_nautilus_data(output_path2, evol_time + ty, visual_extinct, conc_h_tot, NV_Ith_S(y, nb_mhd), user_data.get_av_dust_temp());
 		
-		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens);
+		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
 
 		fname = output_path2 + "sim_phys_param.txt";
@@ -2154,6 +2154,7 @@ void create_file_heating_rates(const string &output_path)
 		<< "! ph - heating by photoeffect on dust grains" << endl
 		<< "! cr - heating by cosmic rays" << endl
 		<< "! rlh2 - radiative energy loss by H2 molecule" << endl
+        << "! ih2 - ion fluid cooling via excitation of H2 via ion-H2 collisions" << endl
 		<< "! in - ion gas component heating by neutral-ion collisions" << endl
 		<< "! ie - ion gas component heating by ion-electron collisions" << endl
 		<< "! ich - ion gas component heating by chemical reactions" << endl
@@ -2165,7 +2166,7 @@ void create_file_heating_rates(const string &output_path)
 		<< "! ech - electron component heating by chemical reactions" << endl;
 
 	output << left << "!";
-	for (i = 0; i < 24; i++) {
+	for (i = 0; i < 25; i++) {
 		output << left << setw(12) << i + 1;
 	}
 	output << endl;
@@ -2173,8 +2174,9 @@ void create_file_heating_rates(const string &output_path)
 	output << left << setw(13) << "!t(yr)/z(cm)" << setw(12) << "na" << setw(12) << "nh2" << setw(12) << "nh2o" 
 		<< setw(12) << "nco" << setw(12) << "noh" << setw(12) << "nnh3" << setw(12) << "nch3oh" << setw(12) << "ni" 
 		<< setw(12) << "ne" << setw(12) << "nd" << setw(12) << "nch" << setw(12) << "ph" << setw(12) << "cr" 
-		<< setw(12) << "rlh2" << setw(12) << "in" << setw(12) << "ie" << setw(12) << "ich" << setw(12) << "ea" 
-		<< setw(12) << "eh2"<< setw(12) << "eh2o" << setw(12) << "en" << setw(12) << "ei" << setw(12) << "ech" << endl;
+		<< setw(12) << "rlh2" << setw(12) << "ih2" << setw(12) << "in" << setw(12) << "ie" << setw(12) << "ich" 
+        << setw(12) << "ea" << setw(12) << "eh2"<< setw(12) << "eh2o" << setw(12) << "en" << setw(12) << "ei" 
+        << setw(12) << "ech" << endl;
 	output.close();
 }
 
@@ -2182,8 +2184,8 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 {
 	double neut_heat_atoms, neut_heat_h2, neut_heat_h2o, neut_heat_co, neut_heat_oh, neut_heat_nh3, neut_heat_ch3oh, neut_heat_dust_coll, 
 		neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, neut_heat_scatt_el, el_heat_atoms, el_heat_h2, 
-		el_heat_h2o, el_heat_scatt_neut, el_heat_scatt_ions, el_heat_chem, ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem, 
-		rad_energy_loss_h2;
+		el_heat_h2o, el_heat_scatt_neut, el_heat_scatt_ions, el_heat_chem, ion_heat_h2, ion_heat_scatt_n, ion_heat_scatt_el, 
+        ion_heat_chem, rad_energy_loss_h2;
 
 	string fname;
 	ofstream output;
@@ -2191,7 +2193,7 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 	user_data->get_neutral_heating(neut_heat_atoms, neut_heat_h2, neut_heat_h2o, neut_heat_co, neut_heat_oh, neut_heat_nh3, neut_heat_ch3oh, 
 		neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, neut_heat_scatt_el, rad_energy_loss_h2);
 	user_data->get_electron_heating(el_heat_atoms, el_heat_h2, el_heat_h2o, el_heat_scatt_neut, el_heat_scatt_ions, el_heat_chem);
-	user_data->get_ion_heating(ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem);
+	user_data->get_ion_heating(ion_heat_h2, ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem);
 
 	fname = output_path + "sim_heating_cooling.txt";
 	output.open(fname.c_str(), ios::app);
@@ -2215,6 +2217,7 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 		<< setw(12) << pheff_gas_heat 
 		<< setw(12) << neut_cr_heat 
 		<< setw(12) << rad_energy_loss_h2 
+        << setw(12) << ion_heat_h2
 		<< setw(12) << ion_heat_scatt_n 
 		<< setw(12) << ion_heat_scatt_el 
 		<< setw(12) << ion_heat_chem 
@@ -2263,13 +2266,13 @@ void create_file_energy_fluxes(const string &output_path)
 
 void save_energy_fluxes(const string &output_path, const evolution_data *user_data, const N_Vector &y, double var, double dvar)
 {
-    int i, nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd;
+    int nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd;
 	static double neut_heat_atoms(0.), neut_heat_h2(0.), neut_heat_h2o(0.), neut_heat_co(0.), neut_heat_oh(0.), neut_heat_nh3(0.), 
 		neut_heat_ch3oh(0.), int_neut_heat_atoms(0.), int_neut_heat_h2(0.), int_neut_heat_h2o(0.), int_neut_heat_co(0.), int_neut_heat_oh(0.), 
 		int_neut_heat_nh3(0.), int_neut_heat_ch3oh(0.); 
 	double x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
 		neut_heat_scatt_el, rad_energy_loss_h2, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc, 
-        ion_mass_dens, v_n, v_i, kinetic_energy_flux, thermal_energy_flux, magnetic_energy_flux, large_grains_flux;
+        ion_dens, ion_pah_dens, v_n, v_i, kinetic_energy_flux, thermal_energy_flux, magnetic_energy_flux;
 
 	string fname;
 	ofstream output;
@@ -2298,7 +2301,7 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 
     user_data->get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
     user_data->calc_neutral_dens(y, neut_conc, neut_mass_dens);
-    user_data->calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens);
+    user_data->calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 
 	fname = output_path + "sim_energy_fluxes.txt";
 	output.open(fname.c_str(), ios::app);
@@ -2311,17 +2314,12 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
     v_n = NV_Ith_S(y, nb_mhd + 3);
     v_i = NV_Ith_S(y, nb_mhd + 4); 
     
-    // large dust grains must be included:
-    large_grains_flux = 0.;
-    const dust_model *dust = user_data->get_dust();
-    for (i = 0; i < dust->nb_of_comp; i++) {
-        large_grains_flux += user_data->calc_av_grain_velocity(y, i) * user_data->calc_grain_conc(y, i) 
-            *dust->components[i]->mass;
-    }
+    kinetic_energy_flux = 0.5 * (v_n * v_n * v_n * neut_mass_dens + v_i * v_i * v_i * ion_dens) 
+        + user_data->calc_dust_kinetic_energy_flux(y);
 
-    kinetic_energy_flux = 0.5 * (v_n * v_n * v_n * neut_mass_dens + v_i * v_i * v_i * ion_mass_dens) + large_grains_flux;
     thermal_energy_flux = 2.5 * BOLTZMANN_CONSTANT *(v_n * neut_conc * NV_Ith_S(y, nb_mhd) + v_i * (ion_conc + ion_pah_conc) * NV_Ith_S(y, nb_mhd + 1)
         + v_i * NV_Ith_S(y, user_data->get_network()->e_nb) * NV_Ith_S(y, nb_mhd + 2));
+    
     magnetic_energy_flux = user_data->get_magnetic_field() * user_data->get_magnetic_field() * v_i / (4.*M_PI);
     
 	output << left << setw(12) << kinetic_energy_flux

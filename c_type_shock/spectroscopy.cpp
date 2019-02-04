@@ -585,7 +585,7 @@ h2_einstein_coeff::h2_einstein_coeff(const string &path, const energy_diagram* h
 		if (low != -1 && up != -1)
 		{
 			arr[up][low] = coeff;
-			arr[low][up] = h2_di->lev_array[up].g *coeff /h2_di->lev_array[low].g;
+			arr[low][up] = h2_di->lev_array[up].g *coeff / ((double) h2_di->lev_array[low].g);
 			check[up] = 1;
 		}
 	}
@@ -646,7 +646,7 @@ h2o_einstein_coeff::h2o_einstein_coeff(const string &path, const h2o_diagram* h2
 		if (low != -1 && up != -1)
 		{
 			arr[up][low] = coeff;
-			arr[low][up] = h2o_di->lev_array[up].g *coeff /h2o_di->lev_array[low].g;
+			arr[low][up] = h2o_di->lev_array[up].g *coeff / ((double) h2o_di->lev_array[low].g);
 		}
 	}
 	input.close();
@@ -710,7 +710,7 @@ ch3oh_einstein_coeff::ch3oh_einstein_coeff(const string &path, const energy_diag
 			arr[up][low] = 64.*line_strength *DEBYE*DEBYE *M_PI *pow(M_PI*energy, 3.) 
 				/(3.*PLANCK_CONSTANT *(2.*ch3oh_di->lev_array[up].j+1.));
 				
-			arr[low][up] = ch3oh_di->lev_array[up].g *arr[up][low]/ch3oh_di->lev_array[low].g;
+			arr[low][up] = ch3oh_di->lev_array[up].g *arr[up][low]/ ((double) ch3oh_di->lev_array[low].g);
 		}
 	}
 	input.close();
@@ -783,7 +783,7 @@ ion_einstein_coeff::ion_einstein_coeff(const string &path, const energy_diagram 
 			// The data may contain coefficients for different transition types (forbidden magnetic and electric) for the same pair of levels, 
 			// these coefficients are summed;
 			arr[up][low] += a;		
-			arr[low][up] += di->lev_array[up].g *arr[up][low] /di->lev_array[low].g;
+			arr[low][up] += di->lev_array[up].g *arr[up][low] / ((double) di->lev_array[low].g);
 		}
 
 		if (ss.eof() || ss.fail() || ss.bad())
@@ -828,7 +828,7 @@ co_einstein_coeff::co_einstein_coeff(const string &path, const energy_diagram *d
 		if (low != -1 && up != -1)
 		{
 			arr[up][low] = coeff;
-			arr[low][up] = di->lev_array[up].g *coeff /di->lev_array[low].g;
+			arr[low][up] = di->lev_array[up].g *coeff / ((double) di->lev_array[low].g);
 		}
 	}
 	input.close();
@@ -871,7 +871,7 @@ oh_einstein_coeff::oh_einstein_coeff(const string &path, const energy_diagram *d
 		if (low != -1 && up != -1)
 		{
 			arr[up][low] = coeff;
-			arr[low][up] = di->lev_array[up].g *coeff /di->lev_array[low].g;
+			arr[low][up] = di->lev_array[up].g *coeff / ((double) di->lev_array[low].g);
 		}
 	}
 	input.close();
@@ -914,7 +914,7 @@ nh3_einstein_coeff::nh3_einstein_coeff(const string &path, const energy_diagram 
 		if (low != -1 && up != -1)
 		{
 			arr[up][low] = coeff;
-			arr[low][up] = di->lev_array[up].g *coeff /di->lev_array[low].g;
+			arr[low][up] = di->lev_array[up].g *coeff / ((double) di->lev_array[low].g);
 		}
 	}
 	input.close();
@@ -977,7 +977,7 @@ double calc_depth(const energy_diagram *diagram, const einstein_coeff *einst_c, 
 				// the molecule concentration is taken to be 1 cm^{-3}, all values are in Gauss system units;
 				en = diagram->lev_array[i].energy - diagram->lev_array[j].energy;
 				d = en*en*en *EIGHT_PI *SQRT_PI *vel_disp 
-					/(a*(diagram->lev_array[i].g *pop[j]/diagram->lev_array[j].g - pop[i])); 
+					/(a*(diagram->lev_array[i].g *pop[j]/ ((double) diagram->lev_array[j].g) - pop[i])); 
 				
 				if (d < d_min) 
 					d_min = d;
@@ -1020,7 +1020,7 @@ void save_populations(const string &output_path, const energy_diagram *diagram, 
 		for (i = 0; i < nb_mol_lev; i++)
 		{
 			if (normalized) 
-				w = 1./diagram->lev_array[i].g;
+				w = 1./ ((double) diagram->lev_array[i].g);
 			else w = 1.;
 
 			text_file << left << setw(6) << i;

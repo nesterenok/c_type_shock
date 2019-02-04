@@ -252,7 +252,7 @@ bool operator == (const chem_reaction & r1, const chem_reaction & r2)
 //
 chem_network::chem_network(const string &path, int verb) : verbosity(verb), max_nb_carbon(11), nb_of_species(0), nb_of_gmantle_species(0), 
 	nb_of_reactions(0), nb_reactions_ion_grains(0), h2_nb(0), ah2_nb(0), h_nb(0), he_nb(0), e_nb(0), oi_nb(0), ci_nb(0), cii_nb(0), 
-	co_nb(0), h2o_nb(0), oh_nb(0), nh3_nb(0), ch3oh_nb(0), h2_h_diss_nb(0)
+	co_nb(0), h2o_nb(0), oh_nb(0), nh3_nb(0), ch3oh_nb(0), hp_nb(0), h3p_nb(0), h2_h_diss_nb(0)
 {;}
 
 chem_network::~chem_network()
@@ -532,9 +532,11 @@ void chem_network::init_species_nbs()
 	ci_nb = find_specimen("C");
 	cii_nb = find_specimen("C+");
 	ah2_nb = find_specimen("*H2");
+    hp_nb = find_specimen("H+");
+    h3p_nb = find_specimen("H3+");
 
 	if (h2_nb < 0 || ah2_nb < 0 || h_nb < 0 || he_nb < 0 || e_nb < 0 || h2o_nb < 0 || co_nb < 0 || oh_nb < 0 || nh3_nb < 0 || ch3oh_nb < 0
-		|| oi_nb < 0 || ci_nb < 0 || cii_nb < 0) {
+		|| oi_nb < 0 || ci_nb < 0 || cii_nb < 0 || hp_nb < 0 || h3p_nb < 0) {
 		cout << "Error in " << SOURCE_NAME << ": can't find necessary chemical specimen in the list";
 		exit(1);
 	}

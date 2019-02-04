@@ -165,8 +165,8 @@ collisional_transitions::~collisional_transitions()
 
 // The function returns arrays with indices and concentrations of collisional partners in order to speed up the calculations;
 // Previous values of the pointers are ignored.
-void collisional_transitions::set_gas_param(double temp_neutrals, double temp_el, double hec, double ph2c, double oh2c, 
-	double hc, double ec, double *&concentration, int *&indices) const
+void collisional_transitions::set_gas_param(double temp_neutrals, double temp_el, double hec, double ph2c, double oh2c, double hc, 
+    double ec, double *&concentration, int *&indices) const
 {
 	int i;
 	if (indices != 0)
@@ -190,7 +190,29 @@ void collisional_transitions::set_gas_param(double temp_neutrals, double temp_el
 	// collisions with H+ must be here;
 }
 
+void collisional_transitions::set_ion_param(double temp_neutrals, double temp_ions, double hp_conc, double h3p_conc,
+    double *&concentration, int *&indices) const
+{;}
+
 // The energy of the first level is higher, up_lev.nb > low_lev.nb;
+void collisional_transitions::get_rate_neutrals(const energy_level &up_lev, const energy_level &low_lev, double &down_rate,
+    double &up_rate, double temp_neutrals, const double *concentration, const int *indices) const
+{
+    down_rate = 0.;
+    for (int i = 0; i < nb1; i++)
+    {
+        if (up_lev.nb < coll_data[i]->nb_lev) {
+            down_rate += coll_data[i]->get_rate(up_lev.nb, low_lev.nb, indices[i], (temp_neutrals < max_temp[i]) ? temp_neutrals : max_temp[i])
+                *concentration[i];
+        }
+    }
+
+    if (down_rate > MIN_COLLISION_RATE) {
+        up_rate = down_rate * exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS / temp_neutrals) *up_lev.g / ((double)low_lev.g);
+    }
+    else down_rate = up_rate = 0.;
+}
+
 void collisional_transitions::get_rate_electrons(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, 
 	double &up_rate, double temp_el, const double *concentration, const int *indices) const
 {
@@ -206,27 +228,15 @@ void collisional_transitions::get_rate_electrons(const energy_level &up_lev, con
 	}
 
 	if (down_rate > MIN_COLLISION_RATE) {
-		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_el) *up_lev.g/low_lev.g;
+		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_el) *up_lev.g/((double) low_lev.g);
 	}
 	else down_rate = up_rate = 0.;
 }
 
-void collisional_transitions::get_rate_neutrals(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, 
-	double &up_rate, double temp_neutrals, const double *concentration, const int *indices) const
+void collisional_transitions::get_rate_ions(const energy_level &up_lev, const energy_level &low_lev, double &down_rate,
+    double &up_rate, double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const
 {
-	down_rate = 0.;
-	for (int i = 0; i < nb1; i++) 
-	{
-		if (up_lev.nb < coll_data[i]->nb_lev) {
-			down_rate += coll_data[i]->get_rate(up_lev.nb, low_lev.nb, indices[i], (temp_neutrals < max_temp[i]) ? temp_neutrals : max_temp[i]) 
-				*concentration[i];
-		}
-	}
-
-	if (down_rate > MIN_COLLISION_RATE) {
-		up_rate = down_rate *exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS/temp_neutrals) *up_lev.g/low_lev.g;
-	}
-	else down_rate = up_rate = 0.;
+   down_rate = up_rate = 0.;
 }
 
 double collisional_transitions::get_rate_neutrals(const energy_level &init_lev, const energy_level &fin_lev, 
@@ -261,6 +271,23 @@ double collisional_transitions::get_rate_electrons(const energy_level &init_lev,
 		return up;
 	}
 	return 0.;
+}
+
+double collisional_transitions::get_rate_ions(const energy_level &init_lev, const energy_level &fin_lev,
+    double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const
+{
+    double down, up;
+    if (init_lev.nb > fin_lev.nb)
+    {
+        get_rate_ions(init_lev, fin_lev, down, up, temp_neutrals, temp_ions, concentration, indices);
+        return down;
+    }
+    else if (init_lev.nb < fin_lev.nb)
+    {
+        get_rate_ions(fin_lev, init_lev, down, up, temp_neutrals, temp_ions, concentration, indices);
+        return up;
+    }
+    return 0.;
 }
 
 //
