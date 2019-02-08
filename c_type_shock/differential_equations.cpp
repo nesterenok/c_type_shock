@@ -80,7 +80,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	neut_heat_scatt_el(0.), el_heat_atoms(0.), el_heat_h2(0.), el_heat_ph2o(0.), el_heat_oh2o(0.), el_heat_scatt_neut(0.), 
 	el_heat_scatt_ions(0.), el_heat_chem(0.), ion_heat_h2(0.), ion_heat_scatt_n(0.), ion_heat_scatt_el(0.), ion_heat_chem(0.), ads_dust_area(0.),
 	ads_grain_velz(0.), ads_grain_veln2(0.), desorption_factor_cr(0.), photodes_factor_cr(0.), photodes_factor_is(0.), 
-	oh2_form_gaschem(0.), oh2_form_grains(0.), oh2_form_hcoll(0.), h2_h_diss_rate(0.),
+	oh2_form_gaschem(0.), oh2_form_grains(0.), oh2_form_hcoll(0.), h2_h_diss_rate(0.), h2_h_diss_cooling(0.),
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
 	dust_heat_coll(0), dust_heat_chem(0), chem_reaction_rates(0), gamma_factors(0), delta_factors(0), dheat_efficiency(0), 
 	esc_prob_int1(0), esc_prob_int2(0), ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), 
@@ -846,13 +846,15 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 				rate *= y_data[k] *y_data[l];
 
-#if (H2_H_DISSIOCIATION_DATA)
-				if (i == network->h2_h_diss_nb)
-					rate = 0.;
-#else
-				if (i == network->h2_h_diss_nb)
-					h2_d1 = rate;
-#endif
+                if (H2_H_DISSIOCIATION_DATA) {
+                    if (i == network->h2_h_diss_nb)
+                        rate = 0.;
+                }
+                else {
+                    if (i == network->h2_h_diss_nb)
+                        h2_d1 = rate;
+                }
+
 				arr[k] -= rate;
 				arr[l] -= rate;
 				break;
@@ -1201,7 +1203,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	}
 
 	// production rates of species, for which level populations are calculated:
-	h2_prod = ydot_data[network->h2_nb];
+    h2_prod = ydot_data[network->h2_nb]; // not accounting for e- excitation and H2-H dissociation
 	h2o_prod = ydot_data[network->h2o_nb];
 	co_prod = ydot_data[network->co_nb];
 	oh_prod = ydot_data[network->oh_nb];
@@ -1234,14 +1236,6 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, 0);
 #endif
 
-	oh2_form_hcoll = 0.;
-	for (i = 0; i < nb_lev_h2; i++) 
-	{
-		if (rounding(h2_di->lev_array[i].spin) == 1) {
-			oh2_form_hcoll += ydot_data[nb_of_species + i];
-		}
-	}
-
 	// here the excitation of H2 by cosmic rays is taken into acccount;
 	if (H2_CR_EXCITATION) {
 		ioniz_fraction = conc_e/conc_h_tot;
@@ -1259,18 +1253,35 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 		}
 	}
 
-#if (H2_H_DISSIOCIATION_DATA)
-	h2_h_diss_rate = 0.;
-	for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++) 
-	{
-		c = y_data[i] *conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
-		h2_h_diss_rate += c;
-		ydot_data[i] -= c;
-	}
-	ydot_data[network->h_nb] += 2.*h2_h_diss_rate;
-	ydot_data[network->h2_nb] -= h2_h_diss_rate;
-	chem_reaction_rates[network->h2_h_diss_nb] = h2_h_diss_rate;
-#endif
+    if (H2_H_DISSIOCIATION_DATA) {
+        h2_h_diss_cooling = h2_h_diss_rate = 0.;
+        for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
+        {
+            c = y_data[i] * conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
+            h2_h_diss_rate += c;
+            ydot_data[i] -= c;
+
+            h2_h_diss_cooling += (network->reaction_array[i].energy_released 
+                + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
+        }
+        ydot_data[network->h_nb] += 2.*h2_h_diss_rate;
+        ydot_data[network->h2_nb] -= h2_h_diss_rate;
+
+        i = network->h2_h_diss_nb;
+        chem_reaction_rates[i] = h2_h_diss_rate; // reaction rate is saved,
+
+        chem_heating_rates_n[i] = h2_h_diss_cooling; // cooling of the gas by this process,
+        neut_heat_chem += h2_h_diss_cooling;
+        energy_gain_n += h2_h_diss_cooling;
+    }
+
+    oh2_form_hcoll = 0.;
+    for (i = 0; i < nb_lev_h2; i++)
+    {
+        if (rounding(h2_di->lev_array[i].spin) == 1) {
+            oh2_form_hcoll += ydot_data[nb_of_species + i];
+        }
+    }
 
 	// other processes of H2 formation are assumed not to change the level population: molecules are formed
 	// with level population distrubution proportional to the current level population distribution;
@@ -1281,6 +1292,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	energy_gain_n += neut_heat_h2;
 	energy_gain_e += el_heat_h2;
+    energy_gain_i += ion_heat_h2;
     nb = nb_of_species + nb_lev_h2;
 	
 	// calculation of the level population gain for para-H2O molecule (not normalized to H2O concentration);
@@ -2900,6 +2912,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	calc_neutral_dens(y, neut_nb_dens, neut_mass_dens);
 	calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens, ion_pah_dens);
     ion_mass_dens += ion_pah_dens;
+    ion_conc += ion_pah_conc;
 
 	// The MHD equations are given by Draine et al., ApJ 264, p.485 (1983); Draine, MNRAS, 220, p.133 (1986);
 	// The derivation of derivatives see in Roberge & Draine, ApJ 350, p.700 (1990);
@@ -2914,7 +2927,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	// -mom_gain_n = mom_gain_i + mom_gain_e, 
 	// due to adsorption: -mass_gain_n != mass_gain_i + mass_gain_e
     ion_vg_terms = mom_gain_n * vel_i + mass_gain_i * vel_i * vel_i;
-    ion_vg_denominator = 1.666666667 * (temp_i_erg * ion_pah_conc + temp_e_erg * conc_e) - ion_mass_dens * vel_i * vel_i
+    ion_vg_denominator = 1.666666667 * (temp_i_erg * ion_conc + temp_e_erg * conc_e) - ion_mass_dens * vel_i * vel_i
         + magn_field_energy;
 	
     velg_mhd_i = ydot_data[nb_mhd + 4] = (0.66666667 * (energy_gain_i + energy_gain_e) + ion_vg_terms)
@@ -2929,9 +2942,9 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	// 4. The derivative of the temperature of the ions,
 	// there is some discrepancy with Roberge & Draine (1990), may be T_s <-> T_d in their equations?
     ydot_data[nb_mhd + 1] = -ion_vg_terms + 0.66666667 * (energy_gain_i - energy_gain_e) - 2.* temp_i_erg * nb_gain_i
-        + (ion_vg_denominator - 1.333333333 * temp_i_erg * ion_pah_conc) * velg_mhd_i;
+        + (ion_vg_denominator - 1.333333333 * temp_i_erg * ion_conc) * velg_mhd_i;
 	
-    ydot_data[nb_mhd + 1] /= 2. * BOLTZMANN_CONSTANT * ion_pah_conc * vel_i;
+    ydot_data[nb_mhd + 1] /= 2. * BOLTZMANN_CONSTANT * ion_conc * vel_i;
 	
 	// 5. The derivative of the electron temperature:
     ydot_data[nb_mhd + 2] = -ion_vg_terms + 0.66666667 * (energy_gain_e - energy_gain_i) - 2. * temp_e_erg * nb_gain_e

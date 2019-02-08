@@ -6,7 +6,7 @@
 #include "spectroscopy.h"
 
 // some arbitrary small value of the rate is used, the rates lower than this constant are set to zero:
-#define MIN_COLLISION_RATE 1.e-50
+#define MIN_COLLISION_RATE 1.e-99
 
 // The class with the data on collisional coefficients;
 class collision_data

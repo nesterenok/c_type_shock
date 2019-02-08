@@ -6,10 +6,12 @@
 
 #define H2_COLL_CUBIC_SPLINE 1
 #define H2_DISS_CUBIC_SPLINE 0
+
 // 0 - data by Wrathmall et al. (2007), Martin & Mandy (1995), see below for full references;
 // 1 - data by Lique (2015) for lowest 54 levels, data by Wrathmall et al. (2007), Martin & Mandy (1995);
 // 2 - data by Lique (2015) and by Bossion et al. (2018)
 #define H2_H_COLL_DATA 2
+
 // 0 - data by Flower & Roueff (1998, 1999);
 // 1 - data by Wan et al. (2018);
 #define H2_H2_COLL_DATA 1
@@ -134,7 +136,8 @@ public:
 };
 
 // Gonzalez-Lezana & Honvault, MNRAS 467, 1294 (2017),
-// there is problem with the data from fig.7
+// there is problem with the data from fig.7,
+// the spline is not used here, the temperature grid is dense,
 class h2_hp_gonzalez_lezana_data : public collision_data
 {
 public:

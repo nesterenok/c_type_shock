@@ -1,0 +1,7 @@
+! o/p-H2 - ortho/para ratio of molecular hydrogen;
+! o_hcoll - ortho-H2 formation rate due to collisions with H atoms, para-H2 rate = -ortho-H2 rate, [cm-3 s-1]
+! h2_gr - H2 formation rate on grains, [cm-3 s-1]
+! h2_gas - H2 formation rate due to gas-phase chemistry, [cm-3 s-1]
+! h2_h_diss - H2 dissociation rate in H2-H collisions, [cm-3 s-1]
+!    0            1            2            3            4            5            
+! depth(cm)       o/p-H2       o_hcoll      h2_gr        h2_gas       h2_h_diss    

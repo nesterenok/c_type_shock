@@ -118,7 +118,7 @@ int main(int argc, char** argv)
 {
     SHOCK_STATE_ID shock_state;
 	char text_line[MAX_TEXT_LINE_WIDTH];
-	int i, nb_processors;
+	int i, j, nb_processors;
 	double conc_h_tot, visual_extinct, shock_vel, magnetic_field, cr_ioniz_rate, c_abund_pah, uv_field_strength, ir_field_strength, 
 		ty, cr_ir_factor, incr_time;
 	
@@ -323,13 +323,17 @@ int main(int argc, char** argv)
             else if (mode == "CS_")
             {
                 shock_state = SHOCK_STATE_NORMAL;
-                for (i = 0; i < 11 && (shock_state == SHOCK_STATE_NORMAL); i++) {
-                    shock_vel = 1.0e+6 + i * 5.0e+5;
+                for (i = 0; i < 12 && (shock_state == SHOCK_STATE_NORMAL); i++) {
+                    shock_vel = 5.0e+5 + i * 5.0e+5;
                     ss.clear();
                     ss.str("");
                     ss << output_path;
-                    ss << static_cast<int>(1.e-5*shock_vel + 0.1);
-                    ss << "/";
+                    
+                    j = static_cast<int>(1.e-5*shock_vel + 0.1);
+                    if (j < 10)
+                        ss << "0";
+                    ss << j << "/";
+
                     cout << left << setw(5) << i+1 << ss.str() << endl;
                     shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
                     cout << "   shock ended with the code " << (int) shock_state << endl;

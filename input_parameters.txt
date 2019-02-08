@@ -6,7 +6,7 @@ C:/input_data/
 # Computation mode: DC - dark cloud, 
 # CS - C-type shock, CS_ - a set of C-type shock models for a grid of velocities (check the directory name), 
 # CR - dark cloud with increasing cosmic ray ionization:
-DC
+CS
 # carbon abundance in PAH molecules relative to H nuclei (typical value is 1.e-5).
 0.
 # 2. Parameters relevant for dark cloud simulations:
@@ -26,14 +26,14 @@ DC
 # path to the directory with the input data for the simulations (that is the output directory in dark cloud simulations):
 ./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/
 # path to the directory for the output in shock simulations:
-./output_data_2e4/shock_cr1-16_
+./output_data_2e4/shock_cr1-16_25_h2-ions/
 # evolution time of dark cloud at which physical conditions for simulations are taken, yrs:
 0.5e+6
 # shock velocity in cm/s:
-1.5e+6
+2.5e+6
 # magnetic field in Gauss units. Magnetic field is proportional to sqrt(n_h/cm-3) umG. 
 # at 2*10^3 cm-3 B=0.45e-4 G, 6*10^3 -- B=0.78, 10^4 -- B=1.e-4, 2*10^4 -- B=1.41e-4, 6*10^4 -- B=2.5e-4, 2*10^5 -- B=4.5e-4:
-1.5e-4
+1.41e-4
 # 4. Parameters relevant for dark cloud simulations with increasing CR ionization rate:
 # path to the directory with the input data for the simulations (that is the output directory in dark cloud simulations):
 ./output_data_1e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/

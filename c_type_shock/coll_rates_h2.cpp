@@ -927,9 +927,9 @@ h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, 
                     t = rounding(temp);
                    
                     if (t == 1 || t % 10 == 0) { 
-                        if (rate < 1.e-99)
+                        if (rate < MIN_COLLISION_RATE)
                             n = t / 10 + 1;
-                        rate *= exp((h2_di->lev_array[lf].energy - h2_di->lev_array[li].energy) *CM_INVERSE_TO_KELVINS / t)
+                        rate *= exp((h2_di->lev_array[lf].energy - h2_di->lev_array[li].energy) *CM_INVERSE_TO_KELVINS / temp)
                             * h2_di->lev_array[li].g / ((double) h2_di->lev_array[lf].g);
                         coeff[i][t / 10 + 1] = rate;
                     }
@@ -1015,14 +1015,14 @@ void h2_collisions::set_ion_param(double temp_neutrals, double temp_ions, double
 {
     // H2-H+ data 
     indices[nb2] = coll_data[nb2]->locate( 0.333333*(temp_neutrals + 2.*temp_ions) );
-    concentration[nb2] = hp_conc + h3p_conc;
+    concentration[nb2] = hp_conc; // +h3p_conc;
 }
 
 // The energy of the first level is higher, up_lev.nb > low_lev.nb;
 void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, 
 	double &up_rate, double temp_neutrals, const double *concentration, const int *indices) const
 {
-	down_rate = up_rate = 0.;
+	down_rate = 0.;
 	if (rounding(low_lev.spin - up_lev.spin) == 0) {
 		// collisions with He
 		if (up_lev.nb < coll_data[0]->nb_lev) {
@@ -1103,18 +1103,15 @@ void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_l
 void h2_collisions::get_rate_ions(const energy_level &up_lev, const energy_level &low_lev, double &down_rate, double &up_rate,
     double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const
 {
-    down_rate = 0.;
+    down_rate = up_rate = 0.;
     if (up_lev.nb < coll_data[nb2]->nb_lev) 
     {
         // t = (t_n*m_i + t_i*m_n)/(m_n + m_i)
         temp_ions = 0.333333*(temp_neutrals + 2.*temp_ions);
         down_rate = coll_data[nb2]->get_rate(up_lev.nb, low_lev.nb, indices[nb2], (temp_ions < max_temp[nb2]) ? temp_ions : max_temp[nb2])
-            *concentration[nb2];   
-    } 
-    if (down_rate > MIN_COLLISION_RATE) {
-        up_rate = down_rate * exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS / temp_ions) *up_lev.g / ((double)low_lev.g);
+            *concentration[nb2];       
+        up_rate = down_rate * exp((low_lev.energy - up_lev.energy)*CM_INVERSE_TO_KELVINS / temp_ions) *up_lev.g / ((double)low_lev.g); 
     }
-    else down_rate = up_rate = 0.;
 }
 
 //

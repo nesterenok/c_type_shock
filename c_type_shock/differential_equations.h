@@ -44,7 +44,7 @@ protected:
 	double ads_dust_area, ads_grain_velz, ads_grain_veln2;
 	double coverage, ion_mass, magn_field_0, magn_field, shock_vel, photodes_factor_cr, photodes_factor_is, desorption_factor_cr, 
 		photoem_factor_is_uv, photoem_factor_is_vis;
-	double oh2_form_gaschem, oh2_form_grains, oh2_form_hcoll, h2_h_diss_rate;
+	double oh2_form_gaschem, oh2_form_grains, oh2_form_hcoll, h2_h_diss_rate, h2_h_diss_cooling;
 	
 	bool *is_dust_charge_large, *is_charged_dust_as_ions;
 	int *indices, *min_grain_charge, *max_grain_charge, *nb_dch;

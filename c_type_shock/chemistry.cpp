@@ -833,7 +833,7 @@ void chem_network::init_network_umistf(const std::string file_name, bool update)
 					reaction.reduced_mass = reaction.mass1 *reaction.mass2 /reaction.mass_sum;
 				}
 
-				// the energy that is released in reaction, E_react - E_prod, enthalpy must be in erg:
+				// the energy that is released in reaction, E_reactants - E_products, enthalpy must be in erg:
 				failed = false;
 				for (i = 0; i < nb_of_reactants; i++) {
 					reaction.energy_released += species[ reactant[i] ].enthalpy;
