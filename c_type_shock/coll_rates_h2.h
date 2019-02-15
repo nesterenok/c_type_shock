@@ -72,7 +72,7 @@ class h2_h_wrathmall_data
 #endif
 {
 public:
-	h2_h_wrathmall_data(const std::string &path, const energy_diagram *, int verbosity=1);
+	h2_h_wrathmall_data(const std::string &path, const energy_diagram *, bool reactive_channels, int verbosity=1);
 };
 
 // The data by Wan et al., ApJ 862, p.132 (2018)
@@ -136,7 +136,7 @@ public:
 };
 
 // Gonzalez-Lezana & Honvault, MNRAS 467, 1294 (2017),
-// there is problem with the data from fig.7,
+// there is problem with the data from fig.7, (v=1,j=0)->(v=2,j=1,2,3), the high values at low temperatures
 // the spline is not used here, the temperature grid is dense,
 class h2_hp_gonzalez_lezana_data : public collision_data
 {

@@ -80,7 +80,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	neut_heat_scatt_el(0.), el_heat_atoms(0.), el_heat_h2(0.), el_heat_ph2o(0.), el_heat_oh2o(0.), el_heat_scatt_neut(0.), 
 	el_heat_scatt_ions(0.), el_heat_chem(0.), ion_heat_h2(0.), ion_heat_scatt_n(0.), ion_heat_scatt_el(0.), ion_heat_chem(0.), ads_dust_area(0.),
 	ads_grain_velz(0.), ads_grain_veln2(0.), desorption_factor_cr(0.), photodes_factor_cr(0.), photodes_factor_is(0.), 
-	oh2_form_gaschem(0.), oh2_form_grains(0.), oh2_form_hcoll(0.), h2_h_diss_rate(0.), h2_h_diss_cooling(0.),
+	oh2_form_hcoll(0.), h2_h_diss_rate(0.), h2_h_diss_cooling(0.),
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
 	dust_heat_coll(0), dust_heat_chem(0), chem_reaction_rates(0), gamma_factors(0), delta_factors(0), dheat_efficiency(0), 
 	esc_prob_int1(0), esc_prob_int2(0), ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), 
@@ -578,7 +578,7 @@ void evolution_data::reinit_arrays(int nb_of_grain_charges)
 int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 {
 	int i, j, k, l, nb, nb2;
-	double a, b, c, d, rate, mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1, el_att, phel_em, nb_ads_sites_grain,
+	double a, b, c, d, rate, mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1, h2_d2, el_att, phel_em, nb_ads_sites_grain,
 		photoem_factor_cr, photodes_factor_cr2, photoreact_factor_cr, ioniz_fraction;
 	realtype *y_data, *ydot_data;
 	
@@ -758,9 +758,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	memset(chem_reaction_rates, 0, network->nb_of_reactions*sizeof(double));
 	memset(chem_heating_rates_n, 0, network->nb_of_reactions*sizeof(double));
-	mom_n = mom_i = mom_e = en_n = en_i = en_e = en_d = h2_pr1 = h2_pr2 = h2_d1 = 0.;
+	mom_n = mom_i = mom_e = en_n = en_i = en_e = en_d = h2_pr1 = h2_pr2 = h2_d1 = h2_d2 = 0.;
 
-#pragma omp parallel reduction(+: mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1) private(i, k, l, rate, a)
+#pragma omp parallel reduction(+: mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1, h2_d2) private(i, k, l, rate, a)
 	{
 		double *arr = new double [nb_of_species];
 		memset(arr, 0, nb_of_species*sizeof(double));
@@ -846,13 +846,10 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 				rate *= y_data[k] *y_data[l];
 
-                if (H2_H_DISSIOCIATION_DATA) {
-                    if (i == network->h2_h_diss_nb)
+                if (i == network->h2_h_diss_nb) {
+                    if (H2_H_DISSIOCIATION_DATA)
                         rate = 0.;
-                }
-                else {
-                    if (i == network->h2_h_diss_nb)
-                        h2_d1 = rate;
+                    else h2_d1 = rate;
                 }
 
 				arr[k] -= rate;
@@ -903,12 +900,18 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 				h2_pr1 += rate;
 			
 			// saving H2 formation rates in the gas phase (note: the reaction H2+H2->H2+H+H)
-			if (reaction.type <= 25) {
-				for (k = 0; k < reaction.nb_of_products; k++) {
-					if (reaction.product[k] == network->h2_nb)
-						h2_pr2 += rate;
-				}
+			if (reaction.type <= 25 && i != network->h2_h2_diss_nb) {   
+                for (k = 0; k < reaction.nb_of_products; k++) {
+                    if (reaction.product[k] == network->h2_nb)
+                        h2_pr2 += rate;
+                }
 			}
+            // saving H2 destruction rates in gas-phase:
+            if (reaction.type <= 22 && i != network->h2_h2_diss_nb) {
+                if (reaction.reactant[0] == network->h2_nb || reaction.reactant[1] == network->h2_nb) {
+                    h2_d2 += rate;
+                }
+            }
 		}
 		#pragma omp critical
 		{
@@ -939,6 +942,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	h2_prod_gr = h2_pr1;
 	h2_prod_gas = h2_pr2;
 	h2_h_diss_rate = h2_d1;
+    h2_destr_gas = h2_d2;
 
 	// Chemical reactions changing the charge distribution of grains:
 	photoem_factor_cr = cr_ioniz_rate *2.*conc_h2/conc_h_tot; // grain albedo is taken into account yet;
@@ -1236,6 +1240,14 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, 0);
 #endif
 
+    oh2_form_hcoll = 0.;
+    for (i = 0; i < nb_lev_h2; i++)
+    {
+        if (rounding(h2_di->lev_array[i].spin) == 1) {
+            oh2_form_hcoll += ydot_data[nb_of_species + i];
+        }
+    }
+
 	// here the excitation of H2 by cosmic rays is taken into acccount;
 	if (H2_CR_EXCITATION) {
 		ioniz_fraction = conc_e/conc_h_tot;
@@ -1273,14 +1285,6 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         chem_heating_rates_n[i] = h2_h_diss_cooling; // cooling of the gas by this process,
         neut_heat_chem += h2_h_diss_cooling;
         energy_gain_n += h2_h_diss_cooling;
-    }
-
-    oh2_form_hcoll = 0.;
-    for (i = 0; i < nb_lev_h2; i++)
-    {
-        if (rounding(h2_di->lev_array[i].spin) == 1) {
-            oh2_form_hcoll += ydot_data[nb_of_species + i];
-        }
     }
 
 	// other processes of H2 formation are assumed not to change the level population: molecules are formed
@@ -2488,7 +2492,7 @@ void evolution_data::get_dust_component_nbs(int i, int & nb1, int & nb2) const
 
 void evolution_data::get_neutral_heating(double & atomic_n, double & h2_n, double & h2o_n, double & co_n, double & oh_n, 
 	double &nh3_n, double & ch3oh_n, double & coll_h, double & chem_h, double &pheff_h, double & cr, double & scatt_i, 
-	double & scatt_e, double & rel_h2) const
+	double & scatt_e, double & rel_h2, double & h2_h_diss) const
 {
 	atomic_n = neut_heat_atoms;
 	h2_n = neut_heat_h2;
@@ -2507,6 +2511,7 @@ void evolution_data::get_neutral_heating(double & atomic_n, double & h2_n, doubl
 	scatt_e = neut_heat_scatt_el;
 
 	rel_h2 = rad_energy_loss_h2;
+    h2_h_diss = h2_h_diss_cooling; // is included in neutral heating by chemistry
 }
 
 void evolution_data::get_electron_heating(double & atomic_e, double & h2_e, double & h2o_e, double & scatt_n, double & scatt_i, double & chem) const
@@ -2568,15 +2573,35 @@ void evolution_data::get_chem_heating_rates(double *& cheat, int & nb) const
 	nb = network->nb_of_reactions;
 }
 
-void evolution_data::get_h2_chem(double & h2_gr, double & h2_gas, double & o_grains, double & o_gchem, double & o_hcoll,
-	double & h2_h_diss) const 
+void evolution_data::get_h2_chem(double & h2_gr, double & h2_gasf, double & h2_gasd, double & o_hcoll,
+    double & h2_h_diss, double & h2_h_diss_lb, double & h2_ion_diss, N_Vector y) const
 { 
+    double teff;
+
 	h2_gr = h2_prod_gr;
-	h2_gas = h2_prod_gas;
-	o_gchem = oh2_form_gaschem; 
-	o_grains = oh2_form_grains;
+	h2_gasf = h2_prod_gas;
+    h2_gasd = h2_destr_gas;
 	o_hcoll = oh2_form_hcoll;
 	h2_h_diss = h2_h_diss_rate;
+
+    h2_h_diss_lb = 0.;
+    const realtype *y_data = NV_DATA_S(y);
+
+    for (int i = 0; i < nb_lev_h2; i++) {
+        h2_h_diss_lb += y_data[i + nb_of_species] 
+            * exp(-(56644. - h2_di->lev_array[i].energy *CM_INVERSE_TO_KELVINS) / temp_n);
+    }
+    h2_h_diss_lb *= 1.e-10*y_data[network->h_nb];
+
+    // Estimate of H2 destruction by ions based on Wilgenbus et al. A&A 356, 1010 (2000),
+    teff = (temp_n + 2.*temp_i)/3.;
+    h2_ion_diss = y_data[network->hp_nb] * sqrt(teff / 300.)*exp(-52000. / teff);
+    
+    teff = (3.*temp_n + 2.*temp_i)/5.;
+    h2_ion_diss += y_data[network->h3p_nb] * sqrt(teff / 300.)*exp(-52000. / teff);
+
+    h2_ion_diss += (conc_i - y_data[network->h3p_nb] - y_data[network->hp_nb]) * sqrt(temp_n / 300.)*exp(-52000. / temp_n);
+    h2_ion_diss *= 3.e-11 * conc_h2;
 }
 
 void evolution_data::set_tolerances(N_Vector abs_tol)

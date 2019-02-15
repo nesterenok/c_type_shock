@@ -4,7 +4,7 @@
 #include <cstring>
 
 // the array of gas-phase chemical species is given in input, adsorbed species are considered automatically in the routine;
-void production_routes(std::string path, const std::string *specimen_names, int nb);
+void production_routes(std::string path);
 
 // The time grid in NAUTILUS data and in the compared data must be the same:
 void nautilus_comparison(std::string path);

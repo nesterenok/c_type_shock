@@ -252,7 +252,7 @@ bool operator == (const chem_reaction & r1, const chem_reaction & r2)
 //
 chem_network::chem_network(const string &path, int verb) : verbosity(verb), max_nb_carbon(11), nb_of_species(0), nb_of_gmantle_species(0), 
 	nb_of_reactions(0), nb_reactions_ion_grains(0), h2_nb(0), ah2_nb(0), h_nb(0), he_nb(0), e_nb(0), oi_nb(0), ci_nb(0), cii_nb(0), 
-	co_nb(0), h2o_nb(0), oh_nb(0), nh3_nb(0), ch3oh_nb(0), hp_nb(0), h3p_nb(0), h2_h_diss_nb(0)
+	co_nb(0), h2o_nb(0), oh_nb(0), nh3_nb(0), ch3oh_nb(0), hp_nb(0), h3p_nb(0), h2_h_diss_nb(0), h2_h2_diss_nb(0)
 {;}
 
 chem_network::~chem_network()
@@ -1562,8 +1562,10 @@ void chem_network::check_reactions()
 	
 	// derivation of reaction numbers must be here:
 	h2_h_diss_nb = find_reaction("H + H2 -> H + H + H");
-	if (h2_h_diss_nb == -1) {
-		cout << "Error in " << SOURCE_NAME << ": can not find reaction H + H2 -> H + H + H" << endl;
+    h2_h2_diss_nb = find_reaction("H2 + H2 -> H2 + H + H");
+
+	if (h2_h_diss_nb == -1 || h2_h2_diss_nb == -1) {
+		cout << "Error in " << SOURCE_NAME << ": can not find reaction..." << endl;
 		is_failed = true;
 	}
 

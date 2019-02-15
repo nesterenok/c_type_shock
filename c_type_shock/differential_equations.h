@@ -38,13 +38,13 @@ protected:
 	double temp_n, temp_i, temp_e, temp_d, temp_n_erg, temp_i_erg, temp_e_erg, temp_d_erg;
 	double conc_n, conc_i, conc_e, conc_he, conc_h2, conc_ph2, conc_oh2, conc_h2j0, conc_h, conc_h_tot, conc_h2o, conc_co, 
 		conc_oh, conc_nh3, conc_ch3oh, conc_oi, conc_ci, conc_cii, conc_ice, conc_hp, conc_h3p;
-	double h2_prod, h2_prod_gr, h2_prod_gas, h2o_prod, co_prod, oh_prod, nh3_prod, ch3oh_prod, ci_prod, cii_prod, oi_prod;
+	double h2_prod, h2_prod_gr, h2_prod_gas, h2_destr_gas, h2o_prod, co_prod, oh_prod, nh3_prod, ch3oh_prod, ci_prod, cii_prod, oi_prod;
 	double nb_gain_n, nb_gain_i, nb_gain_e, mass_gain_n, mass_gain_i, mass_gain_e, mom_gain_n, mom_gain_i, mom_gain_e, 
 		energy_gain_n, energy_gain_i, energy_gain_e, energy_gain_d;
 	double ads_dust_area, ads_grain_velz, ads_grain_veln2;
 	double coverage, ion_mass, magn_field_0, magn_field, shock_vel, photodes_factor_cr, photodes_factor_is, desorption_factor_cr, 
 		photoem_factor_is_uv, photoem_factor_is_vis;
-	double oh2_form_gaschem, oh2_form_grains, oh2_form_hcoll, h2_h_diss_rate, h2_h_diss_cooling;
+	double oh2_form_hcoll, h2_h_diss_rate, h2_h_diss_cooling;
 	
 	bool *is_dust_charge_large, *is_charged_dust_as_ions;
 	int *indices, *min_grain_charge, *max_grain_charge, *nb_dch;
@@ -114,7 +114,7 @@ public:
 	
 	void get_neutral_heating(double & atomic_n, double & h2_n, double & h2o_n, double & co_n, double & oh_n, double & nh3_n, 
 		double & ch3oh_n, double & coll_h, double & chem_h, double & pheff_h, double & cr, double & scatt_i, double & scatt_e, 
-		double & rad_en_loss_h2) const;	
+		double & rad_en_loss_h2, double & h2_h_diss) const;	
 	void get_electron_heating(double & atomic_e, double & h2_e, double & h2o_e, double & scatt_n, double & scatt_i, double & chem) const;
 	void get_ion_heating(double & h2_i, double & scatt_n, double & scatt_e, double & chem) const;
 
@@ -132,7 +132,8 @@ public:
 	void get_chem_heating_rates(double *& chem_heat_rates, int & nb) const;
 
 	// parameters of H2 molecule chemistry and ortho-para conversion;
-	void get_h2_chem(double & h2_gr, double & h2_gas, double & o_grains, double & o_gchem, double & o_hcoll, double & h2_h_diss) const;
+	void get_h2_chem(double & h2_form_gr, double & h2_form_gas, double & h2_destr_gas, double & o_hcoll, 
+        double & h2_h_diss, double & h2_h_diss_lb, double & h2_ion_diss, N_Vector y) const;
 	
 	// vector defining the ODE system for the chemistry evolution of the static gas.
 	virtual int f(realtype t, N_Vector y, N_Vector ydot);

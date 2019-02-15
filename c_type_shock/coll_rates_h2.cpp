@@ -274,7 +274,7 @@ h2_he_flower_data::h2_he_flower_data(const std::string &data_path, const energy_
 	}
 }
 
-h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const energy_diagram *h2_di, int verbosity)
+h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const energy_diagram *h2_di, bool reactive_channels, int verbosity)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, j, k, li, lf, f, nb;
@@ -354,59 +354,61 @@ h2_h_wrathmall_data::h2_h_wrathmall_data(const std::string &data_path, const ene
 	}
 	
 	// the contribution of reactive channels to the collisions are added (Le Bourlot et al. 1999):
-	for (li = 1; li < h2_di->nb_lev && li < nb_lev; li++) {
-		for (lf = 0; lf < li; lf++)
-		{
-			nb = (li*(li-1) >> 1) + lf;
-			if (h2_di->lev_array[li].v == h2_di->lev_array[lf].v) {
-				if (h2_di->lev_array[li].j - h2_di->lev_array[lf].j == 2) {
-					for (j = 1; j < jmax; j++) {
-						coeff[nb][j] += 8.e-11*exp(-3900./tgrid[j]); // Schofield, Planet. Space Sci. 15, p.643 (1967);
-					}
-				} 
-				else if (h2_di->lev_array[li].j - h2_di->lev_array[lf].j == 1) {
-					if (rounding(h2_di->lev_array[li].j)%2 == 0) {
-						for (j = 1; j < jmax; j++) {
-							coeff[nb][j] = 8.e-11*exp(-3900./tgrid[j]);
-						}
-					}
-					else {
-						for (j = 1; j < jmax; j++) {
-							coeff[nb][j] = 2.667e-11*exp(-3900./tgrid[j]); // reduced by a factor of 3 when J_up is odd
-						}
-					}
-				}					
-			}
-			else {
-				for (j = 1; j < jmax; j++) {
-					de = (3900. - (h2_di->lev_array[li].energy - h2_di->lev_array[lf].energy)*CM_INVERSE_TO_KELVINS)/tgrid[j];
-					if (de < 0.) 
-						de = 0.;
-				
-					if (abs(rounding(h2_di->lev_array[li].j - h2_di->lev_array[lf].j))%2 == 0) { // |j - j'| is even
-						coeff[nb][j] += coeff[nb][j]*exp(-de);
-					}
-					else { // | j - j'| is odd
-						f = h2_di->get_nb(h2_di->lev_array[lf].v, h2_di->lev_array[lf].j-1);
-						k = h2_di->get_nb(h2_di->lev_array[lf].v, h2_di->lev_array[lf].j+1);
-						
-						a = 0.;
-						if (f >= 0 && f < nb_lev) {
-							f = (li*(li-1) >> 1) + f;
-							a = coeff[f][j];
-						}
-						if (k >= 0 && k < nb_lev) {
-							k = (li*(li-1) >> 1) + k;
-							a += coeff[k][j];
-						}
-						if (rounding(h2_di->lev_array[li].j)%2 == 0)
-							coeff[nb][j] = 0.5 *a *exp(-de);
-						else
-							coeff[nb][j] = 0.1667 *a *exp(-de);
-					}
-				}
-			}
-		}
+    if (reactive_channels) {
+        for (li = 1; li < h2_di->nb_lev && li < nb_lev; li++) {
+            for (lf = 0; lf < li; lf++)
+            {
+                nb = (li*(li - 1) >> 1) + lf;
+                if (h2_di->lev_array[li].v == h2_di->lev_array[lf].v) {
+                    if (h2_di->lev_array[li].j - h2_di->lev_array[lf].j == 2) {
+                        for (j = 1; j < jmax; j++) {
+                            coeff[nb][j] += 8.e-11*exp(-3900. / tgrid[j]); // Schofield, Planet. Space Sci. 15, p.643 (1967);
+                        }
+                    }
+                    else if (h2_di->lev_array[li].j - h2_di->lev_array[lf].j == 1) {
+                        if (rounding(h2_di->lev_array[li].j) % 2 == 0) {
+                            for (j = 1; j < jmax; j++) {
+                                coeff[nb][j] = 8.e-11*exp(-3900. / tgrid[j]);
+                            }
+                        }
+                        else {
+                            for (j = 1; j < jmax; j++) {
+                                coeff[nb][j] = 2.667e-11*exp(-3900. / tgrid[j]); // reduced by a factor of 3 when J_up is odd
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (j = 1; j < jmax; j++) {
+                        de = (3900. - (h2_di->lev_array[li].energy - h2_di->lev_array[lf].energy)*CM_INVERSE_TO_KELVINS) / tgrid[j];
+                        if (de < 0.)
+                            de = 0.;
+
+                        if (abs(rounding(h2_di->lev_array[li].j - h2_di->lev_array[lf].j)) % 2 == 0) { // |j - j'| is even
+                            coeff[nb][j] += coeff[nb][j] * exp(-de);
+                        }
+                        else { // | j - j'| is odd
+                            f = h2_di->get_nb(h2_di->lev_array[lf].v, h2_di->lev_array[lf].j - 1);
+                            k = h2_di->get_nb(h2_di->lev_array[lf].v, h2_di->lev_array[lf].j + 1);
+
+                            a = 0.;
+                            if (f >= 0 && f < nb_lev) {
+                                f = (li*(li - 1) >> 1) + f;
+                                a = coeff[f][j];
+                            }
+                            if (k >= 0 && k < nb_lev) {
+                                k = (li*(li - 1) >> 1) + k;
+                                a += coeff[k][j];
+                            }
+                            if (rounding(h2_di->lev_array[li].j) % 2 == 0)
+                                coeff[nb][j] = 0.5 *a *exp(-de);
+                            else
+                                coeff[nb][j] = 0.1667 *a *exp(-de);
+                        }
+                    }
+                }
+            }
+        }
 	}
 	calc_coeff_deriv();
 	free_2d_array<double>(temp);
@@ -853,7 +855,7 @@ h2_e_data::h2_e_data(const string &data_path, const energy_diagram *h2_di, int v
 
 h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, const energy_diagram *h2_di, int verbosity)
 {
-    const int nb_files = 23;
+    const int nb_files = 26;
     char text_line[MAX_TEXT_LINE_WIDTH];
     int i, j, n, li, lf, f, vi, vf, ji, jf, t, nb_lines;
     double temp, rate;
@@ -864,7 +866,7 @@ h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, 
                             "Fig5_rateEQM_H3p_v1j1_vf0jf0", "Fig5_rateEQM_H3p_v1j1_vf2jf0", "Fig5_rateEQM_H3p_v1j1_vf3jf0",
                             "Fig6_rateSQM_H3p_v0j0_vf0jf2", "Fig6_rateSQM_H3p_v0j0_vf0jf3",
                             "Fig7_rateSQM_H3p_v1j0_vf0jf2", "Fig7_rateSQM_H3p_v1j0_vf0jf3", "Fig7_rateSQM_H3p_v1j0_vf1jf2", "Fig7_rateSQM_H3p_v1j0_vf1jf3",
-                            //"Fig7_rateSQM_H3p_v1j0_vf2jf1", "Fig7_rateSQM_H3p_v1j0_vf2jf2", "Fig7_rateSQM_H3p_v1j0_vf2jf3", 
+                            "Fig7_rateSQM_H3p_v1j0_vf2jf1", "Fig7_rateSQM_H3p_v1j0_vf2jf2", "Fig7_rateSQM_H3p_v1j0_vf2jf3",  // !
                             "Fig7_rateSQM_H3p_v1j0_vf3jf1", "Fig7_rateSQM_H3p_v1j0_vf3jf2", "Fig7_rateSQM_H3p_v1j0_vf3jf3", 
                             "Fig8_rateSQM_H3p_v2j0_vf2jf2", "Fig8_rateSQM_H3p_v2j0_vf2jf3", 
                             "Fig9_rate_SQM_H3p_v3j0_vf3jf2", "Fig9_rate_SQM_H3p_v3j0_vf3jf3"};
@@ -934,6 +936,11 @@ h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, 
                         coeff[i][t / 10 + 1] = rate;
                     }
                 }
+                // data from Fig.7, 
+                if (li == h2_di->get_nb(1, 0) && 
+                    (lf == h2_di->get_nb(2, 1) || lf == h2_di->get_nb(2, 2) || lf == h2_di->get_nb(2, 3))) {
+                    n = 300; // n+1 - the last value of the array,
+                }
                 // please, be carefull - the rate value may be very low at low temperatures,
                 n++;
                 for (j = 1; j < n; j++) {
@@ -943,6 +950,7 @@ h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, 
         }
         input.close();
     }
+
     calc_coeff_deriv();
     if (verbosity) {
         cout << "  data have been read for H2-H+ " << endl
@@ -958,7 +966,7 @@ h2_hp_gonzalez_lezana_data::h2_hp_gonzalez_lezana_data(const std::string &path, 
 h2_collisions::h2_collisions(const std::string &data_path, const energy_diagram *h2_di, int verbosity)
 	: collisional_transitions()
 {
-	bool coll_partner_is_ortho;
+	bool coll_partner_is_ortho, reactive_channels = true;
 	if (verbosity) {
 		cout << "H2 collisional rate coefficients are being initializing..." << endl;
 	}
@@ -974,7 +982,7 @@ h2_collisions::h2_collisions(const std::string &data_path, const energy_diagram 
 
 	coll_data.push_back( new h2_h_lique_data(data_path, h2_di, verbosity) );
 	coll_data.push_back( new h2_h_bossion_data(data_path, h2_di, verbosity) );	
-	coll_data.push_back( new h2_h_wrathmall_data(data_path, h2_di, verbosity) );
+	coll_data.push_back( new h2_h_wrathmall_data(data_path, h2_di, reactive_channels, verbosity) );
 	coll_data.push_back( new h2_h_martin_data(data_path, h2_di, verbosity) );
 
 	nb1 = (int) coll_data.size();
