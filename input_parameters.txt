@@ -22,6 +22,8 @@ CS
 1.
 # factor for the IR field scaling relative to IR field given by Hocuk et al., A&A 604, 58 (2017):
 1.
+# initial ortho-/para-H2 ratio
+0.1
 # 3. Parameters relevant for shock wave simulations (other data are given in the file sim_cloud_data.txt):
 # path to the directory with the input data for the simulations (that is the output directory in dark cloud simulations):
 ./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/

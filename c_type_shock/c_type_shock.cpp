@@ -68,8 +68,8 @@ void assign_cloud_data(const string &path, evolution_data *user_data, vector<dou
 	double & visual_extinct, double & cr_ioniz_rate, double & uv_field_strength, double & ir_field_strength, double & conc_h_tot, 
 	int verbosity=1);
 
-void calc_chem_evolution(const string &data_path, const string &output_path, double conc_h_tot, double visual_extinct, double cr_ioniz_rate, 
-	double uv_field_strength, double ir_field_strength, double c_abund_pah);
+void calc_chem_evolution(const string &data_path, const string &output_path, double conc_h_tot, double op_ratio_h2,
+    double visual_extinct, double cr_ioniz_rate, double uv_field_strength, double ir_field_strength, double c_abund_pah);
 // path to data files, path to output for dark cloud simulations, path to output for shock simulations;
 SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, const string &output_path2, double shock_vel,
 	double magnetic_field, double c_abund_pah, double evol_time);
@@ -120,8 +120,8 @@ int main(int argc, char** argv)
     SHOCK_STATE_ID shock_state;
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, j, nb_processors;
-	double conc_h_tot, visual_extinct, shock_vel, magnetic_field, cr_ioniz_rate, c_abund_pah, uv_field_strength, ir_field_strength, 
-		ty, cr_ir_factor, incr_time, max_shock_speed;
+	double conc_h_tot, op_ratio_h2, visual_extinct, shock_vel, magnetic_field, cr_ioniz_rate, c_abund_pah, uv_field_strength,
+        ir_field_strength, ty, cr_ir_factor, incr_time, max_shock_speed;
 	
 	string data_path = "C:/input_data/";
 	string mode, path, input_path, output_path;
@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 
 //	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
     path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "output_data_2e4/shock_cr1-15_45/";
+    path += "output_data_2e4/shock_cr1-16_60/";
 //	production_routes(path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
@@ -260,9 +260,17 @@ int main(int argc, char** argv)
 		ss.str(text_line);
 		ss >> ir_field_strength;
 
+        do
+            input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+        while (text_line[0] == '#');
+
+        ss.clear();
+        ss.str(text_line);
+        ss >> op_ratio_h2;
+
 		if (mode == "DC") 
 		{
-			calc_chem_evolution(data_path, output_path, conc_h_tot, visual_extinct, cr_ioniz_rate, uv_field_strength, 
+			calc_chem_evolution(data_path, output_path, conc_h_tot, op_ratio_h2, visual_extinct, cr_ioniz_rate, uv_field_strength,
 				ir_field_strength, c_abund_pah);
             break;
 		}
@@ -395,8 +403,8 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void calc_chem_evolution(const string &data_path, const string &output_path, double conc_h_tot, double visual_extinct, 
-	double cr_ioniz_rate, double uv_field_strength, double ir_field_strength, double c_abund_pah)
+void calc_chem_evolution(const string &data_path, const string &output_path, double conc_h_tot, double op_ratio_h2, 
+    double visual_extinct, double cr_ioniz_rate, double uv_field_strength, double ir_field_strength, double c_abund_pah)
 {
 #ifdef __linux__
 	stringstream lin_out;	
@@ -418,8 +426,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		nb_vibr_ch3oh, nb_lev_ch3oh, nb_lev_ci, nb_lev_cii, nb_lev_oi, nb_of_dust_comp, nb_of_grain_charges, nb_of_equat, 
 		nb_dct, nb_mhd, verbosity;
 	long int nb_steps;
-	double a, init_temp, conc_e, h2_form_const, t, ty, tfin, tout, rel_tol, tmult, op_ratio_h2, ion_conc, 
-		ion_pah_conc, ion_dens, ion_pah_dens;
+	double a, init_temp, conc_e, h2_form_const, t, ty, tfin, tout, rel_tol, tmult, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens;
 	
 	double *chem_abund(0);
 	vector<double> new_y, init_ch;
@@ -432,8 +439,6 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	cout.precision(3);
 
 	verbosity = 1;
-	// orhto/para H2 ratio:
-	op_ratio_h2 = 1.;
 	// initial temperature in K:
 	init_temp = 10.;
 
@@ -3186,22 +3191,22 @@ void create_file_h2_chemistry(const string & output_path)
 		<< "! h2_gasf - H2 formation rate due to gas-phase chemistry, [cm-3 s-1]" << endl
         << "! h2_gasd - H2 destruction rate due to gas-phase chemistry, [cm-3 s-1]" << endl
 		<< "! h2_h_diss - H2 dissociation rate in H2-H collisions, [cm-3 s-1]" << endl
-        << "! h2_h_diss_lb - H2 dissociation rate in H2-H collisions using the method by Le Bourlot et al. (2002)" << endl
+        << "! h2_h2_diss - H2 dissociation rate in H2-H2 collisions, [cm-3 s-1]" << endl
         << "! h2_diss_i - H2 dissociation rate by ions using the method by Wilgenbus et al. (2000)" << endl;
 	
 	output << left << setw(5) << "!";
-	for (i = 0; i < 9; i++) {
+	for (i = 0; i < 10; i++) {
 		output << left << setw(13) << i;
 	}
 	output << endl << left << setw(18) << "! depth(cm)" << setw(13) << "o/p-H2" << setw(13) << "o_hcoll" << setw(13) << "h2_gr" 
-		<< setw(13) << "h2_gasf" << setw(13) << "h2_gasd" << setw(13) << "h2_h_diss" << setw(13) << "h2_h_diss_lb" 
-        << setw(13) << "h2_diss_i" << endl;
+		<< setw(13) << "h2_gasf" << setw(13) << "h2_gasd" << setw(13) << "h2_h_diss" << setw(13) << "h2_h2_diss" 
+        << setw(13) << "vh2_vh2_diss" << setw(13) << "h2_diss_i" << endl;
 	output.close();
 }
 
 void save_file_h2_chemistry(const string & output_path, const evolution_data *user_data, const N_Vector &y, double var)
 {
-	double op_h2_ratio, h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_h_diss_lb, h2_ion_diss;
+	double op_h2_ratio, h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_ion_diss, h2_h2_diss, vh2_vh2_diss;
 	string fname;
 	ofstream output;
 
@@ -3210,7 +3215,7 @@ void save_file_h2_chemistry(const string & output_path, const evolution_data *us
 
     // ortho-para ratio of H2
 	op_h2_ratio = NV_Ith_S(y, network->h2_nb)/user_data->calc_conc_ph2(y) - 1.;
-	user_data->get_h2_chem(h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_h_diss_lb, h2_ion_diss, y);
+	user_data->get_h2_chem(h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_h2_diss, vh2_vh2_diss, h2_ion_diss, y);
 
 	fname = output_path + "sim_data_h2_chemistry.txt";
 	output.open(fname.c_str(), ios::app);
@@ -3221,8 +3226,8 @@ void save_file_h2_chemistry(const string & output_path, const evolution_data *us
 	
 	output.precision(4);
 	output << left << setw(13) << op_h2_ratio << setw(13) << oh2_form_hcoll << setw(13) << h2_form_gr 
-		<< setw(13) << h2_form_gas << setw(13) << h2_destr_gas  << setw(13) << h2_h_diss << setw(13) << h2_h_diss_lb 
-        << setw(13) << h2_ion_diss << endl;
+		<< setw(13) << h2_form_gas << setw(13) << h2_destr_gas  << setw(13) << h2_h_diss << setw(13) << h2_h2_diss 
+        << setw(13) << vh2_vh2_diss << setw(13) << h2_ion_diss << endl;
 	output.close();
 }
 

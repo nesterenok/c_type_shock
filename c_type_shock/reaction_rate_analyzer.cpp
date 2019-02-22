@@ -12,14 +12,16 @@
 #include <math.h>
 #include <float.h>
 #include <algorithm>
+#include <sstream>
 
 #include "utils.h"
 #include "reaction_rate_analyzer.h"
 
-#define MAX_TEXT_LINE_WIDTH 240
+#define MAX_TEXT_LINE_WIDTH 320
 #define RRA_NB_REACTANTS 2
 #define RRA_NB_PRODUCTS 4
 #define RRA_NB_RATE_VALUES 1500
+#define CHEM_ANALYSIS_FOLDER "chem_analysis/"
 using namespace std;
 
 const double min_fraction = 0.03; // in looking for the important reactions
@@ -119,7 +121,7 @@ void production_routes(string path)
 	bool bo;
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, j, k, l, nb, nb_of_rate_values, nb_of_species, nb_of_reactions, specimen_nb, nb_of_elem;
-	double a, p_arr[RRA_NB_RATE_VALUES], destr_rate[RRA_NB_RATE_VALUES], prod_rate[RRA_NB_RATE_VALUES];
+	double a, z_arr[RRA_NB_RATE_VALUES], t_arr[RRA_NB_RATE_VALUES], destr_rate[RRA_NB_RATE_VALUES], prod_rate[RRA_NB_RATE_VALUES];
 
 	string str, sn, fn;
 	reaction_data rd;
@@ -133,12 +135,13 @@ void production_routes(string path)
 	ofstream output;
 
     vector<string> specimen_names;
+    depth_temperature_dependence dt_dep(path);
 
-    specimen_names.push_back("e-");
-    specimen_names.push_back("H3+");
-    specimen_names.push_back("C+");
     specimen_names.push_back("H");
     specimen_names.push_back("H2");
+/*    specimen_names.push_back("e-");
+    specimen_names.push_back("H3+");
+    specimen_names.push_back("C+");
     specimen_names.push_back("OH");
     specimen_names.push_back("H2O");
     specimen_names.push_back("NH3");
@@ -168,7 +171,7 @@ void production_routes(string path)
     specimen_names.push_back("HCOOCH3");
     specimen_names.push_back("H5C2O2+");
     specimen_names.push_back("C2H5OH");
-    specimen_names.push_back("C2H5OH2+");
+    specimen_names.push_back("C2H5OH2+");*/
 	
     nb = (int) specimen_names.size();
 
@@ -216,9 +219,11 @@ void production_routes(string path)
 	i = 0;
 	while (!input.eof() && i < RRA_NB_RATE_VALUES)
 	{
-		input >> p_arr[i];
-		if (input.eof())
+		input >> z_arr[i];
+        if (input.eof())
 			break;
+        
+        t_arr[i] = dt_dep.get_gas_temperature(z_arr[i]);
 
 		for (j = 0; j < nb_of_reactions; j++) {
 			input >> k;
@@ -324,7 +329,9 @@ void production_routes(string path)
 			if (sn[0] == '*')
 				sn[0] = 'J';
 
-			fn = path + "destr_";
+            fn = path;
+            fn += CHEM_ANALYSIS_FOLDER;
+            fn += "destr_";
 			fn += sn;
 			fn += ".txt";
 
@@ -335,7 +342,7 @@ void production_routes(string path)
 				output << left << "! " << setw(5) << j << destr_rd_v[j].name << endl;
 			}
 	
-			output << left << setw(13) << "! " << setw(11) << "tot_rate";
+			output << left << setw(13) << "! z" << setw(11) << "gas_temp" << setw(11) << "tot_rate";
 			for (j = 0; j < (int) destr_rd_v.size(); j++) {
 				output << left << setw(11) << j;
 			}
@@ -344,9 +351,9 @@ void production_routes(string path)
 			for (i = 0; i < nb_of_rate_values; i++) 
 			{
 				output.precision(5);
-				output << left << setw(13) << p_arr[i];
+				output << left << setw(13) << z_arr[i];
 				output.precision(2);
-				output << left << setw(11) << destr_rate[i];
+				output << left << setw(11) << t_arr[i] << setw(11) << destr_rate[i];
 				for (j = 0; j < (int) destr_rd_v.size(); j++) {
 					output << left << setw(11) << destr_rd_v[j].rates[i];
 				}
@@ -354,7 +361,9 @@ void production_routes(string path)
 			}
 			output.close();
 
-			fn = path + "prod_";
+            fn = path;
+            fn += CHEM_ANALYSIS_FOLDER;
+            fn += "prod_";
 			fn += sn;
 			fn += ".txt";
 
@@ -365,7 +374,7 @@ void production_routes(string path)
 				output << left << "! " << setw(5) << j << prod_rd_v[j].name << endl;
 			}
 	
-			output << left << setw(13) << "! " << setw(11) << "tot_rate";
+			output << left << setw(13) << "! z" << setw(11) << "gas_temp" << setw(11) << "tot_rate";
 			for (j = 0; j < (int) prod_rd_v.size(); j++) {
 				output << left << setw(11) << j;
 			}
@@ -374,9 +383,9 @@ void production_routes(string path)
 			for (i = 0; i < nb_of_rate_values; i++) 
 			{
 				output.precision(5);
-				output << left << setw(13) << p_arr[i];
+				output << left << setw(13) << z_arr[i];
 				output.precision(2);
-				output << left << setw(11) << prod_rate[i];
+				output << left << setw(11) << t_arr[i] << setw(11) << prod_rate[i];
 				for (j = 0; j < (int) prod_rd_v.size(); j++) {
 					output << left << setw(11) << prod_rd_v[j].rates[i];
 				}
@@ -546,4 +555,50 @@ void nautilus_comparison(string path)
 	delete [] sp_nb_high; 
 	free_2d_array(rel_err);
 	free_2d_array(sim_arr);
+}
+
+double depth_temperature_dependence::get_gas_temperature(double d)
+{ 
+    low = lower_bound(depth.begin() + prev_index, depth.end(), d);   
+    prev_index = (low - depth.begin());
+    
+    if (prev_index < 1)
+        prev_index = 1;
+    else if (prev_index > (int) depth.size() - 1)
+        prev_index = (int)depth.size() - 1;
+
+    return gas_temperature[prev_index -1] + (d - depth[prev_index -1]) 
+        * (gas_temperature[prev_index] - gas_temperature[prev_index -1]) / (depth[prev_index] - depth[prev_index -1]);
+}
+
+depth_temperature_dependence::depth_temperature_dependence(std::string path) : prev_index(0)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    double z, time, temp;
+
+    string fn;
+    stringstream ss;
+    ifstream input;
+
+    fn = path + "sim_phys_param.txt";
+    input.open(fn.c_str(), ios::in);
+
+    while (!input.eof())
+    {
+        // comment lines are read:
+        do
+            input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+        while (text_line[0] == '!');
+
+        if (text_line[0] == '\0')
+            break;
+
+        ss.clear();
+        ss.str(text_line);
+        ss >> z >> time >> temp;
+
+        depth.push_back(z);
+        gas_temperature.push_back(temp);
+    }
+    input.close();
 }

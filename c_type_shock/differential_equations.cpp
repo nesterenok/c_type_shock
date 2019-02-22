@@ -80,7 +80,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	neut_heat_scatt_el(0.), el_heat_atoms(0.), el_heat_h2(0.), el_heat_ph2o(0.), el_heat_oh2o(0.), el_heat_scatt_neut(0.), 
 	el_heat_scatt_ions(0.), el_heat_chem(0.), ion_heat_h2(0.), ion_heat_scatt_n(0.), ion_heat_scatt_el(0.), ion_heat_chem(0.), ads_dust_area(0.),
 	ads_grain_velz(0.), ads_grain_veln2(0.), desorption_factor_cr(0.), photodes_factor_cr(0.), photodes_factor_is(0.), 
-	oh2_form_hcoll(0.), h2_h_diss_rate(0.), h2_h_diss_cooling(0.),
+	oh2_form_hcoll(0.), h2_h_diss_rate(0.), h2_h_diss_cooling(0.), h2_h2_diss_rate(0.), h2_h2_diss_cooling(0.), vh2_vh2_diss_rate(0.),
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
 	dust_heat_coll(0), dust_heat_chem(0), chem_reaction_rates(0), gamma_factors(0), delta_factors(0), dheat_efficiency(0), 
 	esc_prob_int1(0), esc_prob_int2(0), ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), 
@@ -158,11 +158,12 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	h2_coll = h2_coll_aux;
 	// h2_coll_aux->check_spline(2, 0, output_path + "h2_spline.txt");
 
-	h2_h_diss_data = new h2_h_dissociation_data(path, h2_di, verbosity);
+	h2_h_diss_data = new h2_h_dissociation_bossion2018(path, h2_di, verbosity);
+    h2_h2_diss_data = new h2_h2_dissociation_martin1998(path, h2_di, verbosity);
+    h2_h2_diss_vibr_excited = new h2_h2_dissociation_ceballos2002(path, verbosity);
+    h2_vibr_states_density_h2 = new double [nb_vibr_states_h2_ceballos2002];
 
 	// Calculation of the data of H2 excitation processes:
-	h2_excit_gf = new h2_grain_formation(h2_di);
-	h2_excit_gasph = new h2_gasphase_formation(h2_di);
 	h2_excit_cr = new h2_excit_cosmic_rays(path, h2_di);
 
 	// Ion data:
@@ -459,10 +460,11 @@ evolution_data::~evolution_data()
 	delete h2_di;
 	delete h2_einst;
 	delete h2_coll;
-	delete h2_excit_gf;
-	delete h2_excit_gasph;
 	delete h2_excit_cr;
-	
+    delete h2_h2_diss_data;
+    delete h2_h_diss_data;
+    delete h2_h2_diss_vibr_excited;
+
 	delete OI_di;
 	delete OI_einst;
 	delete OI_coll;
@@ -515,6 +517,7 @@ evolution_data::~evolution_data()
 	delete network;
 	delete accr_func;
 
+    delete [] h2_vibr_states_density_h2;
 	delete [] dh_isrf_arr;
 	delete [] indices;
 	delete [] coll_partn_conc;
@@ -578,8 +581,8 @@ void evolution_data::reinit_arrays(int nb_of_grain_charges)
 int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 {
 	int i, j, k, l, nb, nb2;
-	double a, b, c, d, rate, mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1, h2_d2, el_att, phel_em, nb_ads_sites_grain,
-		photoem_factor_cr, photodes_factor_cr2, photoreact_factor_cr, ioniz_fraction;
+    double a, b, c, d, rate, mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1,
+        el_att, phel_em, nb_ads_sites_grain, photoem_factor_cr, photodes_factor_cr2, photoreact_factor_cr, ioniz_fraction;
 	realtype *y_data, *ydot_data;
 	
 	y_data = NV_DATA_S(y);
@@ -758,9 +761,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	memset(chem_reaction_rates, 0, network->nb_of_reactions*sizeof(double));
 	memset(chem_heating_rates_n, 0, network->nb_of_reactions*sizeof(double));
-	mom_n = mom_i = mom_e = en_n = en_i = en_e = en_d = h2_pr1 = h2_pr2 = h2_d1 = h2_d2 = 0.;
+	mom_n = mom_i = mom_e = en_n = en_i = en_e = en_d = h2_pr1 = h2_pr2 = h2_d1 = 0.;
 
-#pragma omp parallel reduction(+: mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1, h2_d2) private(i, k, l, rate, a)
+#pragma omp parallel reduction(+: mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, h2_pr1, h2_pr2, h2_d1) private(i, k, l, rate, a)
 	{
 		double *arr = new double [nb_of_species];
 		memset(arr, 0, nb_of_species*sizeof(double));
@@ -770,147 +773,147 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 		double *arr_chhe = new double [network->nb_of_reactions];
 		memset(arr_chhe, 0, network->nb_of_reactions*sizeof(double));
-
         
 #pragma omp for schedule(dynamic, 10)
-		for (i = 0; i < network->nb_of_reactions - network->nb_reactions_ion_grains; i++)
-		{
+        for (i = 0; i < network->nb_of_reactions - network->nb_reactions_ion_grains; i++)
+        {
             const chem_reaction & reaction = network->reaction_array[i];
-			rate = reaction_rate(network->species, accr_func, reaction, cr_ioniz_rate, uv_field_strength,
-				visual_extinct, vel_n, vel_i, ads_dust_area, ads_grain_veln2, temp_n, temp_i, temp_e, temp_d, photoreact_factor_cr, 
-				desorption_factor_cr, photodes_factor_cr2, photodes_factor_is, conc_h_tot, nb_ads_sites_grain);
-		
+            rate = reaction_rate(network->species, accr_func, reaction, cr_ioniz_rate, uv_field_strength,
+                visual_extinct, vel_n, vel_i, ads_dust_area, ads_grain_veln2, temp_n, temp_i, temp_e, temp_d, photoreact_factor_cr,
+                desorption_factor_cr, photodes_factor_cr2, photodes_factor_is, conc_h_tot, nb_ads_sites_grain);
+
             if (rate < 0.) {
                 //cout << left << "warning, rate in reaction is negative: " << setw(13) << rate << network->reaction_array[i].name << endl;
             }
 
-			switch (reaction.type)
-			{ 
-			// Unimolecular reactions:
-			case 0: // "A + CR -> Ion + e-"
-			case 1: // "A + CR -> B + Ion + e-"
-			case 2: // "A + CR -> Ion + Ion"
-			case 3: // "A + CR -> B + C"
-			case 4: // "A + CRPhoton -> Ion + e-"
-			case 5: // "A + CRPhoton -> B + Ion + e-"
-			case 6: // "A + CRPhoton -> B + C + D + E"
-			case 7: // "Ion + CRPhoton -> B + Ion"
-			case 8: // "Ion + CRPhoton -> A + e-"
-			case 9: // "A + ISPhoton -> Ion + e-"
-			case 10: // "A + ISPhoton -> B + Ion + e-"
-			case 11: // "A + ISPhoton -> B + C + D + E"
-			case 12: // "Ion + ISPhoton -> B + Ion"
-			case 13: // "Ion + ISPhoton -> A + e-"
-			case 27: // "A + grain -> *A + grain"
-			case 40: // "*A + CRPhoton -> *B + *C"
-			case 41:
-			case 42: // "*A + ISPhoton -> *B + *C"
-			case 43:
-				k = reaction.reactant[0];
-				rate *= y_data[k];
-				arr[k] -= rate;
-				break;
+            switch (reaction.type)
+            {
+                // Unimolecular reactions:
+            case 0: // "A + CR -> Ion + e-"
+            case 1: // "A + CR -> B + Ion + e-"
+            case 2: // "A + CR -> Ion + Ion"
+            case 3: // "A + CR -> B + C"
+            case 4: // "A + CRPhoton -> Ion + e-"
+            case 5: // "A + CRPhoton -> B + Ion + e-"
+            case 6: // "A + CRPhoton -> B + C + D + E"
+            case 7: // "Ion + CRPhoton -> B + Ion"
+            case 8: // "Ion + CRPhoton -> A + e-"
+            case 9: // "A + ISPhoton -> Ion + e-"
+            case 10: // "A + ISPhoton -> B + Ion + e-"
+            case 11: // "A + ISPhoton -> B + C + D + E"
+            case 12: // "Ion + ISPhoton -> B + Ion"
+            case 13: // "Ion + ISPhoton -> A + e-"
+            case 27: // "A + grain -> *A + grain"
+            case 40: // "*A + CRPhoton -> *B + *C"
+            case 41:
+            case 42: // "*A + ISPhoton -> *B + *C"
+            case 43:
+                k = reaction.reactant[0];
+                rate *= y_data[k];
+                arr[k] -= rate;
+                break;
 
-			// Desorption:
-			// the desorption is from the top two layers;
-			case 28: // "*A + grain -> A + grain"
-			case 29: // "*A + CR -> A"
-			case 30: // "*A + CRPhoton -> A"
-			case 31: // "*A + CRPhoton -> A + B"
-			case 32: // "*A + ISPhoton -> A"
-			case 33: // "*A + ISPhoton -> A + B"			
-				k = reaction.reactant[0];
-				rate *= y_data[k]*coverage;
-				arr[k] -= rate;
-				break;
+                // Desorption:
+                // the desorption is from the top two layers;
+            case 28: // "*A + grain -> A + grain"
+            case 29: // "*A + CR -> A"
+            case 30: // "*A + CRPhoton -> A"
+            case 31: // "*A + CRPhoton -> A + B"
+            case 32: // "*A + ISPhoton -> A"
+            case 33: // "*A + ISPhoton -> A + B"			
+                k = reaction.reactant[0];
+                rate *= y_data[k] * coverage;
+                arr[k] -= rate;
+                break;
 
-			// Bimolecular reactions:
-			case 14: // "A + B -> C + D + E"
-			case 15: // "A + B -> C + Photon"
-			case 16: // "A + B -> Ion + e-"
-			case 17: // "A + e- -> Ion"
-			case 18: // "A + e- -> B + C + Ion"
-			case 19: // "A + e- -> B + C + e-"
-			case 20: // "A + Ion -> Ion + Photon"
-			case 21: // "A + Ion -> B + C + D + Ion"
-			case 22: // "A + Ion -> B + C + e-"
-			case 23: // "Ion + e- -> A + Photon"
-			case 24: // "Ion + e- -> A + B + C"
-			case 25: // "Ion + Ion -> A + B + C + D"
-			case 36: // "*A + *B -> *C + *D + *E"
-			case 37: // "*A + *B -> C"
-			case 38: // "*A + *B -> C + D + E"
-			case 39: // "*A + *B -> *A + B"
-				k = reaction.reactant[0];
-				l = reaction.reactant[1];
+                // Bimolecular reactions:
+            case 14: // "A + B -> C + D + E"
+            case 15: // "A + B -> C + Photon"
+            case 16: // "A + B -> Ion + e-"
+            case 17: // "A + e- -> Ion"
+            case 18: // "A + e- -> B + C + Ion"
+            case 19: // "A + e- -> B + C + e-"
+            case 20: // "A + Ion -> Ion + Photon"
+            case 21: // "A + Ion -> B + C + D + Ion"
+            case 22: // "A + Ion -> B + C + e-"
+            case 23: // "Ion + e- -> A + Photon"
+            case 24: // "Ion + e- -> A + B + C"
+            case 25: // "Ion + Ion -> A + B + C + D"
+            case 36: // "*A + *B -> *C + *D + *E"
+            case 37: // "*A + *B -> C"
+            case 38: // "*A + *B -> C + D + E"
+            case 39: // "*A + *B -> *A + B"
+                k = reaction.reactant[0];
+                l = reaction.reactant[1];
 
-				rate *= y_data[k] *y_data[l];
+                rate *= y_data[k] * y_data[l];
 
-                if (i == network->h2_h_diss_nb) {
-                    if (H2_H_DISSIOCIATION_DATA)
-                        rate = 0.;
-                    else h2_d1 = rate;
+                if (i == network->h2_h_diss_nb || i == network->h2_h2_diss_nb) {
+                    rate = 0.;
                 }
 
-				arr[k] -= rate;
-				arr[l] -= rate;
-				break;
-		
-			// Sputtering:
-			case 34: // "*A + C -> A + C"
-			case 35: // "*A + C -> A + B + C"
-				k = reaction.reactant[0];
-				l = reaction.reactant[1];
+                arr[k] -= rate;
+                arr[l] -= rate;
+                break;
 
-				rate *= y_data[k] *y_data[l] *coverage;
+                // Sputtering:
+            case 34: // "*A + C -> A + C"
+            case 35: // "*A + C -> A + B + C"
+                k = reaction.reactant[0];
+                l = reaction.reactant[1];
 
-				arr[k] -= rate;
-				arr[l] -= rate;
-				break;
-			
-			case 26: // "H + H + grain -> H2 + grain"
-				rate *= conc_h;
-				arr[network->h_nb] -= 2.*rate;
-				break;	
-			};
+                rate *= y_data[k] * y_data[l] * coverage;
 
-			for (k = 0; k < reaction.nb_of_products; k++) {
-				l = reaction.product[k];
-				arr[l] += rate;
-			}
+                arr[k] -= rate;
+                arr[l] -= rate;
+                break;
 
-			// saving rates of chemical reactions (in cm-3 s-1):
-			arr_chr[i] = rate;
-			
-			a = en_n;
-			chemistry_source_terms(mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, network->species, 
-				reaction, vel_n, vel_i, ads_grain_velz, ads_grain_veln2, temp_n_erg, temp_i_erg, temp_e_erg, temp_d_erg, rate);
+            case 26: // "H + H + grain -> H2 + grain"
+                rate *= conc_h;
+                arr[network->h_nb] -= 2.*rate;
+                break;
+            };
 
-			// saving the rates of chemical heating of neutral fluid (erg cm-3 s-1):
-			arr_chhe[i] = en_n - a;
-			
-			// saving H2 formation rates on grains:
-			if (reaction.type >= 36 && reaction.type <= 38) {
-				for (k = 0; k < reaction.nb_of_products; k++) {
-					if (reaction.product[k] == network->ah2_nb || reaction.product[k] == network->h2_nb)
-						h2_pr1 += rate;
-				}
-			}
-			if (reaction.type == 26)
-				h2_pr1 += rate;
-			
-			// saving H2 formation rates in the gas phase (note: the reaction H2+H2->H2+H+H)
-			if (reaction.type <= 25 && i != network->h2_h2_diss_nb) {   
+            for (k = 0; k < reaction.nb_of_products; k++) {
+                l = reaction.product[k];
+                arr[l] += rate;
+            }
+
+            // saving rates of chemical reactions (in cm-3 s-1):
+            arr_chr[i] = rate;
+
+            a = en_n;
+            chemistry_source_terms(mom_n, mom_i, mom_e, en_n, en_i, en_e, en_d, network->species,
+                reaction, vel_n, vel_i, ads_grain_velz, ads_grain_veln2, temp_n_erg, temp_i_erg, temp_e_erg, temp_d_erg, rate);
+
+            // saving the rates of chemical heating of neutral fluid (erg cm-3 s-1):
+            arr_chhe[i] = en_n - a;
+
+            // saving H2 formation rates on grains:
+            if (reaction.type >= 36 && reaction.type <= 38) {
+                for (k = 0; k < reaction.nb_of_products; k++) {
+                    if (reaction.product[k] == network->ah2_nb || reaction.product[k] == network->h2_nb)
+                        h2_pr1 += rate;
+                }
+            }
+            if (reaction.type == 26)
+                h2_pr1 += rate;
+
+            // saving H2 formation and destruction rates in the gas phase 
+            if (reaction.type <= 25) {
+                a = 0.;
+                if (reaction.reactant[0] == network->h2_nb)
+                    a -= rate;
+                if (reaction.reactant[1] == network->h2_nb)
+                    a -= rate;
+
                 for (k = 0; k < reaction.nb_of_products; k++) {
                     if (reaction.product[k] == network->h2_nb)
-                        h2_pr2 += rate;
+                        a += rate;
                 }
-			}
-            // saving H2 destruction rates in gas-phase:
-            if (reaction.type <= 22 && i != network->h2_h2_diss_nb) {
-                if (reaction.reactant[0] == network->h2_nb || reaction.reactant[1] == network->h2_nb) {
-                    h2_d2 += rate;
-                }
+                if (a > MINIMAL_REACTION_RATE)
+                    h2_pr2 += a;
+                else h2_d1 += -a;
             }
 		}
 		#pragma omp critical
@@ -941,8 +944,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	
 	h2_prod_gr = h2_pr1;
 	h2_prod_gas = h2_pr2;
-	h2_h_diss_rate = h2_d1;
-    h2_destr_gas = h2_d2;
+    h2_destr_gas = h2_d1; // not including H2+H and H2+H2
 
 	// Chemical reactions changing the charge distribution of grains:
 	photoem_factor_cr = cr_ioniz_rate *2.*conc_h2/conc_h_tot; // grain albedo is taken into account yet;
@@ -1207,7 +1209,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	}
 
 	// production rates of species, for which level populations are calculated:
-    h2_prod = ydot_data[network->h2_nb]; // not accounting for e- excitation and H2-H dissociation
+    h2_prod = ydot_data[network->h2_nb]; // not accounting for H2-H, H2-H2 dissociation
 	h2o_prod = ydot_data[network->h2o_nb];
 	co_prod = ydot_data[network->co_nb];
 	oh_prod = ydot_data[network->oh_nb];
@@ -1265,36 +1267,63 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 		}
 	}
 
-    if (H2_H_DISSIOCIATION_DATA) {
-        h2_h_diss_cooling = h2_h_diss_rate = 0.;
-        for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
-        {
-            c = y_data[i] * conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
-            h2_h_diss_rate += c;
-            ydot_data[i] -= c;
+// H2 dissociation in H2-H collisions
+    j = network->h2_h_diss_nb;
+    a = network->reaction_array[j].energy_released; // energy released in reaction, 
+        
+    h2_h_diss_cooling = h2_h_diss_rate = 0.;
+    for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
+    {
+        c = y_data[i] * conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
+        ydot_data[i] -= c;
 
-            h2_h_diss_cooling += (network->reaction_array[i].energy_released 
-                + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
-        }
-        ydot_data[network->h_nb] += 2.*h2_h_diss_rate;
-        ydot_data[network->h2_nb] -= h2_h_diss_rate;
-
-        i = network->h2_h_diss_nb;
-        chem_reaction_rates[i] = h2_h_diss_rate; // reaction rate is saved,
-
-        chem_heating_rates_n[i] = h2_h_diss_cooling; // cooling of the gas by this process,
-        neut_heat_chem += h2_h_diss_cooling;
-        energy_gain_n += h2_h_diss_cooling;
+        h2_h_diss_rate += c;
+        h2_h_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
     }
+    chem_reaction_rates[j] = h2_h_diss_rate; // reaction rate is saved,
+    chem_heating_rates_n[j] = h2_h_diss_cooling; // cooling of the gas by this process,      
+    
 
-	// other processes of H2 formation are assumed not to change the level population: molecules are formed
+// H2 dissociation in H2-H2 collisions
+    memset(h2_vibr_states_density_h2, 0, nb_vibr_states_h2_ceballos2002 *sizeof(double));
+    for (i = 0; i < nb_lev_h2; i++) {
+        j = h2_di->lev_array[i].v;
+        if (j >= h2_h2_diss_vibr_excited->get_minv() && j <= h2_h2_diss_vibr_excited->get_maxv()) {
+            j = (j - 5) / 2;
+            h2_vibr_states_density_h2[j] += y_data[nb_of_species + i];
+        }
+    }
+    
+    j = network->h2_h2_diss_nb;
+    a = network->reaction_array[j].energy_released; // energy released in reaction, 
+    
+    h2_h2_diss_cooling = h2_h2_diss_rate = vh2_vh2_diss_rate = 0.;
+    for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
+    {
+        b = y_data[i] * h2_h2_diss_vibr_excited->get_rate(h2_di->lev_array[i-nb_of_species].v, temp_n, h2_vibr_states_density_h2);
+        vh2_vh2_diss_rate += b;
+        
+        c = y_data[i] * conc_h2 *h2_h2_diss_data->get_rate(i - nb_of_species, temp_n);
+        h2_h2_diss_rate += c;
+        
+        ydot_data[i] -= c;
+        h2_h2_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
+    }
+    chem_reaction_rates[j] = h2_h2_diss_rate; 
+    chem_heating_rates_n[j] = h2_h2_diss_cooling; 
+
+    ydot_data[network->h_nb] += 2.*(h2_h2_diss_rate + h2_h_diss_rate);
+    ydot_data[network->h2_nb] -= h2_h2_diss_rate + h2_h_diss_rate;
+    neut_heat_chem += h2_h_diss_cooling + h2_h2_diss_cooling;
+	
+    // other processes of H2 formation are assumed not to change the level population: molecules are formed
 	// with level population distrubution proportional to the current level population distribution;
 	c = h2_prod/conc_h2;
 	for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++) {
 		ydot_data[i] += y_data[i] *c;
 	}
 
-	energy_gain_n += neut_heat_h2;
+	energy_gain_n += neut_heat_h2 + h2_h_diss_cooling + h2_h2_diss_cooling;
 	energy_gain_e += el_heat_h2;
     energy_gain_i += ion_heat_h2;
     nb = nb_of_species + nb_lev_h2;
@@ -2574,7 +2603,7 @@ void evolution_data::get_chem_heating_rates(double *& cheat, int & nb) const
 }
 
 void evolution_data::get_h2_chem(double & h2_gr, double & h2_gasf, double & h2_gasd, double & o_hcoll,
-    double & h2_h_diss, double & h2_h_diss_lb, double & h2_ion_diss, N_Vector y) const
+    double & h2_h_diss, double & h2_h2_diss, double & vh2_vh2_diss, double & h2_ion_diss, N_Vector y) const
 { 
     double teff;
 
@@ -2583,25 +2612,26 @@ void evolution_data::get_h2_chem(double & h2_gr, double & h2_gasf, double & h2_g
     h2_gasd = h2_destr_gas;
 	o_hcoll = oh2_form_hcoll;
 	h2_h_diss = h2_h_diss_rate;
+    h2_h2_diss = h2_h2_diss_rate;
+    vh2_vh2_diss = vh2_vh2_diss_rate;
 
-    h2_h_diss_lb = 0.;
+    h2_ion_diss = 0.;
     const realtype *y_data = NV_DATA_S(y);
-
-    for (int i = 0; i < nb_lev_h2; i++) {
-        h2_h_diss_lb += y_data[i + nb_of_species] 
-            * exp(-(56644. - h2_di->lev_array[i].energy *CM_INVERSE_TO_KELVINS) / temp_n);
-    }
-    h2_h_diss_lb *= 1.e-10*y_data[network->h_nb];
-
+ 
     // Estimate of H2 destruction by ions based on Wilgenbus et al. A&A 356, 1010 (2000),
-    teff = (temp_n + 2.*temp_i)/3.;
-    h2_ion_diss = y_data[network->hp_nb] * sqrt(teff / 300.)*exp(-52000. / teff);
+    for (int i = 0; i < nb_lev_h2; i++) {
+        teff = (temp_n + 2.*temp_i)/3.;
+        h2_ion_diss += y_data[i + nb_of_species] * y_data[network->hp_nb] 
+            * sqrt(teff / 300.)*exp(-(56644. - h2_di->lev_array[i].energy *CM_INVERSE_TO_KELVINS) / teff);
     
-    teff = (3.*temp_n + 2.*temp_i)/5.;
-    h2_ion_diss += y_data[network->h3p_nb] * sqrt(teff / 300.)*exp(-52000. / teff);
+        teff = (3.*temp_n + 2.*temp_i)/5.;
+        h2_ion_diss += y_data[i + nb_of_species] * y_data[network->h3p_nb] 
+            * sqrt(teff / 300.)*exp(-(56644. - h2_di->lev_array[i].energy *CM_INVERSE_TO_KELVINS) / teff);
 
-    h2_ion_diss += (conc_i - y_data[network->h3p_nb] - y_data[network->hp_nb]) * sqrt(temp_n / 300.)*exp(-52000. / temp_n);
-    h2_ion_diss *= 3.e-11 * conc_h2;
+        h2_ion_diss += y_data[i + nb_of_species] * (conc_i - y_data[network->h3p_nb] - y_data[network->hp_nb]) 
+            * sqrt(temp_n / 300.)*exp(-(56644. - h2_di->lev_array[i].energy *CM_INVERSE_TO_KELVINS) / temp_n);
+    }
+    h2_ion_diss *= 3.e-11;
 }
 
 void evolution_data::set_tolerances(N_Vector abs_tol)
@@ -3132,6 +3162,8 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 
 /*	// here the excitation of H2 in formation on grains is taken into account:
+h2_excit_gf = new h2_grain_formation(h2_di);
+    h2_excit_gasph = new h2_gasphase_formation(h2_di);
 #if (H2_FORMATION_EXCITATION)
 	oh2_form_gaschem = oh2_form_grains = 0.; 	
 	h2_prod -= h2_prod_gr;

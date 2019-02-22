@@ -175,9 +175,6 @@
 // Calculate OH and NH3 populations, 1 - yes
 #define CALCULATE_POPUL_NH3_OH 0
 
-// 1 - data are used by Bossion et al. MNRAS 480, p.3718 (2018);
-#define H2_H_DISSIOCIATION_DATA 1
-
 // 1 - data are used by Tine et al., ApJ 481, p.282 (1997)
 #define H2_CR_EXCITATION 1
 

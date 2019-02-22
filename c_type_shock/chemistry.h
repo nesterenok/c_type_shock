@@ -161,7 +161,7 @@ public:
 	// max_nb_carbon - maximal value of carbon atoms allowed in the chemical specimen;
 	int verbosity, nb_of_species, nb_of_gmantle_species, nb_of_reactions, nb_reactions_ion_grains, max_nb_carbon, 
 		h2_nb, ah2_nb, h_nb, he_nb, e_nb, oi_nb, ci_nb, cii_nb, co_nb, h2o_nb, oh_nb, nh3_nb, ch3oh_nb, hp_nb, h3p_nb, 
-        h2_h_diss_nb, h2_h2_diss_nb;
+        h2_h_diss_nb, h2_h2_diss_nb, h2_e_diss_nb;
 
 	std::map<int, chem_element> elements;
 	std::vector<chem_specimen>	species;

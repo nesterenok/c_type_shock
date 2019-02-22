@@ -1126,7 +1126,7 @@ void h2_collisions::get_rate_ions(const energy_level &up_lev, const energy_level
 // H2 dissociation
 //
 
-h2_h_dissociation_data::h2_h_dissociation_data(const std::string & path, const energy_diagram *h2_di, int verbosity)
+h2_h_dissociation_bossion2018::h2_h_dissociation_bossion2018(const std::string & path, const energy_diagram *h2_di, int verbosity)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, j, n, vi, ji, nb_lines;
@@ -1147,14 +1147,14 @@ h2_h_dissociation_data::h2_h_dissociation_data(const std::string & path, const e
 	
 	input >> nb_lines >> jmax; // check in the file the presence of these parameters;
 	jmax++; // +1 for zero point;
-	nb_lev = h2_di->nb_lev;
+	imax = h2_di->nb_lev;
 	
 	tgrid = new double [jmax];
-	coeff = alloc_2d_array<double>(nb_lev, jmax);
-	memset(*coeff, 0, nb_lev*jmax*sizeof(double));
+	coeff = alloc_2d_array<double>(imax, jmax);
+	memset(*coeff, 0, imax*jmax*sizeof(double));
 	
-	coeff_deriv = alloc_2d_array<double>(nb_lev, jmax);
-	memset(*coeff_deriv, 0, nb_lev*jmax*sizeof(double));
+	coeff_deriv = alloc_2d_array<double>(imax, jmax);
+	memset(*coeff_deriv, 0, imax*jmax*sizeof(double));
 
 	tgrid[0] = 0.;
 	for (j = 1; j < jmax; j++) {
@@ -1186,6 +1186,126 @@ h2_h_dissociation_data::h2_h_dissociation_data(const std::string & path, const e
 		cout << "  data have been read from file " << file_name << endl
 			<< "  temperature range " << (int) tgrid[1] << " - " << (int) tgrid[jmax-1] << endl;
 	}
+}
+
+h2_h2_dissociation_martin1998::h2_h2_dissociation_martin1998(const std::string & path, const energy_diagram *h2_di, int verbosity)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int i, j;
+    double a;
+
+    string file_name;
+    ifstream input;
+
+    file_name = path + "coll_h2/diss_h2-h2_martin1998.txt";
+    input.open(file_name.c_str(), std::ios_base::in);
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
+        exit(1);
+    }
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+
+    input >> jmax; // check in the file the presence of these parameters;
+    jmax++; // +1 for zero point;
+    imax = h2_di->nb_lev;
+
+    tgrid = new double[jmax];
+    coeff = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff, 0, imax*jmax * sizeof(double));
+
+    coeff_deriv = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff_deriv, 0, imax*jmax * sizeof(double));
+
+    tgrid[0] = 0.;
+    for (j = 1; j < jmax; j++) {
+        input >> tgrid[j] >> a;
+        for (i = 0; i < imax; i++) { // the rate is identical for all levels
+            coeff[i][j] = a;
+        }
+
+    }
+    input.close();
+
+    calc_coeff_deriv();
+    if (verbosity) {
+        cout << "  data have been read from file " << file_name << endl
+            << "  temperature range " << (int)tgrid[1] << " - " << (int)tgrid[jmax - 1] << endl;
+    }
+}
+
+h2_h2_dissociation_ceballos2002::h2_h2_dissociation_ceballos2002(const std::string & path, int verbosity)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int i, j;
+  
+    string file_name;
+    ifstream input;
+
+    min_vibrq = 5; 
+    max_vibrq = min_vibrq + 2*nb_vibr_states_h2_ceballos2002 - 1;
+
+    file_name = path + "coll_h2/diss_h2-h2_ceballos2002.txt";
+    input.open(file_name.c_str(), std::ios_base::in);
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
+        exit(1);
+    }
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+
+    input >> imax >> jmax; // check in the file the presence of these parameters;
+    jmax++; // +1 for zero point;
+    
+    tgrid = new double[jmax];
+    coeff = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff, 0, imax*jmax * sizeof(double));
+
+    coeff_deriv = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff_deriv, 0, imax*jmax * sizeof(double));
+
+    tgrid[0] = 0.;
+    for (j = 1; j < jmax; j++) {
+        input >> tgrid[j];
+    }
+
+    for (i = 0; i < imax; i++) {
+        input >> j >> j;
+        for (j = 1; j < jmax; j++) {
+            input >> coeff[i][j];
+        }
+    }
+    input.close();
+
+    calc_coeff_deriv();
+    if (verbosity) {
+        cout << "  data have been read from file " << file_name << endl
+            << "  temperature range " << (int)tgrid[1] << " - " << (int)tgrid[jmax - 1] << endl;
+    }
+}
+
+double h2_h2_dissociation_ceballos2002::get_rate(int i, double temp, double *vibr_h2_conc) const
+{
+    if (i < min_vibrq && i > max_vibrq) 
+        return 0.;
+
+    double rate(0.);
+    int j, l = 0, r = jmax - 1;
+    while (r - l > 1)
+    {
+        j = l + ((r - l) >> 1);
+        if (tgrid[j] < temp)
+            l = j;
+        else r = j;
+    }
+    
+    i = (i - 5) / 2;
+    for (j = 0; j < nb_vibr_states_h2_ceballos2002; j++) {
+        rate += (coeff[i + j][l] + coeff_deriv[i + j][l] * (temp - tgrid[l])) * vibr_h2_conc[j];
+    }
+    return rate;
 }
 
 //

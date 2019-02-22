@@ -103,7 +103,7 @@ class dissociation_data
 {
 protected:
 	int jmax; // the dimension of tgrid[] array;
-	int nb_lev; // number of molecule levels for which the coefficients are available,
+	int imax; // number of molecule levels for which the coefficients are available,
 	double *tgrid; // the array with temperature grid points;
 	double **coeff, **coeff_deriv;
 

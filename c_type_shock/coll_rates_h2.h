@@ -4,6 +4,8 @@
 #include "spectroscopy.h"
 #include "coll_rates.h"
 
+const int nb_vibr_states_h2_ceballos2002 = 5;
+
 #define H2_COLL_CUBIC_SPLINE 1
 #define H2_DISS_CUBIC_SPLINE 0
 
@@ -165,8 +167,9 @@ public:
 };
 
 
-// H2 dissociation data
-class h2_h_dissociation_data
+// H2-H dissociation data
+// Bossion et al. MNRAS 480, 3718-3724 (2018)
+class h2_h_dissociation_bossion2018
 #if H2_DISS_CUBIC_SPLINE
 	: public dissociation_data_cub_spline
 #else
@@ -174,7 +177,33 @@ class h2_h_dissociation_data
 #endif
 {
 public:
-	h2_h_dissociation_data(const std::string & data_path, const energy_diagram *, int verbosity);
+	h2_h_dissociation_bossion2018(const std::string & data_path, const energy_diagram *, int verbosity);
+};
+
+// H2-H2 
+// Martin et al. ApJ 499, p.793-798 (1998)
+class h2_h2_dissociation_martin1998
+#if H2_DISS_CUBIC_SPLINE
+    : public dissociation_data_cub_spline
+#else
+    : public dissociation_data
+#endif
+{
+public:
+    h2_h2_dissociation_martin1998(const std::string & data_path, const energy_diagram *, int verbosity);
+};
+
+class h2_h2_dissociation_ceballos2002 : public dissociation_data
+{
+protected:
+    int min_vibrq, max_vibrq;
+public:
+    int get_minv() const { return min_vibrq; }
+    int get_maxv() const { return max_vibrq; }
+
+    double get_rate(int i, double temp) const { return 0.; }
+    double get_rate(int i, double temp, double *vibr_h2_conc) const;
+    h2_h2_dissociation_ceballos2002(const std::string & data_path, int verbosity);
 };
 
 

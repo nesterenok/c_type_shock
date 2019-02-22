@@ -2,6 +2,8 @@
 
 #include <string>
 #include <cstring>
+#include <vector>
+#include <algorithm>
 
 // the array of gas-phase chemical species is given in input, adsorbed species are considered automatically in the routine;
 void production_routes(std::string path);
@@ -29,4 +31,17 @@ public:
 	friend bool operator != (const reaction_data &, const reaction_data &);
 	friend bool operator < (const reaction_data &, const reaction_data &);
 	friend bool operator > (const reaction_data &, const reaction_data &);
+};
+
+class depth_temperature_dependence
+{
+private:
+    int prev_index;
+    std::vector<double>::iterator low;
+    std::vector<double> depth, gas_temperature;
+
+public:
+
+    double get_gas_temperature(double depth);
+    depth_temperature_dependence(std::string path);
 };

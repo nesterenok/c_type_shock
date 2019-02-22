@@ -295,7 +295,7 @@ double collisional_transitions::get_rate_ions(const energy_level &init_lev, cons
 //
 
 dissociation_data::dissociation_data() 
-	: nb_lev(0), jmax(0), tgrid(0), coeff(0), coeff_deriv(0)
+	: imax(0), jmax(0), tgrid(0), coeff(0), coeff_deriv(0)
 {;}
 
 dissociation_data::~dissociation_data() 
@@ -311,7 +311,7 @@ dissociation_data::~dissociation_data()
 void dissociation_data::calc_coeff_deriv()
 {
 	int i, j;
-	for (i = 0; i < nb_lev; i++) {
+	for (i = 0; i < imax; i++) {
 		for (j = 0; j < jmax-1; j++) {
 			coeff_deriv[i][j] = (coeff[i][j+1] - coeff[i][j])/(tgrid[j+1] - tgrid[j]);
 		}
@@ -321,6 +321,11 @@ void dissociation_data::calc_coeff_deriv()
 // the linear extrapolation is used here:
 double dissociation_data::get_rate(int i, double temp) const 
 {
+    if (temp < tgrid[0]) // check for temperature range
+        return 0.;
+    else if (temp > tgrid[jmax - 1])
+        return coeff[i][jmax - 1];
+
 	int j, l = 0, r = jmax-1; 
 	while (r-l > 1)
 	{
@@ -338,7 +343,7 @@ void dissociation_data_cub_spline::calc_coeff_deriv()
 	double p, sig;
 	double *u = new double [jmax-1];
 	
-	for (i = 0; i < nb_lev; i++) 
+	for (i = 0; i < imax; i++) 
 	{
 	// the lower boundary condition is set to be "natural"
 		coeff_deriv[i][0] = u[0] = 0.;
@@ -366,6 +371,11 @@ void dissociation_data_cub_spline::calc_coeff_deriv()
 
 double dissociation_data_cub_spline::get_rate(int i, double temp) const
 {
+    if (temp < tgrid[0]) // check for temperature range
+        return 0.;
+    else if (temp > tgrid[jmax - 1])
+        return coeff[i][jmax - 1];
+
 	int j, l = 0, r = jmax-1; 
 	double a, b, h;
 	

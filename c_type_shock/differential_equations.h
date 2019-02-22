@@ -44,14 +44,15 @@ protected:
 	double ads_dust_area, ads_grain_velz, ads_grain_veln2;
 	double coverage, ion_mass, magn_field_0, magn_field, shock_vel, photodes_factor_cr, photodes_factor_is, desorption_factor_cr, 
 		photoem_factor_is_uv, photoem_factor_is_vis;
-	double oh2_form_hcoll, h2_h_diss_rate, h2_h_diss_cooling;
+	double oh2_form_hcoll, h2_h_diss_rate, h2_h_diss_cooling, h2_h2_diss_rate, vh2_vh2_diss_rate, h2_h2_diss_cooling;
 	
 	bool *is_dust_charge_large, *is_charged_dust_as_ions;
 	int *indices, *min_grain_charge, *max_grain_charge, *nb_dch;
 	// two arrays to store dust heating by molecular emission, one for H2 emission, second - for other molecules;
 	double *dh_isrf_arr, *coll_partn_conc, *alpha, *beta, *wt2_arr, *grain_velz, *grain_veln2, *grain_veli2, 
 		*grain_velz_g, *av_grain_velz, *grain_conc, *dust_heat_mline, *dust_heat_h2_line, *dust_heat_coll, *dust_heat_chem, 
-		*chem_reaction_rates, *chem_heating_rates_n, *phel_rate_cr, *phel_rate_uv, *phel_rate_vis, *ion_neutr_rate, *el_att_rate;
+		*chem_reaction_rates, *chem_heating_rates_n, *phel_rate_cr, *phel_rate_uv, *phel_rate_vis, *ion_neutr_rate, *el_att_rate, 
+        *h2_vibr_states_density_h2;
 	
 	const energy_diagram *OI_di, *CI_di, *CII_di, *h2_di, *ph2o_di, *oh2o_di, *co_di, *oh_di, *onh3_di, *pnh3_di, 
 		*ch3oh_a_di, *ch3oh_e_di;
@@ -60,11 +61,11 @@ protected:
 	const collisional_transitions *OI_coll, *CI_coll, *CII_coll, *h2_coll, *ph2o_coll, *oh2o_coll, *co_coll, *oh_coll, 
 		*onh3_coll, *pnh3_coll, *ch3oh_a_coll, *ch3oh_e_coll;
 	
-	const h2_h_dissociation_data *h2_h_diss_data;
+	const h2_h_dissociation_bossion2018 *h2_h_diss_data;
+    const h2_h2_dissociation_martin1998 *h2_h2_diss_data;
+    const h2_h2_dissociation_ceballos2002 *h2_h2_diss_vibr_excited;
 
 	const h2_excit_cosmic_rays *h2_excit_cr; 
-	const h2_grain_formation *h2_excit_gf; // not used
-	const h2_gasphase_formation *h2_excit_gasph; // not used
 	const accretion_rate_functions *accr_func;
 	
 	chem_network *network;
@@ -133,7 +134,7 @@ public:
 
 	// parameters of H2 molecule chemistry and ortho-para conversion;
 	void get_h2_chem(double & h2_form_gr, double & h2_form_gas, double & h2_destr_gas, double & o_hcoll, 
-        double & h2_h_diss, double & h2_h_diss_lb, double & h2_ion_diss, N_Vector y) const;
+        double & h2_h_diss, double & h2_h2_diss, double & vh2_vh2_diss, double & h2_ion_diss, N_Vector y) const;
 	
 	// vector defining the ODE system for the chemistry evolution of the static gas.
 	virtual int f(realtype t, N_Vector y, N_Vector ydot);
