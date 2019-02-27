@@ -117,7 +117,8 @@
 
 #define REL_ERROR_SOLVER 1.e-6
 #define ABS_CONCENTRATION_ERROR_SOLVER 1.e-18 // specimen concentration (cm-3)
-#define ABS_POPULATION_ERROR_SOLVER 1.e-14 // specimen level population density (cm-3)
+#define ABS_POPULATION_H2_ERROR_SOLVER 1.e-14 // specimen level population density (cm-3)
+#define ABS_POPULATION_ERROR_SOLVER 1.e-11
 #define ABS_PARAMETER_ERROR_SOLVER 1.e-11 // temperature (K), gas velocity (cm/s), average grain charge
 #define MAX_CONV_FAILS_SOLVER 100 // default value is 10;
 #define MAX_ERR_TEST_FAILS_SOLVER 14 // default value is 7;
@@ -180,4 +181,5 @@
 
 // 1 - data on H2-H+ collisions are used by Gonzalez-Lezana & Honvault (2017),
 // the question - are rates for collisions with H+ and H3+ equal?
+// check this parameter in simulations of chemical evolution of dark cloud
 #define H2_IONS_EXCITATION 1

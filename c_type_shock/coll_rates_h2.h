@@ -169,6 +169,7 @@ public:
 
 // H2-H dissociation data
 // Bossion et al. MNRAS 480, 3718-3724 (2018)
+// there is no check on temperature limit in the parent class,
 class h2_h_dissociation_bossion2018
 #if H2_DISS_CUBIC_SPLINE
 	: public dissociation_data_cub_spline
@@ -182,6 +183,8 @@ public:
 
 // H2-H2 
 // Martin et al. ApJ 499, p.793-798 (1998)
+// there is no check on temperature limit in the parent class, 
+// the interpolation is linear, log-log is better
 class h2_h2_dissociation_martin1998
 #if H2_DISS_CUBIC_SPLINE
     : public dissociation_data_cub_spline

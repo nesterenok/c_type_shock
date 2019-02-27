@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 
 //	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
     path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "output_data_2e4/shock_cr1-16_60/";
+    path += "output_data_2e4_new/shock_cr1-17_55/";
 //	production_routes(path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
@@ -326,7 +326,7 @@ int main(int argc, char** argv)
             else if (mode == "CS_")
             {
                 shock_vel = 5.0e+5;
-                max_shock_speed = 8.01e+6; //
+                max_shock_speed = 9.01e+6; //
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();

@@ -976,7 +976,6 @@ h2_collisions::h2_collisions(const std::string &data_path, const energy_diagram 
 
 	coll_data.push_back( new h2_h2_wan_data(data_path, h2_di, coll_partner_is_ortho = false, verbosity) );
 	coll_data.push_back( new h2_ph2_flower_data(data_path, h2_di, verbosity) );
-	
 	coll_data.push_back( new h2_h2_wan_data(data_path, h2_di, coll_partner_is_ortho = true, verbosity) );
 	coll_data.push_back( new h2_oh2_flower_data(data_path, h2_di, verbosity) );
 
@@ -1206,6 +1205,7 @@ h2_h2_dissociation_martin1998::h2_h2_dissociation_martin1998(const std::string &
     }
     input.getline(text_line, MAX_TEXT_LINE_WIDTH);
     input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 
     input >> jmax; // check in the file the presence of these parameters;
     jmax++; // +1 for zero point;
@@ -1288,8 +1288,12 @@ h2_h2_dissociation_ceballos2002::h2_h2_dissociation_ceballos2002(const std::stri
 
 double h2_h2_dissociation_ceballos2002::get_rate(int i, double temp, double *vibr_h2_conc) const
 {
-    if (i < min_vibrq && i > max_vibrq) 
+    if (i < min_vibrq || i > max_vibrq) 
         return 0.;
+
+    // upper limit on temperaature
+    if (temp > 1.5*tgrid[jmax - 1])
+        temp = 1.5*tgrid[jmax - 1];
 
     double rate(0.);
     int j, l = 0, r = jmax - 1;

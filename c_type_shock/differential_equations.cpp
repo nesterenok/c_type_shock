@@ -1304,10 +1304,10 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         vh2_vh2_diss_rate += b;
         
         c = y_data[i] * conc_h2 *h2_h2_diss_data->get_rate(i - nb_of_species, temp_n);
-        h2_h2_diss_rate += c;
+        h2_h2_diss_rate += c + b;
         
-        ydot_data[i] -= c;
-        h2_h2_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
+        ydot_data[i] -= c + b;
+        h2_h2_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *(c + b); // < 0 for cooling,
     }
     chem_reaction_rates[j] = h2_h2_diss_rate; 
     chem_heating_rates_n[j] = h2_h2_diss_cooling; 
@@ -2641,7 +2641,10 @@ void evolution_data::set_tolerances(N_Vector abs_tol)
         NV_Ith_S(abs_tol, i) = ABS_CONCENTRATION_ERROR_SOLVER;
     }
 
-    for (i = nb_of_species; i < nb_dch[0]; i++) {
+    for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++) {
+        NV_Ith_S(abs_tol, i) = ABS_POPULATION_H2_ERROR_SOLVER;
+    }
+    for (i = nb_of_species + nb_lev_h2; i < nb_dch[0]; i++) {
         NV_Ith_S(abs_tol, i) = ABS_POPULATION_ERROR_SOLVER;
     }
     for (i = 0; i < nb_of_dust_comp; i++) {

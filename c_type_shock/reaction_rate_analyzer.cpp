@@ -255,21 +255,24 @@ void production_routes(string path)
 			cout << "There is not this specimen in the list: " << sn << endl;
 		else 
 		{
+            // formation of the list of production and destruction reactions
 			for (i = 0; i < nb_of_reactions; i++) {
+                l = 0;
 				for (j = 0; j < RRA_NB_REACTANTS; j++) 
 				{
 					if (rd_v[i].reactants[j] == specimen_nb) {
-						destr_rd_v.push_back(rd_v[i]);
-						break;
+                        l--;
 					}
 				}
 				for (j = 0; j < RRA_NB_PRODUCTS; j++)
 				{
 					if (rd_v[i].products[j] == specimen_nb) {
-						prod_rd_v.push_back(rd_v[i]);
-						break;
+                        l++;
 					}
 				}
+                if (l < 0)
+                    destr_rd_v.push_back(rd_v[i]);
+                else if (l > 0) prod_rd_v.push_back(rd_v[i]);
 			}
 	
 			for (i = 0; i < nb_of_rate_values; i++) 
