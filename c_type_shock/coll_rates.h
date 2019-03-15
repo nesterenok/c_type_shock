@@ -108,8 +108,8 @@ protected:
 	double **coeff, **coeff_deriv;
 
 public:
-	// there is no check that the level number and temperature are in the ranges of the arrays coeff[][] and tgrid[],
 	// i - number of the level, temp - gas temperature, linear interpolation is used;
+    // there is no check for the upper value of the temperature,
 	virtual double get_rate(int i, double temp) const;
 	
 	// the function calculates the array of rate derivatives;

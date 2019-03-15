@@ -169,7 +169,8 @@ public:
 
 // H2-H dissociation data
 // Bossion et al. MNRAS 480, 3718-3724 (2018)
-// there is no check on temperature limit in the parent class,
+// there is no check on temperature limit in the parent class
+// the data are restricted to temperatures  < 10000 K!
 class h2_h_dissociation_bossion2018
 #if H2_DISS_CUBIC_SPLINE
 	: public dissociation_data_cub_spline

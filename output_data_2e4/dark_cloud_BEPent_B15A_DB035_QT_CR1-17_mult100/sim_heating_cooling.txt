@@ -1,0 +1,30 @@
+! na - neutral gas cooling by atomic emission, cooling < 0., [erg cm-3 s-1]
+! nh2 - neutral gas cooling by H2 emission
+! nh2o - neutral gas cooling by H2O emission
+! nco - neutral gas cooling by CO emission
+! noh - neutral gas cooling by OH emission
+! nnh3 - neutral gas cooling by p- and o-NH3 emission
+! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission
+! ni - neutral gas heating by neutral-ion collisions
+! ne - neutral gas heating by neutral-electron collisions
+! nd - neutral gas heating by neutral-dust collisions
+! nch - neutral gas heating by chemical reactions
+! nh2-h - neutral gas cooling by H2-H dissociation (is included in previous parameter nch)
+! ph - heating by photoeffect on dust grains
+! cr - heating by cosmic rays
+! rlh2 - radiative energy loss by H2 molecule
+! ih2 - ion fluid cooling via excitation of H2 via ion-H2 collisions
+! in - ion gas component heating by neutral-ion collisions
+! ie - ion gas component heating by ion-electron collisions
+! ich - ion gas component heating by chemical reactions
+! ea - electron component cooling by atomic emission
+! eh2 - electron component cooling by H2 emission
+! eh2o - electron component cooling by H2O emission
+! en - electron component heating by neutral-electron collisions
+! ei - electron component heating by ion-electron collisions
+! ech - electron component heating by chemical reactions
+!1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17          18          19          20          21          22          23          24          25          26          
+!t(yr)/z(cm) na          nh2         nh2o        nco         noh         nnh3        nch3oh      ni          ne          nd          nch         nh2-h       ph          cr          rlh2        ih2         in          ie          ich         ea          eh2         eh2o        en          ei          ech         
+4.86978e+05  -3.502e-26  3.409e-26   -7.031e-26  -1.552e-24  0.000e+00   0.000e+00   0.000e+00   1.903e-25   7.614e-28   3.089e-25   9.256e-25   -3.250e-121 1.033e-26   3.084e-25   4.725e-25   3.404e-26   -1.903e-25  -5.086e-28  1.568e-25   -2.552e-31  2.089e-31   -5.190e-30  -7.614e-28  5.086e-28   2.764e-28   
+4.86988e+05  -3.503e-26  5.321e-26   -7.030e-26  -1.552e-24  0.000e+00   0.000e+00   0.000e+00   2.675e-25   1.094e-27   3.090e-25   1.210e-24   -6.469e-121 2.053e-26   6.136e-25   9.357e-25   3.596e-26   -2.675e-25  -7.601e-28  2.325e-25   -3.488e-31  4.278e-31   -6.103e-30  -1.094e-27  7.601e-28   6.127e-28   
+4.86998e+05  -3.504e-26  8.084e-26   -7.029e-26  -1.552e-24  0.000e+00   0.000e+00   0.000e+00   3.571e-25   1.518e-27   3.091e-25   1.593e-24   -9.691e-121 3.073e-26   9.189e-25   1.402e-24   3.966e-26   -3.571e-25  -1.043e-27  3.189e-25   -4.788e-31  7.453e-31   -7.485e-30  -1.518e-27  1.043e-27   9.676e-28   

@@ -139,10 +139,13 @@ void production_routes(string path)
 
     specimen_names.push_back("H");
     specimen_names.push_back("H2");
-/*    specimen_names.push_back("e-");
+    specimen_names.push_back("e-");
+    specimen_names.push_back("H2+");
     specimen_names.push_back("H3+");
     specimen_names.push_back("C+");
-    specimen_names.push_back("OH");
+    specimen_names.push_back("H2O+");
+    specimen_names.push_back("OH+");
+/*    specimen_names.push_back("OH");
     specimen_names.push_back("H2O");
     specimen_names.push_back("NH3");
     specimen_names.push_back("O2");

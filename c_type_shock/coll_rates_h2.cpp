@@ -1194,6 +1194,7 @@ h2_h2_dissociation_martin1998::h2_h2_dissociation_martin1998(const std::string &
     double a;
 
     string file_name;
+    stringstream ss;
     ifstream input;
 
     file_name = path + "coll_h2/diss_h2-h2_martin1998.txt";
@@ -1203,11 +1204,15 @@ h2_h2_dissociation_martin1998::h2_h2_dissociation_martin1998(const std::string &
         cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
         exit(1);
     }
-    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 
-    input >> jmax; // check in the file the presence of these parameters;
+    do
+        input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    while (text_line[0] == '#');
+
+    ss.clear();
+    ss.str(text_line);
+
+    ss >> jmax; // check in the file the presence of these parameters;
     jmax++; // +1 for zero point;
     imax = h2_di->nb_lev;
 
@@ -1291,9 +1296,9 @@ double h2_h2_dissociation_ceballos2002::get_rate(int i, double temp, double *vib
     if (i < min_vibrq || i > max_vibrq) 
         return 0.;
 
-    // upper limit on temperaature
-    if (temp > 1.5*tgrid[jmax - 1])
-        temp = 1.5*tgrid[jmax - 1];
+    // upper limit on temperature
+    if (temp > 2.*tgrid[jmax - 1])
+        temp = 2.*tgrid[jmax - 1];
 
     double rate(0.);
     int j, l = 0, r = jmax - 1;

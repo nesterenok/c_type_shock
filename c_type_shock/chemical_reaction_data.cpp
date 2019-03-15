@@ -205,7 +205,7 @@ void reaction_rate_data::calc_data(process_cross_section* cross_section)
 	int i, j, nb;
 	double a, at, s, b, en_min;
 	// temperature in K,
-	double tmin = 3., tmax = 3.e+5, smin = 0.01, smax = 50;
+	double tmin = 3., tmax = 3.e+5, smin = 0.01, smax = 100;
 
 	ch_func1 f1;
 	ch_func2 f2;

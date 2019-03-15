@@ -91,12 +91,14 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	double mass, vmin, vmax, dg_ratio, spin;
 	
 	// parameter necessary for radiative transfer calculations, 
-	// the discussion on this parameter see in Bergin, Tafalla, Annu. Rev. Astron. Astrophys. 45, p. 339 (2007), section 2.5:
+	// 1. the discussion on this parameter see in Bergin, Tafalla, Annu. Rev. Astron. Astrophys. 45, p. 339 (2007), section 2.5:
+    // 2. Myers ApJ 270, p.105 (1983), the list of turbulent velocities for a number of cloud cores is provided, 0.1-0.5 km/s
 	vel_turb = 2.e+4; // cm/s
 	
 	// the ratio of velocity dispersion divided by characterictic scale, in cm/s/cm;
-	// this parameter can be estimated from virial equilibrium for a uniform density sphere, see Goldsmith, ApJ 557, p. 736 (2001)
-	// characteristic value for molecular clouds, dv/dz = 1 km s-1 pc-1 = 3.2e-14 cm s-1 cm-1;  
+	// 1. Goldsmith, ApJ 557, p.736 (2001), this parameter can be estimated from virial equilibrium for a uniform density sphere
+	// characteristic value for molecular clouds, dv/dz = 1 km s-1 pc-1 = 3.2e-14 cm s-1 cm-1; 
+    // 2. Goodman et al. ApJ 406, p.528 (1993), 0.3-4 km s-1 pc-1
 	vel_grad_min = 3.e-14;
 	vel_n_grad = vel_i_grad = - vel_grad_min;
 
@@ -1274,9 +1276,13 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     h2_h_diss_cooling = h2_h_diss_rate = 0.;
     for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
     {
-        c = y_data[i] * conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
+#if (H2_H_DISSOCIATION)
+        c = y_data[i] *conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
+#else
+        c = y_data[i] * conc_h *1.e-10*exp(-(56640. - h2_di->lev_array[i - nb_of_species].energy *CM_INVERSE_TO_KELVINS) / temp_n);
+#endif
+        
         ydot_data[i] -= c;
-
         h2_h_diss_rate += c;
         h2_h_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
     }

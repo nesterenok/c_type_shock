@@ -84,7 +84,7 @@ void create_file_heating_rates(const string & output_path);
 void create_file_energy_fluxes(const string & output_path);
 void create_file_chem_hating(const string & output_path);
 void create_file_dust_properties(const string & output_path, const dust_model *dust);
-void create_file_reaction_rates(const string & output_path, const chem_network *network);
+void create_file_reaction_rates(const string & output_path, const chem_network *network, bool save_disk_space = false);
 void create_file_nautilus_data(const string & output_path);
 void create_file_mol_data(const string & output_path, const evolution_data *user_data);
 void create_file_h2_chemistry(const string & output_path);
@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 
 //	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
     path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "output_data_2e4_new/shock_cr1-17_55/";
+    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
 //	production_routes(path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
@@ -326,7 +326,7 @@ int main(int argc, char** argv)
             else if (mode == "CS_")
             {
                 shock_vel = 5.0e+5;
-                max_shock_speed = 9.01e+6; //
+                max_shock_speed = 90.1e+5; //
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();
@@ -1111,7 +1111,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #endif	
 
     SHOCK_STATE_ID shock_state = SHOCK_STATE_NORMAL;
-	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg;
+	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg, save_disk_space;
 	int i, nb_saved, nb_not_saved, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
 		nb_lev_ch3oh, nb_lev_oi, nb_lev_ci, nb_lev_cii, nb_of_species, nb_of_equat, nb_of_grain_charges, nb_dct, nb_mhd, flag, 
 		nb_saved_cloud_param, verbosity;
@@ -1134,7 +1134,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	timer = time(NULL);
 	cout << ctime(&timer) << "Shock wave is simulated" << endl;
 
-	nb_lev_h2 = 150;
+	nb_lev_h2 = 298; // the maximal number for which Einstein coefficients are provided - 298 levels,
 	nb_vibr_h2o = 1;
 	nb_lev_h2o = 150;
 	nb_vibr_co = 0;
@@ -1189,7 +1189,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		NV_Ith_S(y, i) = new_y[i];
 	}
 	NV_Ith_S(y, nb_mhd + 3) = shock_vel;
-	NV_Ith_S(y, nb_mhd + 4) = 0.9999*shock_vel;
+	NV_Ith_S(y, nb_mhd + 4) = 0.9995*shock_vel;
 	
 	temp_n = NV_Ith_S(y, nb_mhd);
 	temp_i = NV_Ith_S(y, nb_mhd + 1);
@@ -1302,7 +1302,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	create_file_energy_fluxes(output_path2);
 	create_file_chem_hating(output_path2);
 	create_file_dust_properties(output_path2, dust);
-	create_file_reaction_rates(output_path2, network);
+	create_file_reaction_rates(output_path2, network, save_disk_space = true);
 	create_file_mol_data(output_path2, &user_data);
 	create_file_h2_chemistry(output_path2);
 
@@ -1592,7 +1592,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	cout.precision(4);
 		
 	timer = time(NULL);
-	cout << ctime(&timer) << "Chemical evolution of static cloud is simulated" << endl;
+	cout << ctime(&timer) << "Study of the chemistry response on the increase of CR flux" << endl;
 
 	// Spectroscopic parameters for H2, H2O and CO molecule - the same as for static cloud
 	nb_lev_h2 = 100; 	
@@ -2445,13 +2445,24 @@ void save_dust_properties(const string &output_path, const evolution_data *user_
 	output.close();
 }
 
-void create_file_reaction_rates(const string &output_path, const chem_network *network)
+void create_file_reaction_rates(const string & output_path, const chem_network *network, bool save_disk_space)
 {
-	int i, j;
-	string fname;
+	int i, j, n;
+	string fname, path;
 	ofstream output;
 
-	fname = output_path + "sim_species.txt";
+    j = 0;
+    n = (int) output_path.size();
+    for (i = n - 1; i >= 0, j < 2; i--) {
+        if (output_path[i] == '/')
+            j++;
+    }
+
+    if (save_disk_space && j == 2)
+        path = output_path.substr(0, i + 2);
+    else path = output_path;
+
+	fname = path + "sim_species.txt";
 	output.open(fname.c_str());
 	
 	output << left << setw(8) << network->nb_of_species << setw(8) << NB_OF_CHEM_ELEMENTS << endl;
@@ -2465,7 +2476,7 @@ void create_file_reaction_rates(const string &output_path, const chem_network *n
 	}
 	output.close();
 
-	fname = output_path + "sim_reactions.txt";
+	fname = path + "sim_reactions.txt";
 	output.open(fname.c_str());
 	
 	output << network->nb_of_reactions << endl;

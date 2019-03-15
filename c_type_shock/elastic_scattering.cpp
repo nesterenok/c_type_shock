@@ -146,7 +146,7 @@ elastic_scatt_neutral_charged::elastic_scatt_neutral_charged(double neutral_mass
 	double velth_max, int verbosity) : elastic_scattering(neutral_mass, charged_mass, verbosity)
 {
 	int i, nb = 30;
-	double a = pow(10., 1./nb), s_min = 0.0001, s_max = 50.;
+	double a = pow(10., 1./nb), s_min = 0.0001, s_max = 100.;
 	
 	nb_velth = (int) (nb*log10(velth_max/velth_min)) + 1;
 	nb_s = (int) (nb*log10(s_max/s_min)) + 1; 
