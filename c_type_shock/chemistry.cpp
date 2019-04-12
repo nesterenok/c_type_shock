@@ -2502,6 +2502,7 @@ double reaction_rate(const vector<chem_specimen> & species, const accretion_rate
 }
 
 // Temperature is in erg;
+// Introduce the efficiency coefficient of energy defect conversion to kinetic energy
 void chemistry_source_terms(double & mom_gain_n, double & mom_gain_i, double & mom_gain_e, double & energy_gain_n, 
 	double & energy_gain_i, double & energy_gain_e, double & energy_gain_d, const vector<chem_specimen> & species, 
 	const chem_reaction & reaction, double vel_n, double vel_i, double ads_grain_velz, double ads_grain_veln2, 

@@ -156,15 +156,15 @@ int main(int argc, char** argv)
 //	construct_ion_recomb_grains(path);
 
 //	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
-    path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
+    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
+    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
 //	production_routes(path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
 	
 	input.open("input_parameters.txt");
-	while (!input.eof())
+ 	while (!input.eof())
 	{	
 		do // comment lines are read:
 			input.getline(text_line, MAX_TEXT_LINE_WIDTH);
@@ -1571,10 +1571,10 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	streambuf *orig_cout = cout.rdbuf(out.rdbuf());
 #endif
 
-	bool is_new_chd;
+	bool is_new_chd, linear_time_flow;
 	int i, flag, nb, nb_of_species, nb_lev_h2o, nb_lev_h2, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3,
 		nb_vibr_ch3oh, nb_lev_ch3oh, nb_lev_ci, nb_lev_cii, nb_lev_oi, nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd, verbosity;
-	double h2_form_const, t, dt, ty, tfin, tout, rel_tol, tmult, visual_extinct, cr_ioniz_rate, cr_ioniz_rate0, 
+	double h2_form_const, t, time_step(0.), ty, tfin, tout, rel_tol, tmult, visual_extinct, cr_ioniz_rate, cr_ioniz_rate0, 
 		uv_field_strength, ir_field_strength, conc_h_tot, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens;
 	long int nb_steps;
 	
@@ -1645,13 +1645,27 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	const chem_network *network 
 		= user_data.get_network();
 
-	incr_time *= YEARS_TO_SECONDS;
 	cr_ioniz_rate0 = cr_ioniz_rate;
+    incr_time *= YEARS_TO_SECONDS;
+    evol_time *= YEARS_TO_SECONDS;
 	
-	t = 0;
-	tfin = 1.01e+8*YEARS_TO_SECONDS;
+    t = evol_time; //
+	tfin = 1.01e+8 *YEARS_TO_SECONDS;
 	tmult = pow(10, 0.03125); // 1/16 = 0.0625; 1/32 = 0.03125
-	tout = dt = incr_time/100.;
+	
+    if (incr_time > 1.) // more than 1 sec 
+    {
+        linear_time_flow = true;     
+        time_step = 0.01*incr_time;
+    }
+    else 
+    {
+        linear_time_flow = false;
+        cr_ioniz_rate = cr_ioniz_rate0 * cr_ir_factor;      
+        user_data.set_parameters(visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength);
+        time_step = 0.01*YEARS_TO_SECONDS;
+    }
+    tout = t + time_step;
 
 	rel_tol = REL_ERROR_SOLVER;
     user_data.set_tolerances(abs_tol);
@@ -1738,11 +1752,11 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		// the function is called in order to update user data:
 		user_data.f(t, y, ydot); 
 		
-		save_specimen_abund(output_path2, nb_of_species, y, conc_h_tot, evol_time + ty);
-		save_ice_comp(output_path2, network, y, evol_time + ty);
-		save_heating_rates(output_path2, &user_data, evol_time + ty);
-		save_dust_properties(output_path2, &user_data, y, conc_h_tot, evol_time + ty);
-		save_nautilus_data(output_path2, evol_time + ty, visual_extinct, conc_h_tot, NV_Ith_S(y, nb_mhd), user_data.get_av_dust_temp());
+		save_specimen_abund(output_path2, nb_of_species, y, conc_h_tot, ty);
+		save_ice_comp(output_path2, network, y, ty);
+		save_heating_rates(output_path2, &user_data, ty);
+		save_dust_properties(output_path2, &user_data, y, conc_h_tot, ty);
+		save_nautilus_data(output_path2, ty, visual_extinct, conc_h_tot, NV_Ith_S(y, nb_mhd), user_data.get_av_dust_temp());
 		
 		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
@@ -1752,7 +1766,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		output << scientific;
 		
 		output.precision(7);
-		output << left << setw(15) << evol_time + ty;
+		output << left << setw(15) << ty;
 
 		output.precision(5);		
 		output << left << setw(14) << NV_Ith_S(y, nb_mhd) << setw(14) << NV_Ith_S(y, nb_mhd + 1) 
@@ -1762,20 +1776,27 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 			<< setw(14) << user_data.calc_total_grain_charge(y) << endl;
 		output.close();
 		
-		if (t > 0.9999*incr_time && ty < 0.99e+7) 
+		if (!linear_time_flow && ty < 0.99e+7)
 		{
-			save_cloud_parameters(&user_data, output_path2, evol_time + ty, visual_extinct, cr_ioniz_rate, uv_field_strength, 
-				ir_field_strength, c_abund_pah, y);
-			save_chem_heating_rates(output_path2, &user_data, evol_time + ty);
-			save_mhd_vode(data_path, output_path2, network, y, conc_h_tot, evol_time + ty);
+			save_cloud_parameters(&user_data, output_path2, ty, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, c_abund_pah, y);
+			save_chem_heating_rates(output_path2, &user_data, ty);
+			save_mhd_vode(data_path, output_path2, network, y, conc_h_tot, ty);
 
 #if (SAVE_RADIATIVE_TRANSFER_FACTORS)
-			user_data.save_radiative_transfer_data(output_path2, evol_time + ty);
+			user_data.save_radiative_transfer_data(output_path2, ty);
 #endif
 		}
 		if (nb%2 == 0) {
-			save_reaction_rates(output_path2, &user_data, evol_time + ty);
+			save_reaction_rates(output_path2, &user_data, ty);
 		}
+
+        if (t > evol_time + incr_time)
+            linear_time_flow = false;
+
+        if (linear_time_flow) {
+            cr_ioniz_rate = cr_ioniz_rate0 * (1. + (cr_ir_factor - 1)* (t - evol_time) / incr_time);
+            user_data.set_parameters(visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength);
+        }
 
 		is_new_chd = user_data.recalc_grain_charge_ranges(y, new_y);
 		if (is_new_chd) 
@@ -1802,11 +1823,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
             LS = SUNDenseLinearSolver(y, A);
 		}
 		
-		if (t < 1.0001*incr_time) {
-			cr_ioniz_rate = cr_ioniz_rate0 *(1. + (cr_ir_factor - 1)*t/incr_time); 
-			user_data.set_parameters(visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength);
-		}
-		if (is_new_chd || t < 1.0001*incr_time) 
+		if (is_new_chd || linear_time_flow) 
         {
 			CVodeFree(&cvode_mem);
 			cvode_mem = CVodeCreate(CV_BDF);
@@ -1821,9 +1838,10 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		}
 
 		nb++;
-		if (t < 0.9999*incr_time)
-			tout += dt;
-		else tout = tout*tmult;
+        if (!linear_time_flow)
+            time_step *= tmult;
+
+		tout += time_step;
 	}
 	
 	// Free memory;
@@ -1874,11 +1892,12 @@ void save_cloud_parameters(const evolution_data *user_data, const string &output
 	output.open(fname.c_str(), ios::app);
 	
     output << scientific;
-	output.precision(5); 
+	output.precision(9); 
 			
 	output << "# Evolution age (years):" << endl;
 	output << ty << endl; 
 
+    output.precision(5);
 	output << "# Visual extinction, CR ionization rate, UV and IR field strength, H nuclei concentration, carbon abundance in PAH:" << endl;
 	output << left << setw(14) << visual_extinct << setw(14) << cr_ioniz_rate << setw(14) << uv_field_strength << setw(14) << ir_field_strength
 		<< setw(14) << conc_h_tot << setw(14) << c_abund_pah << endl;
@@ -2097,22 +2116,25 @@ void save_chem_heating_rates(const string &output_path, const evolution_data *us
 
 void create_file_specimen_abund(const string &output_path, const chem_network *network)
 {
-	int i;
+	int i, l;
 	string fname;
 	ofstream output;
 
 	fname = output_path + "sim_specimen_abund.txt";
 	output.open(fname.c_str());
 
-	output << "! ";
+	output << "!    ";
 	for (i = 0; i < network->nb_of_species + 1; i++) {
 		output << left << setw(11) << i + 1;
 	}
 	output << endl;
-
-	output << left << setw(13) << "!t(yr)/z(cm)";
+	output << left << setw(16) << "!t(yr)/z(cm)"; 
+    
+    // the length of the name of chemical specimen may be large
 	for (i = 0; i < network->nb_of_species; i++) {
-		output << left << setw(11) << network->species[i].name;
+        l = (int) network->species[i].name.length();
+        l = (l >= 11) ? l + 1 : 11;
+		output << left << setw(l) << network->species[i].name;
 	}
 	output << endl;
 	output.close();
@@ -2128,8 +2150,8 @@ void save_specimen_abund(const string &output_path, int nb_of_species, const N_V
 	output.open(fname.c_str(), ios::app);
 	output << scientific;
 
-	output.precision(5);
-	output << left << setw(13) << var;
+	output.precision(8);
+	output << left << setw(16) << var;
 	output.precision(3);
 
 	for (i = 0; i < nb_of_species; i++) { // abundance values are supposed to have a form (-)x.xxxe-xx 

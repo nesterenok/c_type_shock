@@ -182,7 +182,7 @@
 // 1 - data on H2-H+ collisions are used by Gonzalez-Lezana & Honvault (2017),
 // the question - are rates for collisions with H+ and H3+ equal?
 // check this parameter in simulations of chemical evolution of dark cloud
-#define H2_IONS_EXCITATION 1
+#define H2_IONS_EXCITATION 0
 
 // 1 - Bossion et al. MNRAS 480, p.3718, 2018
 // 0 - Le Bourlot et al., MNRAS 332, 985, 2002

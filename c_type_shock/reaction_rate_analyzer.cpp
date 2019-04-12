@@ -138,42 +138,64 @@ void production_routes(string path)
     depth_temperature_dependence dt_dep(path);
 
     specimen_names.push_back("H");
+    specimen_names.push_back("O");
+    specimen_names.push_back("C");
+    specimen_names.push_back("N");
     specimen_names.push_back("H2");
+    specimen_names.push_back("OH");
+    specimen_names.push_back("H2O");
+    specimen_names.push_back("NH3");
+    specimen_names.push_back("CO");
+    specimen_names.push_back("CH3OH");
+    specimen_names.push_back("HCO");
+    specimen_names.push_back("HOCO");
+    specimen_names.push_back("H2CO");
+    specimen_names.push_back("CH4");
+    specimen_names.push_back("CH");
+    specimen_names.push_back("HNCO");
+    specimen_names.push_back("OCN");
+    specimen_names.push_back("NO");
+    specimen_names.push_back("CH3OCH2");
+    specimen_names.push_back("CH3OCH3");
+    specimen_names.push_back("HCOOH");
+    specimen_names.push_back("C2H5OH");
+    specimen_names.push_back("CH3CHO");
+    specimen_names.push_back("C3N");
+    specimen_names.push_back("CN");
+    specimen_names.push_back("C2");
+    specimen_names.push_back("C6H");
+
     specimen_names.push_back("e-");
     specimen_names.push_back("H2+");
     specimen_names.push_back("H3+");
     specimen_names.push_back("C+");
     specimen_names.push_back("H2O+");
     specimen_names.push_back("OH+");
-/*    specimen_names.push_back("OH");
-    specimen_names.push_back("H2O");
-    specimen_names.push_back("NH3");
-    specimen_names.push_back("O2");
+    specimen_names.push_back("H3O+");
+    specimen_names.push_back("HCO+");
+    specimen_names.push_back("HCOOH2+");
+    specimen_names.push_back("CH3OCH4+");
+    specimen_names.push_back("C3N-");
+    specimen_names.push_back("C6H-");
+    
+/*  specimen_names.push_back("O2");
     specimen_names.push_back("CO");
     specimen_names.push_back("CO2");
-    specimen_names.push_back("HCO");
-    specimen_names.push_back("H2CO");
+     
     specimen_names.push_back("CH3O");
     specimen_names.push_back("CH2OH");
     specimen_names.push_back("CH3OH2+");
-    specimen_names.push_back("CH3OH");
     specimen_names.push_back("C2O");
     specimen_names.push_back("HC2O");
     specimen_names.push_back("CH2CO");
     specimen_names.push_back("CH3CO");
-    specimen_names.push_back("CH3CHO");
+    
     specimen_names.push_back("C2H4");
     specimen_names.push_back("C2H5");
-    specimen_names.push_back("CH3OCH2");
-    specimen_names.push_back("CH3OCH3");
-    specimen_names.push_back("CH3OCH4+");
-    specimen_names.push_back("OCN");
-    specimen_names.push_back("HNCO");
-    specimen_names.push_back("HCOOH");
-    specimen_names.push_back("HCOOH2+");
+    
+    
     specimen_names.push_back("HCOOCH3");
-    specimen_names.push_back("H5C2O2+");
-    specimen_names.push_back("C2H5OH");
+    specimen_names.push_back("H5C2O2+");  
     specimen_names.push_back("C2H5OH2+");*/
 	
     nb = (int) specimen_names.size();

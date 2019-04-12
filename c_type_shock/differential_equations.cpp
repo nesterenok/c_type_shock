@@ -343,8 +343,8 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	// additional collisional dissociation reactions;
 	network->init_network_umistf(path + "chemistry/reactions_colldiss.txt");
 
-	// ion neutral reactions for CH3O and CH2OH and other radicals:
-	network->init_network_umistf(path + "chemistry/reactions_ion_radicals.txt");
+	// ion neutral reactions for CH3O and CH2OH and other neutrals (including updates):
+	network->init_network_umistf(path + "chemistry/reactions_ion_neutrals.txt");
 	
 	if (H2_FORMATION_MODE > 0)
 		network->init_h2_formation();
