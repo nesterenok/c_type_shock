@@ -93,7 +93,8 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	// parameter necessary for radiative transfer calculations, 
 	// 1. the discussion on this parameter see in Bergin, Tafalla, Annu. Rev. Astron. Astrophys. 45, p. 339 (2007), section 2.5:
     // 2. Myers ApJ 270, p.105 (1983), the list of turbulent velocities for a number of cloud cores is provided, 0.1-0.5 km/s
-	vel_turb = 2.e+4; // cm/s
+    // 3. Approximately one can take thermal = turbulent, at T = 10 K, v = 0.2 km/s; at high ionization rates the temperature is higher, 
+	vel_turb = 3.e+4; // cm/s
 	
 	// the ratio of velocity dispersion divided by characterictic scale, in cm/s/cm;
 	// 1. Goldsmith, ApJ 557, p.736 (2001), this parameter can be estimated from virial equilibrium for a uniform density sphere

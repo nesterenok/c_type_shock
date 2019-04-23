@@ -156,9 +156,11 @@ int main(int argc, char** argv)
 //	construct_ion_recomb_grains(path);
 
 //	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
-    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
-    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
-//	production_routes(path);
+//    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
+//    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
+    path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
+    path += "output_data_2e4/shock_cr1-15_25/";
+//    production_routes(path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);

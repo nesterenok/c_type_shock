@@ -653,6 +653,7 @@ h2_h_bossion_data::h2_h_bossion_data(const string &path, const energy_diagram *h
 	int i, k, l, j, n, vi, ji, vf, jf, nb_lines;
 	double a;
 	string file_name;
+    stringstream ss;
 	ifstream input;
 	
 	file_name = path + "coll_h2/coll_h2_h_b.txt";
@@ -662,10 +663,15 @@ h2_h_bossion_data::h2_h_bossion_data(const string &path, const energy_diagram *h
 		cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
 		exit(1);
 	}
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    // comments:
+    do
+        input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    while (text_line[0] == '#');
 	
-	input >> nb_lines >> jmax; // check in the file the presence of these parameters;
+    ss.clear();
+    ss.str(text_line);
+
+	ss >> nb_lines >> jmax; // check in the file the presence of these parameters;
 	jmax++; // +1 for zero point;
 
 	nb_lev = h2_di->nb_lev;
@@ -679,7 +685,7 @@ h2_h_bossion_data::h2_h_bossion_data(const string &path, const energy_diagram *h
 	memset(*coeff_deriv, 0, jmax *imax *sizeof(double));
 
 	tgrid[0] = 0.;
-	for (j = 1; j < jmax; j++) {
+	for (j = 1; j < jmax; j++) { // temperature data are in new line
 		input >> tgrid[j];
 	}
 	
@@ -1130,7 +1136,7 @@ h2_h_dissociation_bossion2018::h2_h_dissociation_bossion2018(const std::string &
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, j, n, vi, ji, nb_lines;
 	double a;
-	
+    stringstream ss;
 	string file_name;
 	ifstream input;
 	
@@ -1141,10 +1147,15 @@ h2_h_dissociation_bossion2018::h2_h_dissociation_bossion2018(const std::string &
 		cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << file_name << endl;
 		exit(1);
 	}
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+
+    do
+        input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    while (text_line[0] == '#');
 	
-	input >> nb_lines >> jmax; // check in the file the presence of these parameters;
+    ss.clear();
+    ss.str(text_line);
+
+	ss >> nb_lines >> jmax; // check in the file the presence of these parameters;
 	jmax++; // +1 for zero point;
 	imax = h2_di->nb_lev;
 	
@@ -1710,69 +1721,134 @@ void h2_coll_data_process(const std::string &data_path)
 }
 
 void h2_coll_data_process_bossion(const std::string &data_path)
-{
-	int k, vi, vf, ji, jf, nbt, nb_lev;
+{ 
+    const int max_temp = 20000; // maximal temperature in the output file
+	int k, i, li, lf, vi, vf, ji, jf, nbt, nb_lev, nb_lines;
 	double r;
+    double **rate_coeff(0), **diss_coeff(0);
+
 	string fname;
 	ifstream input;
 	ofstream output;
 
-	nb_lev = 318; //
+	nb_lev = 298; // the last level for which data exists is v,j=12,10
 	molecule h2_mol("H2", 1, 2.*ATOMIC_MASS_UNIT);
 	
 	h2_diagram *h2_di 
 		= new h2_diagram(data_path, h2_mol, nb_lev);
- 
+  
+    nbt = 200;
+    nb_lines = nb_lev*(nb_lev - 1)/2;
+
+    rate_coeff = alloc_2d_array<double>(nb_lines, nbt);
+    memset(*rate_coeff, 0, nb_lines*nbt*sizeof(double));
+
 	// please, check the data format, presence of the comments, nb of temperature values;
-	nbt = 100;
-	fname = data_path + "coll_h2/bossion_2018_h_h2_sts_rates_100-10000.txt";
+	fname = data_path + "coll_h2/H_H2_StS_rates_100-10000.txt";
 	input.open(fname.c_str());
 
 	if (!input) {
 		cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << fname << endl;
 		exit(1);
 	}
-
-	fname = data_path + "coll_h2/coll_h2_h_b_.txt";
-	output.open(fname.c_str());
-	
-	output << scientific;
-	output.precision(2);
-	output << "# The table contains the H2-H collisional rate coefficients. Bossion et al. MNRAS 480, p.3718, 2018;" << endl
-		<< "# vi ji -> vf jf, k(cm3 s-1) (T); nb of data lines, nb of temperatures (T in K):" << endl;
-
-	output << nbt << endl << left << setw(16) << "";
-	for (k = 1; k <= nbt; k++) {
-		output << left << setw(10) << k*100;
-	}
-	
+ 
 	while (!input.eof())
 	{
 		input >> vi >> ji >> vf >> jf;
 		if (input.eof())
 			break;
+        
+        li = h2_di->get_nb(vi, ji);
+        lf = h2_di->get_nb(vf, jf);
 
-		if (h2_di->get_nb(vi, ji) != -1 && h2_di->get_nb(vf, jf) != -1 && h2_di->get_nb(vi, ji) > h2_di->get_nb(vf, jf)) {
-			output << endl << left << setw(4) << vi << setw(4) << ji << setw(4) << vf << setw(4) << jf;
+		if  (li != -1 && lf != -1 && li > lf) {			
+            i = (li*(li - 1) >> 1) + lf;
 
-			for (k = 0; k < nbt; k++) {
-				input >> r;
-				r = (r > 0.) ? r : 0.;
-				output << left << setw(10) << r;
+			for (k = 0; k < 100; k++) {
+                input >> r; 
+				r = (r > 0.) ? r : 0.; 
+                rate_coeff[i][k] = r;
 			}
 		}
 		else {
-			for (k = 0; k < nbt; k++) {
+			for (k = 0; k < 100; k++) {
 				input >> r;
 			}
 		}
 	}
 	input.close();
+
+    fname = data_path + "coll_h2/H_H2_StS_rates_10100-20000.txt";
+    input.open(fname.c_str());
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << fname << endl;
+        exit(1);
+    }
+
+    while (!input.eof())
+    {
+        input >> vi >> ji >> vf >> jf;
+        if (input.eof())
+            break;
+        
+        li = h2_di->get_nb(vi, ji);
+        lf = h2_di->get_nb(vf, jf);
+
+        if (li != -1 && lf != -1 && li > lf) {
+            i = (li*(li - 1) >> 1) + lf;
+
+            for (k = 100; k < 200; k++) {
+                input >> r;
+                r = (r > 0.) ? r : 0.;
+                rate_coeff[i][k] = r;
+            }
+        }
+        else {
+            for (k = 0; k < 100; k++) {
+                input >> r;
+            }
+        }
+    }
+    input.close();
+
+    // output file
+    fname = data_path + "coll_h2/coll_h2_h_b_.txt";
+    output.open(fname.c_str());
+
+    output << scientific;
+    output.precision(2);
+    output << "# The table contains the H2-H collisional rate coefficients. Bossion et al. MNRAS 480, p.3718, 2018;" << endl
+        << "# the highest level for which data exists is (v,j) = (12,10), number 298;" << endl
+        << "# vi ji -> vf jf, k(cm3 s-1) (T); nb of data lines, nb of temperatures (T in K):" << endl;
+
+    if (max_temp/100 < nbt)
+        nbt = max_temp/100;
+
+    output << left << setw(8) << nb_lines << setw(8) << nbt << endl << left << setw(16) << "";
+    for (k = 1; k <= nbt; k++) {
+        output << left << setw(10) << k*100;
+    }
+    
+    for (li = 1; li < nb_lev; li++) {
+        for (lf = 0; lf < li; lf++) {
+            output << endl << left << setw(4) << h2_di->lev_array[li].v << setw(4) << rounding(h2_di->lev_array[li].j) 
+                << setw(4) << h2_di->lev_array[lf].v << setw(4) << rounding(h2_di->lev_array[lf].j);
+            
+            i = (li*(li - 1) >> 1) + lf;
+            for (k = 0; k < nbt; k++) {
+                output << left << setw(10) << rate_coeff[i][k];
+            }
+        }
+    }
 	output.close();
 
 	// please, check the data format, presence of the comments, nb of temperature values;
-	nbt = 100;
-	fname = data_path + "coll_h2/bossion_2018_h_h2_diss_100-10000.txt";
+	nbt = 200;
+    diss_coeff = alloc_2d_array<double>(nb_lev, nbt);
+    memset(*diss_coeff, 0, nb_lev*nbt * sizeof(double));
+
+	fname = data_path + "coll_h2/H_H2_diss_rates_100-10000.txt";
 	input.open(fname.c_str());
 
 	if (!input) {
@@ -1780,33 +1856,82 @@ void h2_coll_data_process_bossion(const std::string &data_path)
 		exit(1);
 	}
 
-	fname = data_path + "coll_h2/diss_h2_h_b.txt";
-	output.open(fname.c_str());
-	
-	output << scientific;
-	output.precision(3);
-	output << "# The table contains the H2+H->H+H+H dissociation rate coefficients. Bossion et al. MNRAS 480, p.3718, 2018;" << endl
-		<< "# vi ji, k(cm3 s-1) (T), temperature in K; " << endl;
-
-	output << nbt << endl << left << setw(8) << "";
-	for (k = 1; k <= nbt; k++) {
-		output << left << setw(11) << k*100;
-	}
-	
 	while (!input.eof())
 	{
 		input >> vi >> ji;
 		if (input.eof())
 			break;
-
-		output << endl << left << setw(4) << vi << setw(4) << ji;
-
-		for (k = 0; k < nbt; k++) {
-			input >> r;
-			r = (r > 0.) ? r : 0.;
-			output << left << setw(11) << r;
-		}
+        
+        li = h2_di->get_nb(vi, ji);
+        if (li != -1) {
+            for (k = 0; k < 100; k++) {
+                input >> r;
+                r = (r > 0.) ? r : 0.;
+                diss_coeff[li][k] = r;
+            }
+        }
+        else {
+            for (k = 0; k < 100; k++) {
+                input >> r;
+            }
+        }
 	}
 	input.close();
-	output.close(); 
+    
+    fname = data_path + "coll_h2/H_H2_diss_rates_10100-20000.txt";
+    input.open(fname.c_str());
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open file with dissociation data " << fname << endl;
+        exit(1);
+    }
+
+    while (!input.eof())
+    {
+        input >> vi >> ji;
+        if (input.eof())
+            break;
+
+        li = h2_di->get_nb(vi, ji);
+        if (li != -1) {
+            for (k = 100; k < 200; k++) {
+                input >> r;
+                r = (r > 0.) ? r : 0.;
+                diss_coeff[li][k] = r;
+            }
+        }
+        else {
+            for (k = 0; k < 100; k++) {
+                input >> r;
+            }
+        }
+    }
+    input.close();
+
+    fname = data_path + "coll_h2/diss_h2_h_b_.txt";
+	output.open(fname.c_str());
+	
+	output << scientific;
+	output.precision(3);
+	output << "# The table contains the H2+H->H+H+H dissociation rate coefficients. Bossion et al. MNRAS 480, p.3718, 2018;" << endl
+        << "# levels are included that present in Dabrowski I., Can. J. Phys. 62, p. 1639, 1984" << endl 
+        << "# the highest level for which data exists is (v,j) = (12,10), number 298;" << endl
+		<< "# vi ji, k(cm3 s-1) (T), temperature in K; " << endl;
+
+	output << left << setw(11) << nb_lev << setw(11) << nbt << endl 
+        << left << setw(8) << " ";
+	for (k = 1; k <= nbt; k++) {
+		output << left << setw(11) << k*100;
+	}
+
+    for (li = 0; li < nb_lev; li++) {
+        output << endl << left << setw(4) << h2_di->lev_array[li].v << setw(4) << rounding(h2_di->lev_array[li].j);
+        for (k = 0; k < nbt; k++) {
+            output << left << setw(11) << diss_coeff[li][k];
+        }
+    }
+	output.close();
+
+    free_2d_array(diss_coeff);
+    free_2d_array(rate_coeff);
 }
