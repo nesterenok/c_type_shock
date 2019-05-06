@@ -155,11 +155,8 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	h2_di = new h2_diagram(path, h2_mol, nb_lev_h2, verbosity);
 	h2_einst = new h2_einstein_coeff(path, h2_di, verbosity);
 	
-	h2_collisions *h2_coll_aux 
-		= new h2_collisions(path, h2_di, verbosity);
-
-	h2_coll = h2_coll_aux;
-	// h2_coll_aux->check_spline(2, 0, output_path + "h2_spline.txt");
+	h2_coll = new h2_collisions(path, h2_di, verbosity);
+	h2_coll->check_spline(2, 0, output_path + "h2_spline.txt");
 
 	h2_h_diss_data = new h2_h_dissociation_bossion2018(path, h2_di, verbosity);
     h2_h2_diss_data = new h2_h2_dissociation_martin1998(path, h2_di, verbosity);
@@ -1281,8 +1278,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         c = y_data[i] *conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
 #else
         c = y_data[i] * conc_h *1.e-10*exp(-(56640. - h2_di->lev_array[i - nb_of_species].energy *CM_INVERSE_TO_KELVINS) / temp_n);
-#endif
-        
+#endif   
         ydot_data[i] -= c;
         h2_h_diss_rate += c;
         h2_h_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
@@ -1303,18 +1299,18 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     
     j = network->h2_h2_diss_nb;
     a = network->reaction_array[j].energy_released; // energy released in reaction, 
-    
     h2_h2_diss_cooling = h2_h2_diss_rate = vh2_vh2_diss_rate = 0.;
+
     for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
     {
-        b = y_data[i] * h2_h2_diss_vibr_excited->get_rate(h2_di->lev_array[i-nb_of_species].v, temp_n, h2_vibr_states_density_h2);
+        b = y_data[i] * h2_h2_diss_vibr_excited->get_rate(h2_di->lev_array[i - nb_of_species].v, temp_n, h2_vibr_states_density_h2);
         vh2_vh2_diss_rate += b;
         
-        c = y_data[i] * conc_h2 *h2_h2_diss_data->get_rate(i - nb_of_species, temp_n);
-        h2_h2_diss_rate += c + b;
+        b += y_data[i] * conc_h2 *h2_h2_diss_data->get_rate(i - nb_of_species, temp_n);
+        h2_h2_diss_rate += b;
         
-        ydot_data[i] -= c + b;
-        h2_h2_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *(c + b); // < 0 for cooling,
+        ydot_data[i] -= b;
+        h2_h2_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) * b; // < 0 for cooling,
     }
     chem_reaction_rates[j] = h2_h2_diss_rate; 
     chem_heating_rates_n[j] = h2_h2_diss_cooling; 
@@ -1323,7 +1319,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     ydot_data[network->h2_nb] -= h2_h2_diss_rate + h2_h_diss_rate;
     neut_heat_chem += h2_h_diss_cooling + h2_h2_diss_cooling;
 	
-    // other processes of H2 formation are assumed not to change the level population: molecules are formed
+    // other processes of H2 formation are assumed not to change level populations: molecules are formed
 	// with level population distrubution proportional to the current level population distribution;
 	c = h2_prod/conc_h2;
 	for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++) {

@@ -25,8 +25,8 @@
 #include "coll_rates.h"
 
 using namespace std;
-
 const double one_sixth_const = 1. / 6.;
+
 //
 // The classes that contain rate coefficient data
 //
@@ -85,7 +85,6 @@ int collision_data::hunt_index(double temp, int old_index) const
     return 0;
 }
 
-
 void collision_data_cub_spline::calc_coeff_deriv()
 {
 	int i, j;
@@ -128,23 +127,7 @@ double collision_data_cub_spline::get_rate(int first_lev, int sec_lev, int lo, d
 	a = (tgrid[lo+1] - temp)/h;
 	b = 1. - a; // = (temp - tgrid[lo])/h;
 	
-	return a*coeff[i][lo] + b*coeff[i][lo+1] + one_sixth_const*((a*a*a - a)*coeff_deriv[i][lo] + (b*b*b - b)*coeff_deriv[i][lo+1])*(h*h);
-}
-
-void collision_data_cub_spline::check_spline(int ilev, int flev, const std::string & fname) const
-{
-	double t, dt;
-	ofstream output;
-
-	output.open(fname.c_str(), ios_base::out);
-	output << scientific;
-	output.precision(4);
-
-	dt = pow(10., 1./(30.*log10(tgrid[jmax-1])));
-	for (t = 1.; t <= tgrid[jmax-1]; t *= dt) {
-		output << left << setw(14) << t << setw(14) << collision_data::get_rate(ilev, flev, t) << endl;
-	}
-	output.close();
+	return fabs(a*coeff[i][lo] + b*coeff[i][lo+1] + one_sixth_const*((a*a*a - a)*coeff_deriv[i][lo] + (b*b*b - b)*coeff_deriv[i][lo+1])*(h*h));
 }
 
 //
@@ -187,7 +170,6 @@ void collisional_transitions::set_gas_param(double temp_neutrals, double temp_el
 		concentration[i] = ec;
 		indices[i] = coll_data[i]->locate(temp_el);
 	}
-	// collisions with H+ must be here;
 }
 
 void collisional_transitions::set_ion_param(double temp_neutrals, double temp_ions, double hp_conc, double h3p_conc,
@@ -290,6 +272,36 @@ double collisional_transitions::get_rate_ions(const energy_level &init_lev, cons
     return 0.;
 }
 
+void collisional_transitions::check_spline(int ilev, int flev, const std::string & fname) const
+{
+    int nb = 5;
+    double a, rate, t;
+
+    ofstream output;
+    output.open(fname.c_str(), ios_base::out);
+    output << scientific;
+    output.precision(3);
+
+    t = 10.;
+    output << left << setw(12) << "! temp(K)";
+    for (nb = 0; nb < (int)coll_data.size(); nb++) {
+        output << left << setw(12) << nb;
+    }
+    output << endl;
+
+    for (t = 10; t < 10000.; t *= 1.1) {
+        output << left << setw(12) << t;
+
+        for (nb = 0; nb < (int)coll_data.size(); nb++) {
+            a = coll_data[nb]->get_max_temp();
+            (t < a) ? rate = coll_data[nb]->get_rate(ilev, flev, t) : rate = coll_data[nb]->get_rate(ilev, flev, a);
+            output << left << setw(12) << rate;
+        }
+        output << endl;
+    }
+    output.close();
+}
+
 //
 // The classes that contain data on dissociation rates 
 //
@@ -321,8 +333,8 @@ void dissociation_data::calc_coeff_deriv()
 // the linear extrapolation is used here, check for maximal speed is not implemented for dissociation,
 double dissociation_data::get_rate(int i, double temp) const 
 {
-//  if (temp > tgrid[jmax - 1])
-//      return coeff[i][jmax - 1];
+//  if (temp > tgrid[jmax-1])
+//      return coeff[i][jmax-1];
 
 	int j, l = 0, r = jmax-1; 
 	while (r-l > 1)
@@ -334,64 +346,6 @@ double dissociation_data::get_rate(int i, double temp) const
 	}
 	return coeff[i][l] + coeff_deriv[i][l] *(temp - tgrid[l]);
 }
-
-void dissociation_data_cub_spline::calc_coeff_deriv()
-{
-	int i, j;
-	double p, sig;
-	double *u = new double [jmax-1];
-	
-	for (i = 0; i < imax; i++) 
-	{
-	// the lower boundary condition is set to be "natural"
-		coeff_deriv[i][0] = u[0] = 0.;
-	
-		// this is the decomposition loop of the tridiagonal algorithm. coeff_deriv[][] and u are used for temporary
-		// storage of the decomposed factors.
-		for (j = 1; j < jmax-1; j++) 
-		{ 
-			sig = (tgrid[j] - tgrid[j-1])/(tgrid[j+1] - tgrid[j-1]);
-			p = sig *coeff_deriv[i][j-1] + 2.;
-
-			coeff_deriv[i][j] = (sig - 1.)/p;
-			u[j] = (coeff[i][j+1] - coeff[i][j])/(tgrid[j+1] - tgrid[j]) - (coeff[i][j] - coeff[i][j-1])/(tgrid[j] - tgrid[j-1]);
-			u[j] = (6.*u[j]/(tgrid[j+1] - tgrid[j-1]) - sig*u[j-1])/p;
-		}
-		// the upper boundary condition is set to be "natural"
-		coeff_deriv[i][jmax-1] = 0.;
-	
-		for (j = jmax-2; j >= 0; j--) { // this is the backsubstitution loop of the tridiagonal algorithm.
-			coeff_deriv[i][j] = coeff_deriv[i][j]*coeff_deriv[i][j+1] + u[j]; // 
-		}
-	}
-	delete [] u;
-}
-
-double dissociation_data_cub_spline::get_rate(int i, double temp) const
-{
-    if (temp < tgrid[0]) // check for temperature range
-        return 0.;
-    else if (temp > tgrid[jmax - 1])
-        return coeff[i][jmax - 1];
-
-	int j, l = 0, r = jmax-1; 
-	double a, b, h;
-	
-	// must be satisfied tgrid[l] < temp < tgrid[l+1] 
-	while (r-l > 1)
-	{
-		j = l + ((r-l) >> 1);
-		if (tgrid[j] < temp) 
-			l = j;
-		else r = j;
-	}
-	h = tgrid[l+1] - tgrid[l];
-	a = (tgrid[l+1] - temp)/h;
-	b = 1. - a; // = (temp - tgrid[lo])/h;
-	
-	return a*coeff[i][l] + b*coeff[i][l+1] + ((a*a*a - a)*coeff_deriv[i][l] + (b*b*b - b)*coeff_deriv[i][l+1])*(h*h)/6.;
-}
-
 
 //
 // Functions

@@ -3457,23 +3457,3 @@ void sputtering()
 		cout << left << setw(13) << s << setw(13) << v*s << setw(13) << rate_data->get(rt, s) << endl;
 	}
 }
-
-/*
-if (i == 998) {
-
-       
-         for (k = 0; k < nb_of_equat; k++) {
-                    pop[k] = NV_Ith_S(y, k);
-                }
-            }
-            else if (i == 999) {
-                fname = output_path2 + "checking.txt";
-                output.open(fname.c_str(), std::ios_base::trunc);
-                output.precision(5);
-                output << left << setw(14) << zout << setw(14) << z << endl;
-                for (k = 0; k < nb_of_equat; k++) {
-                    output << left << setw(6) << k << setw(14) << NV_Ith_S(y, k) << setw(14) << pop[k] << setw(14) << NV_Ith_S(y, k) - pop[k] << endl;
-                }
-                output.close();
-            }
-            */

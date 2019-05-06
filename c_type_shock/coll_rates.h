@@ -40,6 +40,7 @@ public:
 	virtual ~collision_data(); 
 };
 
+// may be it is better to init own array of spline coefficients...
 class collision_data_cub_spline : public collision_data
 {
 public:
@@ -49,12 +50,9 @@ public:
 	// the index lo must be < jmax-1 here;
 	// for low rate values (low temperatures), the interpolation may give negative rates;
 	double get_rate(int first_lev, int sec_lev, int lo, double temp) const;
-	// downward transitions are considered, initial level nb > final level nb:
-	void check_spline(int ilev, int flev, const std::string & fname) const;
 };
 
 // The class, that calculates the rates of collisional transitions;
-// the collisions of specimen with ions (H+) are not implemented yet;
 class collisional_transitions
 {
 protected:
@@ -93,9 +91,10 @@ public:
     double get_rate_ions(const energy_level &init_lev, const energy_level &fin_lev,
         double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const;
 
+    void check_spline(int ilev, int flev, const std::string & fname) const;
+
 	collisional_transitions();
-	// all collisional data are deleted here:
-	virtual ~collisional_transitions();
+	virtual ~collisional_transitions(); // all collisional data are deleted here
 };
 
 // Dissociation data
@@ -109,7 +108,7 @@ protected:
 
 public:
 	// i - number of the level, temp - gas temperature, linear interpolation is used;
-    // there is no check for the upper value of the temperature,
+    // there is linear extrapolation of the rate at tamperatures higher than the maximal value for which data exist,
 	virtual double get_rate(int i, double temp) const;
 	
 	// the function calculates the array of rate derivatives;
@@ -118,17 +117,6 @@ public:
 	dissociation_data();
 	virtual ~dissociation_data();
 }; 
-
-class dissociation_data_cub_spline : public dissociation_data
-{
-public:
-	// the function calculates the array of second order derivatives of the data;
-	void calc_coeff_deriv();
-	
-	// cubic spline interpolation is used;
-	// for low rate values (low temperatures), the interpolation may give negative rates;
-	double get_rate(int i, double temp) const;
-};
 
 
 // The function calculates the populations for optically thin media;

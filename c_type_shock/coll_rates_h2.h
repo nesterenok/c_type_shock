@@ -7,14 +7,13 @@
 const int nb_vibr_states_h2_ceballos2002 = 5;
 
 #define H2_COLL_CUBIC_SPLINE 1
-#define H2_DISS_CUBIC_SPLINE 0
 
 // 0 - data by Wrathmall et al. (2007), Martin & Mandy (1995), see below for full references;
 // 1 - data by Lique (2015) for lowest 54 levels, data by Wrathmall et al. (2007), Martin & Mandy (1995);
 // 2 - data by Lique (2015) and by Bossion et al. (2018)
 #define H2_H_COLL_DATA 2
 
-// 0 - data by Flower & Roueff (1998, 1999);
+// 0 - only data by Flower & Roueff (1998, 1999);
 // 1 - data by Wan et al. (2018);
 #define H2_H2_COLL_DATA 1
 
@@ -89,9 +88,8 @@ public:
 	h2_h2_wan_data(const std::string &path, const energy_diagram *, bool coll_partner_is_ortho, int verbosity=1);
 };
 
-
 // The data by Lique F., MNRAS 453, 810-818 (2015); 
-// 54 levels of ortho- and para-H2, 100 <= T <= 5000 K;
+// 54 levels of ortho- and para-H2, 100 <= T <= 5000 K; not ordered
 class h2_h_lique_data
 #if H2_COLL_CUBIC_SPLINE
 	: public collision_data_cub_spline
@@ -104,13 +102,8 @@ public:
 };
 
 // The data by Bossion et al. MNRAS 480, p.3718, 2018;
-// 1000 < T <= 5000 K; all levels, but not ordered;
-class h2_h_bossion_data
-#if H2_COLL_CUBIC_SPLINE
-	: public collision_data_cub_spline
-#else
-	: public collision_data
-#endif
+// all levels, but not ordered; no spline
+class h2_h_bossion_data	: public collision_data
 {
 public:
 	h2_h_bossion_data(const std::string &path, const energy_diagram *, int verbosity=1);
@@ -162,21 +155,14 @@ public:
     void set_ion_param(double temp_neutrals, double temp_ions, double hp_conc, double h3p_conc, 
         double *&concentration, int *&indices) const;
 
-	void check_spline(int ilev, int flev, const std::string & fname) const;
 	h2_collisions(const std::string &, const energy_diagram *, int verbosity =1);
 };
 
-
-// H2-H dissociation data
-// Bossion et al. MNRAS 480, 3718-3724 (2018)
-// there is no check on temperature limit in the parent class
-// the data are restricted to temperatures  < 10000 K!
-class h2_h_dissociation_bossion2018
-#if H2_DISS_CUBIC_SPLINE
-	: public dissociation_data_cub_spline
-#else
-	: public dissociation_data
-#endif
+// Dissociation data, there is no check on temperature limit in the parent class
+//
+// H2-H dissociation data, Bossion et al. MNRAS 480, 3718-3724 (2018)
+// the data are restricted to temperatures  < 20000 K
+class h2_h_dissociation_bossion2018	: public dissociation_data
 {
 public:
 	h2_h_dissociation_bossion2018(const std::string & data_path, const energy_diagram *, int verbosity);
@@ -184,14 +170,8 @@ public:
 
 // H2-H2 
 // Martin et al. ApJ 499, p.793-798 (1998)
-// there is no check on temperature limit in the parent class, 
-// the interpolation is linear, log-log is better
-class h2_h2_dissociation_martin1998
-#if H2_DISS_CUBIC_SPLINE
-    : public dissociation_data_cub_spline
-#else
-    : public dissociation_data
-#endif
+// for all levels rates are assumed to equal to (v,j)=(0,0) rate; the interpolation is linear, log-log is better
+class h2_h2_dissociation_martin1998 : public dissociation_data
 {
 public:
     h2_h2_dissociation_martin1998(const std::string & data_path, const energy_diagram *, int verbosity);
@@ -206,7 +186,8 @@ public:
     int get_maxv() const { return max_vibrq; }
 
     double get_rate(int i, double temp) const { return 0.; }
-    double get_rate(int i, double temp, double *vibr_h2_conc) const;
+    // v is vibration quantum number of the level
+    double get_rate(int v, double temp, double *vibr_h2_conc) const;
     h2_h2_dissociation_ceballos2002(const std::string & data_path, int verbosity);
 };
 
@@ -236,7 +217,7 @@ public:
 	~h2_grain_formation();
 };
 
-// H2 excitation due to formation in the gas phase;
+// H2 excitation due to formation in the gas phase - is not used yet;
 class h2_gasphase_formation : h2_excitation_process
 {
 protected:
@@ -252,10 +233,10 @@ public:
 	~h2_gasphase_formation();
 };
 
-// Is not used in the code.
 // H2 excitation due to cosmic rays; the returned values must be multiplied by the cosmic ray or x-ray ionization rates in s-1; 
 // Note: the routine does not work yet for high (> 0.01) fractional ionizations;
 // at small fractional ionizations < 1.e-6 the data at 1.e-6 are used;
+// number of H2 levels in simulations must be >= 14,
 class h2_excit_cosmic_rays : h2_excitation_process
 {
 protected:
@@ -264,7 +245,7 @@ protected:
 	double **eff, **exit_eff;
 	
 public:
-	void set_ionization(double ionization, int &index, double &param) const;
+	void set_ionization(double ionization, int & index, double & param) const;
 	int get_nb_lev() const { return nb_init_lev; }
 	
 	double get_efficiency(int il, int fl, int index, double param) const;
