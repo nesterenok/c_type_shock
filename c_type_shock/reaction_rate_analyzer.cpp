@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <stdint.h>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -121,6 +122,8 @@ void production_routes(string path)
 	bool bo;
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i, j, k, l, nb, nb_of_rate_values, nb_of_species, nb_of_reactions, specimen_nb, nb_of_elem;
+    int16_t abc;
+    int8_t de;
 	double a, z_arr[RRA_NB_RATE_VALUES], t_arr[RRA_NB_RATE_VALUES], destr_rate[RRA_NB_RATE_VALUES], prod_rate[RRA_NB_RATE_VALUES];
 
 	string str, sn, fn;
@@ -231,33 +234,34 @@ void production_routes(string path)
 	}
 	input.close();
 
-	fn = path + "sim_reaction_rates.txt";
-	input.open(fn.c_str(), ios::in);
-	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-
-	// next line is too large to be read by getline():
-	input >> str;
-	for (i = 0; i < nb_of_reactions; i++) {
-		input >> j;
-	}
-
-	i = 0;
-	while (!input.eof() && i < RRA_NB_RATE_VALUES)
-	{
-		input >> z_arr[i];
-        if (input.eof())
-			break;
+    // reading binary file
+	fn = path + "sim_reaction_rates.bin";
+	input.open(fn.c_str(), ios::binary | ios::in);
+    
+    i = 0;
+    while (!input.eof() && i < RRA_NB_RATE_VALUES)
+    {
+        input.read((char*)& abc, sizeof(abc));
+        input.read((char*)& de, sizeof(de));
         
-        t_arr[i] = dt_dep.get_gas_temperature(z_arr[i]);
+        if (input.eof()) // ??
+            break;
 
-		for (j = 0; j < nb_of_reactions; j++) {
-			input >> k;
-			a = abs(k/100);
-			rd_v[j].rates[i] = a*pow(10., -k%100);
-		}
-		i++;
-	}
-	input.close();
+        z_arr[i] = abc *pow(10., (int) de);
+
+        input.read((char*)& abc, sizeof(abc));
+        input.read((char*)& de, sizeof(de));
+
+        t_arr[i] = abc * pow(10., (int) de);
+
+        for (j = 0; j < nb_of_reactions; j++) {
+            input.read((char*)& abc, sizeof(abc));
+            input.read((char*)& de, sizeof(de));
+
+            rd_v[j].rates[i] = abc * pow(10., (int) de);
+        }
+        i++;
+    }
 	nb_of_rate_values = i;
 
 	for (k = 0; k < 2*nb; k++)
@@ -630,3 +634,30 @@ depth_temperature_dependence::depth_temperature_dependence(std::string path) : p
     }
     input.close();
 }
+
+/*	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+
+    // next line is too large to be read by getline():
+    input >> str;
+    for (i = 0; i < nb_of_reactions; i++) {
+        input >> j;
+    }
+
+    i = 0;
+    while (!input.eof() && i < RRA_NB_RATE_VALUES)
+    {
+        input >> z_arr[i];
+        if (input.eof())
+            break;
+
+        t_arr[i] = dt_dep.get_gas_temperature(z_arr[i]);
+
+        for (j = 0; j < nb_of_reactions; j++) {
+            input >> k;
+            a = abs(k/100);
+            rd_v[j].rates[i] = a*pow(10., -k%100);
+        }
+        i++;
+    }
+    input.close();
+    */

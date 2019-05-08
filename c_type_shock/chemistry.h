@@ -84,6 +84,7 @@ double reaction_rate(const std::vector<chem_specimen> & species, const accretion
 	double photoreact_factor_cr, double desorption_factor_cr, double photodes_factor_cr, double photodes_factor_is, double conc_h_tot, double nb_ads_sites_grain);
 
 // Temperature is in erg;
+// energy gain - is the increase of thermal energy of fluid due to exo/endothermicity of chemical reactions
 void chemistry_source_terms(double & mom_gain_n, double & mom_gain_i, double & mom_gain_e, 
 	double & energy_gain_n, double & energy_gain_i, double & energy_gain_e, double & energy_gain_d, 
 	const std::vector<chem_specimen> &, const chem_reaction &, double vel_n, double vel_i, 

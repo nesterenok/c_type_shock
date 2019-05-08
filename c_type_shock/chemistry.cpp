@@ -1419,8 +1419,9 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 					}
 				}
 				
+                // perhaps, chemical desorption factors must be redefined here:
 				if (reaction.name == "*H + *H -> *H2" || reaction.name == "*H + *H -> H2") {
-					if (!H2_FORMATION_MODE)
+					if (H2_FORMATION_MODE == 0)
 						new_reactions.push_back(reaction);
 				}
 				else if (reaction.parameters[0] > DBL_EPSILON) // reactions with zero rate are removed;
@@ -1751,7 +1752,6 @@ void chem_network::check_reactions()
 			}
 		}
 	}
-
 	if (is_failed)
 		exit(1);
 }

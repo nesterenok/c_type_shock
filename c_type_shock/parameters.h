@@ -140,7 +140,6 @@
 // 0 - H2 formation is modelled (grain surface chemistry must be on); 
 // 1 - "ad hoc" (as described higher); 2 - semiempirical H2 formation rate; 
 #define H2_FORMATION_MODE 0
-// #define H2_FORMATION_EXCITATION 0
 
 // Hollenbach, Tielens, Reviews of Modern Physics 71, p. 173, 1999; k = c*n_H*n_H_tot, c = (1-3)*1e-17 cm3 s-1;
 #define STANDARD_H2_FORMATION_RATE 3.e-17
@@ -176,14 +175,19 @@
 // Calculate OH and NH3 populations, 1 - yes
 #define CALCULATE_POPUL_NH3_OH 0
 
+// 0 - switch off
 // 1 - data are used by Tine et al., ApJ 481, p.282 (1997)
-#define H2_CR_EXCITATION 1
+#define H2_CR_EXCITATION_ON 1
 
+// 0 - switch off
 // 1 - data on H2-H+ collisions are used by Gonzalez-Lezana & Honvault (2017),
 // the question - are rates for collisions with H+ and H3+ equal?
 // check this parameter in simulations of chemical evolution of dark cloud
-#define H2_IONS_EXCITATION 1
+#define H2_IONS_EXCITATION_ON 1
 
-// 1 - Bossion et al. MNRAS 480, p.3718, 2018
 // 0 - Le Bourlot et al., MNRAS 332, 985, 2002
-#define H2_H_DISSOCIATION 1
+// 1 - Bossion et al. MNRAS 480, p.3718, 2018
+#define H2_H_DISSOCIATION_MODE 1
+
+// 0 - swith off
+#define H2_FORMATION_EXCITATION_ON 1

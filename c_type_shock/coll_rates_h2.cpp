@@ -1344,7 +1344,7 @@ h2_grain_formation::h2_grain_formation(const energy_diagram *h2_di)
 	nb_lev = h2_di->nb_lev;
 	popul = new double [nb_lev];
     // dissociation energy of H2 - 36118.11 cm-1 = 4.4781 eV  Herzberg & Monfils, J. Molecular Spectroscopy 5, no.1–6, p.482-498 (1961) 
-    average_energy = 4.4781 *EV_TO_CM_INVERSE/3.; 
+    average_energy = 0.3333 *4.4781 *EV_TO_CM_INVERSE; 
 
 	for (i = 0; i < nb_lev; i++) 
 	{

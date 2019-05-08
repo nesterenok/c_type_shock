@@ -65,6 +65,7 @@ protected:
     const h2_h2_dissociation_martin1998 *h2_h2_diss_data;
     const h2_h2_dissociation_ceballos2002 *h2_h2_diss_vibr_excited;
 
+    const h2_grain_formation *h2_excit_grainf;
 	const h2_excit_cosmic_rays *h2_excit_cr; 
 	const accretion_rate_functions *accr_func;
 	
@@ -156,7 +157,7 @@ public:
 	double calc_hydrocarbon_conc(const N_Vector &y) const;
 
     // ion concentration (cm-3) and density (g/cm3) do not include PAH and small grains,
-	// ionized PAH concentration and density include contribution from PAHs and small grains:
+	// ionized PAH concentration and density include contribution from PAHs and small grains (dust grains which behave like ions):
 	void calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_dens, double & ion_pah_dens) const;
 	void calc_neutral_dens(const N_Vector &y, double & neut_conc, double & neut_mass_dens) const;
 

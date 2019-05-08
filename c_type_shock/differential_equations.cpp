@@ -156,7 +156,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	h2_einst = new h2_einstein_coeff(path, h2_di, verbosity);
 	
 	h2_coll = new h2_collisions(path, h2_di, verbosity);
-	h2_coll->check_spline(2, 0, output_path + "h2_spline.txt");
+//	h2_coll->check_spline(2, 0, output_path, "h2");
 
 	h2_h_diss_data = new h2_h_dissociation_bossion2018(path, h2_di, verbosity);
     h2_h2_diss_data = new h2_h2_dissociation_martin1998(path, h2_di, verbosity);
@@ -165,6 +165,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 
 	// Calculation of the data of H2 excitation processes:
 	h2_excit_cr = new h2_excit_cosmic_rays(path, h2_di);
+    h2_excit_grainf = new h2_grain_formation(h2_di);
 
 	// Ion data:
 	mass = 16.*ATOMIC_MASS_UNIT;
@@ -461,6 +462,7 @@ evolution_data::~evolution_data()
 	delete h2_einst;
 	delete h2_coll;
 	delete h2_excit_cr;
+    delete h2_excit_grainf;
     delete h2_h2_diss_data;
     delete h2_h_diss_data;
     delete h2_h2_diss_vibr_excited;
@@ -848,7 +850,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
                 rate *= y_data[k] * y_data[l];
 
-                if (i == network->h2_h_diss_nb || i == network->h2_h2_diss_nb) {
+                // H2-H2 and H2-H reactions are not taken into account here:
+                if (i == network->h2_h_diss_nb || i == network->h2_h2_diss_nb) { 
                     rate = 0.;
                 }
 
@@ -911,7 +914,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
                     if (reaction.product[k] == network->h2_nb)
                         a += rate;
                 }
-                if (a > MINIMAL_REACTION_RATE)
+                if (a > 0.)
                     h2_pr2 += a;
                 else h2_d1 += -a;
             }
@@ -1251,7 +1254,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     }
 
 	// here the excitation of H2 by cosmic rays is taken into acccount;
-	if (H2_CR_EXCITATION) {
+    // it is dificult to take into account the heating of the gas by this process (H2 may de-excite radiatively)
+	if (H2_CR_EXCITATION_ON) {
 		ioniz_fraction = conc_e/conc_h_tot;
 		// the values of two last parameters are returned (index and derivative for ionization grid)
 		h2_excit_cr->set_ionization(ioniz_fraction, l, b);
@@ -1266,6 +1270,14 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 			}
 		}
 	}
+    if (H2_FORMATION_EXCITATION_ON) {
+        h2_prod -= h2_prod_gr;
+        for (i = 0; i < nb_lev_h2; i++)
+        {
+            a = h2_prod_gr * h2_excit_grainf->get_efficiency(i);
+            ydot_data[nb_of_species + i] += a;
+        }
+    }
 
 // H2 dissociation in H2-H collisions
     j = network->h2_h_diss_nb;
@@ -1274,7 +1286,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     h2_h_diss_cooling = h2_h_diss_rate = 0.;
     for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
     {
-#if (H2_H_DISSOCIATION)
+#if (H2_H_DISSOCIATION_MODE == 1)
         c = y_data[i] *conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
 #else
         c = y_data[i] * conc_h *1.e-10*exp(-(56640. - h2_di->lev_array[i - nb_of_species].energy *CM_INVERSE_TO_KELVINS) / temp_n);
@@ -1285,8 +1297,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     }
     chem_reaction_rates[j] = h2_h_diss_rate; // reaction rate is saved,
     chem_heating_rates_n[j] = h2_h_diss_cooling; // cooling of the gas by this process,      
-    
-
+   
 // H2 dissociation in H2-H2 collisions
     memset(h2_vibr_states_density_h2, 0, nb_vibr_states_h2_ceballos2002 *sizeof(double));
     for (i = 0; i < nb_lev_h2; i++) {
@@ -1700,7 +1711,7 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
 
                 h_e += (down_rate - up_rate) *energy;
 
-#if (H2_IONS_EXCITATION)
+#if (H2_IONS_EXCITATION_ON)
                 c += down_rate;
                 d += up_rate;
                 
@@ -3170,7 +3181,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 /*	// here the excitation of H2 in formation on grains is taken into account:
 h2_excit_gf = new h2_grain_formation(h2_di);
     h2_excit_gasph = new h2_gasphase_formation(h2_di);
-#if (H2_FORMATION_EXCITATION)
+#if (H2_FORMATION_EXCITATION_ON)
 	oh2_form_gaschem = oh2_form_grains = 0.; 	
 	h2_prod -= h2_prod_gr;
 

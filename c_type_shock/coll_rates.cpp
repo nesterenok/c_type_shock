@@ -19,6 +19,7 @@
 #include <fstream>
 #include <iomanip>
 #include <math.h>
+#include <sstream>
 
 #include "constants.h"
 #include "linear_algebra.h"
@@ -272,13 +273,17 @@ double collisional_transitions::get_rate_ions(const energy_level &init_lev, cons
     return 0.;
 }
 
-void collisional_transitions::check_spline(int ilev, int flev, const std::string & fname) const
+void collisional_transitions::check_spline(int il, int fl, std::string path, std::string name) const
 {
     int nb = 5;
     double a, rate, t;
-
+    stringstream ss;
     ofstream output;
-    output.open(fname.c_str(), ios_base::out);
+
+    ss.clear();
+    ss << path << name << "_coll_coeff_" << il << "_" << fl << ".txt";
+
+    output.open(ss.str().c_str(), ios_base::out);
     output << scientific;
     output.precision(3);
 
@@ -293,9 +298,11 @@ void collisional_transitions::check_spline(int ilev, int flev, const std::string
         output << left << setw(12) << t;
 
         for (nb = 0; nb < (int)coll_data.size(); nb++) {
-            a = coll_data[nb]->get_max_temp();
-            (t < a) ? rate = coll_data[nb]->get_rate(ilev, flev, t) : rate = coll_data[nb]->get_rate(ilev, flev, a);
-            output << left << setw(12) << rate;
+            if (il < coll_data[nb]->nb_lev) {
+                a = coll_data[nb]->get_max_temp();
+                (t < a) ? rate = coll_data[nb]->get_rate(il, fl, t) : rate = coll_data[nb]->get_rate(il, fl, a);
+                output << left << setw(12) << rate;
+            }
         }
         output << endl;
     }

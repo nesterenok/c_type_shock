@@ -63,6 +63,9 @@ enum SHOCK_STATE_ID {
     SHOCK_STATE_H2_DISSOCIATION        // 99% of H2 is dissociated,
 };
 
+// abc de = abc * 10 ^ (de)
+void reformat_floating_value(double x, int & abc, int & de);
+
 // path to the file with cloud parameters must be given,
 void assign_cloud_data(const string &path, evolution_data *user_data, vector<double> & iy, double & evol_time, 
 	double & visual_extinct, double & cr_ioniz_rate, double & uv_field_strength, double & ir_field_strength, double & conc_h_tot, 
@@ -98,7 +101,7 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 void save_energy_fluxes(const string &output_path, const evolution_data *user_data, const N_Vector &y, double var, double dvar);
 void save_chem_heating_rates(const string &output_path, const evolution_data *user_data, double ty);
 void save_dust_properties(const string &output_path, const evolution_data *user_data, const N_Vector &y, double conc_h_tot, double var);
-void save_reaction_rates(const string &output_path, const evolution_data *user_data, double var);
+void save_reaction_rates(const string &output_path, const evolution_data *user_data, double var, double temp_n);
 void save_nautilus_data(const string & output_path, double t, double av, double n, double gt, double dt);
 void save_mol_data(const string & output_path, const evolution_data *user_data, const N_Vector &y, double var);
 void save_file_h2_chemistry(const string & output_path, const evolution_data *user_data, const N_Vector &y, double var);
@@ -159,7 +162,7 @@ int main(int argc, char** argv)
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
     path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "output_data_2e4/shock_cr1-15_25/";
+    path += "new_output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
 //    production_routes(path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
@@ -328,7 +331,7 @@ int main(int argc, char** argv)
             else if (mode == "CS_")
             {
                 shock_vel = 5.0e+5;
-                max_shock_speed = 90.1e+5; //
+                max_shock_speed = 120.1e+5; //
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();
@@ -711,7 +714,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 #endif
 		}
 		if (nb%2 == 0) {
-			save_reaction_rates(output_path, &user_data, ty);
+			save_reaction_rates(output_path, &user_data, ty, NV_Ith_S(y, nb_mhd));
 		}
 
 		is_new_chd = user_data.recalc_grain_charge_ranges(y, new_y);
@@ -1298,7 +1301,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
         << setw(14) << "p2" << setw(14) << "p3" << endl;
 	output.close();
 	
-	create_file_cloud_parameters(output_path2);
+	// create_file_cloud_parameters(output_path2); // is not saved, saving space on the disk,
 	create_file_specimen_abund(output_path2, network);
 	create_file_heating_rates(output_path2);
 	create_file_energy_fluxes(output_path2);
@@ -1378,14 +1381,14 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             save_file_h2_chemistry(output_path2, &user_data, y, z);
 
             if (nb_saved % 2 == 0 || flag != CV_SUCCESS) {
-                save_reaction_rates(output_path2, &user_data, z);
+                save_reaction_rates(output_path2, &user_data, z, NV_Ith_S(y, nb_mhd));
             }
 
             i = (int)(NV_Ith_S(y, nb_mhd) / 100.); // in this case saving data each 100 K
             if (i != nb_saved_cloud_param)
             {
                 nb_saved_cloud_param = i;
-                save_cloud_parameters(&user_data, output_path2, ty, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, c_abund_pah, y);
+                //save_cloud_parameters(&user_data, output_path2, ty, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, c_abund_pah, y);
                 save_chem_heating_rates(output_path2, &user_data, ty);
 #if (SAVE_RADIATIVE_TRANSFER_FACTORS)
                 user_data.save_radiative_transfer_data(output_path2, ty);
@@ -1789,7 +1792,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 #endif
 		}
 		if (nb%2 == 0) {
-			save_reaction_rates(output_path2, &user_data, ty);
+			save_reaction_rates(output_path2, &user_data, ty, NV_Ith_S(y, nb_mhd));
 		}
 
         if (t > evol_time + incr_time)
@@ -2275,9 +2278,9 @@ void create_file_energy_fluxes(const string &output_path)
 	output.open(fname.c_str());
 
 	output << "! kin - kinetic energy flux (neutral and ions, dust grains), [erg cm-2 s-1]" << endl
-        << "! thm - thermal energy flux (neutrals and ions)" << endl
+        << "! thm - thermal energy flux (neutrals, ions electrons)" << endl
         << "! mgn - magnetic energy flux" << endl
-        << "! ncool - total integrated gas cooling by emission, cooling < 0., [erg cm-2 s-1]" << endl
+        << "! ncool - total integrated gas cooling by line emission (energy transfered via collisions to specimen excitation), cooling < 0., [erg cm-2 s-1]" << endl
         << "! na  - integrated neutral gas cooling by atomic emission" << endl
 		<< "! nh2 - neutral gas cooling by H2 emission" << endl
 		<< "! nh2o - neutral gas cooling by H2O emission" << endl
@@ -2285,17 +2288,24 @@ void create_file_energy_fluxes(const string &output_path)
 		<< "! noh - neutral gas cooling by OH emission" << endl
 		<< "! nnh3 - neutral gas cooling by p- and o-NH3 emission" << endl
 		<< "! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission" << endl
+        << "! kin_n - kinetic energy flux of neutrals" << endl
+        << "! kin_i - kinetic energy flux of ions (no PAH and small grains)" << endl
+        << "! kin_d - kinetic energy flux of dust (including PAH and small grains)" << endl
+        << "! thm_n - thermal energy flux of neutrals" << endl
+        << "! thm_i - thermal energy flux of ions, electrons, small negative grains (PAH)" << endl
         << "! totfl - total flux, [erg cm-2 s-1]" << endl;
 
 	output << left << "!";
-	for (i = 0; i < 13; i++) {
+	for (i = 0; i < 18; i++) {
 		output << left << setw(12) << i + 1;
 	}
 	output << endl;
 
 	output << left << setw(13) << "!z(cm)" << setw(12) << "kin" << setw(12) << "thm" << setw(12) << "mgn"
         << setw(12) << "ncool" << setw(12) << "na" << setw(12) << "nh2" << setw(12) << "nh2o" 
-        << setw(12) << "nco" << setw(12) << "noh" << setw(12) << "nnh3" << setw(12) << "nch3oh" << setw(12) << "totfl" << endl;
+        << setw(12) << "nco" << setw(12) << "noh" << setw(12) << "nnh3" << setw(12) << "nch3oh" 
+        << setw(12) << "kin_n" << setw(12) << "kin_i" << setw(12) << "kin_d" << setw(12) << "thm_n" << setw(12) << "thm_i"
+        << setw(12) << "totfl" << endl;
 	output.close();
 }
 
@@ -2307,7 +2317,8 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 		int_neut_heat_nh3(0.), int_neut_heat_ch3oh(0.); 
 	double x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
 		neut_heat_scatt_el, rad_energy_loss_h2, h2_h_diss_cooling, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc,
-        ion_dens, ion_pah_dens, v_n, v_i, kinetic_energy_flux, thermal_energy_flux, magnetic_energy_flux;
+        ion_dens, ion_pah_dens, v_n, v_i, kin_energy_flux, kin_energy_flux_ions, kin_energy_flux_neut, kin_energy_flux_dust, 
+        thermal_energy_flux, thermal_energy_flux_neut, thermal_energy_flux_ions, magnetic_energy_flux;
 
 	string fname;
 	ofstream output;
@@ -2357,15 +2368,19 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
     v_n = NV_Ith_S(y, nb_mhd + 3);
     v_i = NV_Ith_S(y, nb_mhd + 4); 
     
-    kinetic_energy_flux = 0.5 * (v_n * v_n * v_n * neut_mass_dens + v_i * v_i * v_i * ion_dens) 
-        + user_data->calc_dust_kinetic_energy_flux(y);
+    kin_energy_flux_neut = 0.5 * v_n * v_n * v_n * neut_mass_dens;
+    kin_energy_flux_ions = 0.5 * v_i * v_i * v_i * ion_dens;
+    kin_energy_flux_dust = user_data->calc_dust_kinetic_energy_flux(y);
+    kin_energy_flux = kin_energy_flux_neut + kin_energy_flux_ions + kin_energy_flux_dust;
 
-    thermal_energy_flux = 2.5 * BOLTZMANN_CONSTANT *(v_n * neut_conc * NV_Ith_S(y, nb_mhd) + v_i * (ion_conc + ion_pah_conc) * NV_Ith_S(y, nb_mhd + 1)
-        + v_i * NV_Ith_S(y, user_data->get_network()->e_nb) * NV_Ith_S(y, nb_mhd + 2));
+    thermal_energy_flux_neut = 2.5 * BOLTZMANN_CONSTANT * v_n * neut_conc * NV_Ith_S(y, nb_mhd);
+    thermal_energy_flux_ions = 2.5 * BOLTZMANN_CONSTANT * v_i *
+        ((ion_conc + ion_pah_conc) * NV_Ith_S(y, nb_mhd + 1) + NV_Ith_S(y, user_data->get_network()->e_nb) * NV_Ith_S(y, nb_mhd + 2));
+    thermal_energy_flux = thermal_energy_flux_neut + thermal_energy_flux_ions;
     
     magnetic_energy_flux = user_data->get_magnetic_field() * user_data->get_magnetic_field() * v_i / (4.*M_PI);
     
-	output << left << setw(12) << kinetic_energy_flux
+	output << left << setw(12) << kin_energy_flux
         << setw(12) << thermal_energy_flux 
         << setw(12) << magnetic_energy_flux
         << setw(12) << total_mol_cooling
@@ -2376,7 +2391,12 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 		<< setw(12) << int_neut_heat_oh 
 		<< setw(12) << int_neut_heat_nh3 
 		<< setw(12) << int_neut_heat_ch3oh 
-        << setw(12) << fabs(total_mol_cooling) + kinetic_energy_flux + thermal_energy_flux + magnetic_energy_flux << endl;
+        << setw(12) << kin_energy_flux_neut
+        << setw(12) << kin_energy_flux_ions
+        << setw(12) << kin_energy_flux_dust
+        << setw(12) << thermal_energy_flux_neut
+        << setw(12) << thermal_energy_flux_ions
+        << setw(12) << fabs(total_mol_cooling) + kin_energy_flux + thermal_energy_flux + magnetic_energy_flux << endl;
 	output.close();
 }
 
@@ -2524,29 +2544,57 @@ void create_file_reaction_rates(const string & output_path, const chem_network *
 	}
 	output.close();
 	
-	fname = output_path + "sim_reaction_rates.txt";
-	output.open(fname.c_str());
-	
-	output << "! abcde = abc*10^(-de) or -abcde = abc*10^(de)" << endl;
+    // binary format of the file
+	fname = output_path + "sim_reaction_rates.bin";
+	output.open(fname.c_str(), ios::binary);
+    output.close();
+	/*output << "! abcde = abc*10^(-de) or -abcde = abc*10^(de)" << endl;
 	output << left << setw(13) << "!t(yr)/z(cm)";
 	for (i = 0; i < network->nb_of_reactions; i++) {
 		output << left << setw(6) << i + 1;
 	}
 	output << endl;
-	output.close();
+	output.close();*/
 }
 
-void save_reaction_rates(const string &output_path, const evolution_data *user_data, double var)
+void save_reaction_rates(const string &output_path, const evolution_data *user_data, double var, double temp_n)
 {
-	int i, j, k;
+    int i, k, l;
+    int16_t abc; 
+    int8_t de;
+
 	double a;
 	string fname;
 	ofstream output;
 
-	fname = output_path + "sim_reaction_rates.txt";
-	output.open(fname.c_str(), ios::app);
+	fname = output_path + "sim_reaction_rates.bin";
+	output.open(fname.c_str(), ios::binary | ios::app);
 	
-	output.setf(ios::scientific, ios::floatfield);
+    reformat_floating_value(var, k, l);
+    abc = (int16_t) k;
+    de = (int8_t)l;
+
+    output.write((char*) & abc, sizeof(abc));
+    output.write((char*) & de, sizeof(de));
+
+    reformat_floating_value(temp_n, k, l);
+    abc = (int16_t)k;
+    de = (int8_t)l;
+
+    output.write((char*)& abc, sizeof(abc));
+    output.write((char*)& de, sizeof(de));
+
+    for (i = 0; i < user_data->get_reaction_nb(); i++) {
+        a = user_data->get_reaction_rate(i);
+        reformat_floating_value(a, k, l);
+        abc = (int16_t) k;
+        de = (int8_t) l;
+
+        output.write((char*)& abc, sizeof(abc));
+        output.write((char*)& de, sizeof(de));
+    }
+    output.close();
+/*	output.setf(ios::scientific, ios::floatfield);
 	output.precision(5);
 	output << left << setw(13) << var;
 	
@@ -2580,7 +2628,25 @@ void save_reaction_rates(const string &output_path, const evolution_data *user_d
 		else output << left << setw(6) << "0     ";
 	}
 	output << endl;
-	output.close();
+	output.close();*/
+}
+
+// abc de = abc * 10 ^ (de), 
+// abc must be fit to int16_t, de must be fit to int8_t, -128 =< de =< 127
+void reformat_floating_value(double x, int & abc, int & de)
+{
+    const int precision = 3; // =< 3
+    if (x > 1.e-99)
+    {
+        if (x < 1.)
+            de = ((int)log10(x)) - 1 - precision;
+        else de = (int)log10(x) - precision;
+
+        abc = (int) (x *pow(10., -de));
+    }
+    else {
+        abc = de = 0;
+    }
 }
 
 void create_file_ice_comp(const string & output_path)

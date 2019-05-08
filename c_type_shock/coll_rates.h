@@ -91,7 +91,8 @@ public:
     double get_rate_ions(const energy_level &init_lev, const energy_level &fin_lev,
         double temp_neutrals, double temp_ions, const double *concentration, const int *indices) const;
 
-    void check_spline(int ilev, int flev, const std::string & fname) const;
+    // initial level il, final level fl, il > fl;
+    void check_spline(int il, int fl, std::string path, std::string name) const;
 
 	collisional_transitions();
 	virtual ~collisional_transitions(); // all collisional data are deleted here

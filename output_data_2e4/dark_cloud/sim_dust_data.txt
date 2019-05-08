@@ -18,3 +18,4 @@
 ! at the end, T - average dust temperature, grains with radius > MIN_ADSORPTION_RADIUS are taken into acount
 !1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17          18          19          
 !t(yr)/z(cm) T0          ab0         Z0          abZ0        ic0         gf0         hir0        hch0        hc0         hh20        hm0         ae0         ai0         puv0        pvis0       pcr0        T           abZ         
+1.00000e+00  9.257e+00   1.232e-11   -8.980e-01  -1.107e-11  0.000e+00   0.000e+00   7.096e-15   1.369e-17   2.024e-18   1.851e-18   3.257e-20   4.522e-11   4.518e-11   5.244e-19   8.579e-21   4.295e-14   9.257e+00   -1.107e-11  
