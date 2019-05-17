@@ -33,7 +33,7 @@ protected:
 	double neut_heat_chem, neut_heat_dust_coll, pheff_gas_heat, neut_cr_heat, neut_heat_h2, neut_heat_atoms, neut_heat_ph2o, 
 		neut_heat_oh2o, neut_heat_co, neut_heat_oh, neut_heat_pnh3, neut_heat_onh3, neut_heat_ch3oh_a, neut_heat_ch3oh_e,
 		neut_heat_scatt_ions, neut_heat_scatt_el, el_heat_atoms, el_heat_h2, el_heat_ph2o, el_heat_oh2o, ion_heat_h2, el_heat_scatt_neut, 
-		el_heat_scatt_ions, el_heat_chem, ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem, rad_energy_loss_h2;
+		el_heat_scatt_ions, el_heat_chem, ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem, rad_energy_loss_h2, rad_energy_loss_h2v0;
 	double vel_n, vel_i, vel_ni_diff, vel_turb, vel_n_grad, vel_i_grad, vel_grad_min;
 	double temp_n, temp_i, temp_e, temp_d, temp_n_erg, temp_i_erg, temp_e_erg, temp_d_erg;
 	double conc_n, conc_i, conc_e, conc_he, conc_h2, conc_ph2, conc_oh2, conc_h2j0, conc_h, conc_h_tot, conc_h2o, conc_co, 
@@ -116,7 +116,7 @@ public:
 	
 	void get_neutral_heating(double & atomic_n, double & h2_n, double & h2o_n, double & co_n, double & oh_n, double & nh3_n, 
 		double & ch3oh_n, double & coll_h, double & chem_h, double & pheff_h, double & cr, double & scatt_i, double & scatt_e, 
-		double & rad_en_loss_h2, double & h2_h_diss) const;	
+		double & rad_en_loss_h2, double & rad_en_loss_h2v0, double & h2_h_diss) const;
 	void get_electron_heating(double & atomic_e, double & h2_e, double & h2o_e, double & scatt_n, double & scatt_i, double & chem) const;
 	void get_ion_heating(double & h2_i, double & scatt_n, double & scatt_e, double & chem) const;
 
@@ -145,7 +145,7 @@ public:
 	// the dimension of heating efficiency dh_eff[] is cm-1 cm-3 s-1, dimension of grain heating rate heating_d[] is cm-1 s-1
     void specimen_population_derivative(const realtype *y_data, realtype *ydot_data, int nb, const energy_diagram *, const einstein_coeff *,
         const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double & heating_n,
-        double & heating_e, double & heating_i, double & rad_energy_loss, double *heating_d);
+        double & heating_e, double & heating_i, double *heating_d);
 	
     void calc_radiative_coeff(const realtype *y_data, int nb, const energy_diagram *, const einstein_coeff *, 
         const collisional_transitions *, double *coll_partn_conc, int *indices, double vel_grad, double *g_factors, 

@@ -117,7 +117,7 @@ bool operator < (const reaction_data & obj1, const reaction_data & obj2)
 	return !(obj1 > obj2);
 }
 
-void production_routes(string path)
+void production_routes(string path1, string path2)
 {
 	bool bo;
 	char text_line[MAX_TEXT_LINE_WIDTH];
@@ -136,10 +136,8 @@ void production_routes(string path)
 	
 	ifstream input;
 	ofstream output;
-
     vector<string> specimen_names;
-    depth_temperature_dependence dt_dep(path);
-
+ 
     specimen_names.push_back("H");
     specimen_names.push_back("O");
     specimen_names.push_back("C");
@@ -203,7 +201,7 @@ void production_routes(string path)
 	
     nb = (int) specimen_names.size();
 
-    fn = path + "sim_species.txt";
+    fn = path1 + "sim_species.txt";
 	input.open(fn.c_str(), ios::in);
 	input >> nb_of_species >> nb_of_elem;
 
@@ -216,7 +214,7 @@ void production_routes(string path)
 	}
 	input.close();
 	
-	fn = path + "sim_reactions.txt";
+	fn = path1 + "sim_reactions.txt";
 	input.open(fn.c_str(), ios::in);
 	input >> nb_of_reactions;
 
@@ -235,18 +233,18 @@ void production_routes(string path)
 	input.close();
 
     // reading binary file
-	fn = path + "sim_reaction_rates.bin";
+	fn = path2 + "sim_reaction_rates.bin";
 	input.open(fn.c_str(), ios::binary | ios::in);
     
     i = 0;
     while (!input.eof() && i < RRA_NB_RATE_VALUES)
     {
         input.read((char*)& abc, sizeof(abc));
+        if (input.eof()) {
+            break;
+        }
         input.read((char*)& de, sizeof(de));
         
-        if (input.eof()) // ??
-            break;
-
         z_arr[i] = abc *pow(10., (int) de);
 
         input.read((char*)& abc, sizeof(abc));
@@ -262,6 +260,7 @@ void production_routes(string path)
         }
         i++;
     }
+    input.close();
 	nb_of_rate_values = i;
 
 	for (k = 0; k < 2*nb; k++)
@@ -361,7 +360,7 @@ void production_routes(string path)
 			if (sn[0] == '*')
 				sn[0] = 'J';
 
-            fn = path;
+            fn = path2;
             fn += CHEM_ANALYSIS_FOLDER;
             fn += "destr_";
 			fn += sn;
@@ -393,7 +392,7 @@ void production_routes(string path)
 			}
 			output.close();
 
-            fn = path;
+            fn = path2;
             fn += CHEM_ANALYSIS_FOLDER;
             fn += "prod_";
 			fn += sn;
@@ -635,7 +634,9 @@ depth_temperature_dependence::depth_temperature_dependence(std::string path) : p
     input.close();
 }
 
-/*	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+/*	   depth_temperature_dependence dt_dep(path);
+
+input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 
     // next line is too large to be read by getline():
     input >> str;

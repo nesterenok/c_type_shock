@@ -162,8 +162,9 @@ int main(int argc, char** argv)
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
     path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "new_output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
-//    production_routes(path);
+//    path += "new_output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
+    path += "new_output_data_2e4/";
+//    production_routes(path, path + "shock_cr1-17_20/");
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -328,9 +329,8 @@ int main(int argc, char** argv)
                 cout << "   shock ended with the code " << (int) shock_state << endl;
                 break;
             }
-            else if (mode == "CS_")
-            {
-                shock_vel = 5.0e+5;
+            else if (mode == "CS_") {
+                // starting shock speed is given in the input data file,
                 max_shock_speed = 120.1e+5; //
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
@@ -1143,7 +1143,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	nb_vibr_h2o = 1;
 	nb_lev_h2o = 150;
 	nb_vibr_co = 0;
-	nb_lev_co = 41;
+	nb_lev_co = 41; // 41
 	
 #if (CALCULATE_POPUL_METHANOL)
 	nb_vibr_ch3oh = 1;
@@ -1355,9 +1355,10 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		do {
 			i--;
 			a += dz_arr[i];
-		}
-		while (a < 0.05*magn_precursor_length && i > 0);
-		
+        } // some arbitrary parameter for velocity difference:
+        while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 3) - veln_arr[i]) < 0.02*NV_Ith_S(y, nb_mhd + 3) 
+                && fabs(NV_Ith_S(y, nb_mhd + 4) - veli_arr[i]) < 0.02*NV_Ith_S(y, nb_mhd + 4));
+
 		vel_n_grad = (NV_Ith_S(y, nb_mhd+3) - veln_arr[i])/a;
 		vel_i_grad = (NV_Ith_S(y, nb_mhd+4) - veli_arr[i])/a;
 
@@ -2189,7 +2190,7 @@ void create_file_heating_rates(const string &output_path)
         << "! nh2-h - neutral gas cooling by H2-H dissociation (is included in previous parameter nch)" << endl
 		<< "! ph - heating by photoeffect on dust grains" << endl
 		<< "! cr - heating by cosmic rays" << endl
-		<< "! rlh2 - radiative energy loss by H2 molecule" << endl
+		<< "! rlh2 - radiative energy loss by H2 molecule (total and only within state v = 0)" << endl
         << "! ih2 - ion fluid cooling via excitation of H2 via ion-H2 collisions" << endl
 		<< "! in - ion gas component heating by neutral-ion collisions" << endl
 		<< "! ie - ion gas component heating by ion-electron collisions" << endl
@@ -2202,7 +2203,7 @@ void create_file_heating_rates(const string &output_path)
 		<< "! ech - electron component heating by chemical reactions" << endl;
 
 	output << left << "!";
-	for (i = 0; i < 26; i++) {
+	for (i = 0; i < 27; i++) {
 		output << left << setw(12) << i + 1;
 	}
 	output << endl;
@@ -2210,9 +2211,9 @@ void create_file_heating_rates(const string &output_path)
 	output << left << setw(13) << "!t(yr)/z(cm)" << setw(12) << "na" << setw(12) << "nh2" << setw(12) << "nh2o" 
 		<< setw(12) << "nco" << setw(12) << "noh" << setw(12) << "nnh3" << setw(12) << "nch3oh" << setw(12) << "ni" 
 		<< setw(12) << "ne" << setw(12) << "nd" << setw(12) << "nch" << setw(12) << "nh2-h" << setw(12) << "ph" 
-        << setw(12) << "cr" << setw(12) << "rlh2" << setw(12) << "ih2" << setw(12) << "in" << setw(12) << "ie" 
-        << setw(12) << "ich" << setw(12) << "ea" << setw(12) << "eh2"<< setw(12) << "eh2o" << setw(12) << "en" 
-        << setw(12) << "ei" << setw(12) << "ech" << endl;
+        << setw(12) << "cr" << setw(12) << "rlh2" << setw(12) << "rlh2v0" << setw(12) << "ih2" << setw(12) << "in" 
+        << setw(12) << "ie" << setw(12) << "ich" << setw(12) << "ea" << setw(12) << "eh2"<< setw(12) << "eh2o" 
+        << setw(12) << "en" << setw(12) << "ei" << setw(12) << "ech" << endl;
 	output.close();
 }
 
@@ -2221,14 +2222,14 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 	double neut_heat_atoms, neut_heat_h2, neut_heat_h2o, neut_heat_co, neut_heat_oh, neut_heat_nh3, neut_heat_ch3oh, neut_heat_dust_coll, 
 		neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, neut_heat_scatt_el, el_heat_atoms, el_heat_h2, 
 		el_heat_h2o, el_heat_scatt_neut, el_heat_scatt_ions, el_heat_chem, ion_heat_h2, ion_heat_scatt_n, ion_heat_scatt_el, 
-        ion_heat_chem, rad_energy_loss_h2, h2_h_diss_cooling;
+        ion_heat_chem, rad_energy_loss_h2, rad_energy_loss_h2v0, h2_h_diss_cooling;
 
 	string fname;
 	ofstream output;
 	
 	user_data->get_neutral_heating(neut_heat_atoms, neut_heat_h2, neut_heat_h2o, neut_heat_co, neut_heat_oh, neut_heat_nh3, neut_heat_ch3oh, 
 		neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, neut_heat_scatt_el, rad_energy_loss_h2, 
-        h2_h_diss_cooling);
+        rad_energy_loss_h2v0, h2_h_diss_cooling);
 	user_data->get_electron_heating(el_heat_atoms, el_heat_h2, el_heat_h2o, el_heat_scatt_neut, el_heat_scatt_ions, el_heat_chem);
 	user_data->get_ion_heating(ion_heat_h2, ion_heat_scatt_n, ion_heat_scatt_el, ion_heat_chem);
 
@@ -2255,6 +2256,7 @@ void save_heating_rates(const string &output_path, const evolution_data *user_da
 		<< setw(12) << pheff_gas_heat 
 		<< setw(12) << neut_cr_heat 
 		<< setw(12) << rad_energy_loss_h2 
+        << setw(12) << rad_energy_loss_h2v0
         << setw(12) << ion_heat_h2
 		<< setw(12) << ion_heat_scatt_n 
 		<< setw(12) << ion_heat_scatt_el 
@@ -2278,7 +2280,7 @@ void create_file_energy_fluxes(const string &output_path)
 	output.open(fname.c_str());
 
 	output << "! kin - kinetic energy flux (neutral and ions, dust grains), [erg cm-2 s-1]" << endl
-        << "! thm - thermal energy flux (neutrals, ions electrons)" << endl
+        << "! thm - thermal energy flux (neutrals, ions, electrons)" << endl
         << "! mgn - magnetic energy flux" << endl
         << "! ncool - total integrated gas cooling by line emission (energy transfered via collisions to specimen excitation), cooling < 0., [erg cm-2 s-1]" << endl
         << "! na  - integrated neutral gas cooling by atomic emission" << endl
@@ -2315,8 +2317,8 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 	static double neut_heat_atoms(0.), neut_heat_h2(0.), neut_heat_h2o(0.), neut_heat_co(0.), neut_heat_oh(0.), neut_heat_nh3(0.), 
 		neut_heat_ch3oh(0.), int_neut_heat_atoms(0.), int_neut_heat_h2(0.), int_neut_heat_h2o(0.), int_neut_heat_co(0.), int_neut_heat_oh(0.), 
 		int_neut_heat_nh3(0.), int_neut_heat_ch3oh(0.); 
-	double x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
-		neut_heat_scatt_el, rad_energy_loss_h2, h2_h_diss_cooling, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc,
+	double a, x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
+		neut_heat_scatt_el, h2_h_diss_cooling, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc,
         ion_dens, ion_pah_dens, v_n, v_i, kin_energy_flux, kin_energy_flux_ions, kin_energy_flux_neut, kin_energy_flux_dust, 
         thermal_energy_flux, thermal_energy_flux_neut, thermal_energy_flux_ions, magnetic_energy_flux;
 
@@ -2332,7 +2334,7 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 	x7 = neut_heat_ch3oh;
 
 	user_data->get_neutral_heating(neut_heat_atoms, neut_heat_h2, neut_heat_h2o, neut_heat_co, neut_heat_oh, neut_heat_nh3, neut_heat_ch3oh, 
-		neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, neut_heat_scatt_el, rad_energy_loss_h2, 
+		neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, neut_heat_scatt_el, a, a, 
         h2_h_diss_cooling);
 	
     if (fabs(var - dvar) <= numeric_limits<double>::epsilon() * fabs(var + dvar))
@@ -2548,13 +2550,6 @@ void create_file_reaction_rates(const string & output_path, const chem_network *
 	fname = output_path + "sim_reaction_rates.bin";
 	output.open(fname.c_str(), ios::binary);
     output.close();
-	/*output << "! abcde = abc*10^(-de) or -abcde = abc*10^(de)" << endl;
-	output << left << setw(13) << "!t(yr)/z(cm)";
-	for (i = 0; i < network->nb_of_reactions; i++) {
-		output << left << setw(6) << i + 1;
-	}
-	output << endl;
-	output.close();*/
 }
 
 void save_reaction_rates(const string &output_path, const evolution_data *user_data, double var, double temp_n)
@@ -2594,41 +2589,6 @@ void save_reaction_rates(const string &output_path, const evolution_data *user_d
         output.write((char*)& de, sizeof(de));
     }
     output.close();
-/*	output.setf(ios::scientific, ios::floatfield);
-	output.precision(5);
-	output << left << setw(13) << var;
-	
-	output.setf(ios::fixed, ios::floatfield);
-	output.precision(2);
-
-	for (i = 0; i < user_data->get_reaction_nb(); i++) {
-		a = user_data->get_reaction_rate(i);
-		if (a > 1000*MINIMAL_REACTION_RATE) 
-		{
-			if (a < 1.)
-				j = ((int) log10(a)) - 1 - 2;
-			else j = (int) log10(a) - 2;
-			
-			k = rounding(a*pow(10., -j));
-			if (k == 1000) {
-				k = 100;
-				j++;
-			}
-			k *= ((j < 0) ? 1 : -1);
-			j = abs(j);
-
-			output << left << setw(3) << k;
-
-			if (j >= 10) 
-				output << setw(3) << abs(j);
-			else if (j > 0) 
-				output << "0" << j << " ";
-			else output << "00 ";
-		}
-		else output << left << setw(6) << "0     ";
-	}
-	output << endl;
-	output.close();*/
 }
 
 // abc de = abc * 10 ^ (de), 
@@ -3523,3 +3483,46 @@ void sputtering()
 		cout << left << setw(13) << s << setw(13) << v*s << setw(13) << rate_data->get(rt, s) << endl;
 	}
 }
+
+/*output << "! abcde = abc*10^(-de) or -abcde = abc*10^(de)" << endl;
+    output << left << setw(13) << "!t(yr)/z(cm)";
+    for (i = 0; i < network->nb_of_reactions; i++) {
+        output << left << setw(6) << i + 1;
+    }
+    output << endl;
+    output.close();*/
+    /*	output.setf(ios::scientific, ios::floatfield);
+        output.precision(5);
+        output << left << setw(13) << var;
+
+        output.setf(ios::fixed, ios::floatfield);
+        output.precision(2);
+
+        for (i = 0; i < user_data->get_reaction_nb(); i++) {
+            a = user_data->get_reaction_rate(i);
+            if (a > 1000*MINIMAL_REACTION_RATE)
+            {
+                if (a < 1.)
+                    j = ((int) log10(a)) - 1 - 2;
+                else j = (int) log10(a) - 2;
+
+                k = rounding(a*pow(10., -j));
+                if (k == 1000) {
+                    k = 100;
+                    j++;
+                }
+                k *= ((j < 0) ? 1 : -1);
+                j = abs(j);
+
+                output << left << setw(3) << k;
+
+                if (j >= 10)
+                    output << setw(3) << abs(j);
+                else if (j > 0)
+                    output << "0" << j << " ";
+                else output << "00 ";
+            }
+            else output << left << setw(6) << "0     ";
+        }
+        output << endl;
+        output.close();*/

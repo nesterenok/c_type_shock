@@ -300,7 +300,7 @@ void collisional_transitions::check_spline(int il, int fl, std::string path, std
         for (nb = 0; nb < (int)coll_data.size(); nb++) {
             if (il < coll_data[nb]->nb_lev) {
                 a = coll_data[nb]->get_max_temp();
-                (t < a) ? rate = coll_data[nb]->get_rate(il, fl, t) : rate = coll_data[nb]->get_rate(il, fl, a);
+                rate = (t < a) ? coll_data[nb]->get_rate(il, fl, t) : coll_data[nb]->get_rate(il, fl, a);
                 output << left << setw(12) << rate;
             }
         }

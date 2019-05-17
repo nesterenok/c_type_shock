@@ -117,7 +117,7 @@
 
 #define REL_ERROR_SOLVER 1.e-6
 #define ABS_CONCENTRATION_ERROR_SOLVER 1.e-18 // specimen concentration (cm-3)
-#define ABS_POPULATION_H2_ERROR_SOLVER 1.e-14 // specimen level population density (cm-3)
+#define ABS_POPULATION_H2_ERROR_SOLVER 1.e-11 // 1.e-14, 1.e-11, specimen level population density (cm-3)
 #define ABS_POPULATION_ERROR_SOLVER 1.e-11
 #define ABS_PARAMETER_ERROR_SOLVER 1.e-11 // temperature (K), gas velocity (cm/s), average grain charge
 #define MAX_CONV_FAILS_SOLVER 100 // default value is 10;
@@ -139,7 +139,7 @@
 // (other than H2 formation) and 50% for the formation of H2 (as in NAUTILUS code).
 // 0 - H2 formation is modelled (grain surface chemistry must be on); 
 // 1 - "ad hoc" (as described higher); 2 - semiempirical H2 formation rate; 
-#define H2_FORMATION_MODE 0
+#define H2_FORMATION_MODE 0 // must be re-considered
 
 // Hollenbach, Tielens, Reviews of Modern Physics 71, p. 173, 1999; k = c*n_H*n_H_tot, c = (1-3)*1e-17 cm3 s-1;
 #define STANDARD_H2_FORMATION_RATE 3.e-17

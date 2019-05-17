@@ -6,7 +6,9 @@
 #include <algorithm>
 
 // the array of gas-phase chemical species is given in input, adsorbed species are considered automatically in the routine;
-void production_routes(std::string path);
+// path1 - the location of files with chemical species and reactions, 
+// path2 - the location of data file, the output is written in this location
+void production_routes(std::string path1, std::string path2);
 
 // The time grid in NAUTILUS data and in the compared data must be the same:
 void nautilus_comparison(std::string path);

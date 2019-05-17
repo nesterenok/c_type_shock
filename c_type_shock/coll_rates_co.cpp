@@ -17,7 +17,7 @@
 #include "utils.h"
 #include "constants.h"
 
-#define MAX_TEXT_LINE_WIDTH 240
+#define MAX_TEXT_LINE_WIDTH 1000 // must be large
 #define SOURCE_NAME "coll_rates_co.cpp"
 using namespace std;
 
@@ -32,7 +32,7 @@ co_h2_coll_data::co_h2_coll_data(const string path, const energy_diagram *di, bo
 
 	if (is_ortho_h2) 
 		fname = path + "coll_co/coll_co_oh2.txt";
-	else fname = path + "coll_co/coll_co_ph2.txt";	
+    else fname = path + "coll_co/coll_co_ph2.txt";
 
 	input.open(fname.c_str(), ios_base::in);
 	if (!input) {

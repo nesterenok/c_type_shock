@@ -15,7 +15,7 @@
 #include "utils.h"
 #include "coll_rates_h2o.h"
 
-#define MAX_TEXT_LINE_WIDTH 240
+#define MAX_TEXT_LINE_WIDTH 1000
 #define SOURCE_NAME "coll_rates_h2o.cpp"
 using namespace std;
 
