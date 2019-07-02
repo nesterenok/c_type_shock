@@ -146,8 +146,9 @@ sputtering_yield::sputtering_yield(double m_p, double m_t, double b_en)
 	
 	sm = m_p + m_t;
 	rm = m_p*m_t/sm;
-
-	a = 4.*rm/sm;       // efficiency factor is set to be equal 1.;
+  
+    // Draine & Salpeter (1979) suggested to use 0.8 for efficiency factor for ices, see also Burkhardt et al. (2019) 
+	a = 4.*0.8*rm/sm;       
 	en_min = bind_en/a; // here binding energy is in erg;
 	
 	if (en_min < 4.*bind_en)

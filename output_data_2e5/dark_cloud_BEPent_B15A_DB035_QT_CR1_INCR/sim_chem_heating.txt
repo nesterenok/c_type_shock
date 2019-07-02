@@ -1,1 +1,0 @@
-# Heating and cooling rates of neutral gas component due to chemical reactions, [erg cm-3 s-1]

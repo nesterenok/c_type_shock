@@ -633,32 +633,3 @@ depth_temperature_dependence::depth_temperature_dependence(std::string path) : p
     }
     input.close();
 }
-
-/*	   depth_temperature_dependence dt_dep(path);
-
-input.getline(text_line, MAX_TEXT_LINE_WIDTH);
-
-    // next line is too large to be read by getline():
-    input >> str;
-    for (i = 0; i < nb_of_reactions; i++) {
-        input >> j;
-    }
-
-    i = 0;
-    while (!input.eof() && i < RRA_NB_RATE_VALUES)
-    {
-        input >> z_arr[i];
-        if (input.eof())
-            break;
-
-        t_arr[i] = dt_dep.get_gas_temperature(z_arr[i]);
-
-        for (j = 0; j < nb_of_reactions; j++) {
-            input >> k;
-            a = abs(k/100);
-            rd_v[j].rates[i] = a*pow(10., -k%100);
-        }
-        i++;
-    }
-    input.close();
-    */

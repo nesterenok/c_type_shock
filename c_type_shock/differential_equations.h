@@ -101,8 +101,10 @@ public:
 	int get_dust_zmin(int i) const { return min_grain_charge[i]; }
 	int get_dust_zmax(int i) const { return max_grain_charge[i]; }
 
+    // get velocity gradient used in line radiation transport:
 	double get_veln_grad() const { return vel_n_grad; }
 	double get_veli_grad() const { return vel_i_grad; }
+
 	double get_vel_grad_min() const { return vel_grad_min; }
 	double get_vel_turb() const { return vel_turb; }
 	double get_shock_speed() const { return shock_vel; }
@@ -221,8 +223,11 @@ public:
 
 	void set_shock_vel(double v) { shock_vel = v; } // in cm/s
 	double get_add_electron_sterm() { return add_el_source; }
-	double get_velg_mhd_n() { return velg_mhd_n; }
+	
+    // get velocity gradient obtained in MHD equations:
+    double get_velg_mhd_n() { return velg_mhd_n; }
 	double get_velg_mhd_i() { return velg_mhd_i; }
+   
     // supersonic - thermal and magnetic energy is lower then outflow kinetic energy
     double is_ion_fluid_supersonic() { return (ion_vg_denominator < 0.); } 
     double is_neut_fluid_subsonic() { return (neut_vg_denominator > 0.); } 

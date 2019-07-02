@@ -72,7 +72,7 @@ public:
 	chem_reaction_cross_section_2(double mass1, double mass2, double ioniz_potential, double oscill_strength);
 };
 
-// Approximation of sputtering yield by Draine, Salpeter, ApJ 231, 77, 1979;
+// Approximation of sputtering yield by Draine & Salpeter, ApJ 231, 77, 1979;
 class sputtering_yield : public process_cross_section
 {
 protected:

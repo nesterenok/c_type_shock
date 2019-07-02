@@ -1306,11 +1306,12 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     h2_h_diss_cooling = h2_h_diss_rate = 0.;
     for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
     {
-#if (H2_H_DISSOCIATION_MODE == 1)
+        // Bossion et al. MNRAS 480, p.3718, 2018
         c = y_data[i] *conc_h *h2_h_diss_data->get_rate(i - nb_of_species, temp_n);
-#else
-        c = y_data[i] * conc_h *1.e-10*exp(-(56640. - h2_di->lev_array[i - nb_of_species].energy *CM_INVERSE_TO_KELVINS) / temp_n);
-#endif   
+        
+        // Le Bourlot et al., MNRAS 332, 985, 2002
+        // c = y_data[i] * conc_h *1.e-10*exp(-(56640. - h2_di->lev_array[i - nb_of_species].energy *CM_INVERSE_TO_KELVINS) / temp_n);
+
         ydot_data[i] -= c;
         h2_h_diss_rate += c;
         h2_h_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) *c; // < 0 for cooling,
@@ -1327,7 +1328,10 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
             h2_vibr_states_density_h2[j] += y_data[nb_of_species + i];
         }
     }
-    
+
+// H2 dissociation in H2-e collisions must be taken into account
+// Trevisan & Tennyson, Plasma Phys. Control. Fusion 44 (2002) 1263-1276
+
     j = network->h2_h2_diss_nb;
     a = network->reaction_array[j].energy_released; // energy released in reaction, 
     h2_h2_diss_cooling = h2_h2_diss_rate = vh2_vh2_diss_rate = 0.;

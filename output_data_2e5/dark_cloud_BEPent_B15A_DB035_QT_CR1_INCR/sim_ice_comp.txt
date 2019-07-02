@@ -1,4 +1,0 @@
-! Specimen abundances are normalized on H2O ice abundance, H2O ice concentration is given
-!t(yr)/z(cm) s-CO        s-CO2       s-H2CO      s-CH3OH     s-CH4       s-NH3       s-N2        s-H2O_conc  ! main nitrogen species       
-1.00000e+000 8.611e-002  1.208e+000  1.634e-003  5.317e-004  3.705e-002  5.056e-004  2.374e-001  1.290e+001  ! *HNCO   *N2       *HCN      
-1.07461e+000 8.611e-002  1.208e+000  1.634e-003  5.317e-004  3.705e-002  5.056e-004  2.374e-001  1.290e+001  ! *HNCO   *N2       *HCN      

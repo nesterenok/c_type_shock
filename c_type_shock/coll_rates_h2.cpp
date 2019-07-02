@@ -655,6 +655,7 @@ h2_h_lique_data::h2_h_lique_data(const string &path, const energy_diagram *h2_di
 	}
 }
 
+// perhaps, the data must be stitch with the data by Lique(2015)
 h2_h_bossion_data::h2_h_bossion_data(const string &path, const energy_diagram *h2_di, int verbosity)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];

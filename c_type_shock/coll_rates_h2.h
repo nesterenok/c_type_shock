@@ -103,6 +103,7 @@ public:
 
 // The data by Bossion et al. MNRAS 480, p.3718, 2018;
 // all levels, but not ordered; no spline
+// perhaps, the data must be stitch with the data by Lique (2015)
 class h2_h_bossion_data	: public collision_data
 {
 public:

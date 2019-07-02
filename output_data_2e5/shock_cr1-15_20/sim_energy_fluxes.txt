@@ -1,0 +1,29 @@
+! kin - kinetic energy flux (neutral and ions, dust grains), [erg cm-2 s-1]
+! thm - thermal energy flux (neutrals, ions, electrons)
+! mgn - magnetic energy flux
+! ncool - total integrated gas cooling by line emission (energy transfered via collisions to specimen excitation), cooling < 0., [erg cm-2 s-1]
+! na  - integrated neutral gas cooling by atomic emission
+! nh2 - neutral gas cooling by H2 emission
+! nh2o - neutral gas cooling by H2O emission
+! nco - neutral gas cooling by CO emission
+! noh - neutral gas cooling by OH emission
+! nnh3 - neutral gas cooling by p- and o-NH3 emission
+! nch3oh - neutral gas cooling by CH3OH (A-,E-) emission
+! kin_n - kinetic energy flux of neutrals
+! kin_i - kinetic energy flux of ions (no PAH and small grains)
+! kin_d - kinetic energy flux of dust (including PAH and small grains)
+! thm_n - thermal energy flux of neutrals
+! thm_i - thermal energy flux of ions, electrons, small negative grains (PAH)
+! totfl - total flux, [erg cm-2 s-1]
+!1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17          18          
+!z(cm)       kin         thm         mgn         ncool       na          nh2         nh2o        nco         noh         nnh3        nch3oh      kin_n       kin_i       kin_d       thm_n       thm_i       totfl       
+1.22793e+13  1.823e+00   1.872e-03   3.225e-02   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.173e-07   1.805e-02   1.872e-03   9.823e-10   1.857e+00   
+2.54816e+13  1.823e+00   1.872e-03   3.225e-02   2.425e-10   -6.197e-11  5.029e-10   -8.158e-11  -1.168e-10  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.175e-07   1.805e-02   1.872e-03   9.829e-10   1.857e+00   
+5.42234e+13  1.823e+00   1.872e-03   3.225e-02   1.299e-09   -3.318e-10  2.693e-09   -4.368e-10  -6.255e-10  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.181e-07   1.804e-02   1.872e-03   9.840e-10   1.857e+00   
+1.14357e+14  1.823e+00   1.872e-03   3.225e-02   3.511e-09   -8.964e-10  7.277e-09   -1.180e-09  -1.690e-09  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.189e-07   1.804e-02   1.872e-03   9.859e-10   1.857e+00   
+2.45464e+14  1.823e+00   1.872e-03   3.226e-02   8.261e-09   -2.149e-09  1.730e-08   -2.815e-09  -4.077e-09  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.195e-07   1.803e-02   1.872e-03   9.891e-10   1.857e+00   
+5.25450e+14  1.823e+00   1.872e-03   3.231e-02   1.767e-08   -5.001e-09  3.886e-08   -6.431e-09  -9.759e-09  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.179e-07   1.799e-02   1.872e-03   9.979e-10   1.857e+00   
+8.49335e+14  1.823e+00   1.873e-03   3.244e-02   2.574e-08   -8.821e-09  6.394e-08   -1.100e-08  -1.839e-08  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.113e-07   1.789e-02   1.873e-03   1.050e-09   1.857e+00   
+1.12467e+15  1.822e+00   1.878e-03   3.272e-02   2.754e-08   -1.278e-08  8.535e-08   -1.545e-08  -2.956e-08  0.000e+00   0.000e+00   0.000e+00   1.805e+00   8.008e-07   1.766e-02   1.878e-03   1.310e-09   1.857e+00   
+1.23107e+15  1.822e+00   1.884e-03   3.292e-02   2.539e-08   -1.460e-08  9.365e-08   -1.744e-08  -3.622e-08  0.000e+00   0.000e+00   0.000e+00   1.805e+00   7.957e-07   1.749e-02   1.884e-03   1.608e-09   1.857e+00   
+1.28545e+15  1.822e+00   1.890e-03   3.306e-02   2.272e-08   -1.565e-08  9.792e-08   -1.857e-08  -4.098e-08  0.000e+00   0.000e+00   0.000e+00   1.804e+00   7.928e-07   1.738e-02   1.890e-03   1.860e-09   1.857e+00   
