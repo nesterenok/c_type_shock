@@ -4,7 +4,8 @@
 #include "spectroscopy.h"
 #include "coll_rates.h"
 
-const int nb_vibr_states_h2_ceballos2002 = 5;
+// maximal nb of vibration states of H2 molecule (0,1,..,nb-1)
+const int nb_vibr_states_h2 = 15;
 
 #define H2_COLL_CUBIC_SPLINE 1
 
@@ -103,7 +104,7 @@ public:
 
 // The data by Bossion et al. MNRAS 480, p.3718, 2018;
 // all levels, but not ordered; no spline
-// perhaps, the data must be stitch with the data by Lique (2015)
+// perhaps, the data must be stitched with the data by Lique (2015)
 class h2_h_bossion_data	: public collision_data
 {
 public:
@@ -178,18 +179,26 @@ public:
     h2_h2_dissociation_martin1998(const std::string & data_path, const energy_diagram *, int verbosity);
 };
 
+// Ceballos et al., J. Phys. Chem. Reference Data 31, 371 (2002);
 class h2_h2_dissociation_ceballos2002 : public dissociation_data
 {
 protected:
     int min_vibrq, max_vibrq;
-public:
-    int get_minv() const { return min_vibrq; }
-    int get_maxv() const { return max_vibrq; }
 
+public:
     double get_rate(int i, double temp) const { return 0.; }
     // v is vibration quantum number of the level
     double get_rate(int v, double temp, double *vibr_h2_conc) const;
     h2_h2_dissociation_ceballos2002(const std::string & data_path, int verbosity);
+};
+
+// Trevisan & Tennyson, Plasma Phys. Control. Fusion 44, p.1263 (2002)
+class h2_e_dissociation_tennyson : public dissociation_data
+{
+public:
+    double get_rate(int i, double temp) const { return 0.; }
+    void get_rate(double temp_e, double *vibr_h2_rates) const;
+    h2_e_dissociation_tennyson();
 };
 
 

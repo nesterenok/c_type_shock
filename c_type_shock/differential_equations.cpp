@@ -81,6 +81,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	el_heat_scatt_ions(0.), el_heat_chem(0.), ion_heat_h2(0.), ion_heat_scatt_n(0.), ion_heat_scatt_el(0.), ion_heat_chem(0.), ads_dust_area(0.),
 	ads_grain_velz(0.), ads_grain_veln2(0.), desorption_factor_cr(0.), photodes_factor_cr(0.), photodes_factor_is(0.), 
 	oh2_form_hcoll(0.), h2_h_diss_rate(0.), h2_h_diss_cooling(0.), h2_h2_diss_rate(0.), h2_h2_diss_cooling(0.), vh2_vh2_diss_rate(0.),
+    h2_e_diss_rate(0.), h2_e_diss_cooling(0.),
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
 	dust_heat_coll(0), dust_heat_chem(0), chem_reaction_rates(0), gamma_factors(0), delta_factors(0), dheat_efficiency(0), 
 	esc_prob_int1(0), esc_prob_int2(0), ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), 
@@ -161,7 +162,10 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	h2_h_diss_data = new h2_h_dissociation_bossion2018(path, h2_di, verbosity);
     h2_h2_diss_data = new h2_h2_dissociation_martin1998(path, h2_di, verbosity);
     h2_h2_diss_vibr_excited = new h2_h2_dissociation_ceballos2002(path, verbosity);
-    h2_vibr_states_density_h2 = new double [nb_vibr_states_h2_ceballos2002];
+    h2_e_diss_data = new h2_e_dissociation_tennyson();
+    
+    h2_vibr_states_density_h2 = new double [nb_vibr_states_h2];
+    h2_vibr_states_diss_rates = new double[nb_vibr_states_h2];
 
 	// Calculation of the data of H2 excitation processes:
 	h2_excit_cr = new h2_excit_cosmic_rays(path, h2_di);
@@ -466,6 +470,7 @@ evolution_data::~evolution_data()
     delete h2_h2_diss_data;
     delete h2_h_diss_data;
     delete h2_h2_diss_vibr_excited;
+    delete h2_e_diss_data;
 
 	delete OI_di;
 	delete OI_einst;
@@ -519,10 +524,11 @@ evolution_data::~evolution_data()
 	delete network;
 	delete accr_func;
 
-    delete [] h2_vibr_states_density_h2;
-	delete [] dh_isrf_arr;
-	delete [] indices;
-	delete [] coll_partn_conc;
+    delete[] h2_vibr_states_density_h2;
+    delete[] h2_vibr_states_diss_rates;
+	delete[] dh_isrf_arr;
+	delete[] indices;
+	delete[] coll_partn_conc;
 
 	delete [] nb_dch;
 	delete [] min_grain_charge;
@@ -850,8 +856,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
                 rate *= y_data[k] * y_data[l];
 
-                // H2-H2 and H2-H dissociation reactions are not taken into account here:
-                if (i == network->h2_h_diss_nb || i == network->h2_h2_diss_nb) { 
+                // H2-H2, H2-H, H2-e dissociation reactions are not taken into account here:
+                if (i == network->h2_h_diss_nb || i == network->h2_h2_diss_nb || i == network->h2_e_diss_nb) {
                     rate = 0.;
                 }
 
@@ -1265,6 +1271,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, 0);
 #endif
 
+    // ortho-H2 formation in collisions with H atoms
     oh2_form_hcoll = 0.;
     for (i = 0; i < nb_lev_h2; i++)
     {
@@ -1319,19 +1326,36 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     chem_reaction_rates[j] = h2_h_diss_rate; // reaction rate is saved,
     chem_heating_rates_n[j] = h2_h_diss_cooling; // cooling of the gas by this process,      
    
-// H2 dissociation in H2-H2 collisions
-    memset(h2_vibr_states_density_h2, 0, nb_vibr_states_h2_ceballos2002 *sizeof(double));
-    for (i = 0; i < nb_lev_h2; i++) {
+// Calculation of number densities of H2 vibrational states
+    memset(h2_vibr_states_density_h2, 0, nb_vibr_states_h2 *sizeof(double));
+    for (i = 0; i < nb_lev_h2; i++) 
+    {
         j = h2_di->lev_array[i].v;
-        if (j >= h2_h2_diss_vibr_excited->get_minv() && j <= h2_h2_diss_vibr_excited->get_maxv()) {
-            j = (j - 5) / 2;
+        if (j < nb_vibr_states_h2) {
             h2_vibr_states_density_h2[j] += y_data[nb_of_species + i];
         }
     }
 
 // H2 dissociation in H2-e collisions must be taken into account
 // Trevisan & Tennyson, Plasma Phys. Control. Fusion 44 (2002) 1263-1276
+    j = network->h2_e_diss_nb;
+    a = network->reaction_array[j].energy_released; // energy released in reaction, 
+    h2_e_diss_cooling = h2_e_diss_rate = 0.;
+    
+    memset(h2_vibr_states_diss_rates, 0, nb_vibr_states_h2 * sizeof(double));
+    h2_e_diss_data->get_rate(temp_e, h2_vibr_states_diss_rates);
+    
+    for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++)
+    {
+        b = conc_e * y_data[i] * h2_vibr_states_diss_rates[h2_di->lev_array[i - nb_of_species].v];
+        ydot_data[i] -= b;
 
+        h2_e_diss_rate += b;
+        h2_e_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) * b;
+    }
+    chem_reaction_rates[j] = h2_e_diss_rate;
+
+// H2 dissociation in H2-H2 collisions
     j = network->h2_h2_diss_nb;
     a = network->reaction_array[j].energy_released; // energy released in reaction, 
     h2_h2_diss_cooling = h2_h2_diss_rate = vh2_vh2_diss_rate = 0.;
@@ -1350,8 +1374,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     chem_reaction_rates[j] = h2_h2_diss_rate; 
     chem_heating_rates_n[j] = h2_h2_diss_cooling; 
 
-    ydot_data[network->h_nb] += 2.*(h2_h2_diss_rate + h2_h_diss_rate);
-    ydot_data[network->h2_nb] -= h2_h2_diss_rate + h2_h_diss_rate;
+    ydot_data[network->h_nb] += 2.*(h2_h2_diss_rate + h2_h_diss_rate + h2_e_diss_rate);
+    ydot_data[network->h2_nb] -= h2_h2_diss_rate + h2_h_diss_rate + h2_e_diss_rate;
     neut_heat_chem += h2_h_diss_cooling + h2_h2_diss_cooling;
 	
     // other processes of H2 formation are assumed not to change level populations: molecules are formed
@@ -1362,7 +1386,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	}
 
 	energy_gain_n += neut_heat_h2 + h2_h_diss_cooling + h2_h2_diss_cooling;
-	energy_gain_e += el_heat_h2;
+	energy_gain_e += el_heat_h2 + h2_e_diss_cooling; // electron fluid cools in H2-e dissociation
     energy_gain_i += ion_heat_h2;
     nb = nb_of_species + nb_lev_h2;
 	
@@ -2638,7 +2662,7 @@ void evolution_data::get_chem_heating_rates(double *& cheat, int & nb) const
 }
 
 void evolution_data::get_h2_chem(double & h2_gr, double & h2_gasf, double & h2_gasd, double & o_hcoll,
-    double & h2_h_diss, double & h2_h2_diss, double & vh2_vh2_diss, double & h2_ion_diss, N_Vector y) const
+    double & h2_h_diss, double & h2_h2_diss, double & vh2_vh2_diss, double & h2_e_diss, double & h2_ion_diss, N_Vector y) const
 { 
     double teff;
 
@@ -2649,6 +2673,7 @@ void evolution_data::get_h2_chem(double & h2_gr, double & h2_gasf, double & h2_g
 	h2_h_diss = h2_h_diss_rate;
     h2_h2_diss = h2_h2_diss_rate;
     vh2_vh2_diss = vh2_vh2_diss_rate;
+    h2_e_diss = h2_e_diss_rate;
 
     h2_ion_diss = 0.;
     const realtype *y_data = NV_DATA_S(y);

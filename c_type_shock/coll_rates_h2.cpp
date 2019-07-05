@@ -655,7 +655,7 @@ h2_h_lique_data::h2_h_lique_data(const string &path, const energy_diagram *h2_di
 	}
 }
 
-// perhaps, the data must be stitch with the data by Lique(2015)
+// perhaps, the data must be stitched with the data by Lique(2015)
 h2_h_bossion_data::h2_h_bossion_data(const string &path, const energy_diagram *h2_di, int verbosity)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
@@ -1264,8 +1264,8 @@ h2_h2_dissociation_ceballos2002::h2_h2_dissociation_ceballos2002(const std::stri
     string file_name;
     ifstream input;
 
-    min_vibrq = 5; 
-    max_vibrq = min_vibrq + 2 * nb_vibr_states_h2_ceballos2002 - 1;
+    min_vibrq = 5; // min <= v <= max
+    max_vibrq = 14;
 
     file_name = path + "coll_h2/diss_h2-h2_ceballos2002.txt";
     input.open(file_name.c_str(), std::ios_base::in);
@@ -1326,11 +1326,27 @@ double h2_h2_dissociation_ceballos2002::get_rate(int v, double temp, double *vib
         else r = j;
     }
     
-    v = ((v - 5) / 2) * nb_vibr_states_h2_ceballos2002;
-    for (j = 0; j < nb_vibr_states_h2_ceballos2002; j++) {
-        rate += (coeff[v + j][l] + coeff_deriv[v + j][l] * (temp - tgrid[l])) * vibr_h2_conc[j];
+    v = ((v - min_vibrq) / 2) * 5; // 
+    for (j = min_vibrq, r = 0; j < nb_vibr_states_h2 && j < max_vibrq; j += 2, r++) 
+    {
+        rate += (coeff[v + r][l] + coeff_deriv[v + r][l] * (temp - tgrid[l])) 
+            * (vibr_h2_conc[j] + vibr_h2_conc[j+1]);
     }
     return 0.5*rate; // 0.5 due to statistical considerations
+}
+
+
+h2_e_dissociation_tennyson::h2_e_dissociation_tennyson()
+{;}
+
+void h2_e_dissociation_tennyson::get_rate(double temp_e, double *vibr_h2_rates) const
+{
+    vibr_h2_rates[0] = 4.4886e-9 * pow(temp_e, 0.1091) *exp(-101858.0 / temp_e);
+    vibr_h2_rates[1] = 5.6559e-9 * pow(temp_e, 0.0694) *exp(-85371.7 / temp_e);
+    vibr_h2_rates[2] = 2.1755e-9 * pow(temp_e, 0.1491) *exp(-71582.2 / temp_e);
+    vibr_h2_rates[3] = 0.9581e-9 * pow(temp_e, 0.2171) *exp(-60136.4 / temp_e);
+    vibr_h2_rates[4] = 0.4223e-9 * pow(temp_e, 0.2857) *exp(-50186.9 / temp_e);
+    // what about v > 4?
 }
 
 //

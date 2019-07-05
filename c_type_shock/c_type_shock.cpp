@@ -162,9 +162,8 @@ int main(int argc, char** argv)
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
     path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-//    path += "new_output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
-    path += "new_output_data_2e4/";
-//    production_routes(path, path + "shock_cr1-17_20/");
+    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
+//    production_routes(path, path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -431,7 +430,8 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		nb_vibr_ch3oh, nb_lev_ch3oh, nb_lev_ci, nb_lev_cii, nb_lev_oi, nb_of_dust_comp, nb_of_grain_charges, nb_of_equat, 
 		nb_dct, nb_mhd, verbosity;
 	long int nb_steps;
-	double a, init_temp, conc_e, h2_form_const, t, ty, tfin, tout, rel_tol, tmult, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens;
+	double a, init_temp, conc_e, h2_form_const, t, ty, tfin, tout, rel_tol, tmult, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, 
+        op_h2_ratio;
 	
 	double *chem_abund(0);
 	vector<double> new_y, init_ch;
@@ -649,11 +649,12 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		<< "! p6 - total electric charge of grains, [cm-3]" << endl;
 
 	output << "!";
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 11; i++) {
 		output << left << setw(14) << i + 1;
 	}
 	output << endl << left << setw(15) << "!time(yrs)" << setw(14) << "T_n" << setw(14) << "T_i" << setw(14) << "T_e" 
-		<< setw(14) << "p1" << setw(14) << "p2" << setw(14) << "p3" << setw(14) << "p4" << setw(14) << "p5" << setw(14) << "p6" << endl;
+		<< setw(14) << "oph2" << setw(14) << "p1" << setw(14) << "p2" << setw(14) << "p3" << setw(14) << "p4" 
+        << setw(14) << "p5" << setw(14) << "p6" << endl;
 	output.close();
 	
 	nb = 0;
@@ -686,6 +687,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		
 		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
+        op_h2_ratio = NV_Ith_S(y, network->h2_nb) / user_data.calc_conc_ph2(y) - 1.;
 
 		fname = output_path + "sim_phys_param.txt";
 		output.open(fname.c_str(), ios::app);
@@ -696,7 +698,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 
 		output.precision(5);		
 		output << left << setw(14) << NV_Ith_S(y, nb_mhd) << setw(14) << NV_Ith_S(y, nb_mhd + 1) 
-			<< setw(14) << NV_Ith_S(y, nb_mhd + 2) << setw(14) << user_data.calc_ice_conc(y)/conc_h_tot
+			<< setw(14) << NV_Ith_S(y, nb_mhd + 2) << setw(14) << op_h2_ratio << setw(14) << user_data.calc_ice_conc(y)/conc_h_tot
 			<< setw(14) << user_data.calc_hydrocarbon_conc(y)/conc_h_tot << setw(14) << h2_form_const 
 			<< setw(14) << NV_Ith_S(y, network->e_nb) << setw(14) << ion_conc
 			<< setw(14) << user_data.calc_total_grain_charge(y) << endl;
@@ -1123,7 +1125,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	long int tot_nb_steps;
 	double a, b, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, magn_precursor_length, magn_sonic_speed, 
 		sound_speed, conc_h_tot, temp_n, temp_i, temp_e, neut_dens, ion_dens, neut_conc, ion_conc, ion_pah_conc, ion_pah_dens, 
-        rel_tol, ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved;
+        rel_tol, ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved, dv_to_v_lim;
 	double *prev_y(0);
 	
 	string fname, sn;
@@ -1240,12 +1242,14 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	rel_tol = REL_ERROR_SOLVER;
 	user_data.set_tolerances(abs_tol);
 	
-	ty = z = z_saved = zout = 0.;
-	dz = 0.01*magn_precursor_length; // cm
-	zfin = 1000.*magn_precursor_length;
+    ty = z = z_saved = zout = 0.;
+    dz = 0.01*magn_precursor_length; // cm
+    zfin = 1000.*magn_precursor_length;
+    dv_to_v_lim = 0.02;
+
     // relative difference between ion and neutral speeds, at which shock stop;
     dvel_shock_stop = 0.01; // for studies of chemical evolution of post-shock gas, set 0.001
-
+    
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
 	void *cvode_mem = CVodeCreate(CV_BDF);
 
@@ -1290,15 +1294,15 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		<< "! p3 - total electric charge of grains, [cm-3]" << endl;
 
 	output << "!";
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < 18; i++) {
 		output << left << setw(14) << i+1;
 	}
 	output << endl;
 
 	output << left << setw(18) << "!z(cm)" << setw(14) << "time(yr)" << setw(14) << "T_n" << setw(14) << "T_i" 
 		<< setw(14) << "T_e" << setw(14) << "v_n"<< setw(14) << "v_i" << setw(14) << "nh" << setw(14) << "aic" 
-		<< setw(14) << "ae" << setw(14) << "aio" << setw(14) << "vgn" << setw(14) << "vgi" << setw(14) << "p1" 
-        << setw(14) << "p2" << setw(14) << "p3" << endl;
+		<< setw(14) << "ae" << setw(14) << "aio" << setw(14) << "vgn(av)" << setw(14) << "vgn" 
+        << setw(14) << "vgi(av)" << setw(14) << "vgi" << setw(14) << "p1" << setw(14) << "p2" << setw(14) << "p3" << endl;
 	output.close();
 	
 	// create_file_cloud_parameters(output_path2); // is not saved, saving space on the disk,
@@ -1325,15 +1329,15 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	while (z < zfin && !must_be_stopped) 
 	{
 		i = 0;
-		flag = CV_SUCCESS;
+		flag = CV_SUCCESS; 
         zout = z + dz; // updating zout
 
-		while (i < 300 && flag == CV_SUCCESS && z < zout){
-			flag = CVode(cvode_mem, zout, y, &z, CV_ONE_STEP); // CV_NORMAL or CV_ONE_STEP
-			i++;
+		while (i < 100 && flag == CV_SUCCESS && z < zout) {
+			flag = CVode(cvode_mem, zout, y, &z, CV_ONE_STEP); // CV_NORMAL or CV_ONE_STEP     
+     	    i++;
 		}
 
-		dz += z - zout;
+        dz += z - zout;
 		if (dz < 10.*DBL_EPSILON*z) // at this moment, dz may be very small or negative due to rounding error;
 			dz = 10.*DBL_EPSILON*z;
 
@@ -1348,20 +1352,25 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 << "calc time (s): " << setw(8) << (int)(time(NULL) - timer) << "nb of steps: " << i << endl;
         }
 
-		// Calculation of velocity gradients:
+		// Calculation of velocity gradients, some arbitrary parameter for velocity difference:
 		dz_arr.push_back(dz);
 		i = (int) dz_arr.size();
-		a = 0.;
-		do {
+        a = 0.;
+		
+        do {
 			i--;
 			a += dz_arr[i];
-        } // some arbitrary parameter for velocity difference:
-        while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 3) - veln_arr[i]) < 0.02*NV_Ith_S(y, nb_mhd + 3) 
-                && fabs(NV_Ith_S(y, nb_mhd + 4) - veli_arr[i]) < 0.02*NV_Ith_S(y, nb_mhd + 4));
-
-		vel_n_grad = (NV_Ith_S(y, nb_mhd+3) - veln_arr[i])/a;
-		vel_i_grad = (NV_Ith_S(y, nb_mhd+4) - veli_arr[i])/a;
-
+        } while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 3) - veln_arr[i]) < dv_to_v_lim *NV_Ith_S(y, nb_mhd + 3));
+        vel_n_grad = (NV_Ith_S(y, nb_mhd+3) - veln_arr[i])/a;
+        
+        a = 0.;
+        i = (int)dz_arr.size();
+        do {
+            i--;
+            a += dz_arr[i];
+        } while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 4) - veli_arr[i]) < dv_to_v_lim *NV_Ith_S(y, nb_mhd + 4));
+        vel_i_grad = (NV_Ith_S(y, nb_mhd+4) - veli_arr[i])/a;
+         
 		veln_arr.push_back( NV_Ith_S(y, nb_mhd+3) );
 		veli_arr.push_back( NV_Ith_S(y, nb_mhd+4) );
 
@@ -1411,7 +1420,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             }
             output << left << setw(14) << conc_h_tot
                 << setw(14) << user_data.calc_ice_conc(y) / conc_h_tot << setw(14) << NV_Ith_S(y, network->e_nb) / conc_h_tot
-                << setw(14) << ion_conc / conc_h_tot << setw(14) << vel_n_grad << setw(14) << vel_i_grad << setw(14) << h2_form_const
+                << setw(14) << ion_conc / conc_h_tot << setw(14) << vel_n_grad << setw(14) << user_data.get_velg_mhd_n()
+                << setw(14) << vel_i_grad << setw(14) << user_data.get_velg_mhd_i() << setw(14) << h2_form_const
                 << setw(14) << user_data.get_add_electron_sterm() << setw(14) << user_data.calc_total_grain_charge(y) << endl;
             output.close();
 
@@ -1441,21 +1451,21 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             break;
         }
 
-		a = 0.;
-		for (i = nb_mhd; i < nb_of_equat; i++) 
-		{
-			b = fabs(NV_Ith_S(y, i) - prev_y[i])/prev_y[i];
-			if (b > a)
-				a = b;
-		}
-		
+        a = 0.;
+        for (i = nb_mhd; i < nb_of_equat; i++)
+        {
+            b = fabs(NV_Ith_S(y, i) - prev_y[i])/prev_y[i];
+            if (b > a)
+                a = b;
+        }
+
         // updating dz:
-		if (a < 0.001) // to verify
-			dz *= 2;
-		else if (a < 0.02)
-			dz *= 1.15;
-		else if (a > 0.1)
-			dz /= 2.;
+        if (a < 0.001) // to verify
+            dz *= 2;
+        else if (a < 0.02)
+            dz *= 1.15;
+        else if (a > 0.1)
+            dz /= 2.;
 
 		// shock begins:
 		if ( fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) > 0.01*NV_Ith_S(y, nb_mhd + 3) )
@@ -1465,26 +1475,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		if ( is_post_shock && fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) < dvel_shock_stop * NV_Ith_S(y, nb_mhd + 3) )
 			must_be_stopped = true;
 
-		is_new_vg = false;
-        a = fabs(vel_n_grad / user_data.get_veln_grad());
-        b = fabs(vel_i_grad / user_data.get_veli_grad());
-		if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.1 || a < 0.9)) || 
-			((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
-		{
-			is_new_vg = true;
-			user_data.set_veln_grad(vel_n_grad);
-			user_data.set_veli_grad(vel_i_grad);
-
-            if (verbosity) {
-                cout << scientific;
-                cout.precision(3);
-
-                cout << "new velocity gradients are assigned (cm/s/cm)," << endl
-                    << "    neutrals: " << user_data.get_veln_grad()
-                    << "    ions: " << user_data.get_veli_grad() << endl;
-            }
-		}
-		
+        is_new_vg = false;
 		is_new_chd = user_data.recalc_grain_charge_ranges(y, new_y);
 		if (is_new_chd)
 		{
@@ -1507,10 +1498,10 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 }
 				NV_Ith_S(y, i) = new_y[i];
 			}
-			if (!is_new_vg) {
-				user_data.set_veln_grad(vel_n_grad);
-				user_data.set_veli_grad(vel_i_grad);
-			}
+			
+            is_new_vg = true;
+			user_data.set_veln_grad(vel_n_grad);
+			user_data.set_veli_grad(vel_i_grad);
             
             SUNLinSolFree(LS);
 			SUNMatDestroy(A);
@@ -1531,12 +1522,32 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 			flag = CVodeSetUserData(cvode_mem, &user_data);
 		}
 
-		// restart of the solver with new values of velocity gradients
-		if (is_new_vg && !is_new_chd) { 
-            flag = CVodeReInit(cvode_mem, z, y);
+		if (!is_new_chd) { 
+            a = fabs(vel_n_grad / user_data.get_veln_grad());
+            b = fabs(vel_i_grad / user_data.get_veli_grad());
+
+            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.05 || a < 0.95)) ||
+                ((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
+            {
+                is_new_vg = true;
+                user_data.set_veln_grad(vel_n_grad);
+                user_data.set_veli_grad(vel_i_grad);
+                
+                // restart of the solver with new values of velocity gradients
+                flag = CVodeReInit(cvode_mem, z, y);
+            }
 		}
 
-		for (i = 0; i < nb_of_equat; i++) {
+        if (verbosity && is_new_vg) {
+            cout << scientific;
+            cout.precision(3);
+
+            cout << "new velocity gradients are assigned (cm/s/cm)," << endl
+                << "    neutrals: " << user_data.get_veln_grad()
+                << "    ions: " << user_data.get_veli_grad() << endl;
+        }
+		
+        for (i = 0; i < nb_of_equat; i++) {
 			prev_y[i] = NV_Ith_S(y, i);
 		}
 	}
@@ -3253,21 +3264,23 @@ void create_file_h2_chemistry(const string & output_path)
         << "! h2_gasd - H2 destruction rate due to gas-phase chemistry, [cm-3 s-1]" << endl
 		<< "! h2_h_diss - H2 dissociation rate in H2-H collisions, [cm-3 s-1]" << endl
         << "! h2_h2_diss - H2 dissociation rate in H2-H2 collisions, [cm-3 s-1]" << endl
-        << "! h2_diss_i - H2 dissociation rate by ions using the method by Wilgenbus et al. (2000)" << endl;
+        << "! h2_e_diss - H2 dissociation rate in H2-e collisions, [cm-3 s-1]" << endl
+        << "! h2_i_diss - H2 dissociation rate by ions using the method by Wilgenbus et al. (2000)" << endl;
 	
 	output << left << setw(5) << "!";
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 11; i++) {
 		output << left << setw(13) << i;
 	}
 	output << endl << left << setw(18) << "! depth(cm)" << setw(13) << "o/p-H2" << setw(13) << "o_hcoll" << setw(13) << "h2_gr" 
 		<< setw(13) << "h2_gasf" << setw(13) << "h2_gasd" << setw(13) << "h2_h_diss" << setw(13) << "h2_h2_diss" 
-        << setw(13) << "vh2_vh2_diss" << setw(13) << "h2_diss_i" << endl;
+        << setw(13) << "vh2_vh2_diss" << setw(13) << "h2_e_diss" << setw(13) << "h2_i_diss" << endl;
 	output.close();
 }
 
 void save_file_h2_chemistry(const string & output_path, const evolution_data *user_data, const N_Vector &y, double var)
 {
-	double op_h2_ratio, h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_ion_diss, h2_h2_diss, vh2_vh2_diss;
+	double op_h2_ratio, h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_ion_diss, h2_h2_diss, 
+        vh2_vh2_diss, h2_e_diss;
 	string fname;
 	ofstream output;
 
@@ -3276,7 +3289,8 @@ void save_file_h2_chemistry(const string & output_path, const evolution_data *us
 
     // ortho-para ratio of H2
 	op_h2_ratio = NV_Ith_S(y, network->h2_nb)/user_data->calc_conc_ph2(y) - 1.;
-	user_data->get_h2_chem(h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_h2_diss, vh2_vh2_diss, h2_ion_diss, y);
+	user_data->get_h2_chem(h2_form_gr, h2_form_gas, h2_destr_gas, oh2_form_hcoll, h2_h_diss, h2_h2_diss, vh2_vh2_diss, 
+        h2_e_diss, h2_ion_diss, y);
 
 	fname = output_path + "sim_data_h2_chemistry.txt";
 	output.open(fname.c_str(), ios::app);
@@ -3288,7 +3302,7 @@ void save_file_h2_chemistry(const string & output_path, const evolution_data *us
 	output.precision(4);
 	output << left << setw(13) << op_h2_ratio << setw(13) << oh2_form_hcoll << setw(13) << h2_form_gr 
 		<< setw(13) << h2_form_gas << setw(13) << h2_destr_gas  << setw(13) << h2_h_diss << setw(13) << h2_h2_diss 
-        << setw(13) << vh2_vh2_diss << setw(13) << h2_ion_diss << endl;
+        << setw(13) << vh2_vh2_diss << setw(13) << h2_e_diss << setw(13) << h2_ion_diss << endl;
 	output.close();
 }
 
@@ -3526,3 +3540,4 @@ void sputtering()
         }
         output << endl;
         output.close();*/
+

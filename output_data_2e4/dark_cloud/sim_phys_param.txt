@@ -4,6 +4,5 @@
 ! p4 - electron concentration, [cm-3]
 ! p5 - ion concentration (without PAHs and small grains), [cm-3]
 ! p6 - total electric charge of grains, [cm-3]
-!1             2             3             4             5             6             7             8             9             10            
-!time(yrs)     T_n           T_i           T_e           p1            p2            p3            p4            p5            p6            
-1.0000000e+00  1.00020e+01   1.00064e+01   1.00064e+01   1.96367e-09   2.52607e-15   1.20136e-21   2.78990e+00   2.78990e+00   -2.21321e-07  
+!1             2             3             4             5             6             7             8             9             10            11            
+!time(yrs)     T_n           T_i           T_e           oph2          p1            p2            p3            p4            p5            p6            
