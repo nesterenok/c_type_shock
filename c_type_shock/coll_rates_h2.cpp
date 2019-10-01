@@ -1068,6 +1068,7 @@ void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_l
 		}
 	}
 
+// is not negligible at small (of the order 10 K) temperatures, provides ortho-/para-H2 conversion noticeable at large evolution times
 #if (H2_H_COLL_DATA == 0)
 	// H2-H data by Wrathmall et al. (2007):
 	if (up_lev.nb < coll_data[7]->nb_lev) {
@@ -1096,8 +1097,8 @@ void h2_collisions::get_rate_neutrals(const energy_level &up_lev, const energy_l
 			*concentration[8];
 	}
 #elif (H2_H_COLL_DATA >= 2)
-	// H2-H data by Lique (2015) is used:
-	if (up_lev.nb < coll_data[5]->nb_lev) {
+    // H2-H data by Lique (2015) is used:
+    if (up_lev.nb < coll_data[5]->nb_lev) {
 		down_rate += coll_data[5]->get_rate(up_lev.nb, low_lev.nb, indices[5], (temp_neutrals < max_temp[5]) ? temp_neutrals : max_temp[5]) 
 			*concentration[5];
 	}

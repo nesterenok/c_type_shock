@@ -153,23 +153,23 @@ int main(int argc, char** argv)
 //	reformat_dust_files_PAH(data_path, "dust/draine_data/PAHneut_30.txt", "dust/draine_data/Gra_81.txt", "dust/draine_data/dust_PAHneut_Draine2001.txt");
 //	reformat_chemical_data_Belloche2014(data_path);
 
-	path = "";
+//	path = "";
 //	calc_grain_photoelectron_rates(data_path);
 //	construct_gas_grain_reactions(data_path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt", path);
 //	construct_ion_recomb_grains(path);
 
-//	path = "./output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR1/";
-//    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";
-//    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100_Tfixed/";
-    path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
+//    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
+//    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
+//    path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
+//    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
+//    path = "C:/Users/Александр/Documents/Visual Studio 2017/c_type_shock/output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
 //    production_routes(path, path);
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
 	
-	input.open("input_parameters.txt");
- 	while (!input.eof())
+	input.open("input_parameters.txt"); 	
+    while (!input.eof())
 	{	
 		do // comment lines are read:
 			input.getline(text_line, MAX_TEXT_LINE_WIDTH);
@@ -330,7 +330,7 @@ int main(int argc, char** argv)
             }
             else if (mode == "CS_") {
                 // starting shock speed is given in the input data file,
-                max_shock_speed = 120.1e+5; //
+                max_shock_speed = 120.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();
@@ -431,7 +431,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		nb_dct, nb_mhd, verbosity;
 	long int nb_steps;
 	double a, init_temp, conc_e, h2_form_const, t, ty, tfin, tout, rel_tol, tmult, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, 
-        op_h2_ratio;
+        ion_dust_dens, op_h2_ratio;
 	
 	double *chem_abund(0);
 	vector<double> new_y, init_ch;
@@ -685,7 +685,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 		save_dust_properties(output_path, &user_data, y, conc_h_tot, ty);
 		save_nautilus_data(output_path, ty, visual_extinct, conc_h_tot, NV_Ith_S(y, nb_mhd), user_data.get_av_dust_temp());
 		
-		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
+		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
         op_h2_ratio = NV_Ith_S(y, network->h2_nb) / user_data.calc_conc_ph2(y) - 1.;
 
@@ -1125,7 +1125,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	long int tot_nb_steps;
 	double a, b, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, magn_precursor_length, magn_sonic_speed, 
 		sound_speed, conc_h_tot, temp_n, temp_i, temp_e, neut_dens, ion_dens, neut_conc, ion_conc, ion_pah_conc, ion_pah_dens, 
-        rel_tol, ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved, dv_to_v_lim;
+        ion_dust_dens, rel_tol, ty, z, zout, zfin, dz, vel_n_grad, vel_i_grad, h2_form_const, dvel_shock_stop, z_saved, dv_to_v_lim;
 	double *prev_y(0);
 	
 	string fname, sn;
@@ -1206,7 +1206,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	NV_Ith_S(y, network->e_nb) += a;
 
 	// calculation of the mass and number densities for the neutral and ion fluids;
-	user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
+	user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens);
 	user_data.calc_neutral_dens(y, neut_conc, neut_dens);
 
 	// Assesment of the magnetic precursor length - the distance that characterizes the decrease of the ion velocity, 
@@ -1247,8 +1247,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
     zfin = 1000.*magn_precursor_length;
     dv_to_v_lim = 0.02;
 
-    // relative difference between ion and neutral speeds, at which shock stop;
-    dvel_shock_stop = 0.01; // for studies of chemical evolution of post-shock gas, set 0.001
+    // relative difference between ion and neutral speeds, at which shock stops;
+    dvel_shock_stop = 0.03; // for studies of chemical evolution of post-shock gas, set 0.001
     
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
 	void *cvode_mem = CVodeCreate(CV_BDF);
@@ -1286,7 +1286,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		<< "! aic- abundance of molecules adsorbed on grains, mol/H" << endl
 		<< "! ae - abundance of electrons, e/H" << endl
 		<< "! aio- abundance of ions, ions/H" << endl
-		<< "! vgn- velocity gradient of neutral component, [cm/s/cm]" << endl
+		<< "! vgn- velocity gradient of neutral component - averaged based on the fixed dv/v" << endl
+        << "!   and instantaneous from MHD equations, [cm/s/cm]" << endl
         << "! vgi- velocity gradient of ion component, [cm/s/cm]" << endl
 		<< "! p1 - parameter of H2 formation on grains (reaction *H+*H), rate = a*n_H_tot*n_H, a [cm3 s-1]" << endl
 		<< "! p2 - is equal to add_Ne/Ne, add_Ne is the term added to electron production rate Ne to compensate " << endl
@@ -1332,7 +1333,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		flag = CV_SUCCESS; 
         zout = z + dz; // updating zout
 
-		while (i < 100 && flag == CV_SUCCESS && z < zout) {
+		while (i < 150 && flag == CV_SUCCESS && z < zout) {
 			flag = CVode(cvode_mem, zout, y, &z, CV_ONE_STEP); // CV_NORMAL or CV_ONE_STEP     
      	    i++;
 		}
@@ -1379,7 +1380,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
         // Saving data,
         // second condition - in order to look for the cause of crashes
-        if (z - z_saved > 0.03 * magn_precursor_length || nb_not_saved > 10) {
+        if (z - z_saved > 0.05 * magn_precursor_length || nb_not_saved > 10) {
             nb_not_saved = 0;
             nb_saved++;
             
@@ -1404,7 +1405,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 user_data.save_radiative_transfer_data(output_path2, ty);
 #endif
             }
-            user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
+            user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens);
 
             fname = output_path2 + "sim_phys_param.txt";
             output.open(fname.c_str(), ios::app);
@@ -1468,7 +1469,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             dz /= 2.;
 
 		// shock begins:
-		if ( fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) > 0.01*NV_Ith_S(y, nb_mhd + 3) )
+		if ( fabs(NV_Ith_S(y, nb_mhd + 3) - NV_Ith_S(y, nb_mhd + 4)) > dvel_shock_stop*NV_Ith_S(y, nb_mhd + 3) )
 			is_post_shock = true;
 		
 		// postshock gas comes to the equilibrium state:
@@ -1526,7 +1527,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             a = fabs(vel_n_grad / user_data.get_veln_grad());
             b = fabs(vel_i_grad / user_data.get_veli_grad());
 
-            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.05 || a < 0.95)) ||
+            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.1 || a < 0.9)) ||
                 ((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
             {
                 is_new_vg = true;
@@ -1592,7 +1593,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	int i, flag, nb, nb_of_species, nb_lev_h2o, nb_lev_h2, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3,
 		nb_vibr_ch3oh, nb_lev_ch3oh, nb_lev_ci, nb_lev_cii, nb_lev_oi, nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd, verbosity;
 	double h2_form_const, t, time_step(0.), ty, tfin, tout, rel_tol, tmult, visual_extinct, cr_ioniz_rate, cr_ioniz_rate0, 
-		uv_field_strength, ir_field_strength, conc_h_tot, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens;
+		uv_field_strength, ir_field_strength, conc_h_tot, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens, op_h2_ratio;
 	long int nb_steps;
 	
 	time_t timer;
@@ -1740,10 +1741,10 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		<< "! p6 - total electric charge of grains, [cm-3]" << endl;
 
 	output << "!";
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 11; i++) {
 		output << left << setw(14) << i + 1;
 	}
-	output << endl << left << setw(15) << "!time(yrs)" << setw(14) << "T_n" << setw(14) << "T_i" << setw(14) << "T_e" 
+	output << endl << left << setw(15) << "!time(yrs)" << setw(14) << "T_n" << setw(14) << "T_i" << setw(14) << "T_e" << setw(14) << "oph2"
 		<< setw(14) << "p1" << setw(14) << "p2" << setw(14) << "p3" << setw(14) << "p4" << setw(14) << "p5" << setw(14) << "p6" << endl;
 	output.close();
 	
@@ -1775,8 +1776,9 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 		save_dust_properties(output_path2, &user_data, y, conc_h_tot, ty);
 		save_nautilus_data(output_path2, ty, visual_extinct, conc_h_tot, NV_Ith_S(y, nb_mhd), user_data.get_av_dust_temp());
 		
-		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
+		user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens);
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
+        op_h2_ratio = NV_Ith_S(y, network->h2_nb) / user_data.calc_conc_ph2(y) - 1.;
 
 		fname = output_path2 + "sim_phys_param.txt";
 		output.open(fname.c_str(), ios::app);
@@ -1787,7 +1789,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 
 		output.precision(5);		
 		output << left << setw(14) << NV_Ith_S(y, nb_mhd) << setw(14) << NV_Ith_S(y, nb_mhd + 1) 
-			<< setw(14) << NV_Ith_S(y, nb_mhd + 2) << setw(14) << user_data.calc_ice_conc(y)/conc_h_tot
+			<< setw(14) << NV_Ith_S(y, nb_mhd + 2) << setw(14) << op_h2_ratio << setw(14) << user_data.calc_ice_conc(y)/conc_h_tot
 			<< setw(14) << user_data.calc_hydrocarbon_conc(y)/conc_h_tot << setw(14) << h2_form_const 
 			<< setw(14) << NV_Ith_S(y, network->e_nb) << setw(14) << ion_conc
 			<< setw(14) << user_data.calc_total_grain_charge(y) << endl;
@@ -2330,8 +2332,8 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 		int_neut_heat_nh3(0.), int_neut_heat_ch3oh(0.); 
 	double a, x1, x2, x3, x4, x5, x6, x7, neut_heat_dust_coll, neut_heat_chem, pheff_gas_heat, neut_cr_heat, neut_heat_scatt_ions, 
 		neut_heat_scatt_el, h2_h_diss_cooling, total_mol_cooling, neut_conc, neut_mass_dens, ion_conc, ion_pah_conc,
-        ion_dens, ion_pah_dens, v_n, v_i, kin_energy_flux, kin_energy_flux_ions, kin_energy_flux_neut, kin_energy_flux_dust, 
-        thermal_energy_flux, thermal_energy_flux_neut, thermal_energy_flux_ions, magnetic_energy_flux;
+        ion_dens, ion_pah_dens, ion_dust_dens, v_n, v_i, kin_energy_flux, kin_energy_flux_ions, kin_energy_flux_neut, 
+        kin_energy_flux_dust, thermal_energy_flux, thermal_energy_flux_neut, thermal_energy_flux_ions, magnetic_energy_flux;
 
 	string fname;
 	ofstream output;
@@ -2368,7 +2370,7 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
 
     user_data->get_nbs(nb_of_grain_charges, nb_of_equat, nb_dct, nb_mhd);
     user_data->calc_neutral_dens(y, neut_conc, neut_mass_dens);
-    user_data->calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens);
+    user_data->calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens);
 
 	fname = output_path + "sim_energy_fluxes.txt";
 	output.open(fname.c_str(), ios::app);

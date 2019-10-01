@@ -1336,7 +1336,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         }
     }
 
-// H2 dissociation in H2-e collisions must be taken into account
+// H2 dissociation in H2-e collisions
 // Trevisan & Tennyson, Plasma Phys. Control. Fusion 44 (2002) 1263-1276
     j = network->h2_e_diss_nb;
     a = network->reaction_array[j].energy_released; // energy released in reaction, 
@@ -1366,7 +1366,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         vh2_vh2_diss_rate += b;
         
         b += y_data[i] * conc_h2 *h2_h2_diss_data->get_rate(i - nb_of_species, temp_n);
-        h2_h2_diss_rate += b;
+        h2_h2_diss_rate += b; // includes dissociation from both the ground and vibrationally excited states of H2
         
         ydot_data[i] -= b;
         h2_h2_diss_cooling += (a + h2_di->lev_array[i - nb_of_species].energy * CM_INVERSE_TO_ERG) * b; // < 0 for cooling,
@@ -2047,9 +2047,10 @@ double evolution_data::calc_hydrocarbon_conc(const N_Vector &y) const
 }
 
 void evolution_data::calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_dens, 
-    double & ion_pah_dens) const
+    double & ion_pah_dens, double & ion_dust_dens) const
 {
 	int i, k;
+    double a;
 	const realtype *y_data = NV_DATA_S(y);
 
 	// calculation of ion mass density and concentration due to chemical species:
@@ -2062,25 +2063,33 @@ void evolution_data::calc_ion_dens(const N_Vector &y, double & ion_conc, double 
 		}
 	}
 
-	ion_pah_conc = ion_pah_dens = 0.;
+	ion_pah_conc = ion_pah_dens = ion_dust_dens = 0.;
 	// calculation of charged dust contribution to ion mass:
-	for (i = 0; i < dust->nb_of_comp; i++) 
-	{ 
-		if (is_charged_dust_as_ions[i]) {
-			if (is_dust_charge_large[i]) 
-			{
-				ion_pah_conc += y_data[nb_dch[i]];
-				ion_pah_dens += y_data[nb_dch[i]] *dust->get_grain_mass(i);
-			}
-			else {
-				for (k = 0; k < max_grain_charge[i] - min_grain_charge[i] + 1; k++) {
-					if (min_grain_charge[i] + k != 0) 
-					{
-						ion_pah_conc += y_data[nb_dch[i] + k];
-						ion_pah_dens += y_data[nb_dch[i] + k] *dust->get_grain_mass(i);
-					}
+	for (i = 0; i < dust->nb_of_comp; i++) {
+		if (is_dust_charge_large[i]) 
+		{
+            if (is_charged_dust_as_ions[i]) {
+                ion_pah_conc += y_data[nb_dch[i]];
+                ion_pah_dens += y_data[nb_dch[i]] * dust->get_grain_mass(i);
+            }
+            else {
+                ion_dust_dens += y_data[nb_dch[i]] * dust->get_grain_mass(i);
+            }
+		}
+		else {
+            a = 0.;
+			for (k = 0; k < max_grain_charge[i] - min_grain_charge[i] + 1; k++) {
+				if (min_grain_charge[i] + k != 0) {
+                    a += y_data[nb_dch[i] + k];
 				}
 			}
+            if (is_charged_dust_as_ions[i]) {
+                ion_pah_conc += a;
+                ion_pah_dens += a * dust->get_grain_mass(i);
+            }
+            else {
+                ion_dust_dens += a * dust->get_grain_mass(i);
+            }
 		}
 	}
 }
@@ -2977,7 +2986,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 {
    	int i, k, l, returned_val;
 	double a, b, c, d, e, en_n, nb_e, g_velg, neut_nb_dens, ion_conc, ion_pah_conc, neut_mass_dens, ion_mass_dens, ion_pah_dens,
-        ion_vg_terms, neut_vg_terms;
+        ion_dust_dens, ion_vg_terms, neut_vg_terms;
 
 	vel_n = NV_Ith_S(y, nb_mhd + 3);
 	vel_i = NV_Ith_S(y, nb_mhd + 4);
@@ -3028,8 +3037,10 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	// nb+4 ion velocity;
 
 	calc_neutral_dens(y, neut_nb_dens, neut_mass_dens);
-	calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens, ion_pah_dens);
-    ion_mass_dens += ion_pah_dens;
+	calc_ion_dens(y, ion_conc, ion_pah_conc, ion_mass_dens, ion_pah_dens, ion_dust_dens);
+    
+    // the dust density can be included or not to the ion mass density:
+    ion_mass_dens += ion_pah_dens; // +ion_dust_dens; // ?
     ion_conc += ion_pah_conc;
 
 	// The MHD equations are given by Draine et al., ApJ 264, p.485 (1983); Draine, MNRAS, 220, p.133 (1986);

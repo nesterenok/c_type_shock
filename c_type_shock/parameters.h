@@ -173,7 +173,7 @@
 #define CALCULATE_POPUL_METHANOL 0
 
 // Calculate OH and NH3 populations, 1 - yes
-#define CALCULATE_POPUL_NH3_OH 0
+#define CALCULATE_POPUL_NH3_OH 1
 
 // 0 - switch off
 // 1 - data are used by Tine et al., ApJ 481, p.282 (1997)
@@ -182,7 +182,9 @@
 // 0 - switch off
 // 1 - data on H2-H+ collisions are used by Gonzalez-Lezana & Honvault (2017),
 // the question - are rates for collisions with H+ and H3+ equal?
+// these data change ortho-/para-H2 ratio
 #define H2_IONS_EXCITATION_ON 1
 
 // 0 - swith off
+// these data change ortho-/para-H2 ratio
 #define H2_FORMATION_EXCITATION_ON 1

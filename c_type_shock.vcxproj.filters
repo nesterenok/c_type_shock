@@ -78,10 +78,10 @@
     <ClCompile Include="c_type_shock\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\input_data\mathematics\interpolation.cpp">
+    <ClCompile Include="..\..\input_data\mathematics\interpolation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\input_data\mathematics\linear_algebra.cpp">
+    <ClCompile Include="..\..\input_data\mathematics\linear_algebra.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

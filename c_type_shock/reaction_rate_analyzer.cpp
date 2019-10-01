@@ -25,7 +25,7 @@
 #define CHEM_ANALYSIS_FOLDER "chem_analysis/"
 using namespace std;
 
-const double min_fraction = 0.03; // in looking for the important reactions
+const double min_fraction = 1.e-2; // in looking for the important reactions
 const double low_err = 0.3; // in comparison between simulated abundances and NAUTILUS data, err = fabs(log10(x1/x2));
 
 int reaction_data::nb_of_reactants = RRA_NB_REACTANTS; 
@@ -124,7 +124,7 @@ void production_routes(string path1, string path2)
 	int i, j, k, l, nb, nb_of_rate_values, nb_of_species, nb_of_reactions, specimen_nb, nb_of_elem;
     int16_t abc;
     int8_t de;
-	double a, z_arr[RRA_NB_RATE_VALUES], t_arr[RRA_NB_RATE_VALUES], destr_rate[RRA_NB_RATE_VALUES], prod_rate[RRA_NB_RATE_VALUES];
+	double z_arr[RRA_NB_RATE_VALUES], t_arr[RRA_NB_RATE_VALUES], destr_rate[RRA_NB_RATE_VALUES], prod_rate[RRA_NB_RATE_VALUES];
 
 	string str, sn, fn;
 	reaction_data rd;
@@ -142,7 +142,7 @@ void production_routes(string path1, string path2)
     specimen_names.push_back("O");
     specimen_names.push_back("C");
     specimen_names.push_back("N");
-    specimen_names.push_back("H2");
+    specimen_names.push_back("H2"); 
     specimen_names.push_back("OH");
     specimen_names.push_back("H2O");
     specimen_names.push_back("NH3");
@@ -181,8 +181,7 @@ void production_routes(string path1, string path2)
     
 /*  specimen_names.push_back("O2");
     specimen_names.push_back("CO");
-    specimen_names.push_back("CO2");
-     
+    specimen_names.push_back("CO2");  
     specimen_names.push_back("CH3O");
     specimen_names.push_back("CH2OH");
     specimen_names.push_back("CH3OH2+");
@@ -190,11 +189,8 @@ void production_routes(string path1, string path2)
     specimen_names.push_back("HC2O");
     specimen_names.push_back("CH2CO");
     specimen_names.push_back("CH3CO");
-    
     specimen_names.push_back("C2H4");
     specimen_names.push_back("C2H5");
-    
-    
     specimen_names.push_back("HCOOCH3");
     specimen_names.push_back("H5C2O2+");  
     specimen_names.push_back("C2H5OH2+");*/
@@ -373,9 +369,9 @@ void production_routes(string path1, string path2)
 				output << left << "! " << setw(5) << j << destr_rd_v[j].name << endl;
 			}
 	
-			output << left << setw(13) << "! z" << setw(11) << "gas_temp" << setw(11) << "tot_rate";
+			output << left << setw(13) << "! z" << setw(10) << "gas_temp" << setw(10) << "tot_rate";
 			for (j = 0; j < (int) destr_rd_v.size(); j++) {
-				output << left << setw(11) << j;
+				output << left << setw(10) << j;
 			}
 			output << endl;
 
@@ -383,10 +379,10 @@ void production_routes(string path1, string path2)
 			{
 				output.precision(5);
 				output << left << setw(13) << z_arr[i];
-				output.precision(2);
-				output << left << setw(11) << t_arr[i] << setw(11) << destr_rate[i];
+				output.precision(2); // <=3
+				output << left << setw(10) << t_arr[i] << setw(10) << destr_rate[i];
 				for (j = 0; j < (int) destr_rd_v.size(); j++) {
-					output << left << setw(11) << destr_rd_v[j].rates[i];
+					output << left << setw(10) << destr_rd_v[j].rates[i];
 				}
 				output << endl;
 			}
@@ -405,9 +401,9 @@ void production_routes(string path1, string path2)
 				output << left << "! " << setw(5) << j << prod_rd_v[j].name << endl;
 			}
 	
-			output << left << setw(13) << "! z" << setw(11) << "gas_temp" << setw(11) << "tot_rate";
+			output << left << setw(13) << "! z" << setw(10) << "gas_temp" << setw(10) << "tot_rate";
 			for (j = 0; j < (int) prod_rd_v.size(); j++) {
-				output << left << setw(11) << j;
+				output << left << setw(10) << j;
 			}
 			output << endl;
 
@@ -415,10 +411,10 @@ void production_routes(string path1, string path2)
 			{
 				output.precision(5);
 				output << left << setw(13) << z_arr[i];
-				output.precision(2);
-				output << left << setw(11) << t_arr[i] << setw(11) << prod_rate[i];
+				output.precision(2); // <=3
+				output << left << setw(10) << t_arr[i] << setw(10) << prod_rate[i];
 				for (j = 0; j < (int) prod_rd_v.size(); j++) {
-					output << left << setw(11) << prod_rd_v[j].rates[i];
+					output << left << setw(10) << prod_rd_v[j].rates[i];
 				}
 				output << endl;
 			}

@@ -138,6 +138,7 @@ public:
 	void get_chem_heating_rates(double *& chem_heat_rates, int & nb) const;
 
 	// parameters of H2 molecule chemistry and ortho-para conversion;
+    // h2_h2_diss - includes dissociation from both the ground and vibrationally excited states of H2
 	void get_h2_chem(double & h2_form_gr, double & h2_form_gas, double & h2_destr_gas, double & o_hcoll, 
         double & h2_h_diss, double & h2_h2_diss, double & vh2_vh2_diss, double & h2_e_diss, double & h2_ion_diss, N_Vector y) const;
 	
@@ -160,9 +161,11 @@ public:
 	double calc_conc_h_tot(const N_Vector &y) const;
 	double calc_hydrocarbon_conc(const N_Vector &y) const;
 
-    // ion concentration (cm-3) and density (g/cm3) do not include PAH and small grains,
-	// ionized PAH concentration and density include contribution from PAHs and small grains (dust grains which behave like ions):
-	void calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_dens, double & ion_pah_dens) const;
+    // ion_conc and ion_dens - ion concentration (cm-3) and density (g/cm3), do not include PAH and small grains,
+	// ion_pah_conc and ion_pah_dens - ionized PAH concentration and density, include contribution from PAHs and small grains (dust grains which behave like ions)
+    // ion_dust_dens - density of ionized large dust grains, with radius larger than MAX_ION_COUPLED_GRAIN_RADIUS,
+	void calc_ion_dens(const N_Vector &y, double & ion_conc, double & ion_pah_conc, double & ion_dens, double & ion_pah_dens,
+        double & ion_dust_dens) const;
 	void calc_neutral_dens(const N_Vector &y, double & neut_conc, double & neut_mass_dens) const;
 
 	// grain charge (in module of electron charge) and grain area (cm2) must be given, 

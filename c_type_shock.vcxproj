@@ -22,28 +22,28 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{A4C5BE9F-3E84-4ADD-A0BF-DB101446901A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -111,11 +111,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-4.0.0-install\include;C:\input_data\mathematics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Александр\Documents\Visual Studio 2019\cvode-4.1.0-install\include;C:\Users\Александр\Documents\input_data\mathematics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Александр\Documents\Visual Studio 2017\cvode-4.0.0-install\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Александр\Documents\Visual Studio 2019\cvode-4.1.0-install\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sundials_cvode.lib;sundials_nvecopenmp.lib;sundials_nvecserial.lib;sundials_sunlinsolband.lib;sundials_sunlinsoldense.lib;sundials_sunlinsolpcg.lib;sundials_sunlinsolspbcgs.lib;sundials_sunlinsolspfgmr.lib;sundials_sunlinsolspgmr.lib;sundials_sunlinsolsptfqmr.lib;sundials_sunmatrixband.lib;sundials_sunmatrixdense.lib;sundials_sunmatrixsparse.lib;sundials_sunnonlinsolfixedpoint.lib;sundials_sunnonlinsolnewton.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -130,8 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\input_data\mathematics\interpolation.cpp" />
-    <ClCompile Include="..\..\..\..\..\input_data\mathematics\linear_algebra.cpp" />
+    <ClCompile Include="..\..\input_data\mathematics\interpolation.cpp" />
+    <ClCompile Include="..\..\input_data\mathematics\linear_algebra.cpp" />
     <ClCompile Include="c_type_shock\chemical_reaction_data.cpp" />
     <ClCompile Include="c_type_shock\chemistry.cpp" />
     <ClCompile Include="c_type_shock\coll_rates.cpp" />
