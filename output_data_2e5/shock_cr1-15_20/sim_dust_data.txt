@@ -1,0 +1,30 @@
+! the number in the parameter name is the grain component number
+! T - temperature of dust component, [K]
+! ab - grain abundance, [grains/H]
+! Z - average grain charge
+! abZ - average grain charge multiplied by grain abundance, [charge/H]
+! ic - parameter characterizes grain coupling to ions, wt2/(1 + wt2)
+! gf - flux of dust grains, [cm-2 s-1]
+! hir - grain heating by IS radiation, [erg s-1]
+! hch - grain heating by chemical reactions on the surface, [erg s-1]
+! hc - grain heating by collisions with neutral gas, [erg s-1]
+! hh2 - grain heating by absorption of H2 emission, [erg s-1]
+! hm - grain heating by absorption of molecule emission (except H2), [erg s-1]
+! ae - rate of electron attachment, [cm-3 s-1]
+! ai - rate of ion attachment, [cm-3 s-1]
+! puv - rate of photoelectron emission by IS UV radiation, [cm-3 s-1]
+! pvis - rate of photoelectron emission by IS VIS radiation, [cm-3 s-1]
+! pcr - rate of photoelectron emission by CR induced radiation, [cm-3 s-1]
+! at the end, T - average dust temperature, grains with radius > MIN_ADSORPTION_RADIUS are taken into acount
+!1           2           3           4           5           6           7           8           9           10          11          12          13          14          15          16          17          18          19          
+!t(yr)/z(cm) T0          ab0         Z0          abZ0        ic0         gf0         hir0        hch0        hc0         hh20        hm0         ae0         ai0         puv0        pvis0       pcr0        T           abZ         
+1.22793e+13  1.003e+01   1.232e-11   -8.000e-01  -9.859e-12  7.407e-01   4.927e+00   1.103e-14   7.743e-16   4.874e-16   5.352e-16   2.178e-18   1.019e-11   5.901e-12   5.241e-18   7.686e-20   4.293e-12   1.003e+01   -9.859e-12  
+2.54816e+13  1.003e+01   1.232e-11   -8.000e-01  -9.859e-12  7.407e-01   4.927e+00   1.103e-14   7.743e-16   4.875e-16   5.411e-16   2.178e-18   1.020e-11   5.905e-12   5.241e-18   7.686e-20   4.293e-12   1.003e+01   -9.859e-12  
+5.42234e+13  1.003e+01   1.232e-11   -8.001e-01  -9.861e-12  7.408e-01   4.927e+00   1.103e-14   7.743e-16   4.875e-16   5.427e-16   2.178e-18   1.021e-11   5.912e-12   5.241e-18   7.687e-20   4.293e-12   1.003e+01   -9.861e-12  
+1.14357e+14  1.003e+01   1.233e-11   -8.003e-01  -9.863e-12  7.409e-01   4.927e+00   1.103e-14   7.743e-16   4.877e-16   5.434e-16   2.178e-18   1.022e-11   5.925e-12   5.242e-18   7.689e-20   4.294e-12   1.003e+01   -9.863e-12  
+2.45464e+14  1.003e+01   1.233e-11   -8.005e-01  -9.869e-12  7.411e-01   4.927e+00   1.103e-14   7.744e-16   4.884e-16   5.414e-16   2.091e-18   1.024e-11   5.943e-12   5.243e-18   7.693e-20   4.295e-12   1.003e+01   -9.869e-12  
+5.25450e+14  1.003e+01   1.234e-11   -8.012e-01  -9.887e-12  7.415e-01   4.927e+00   1.103e-14   7.751e-16   4.935e-16   5.332e-16   1.855e-18   1.025e-11   5.954e-12   5.249e-18   7.708e-20   4.299e-12   1.003e+01   -9.887e-12  
+8.49335e+14  1.004e+01   1.238e-11   -8.050e-01  -9.964e-12  7.429e-01   4.927e+00   1.103e-14   7.796e-16   5.318e-16   5.002e-16   1.351e-18   1.022e-11   5.907e-12   5.265e-18   7.768e-20   4.312e-12   1.004e+01   -9.964e-12  
+1.12467e+15  1.007e+01   1.246e-11   -8.250e-01  -1.028e-11  7.467e-01   4.927e+00   1.103e-14   7.996e-16   7.404e-16   4.318e-16   8.466e-19   1.002e-11   5.675e-12   5.299e-18   8.013e-20   4.341e-12   1.007e+01   -1.028e-11  
+1.23107e+15  1.011e+01   1.251e-11   -8.537e-01  -1.068e-11  7.493e-01   4.927e+00   1.103e-14   8.178e-16   1.011e-15   3.467e-16   5.170e-19   9.879e-12   5.516e-12   5.325e-18   8.328e-20   4.361e-12   1.011e+01   -1.068e-11  
+1.28545e+15  1.014e+01   1.255e-11   -8.832e-01  -1.109e-11  7.509e-01   4.927e+00   1.103e-14   8.300e-16   1.265e-15   2.810e-16   3.498e-19   9.850e-12   5.471e-12   5.342e-18   8.643e-20   4.375e-12   1.014e+01   -1.109e-11  

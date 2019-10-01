@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="c_type_shock\chemical_reaction_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\chemistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_ch3oh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_co.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_h2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_h2o.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_ions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_nh3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_oh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\c_type_shock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\differential_equations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\dust_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\elastic_scattering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\lvg_method_functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\photoelectric_emission.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\radiation_field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\reaction_rate_analyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\special_functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\spectroscopy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\input_data\mathematics\interpolation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\input_data\mathematics\linear_algebra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="c_type_shock\chemical_reaction_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_ch3oh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_co.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_h2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_h2o.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_ions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_nh3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_oh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\differential_equations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\dust_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\elastic_scattering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\lvg_method_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\parameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\photoelectric_emission.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\radiation_field.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\reaction_rate_analyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\spectroscopy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\input_data\mathematics\constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\input_data\mathematics\integration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\input_data\mathematics\interpolation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\input_data\mathematics\linear_algebra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\chemistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
