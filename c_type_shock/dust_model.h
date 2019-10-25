@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "radiation_field.h"
 #include "photoelectric_emission.h"
 
 #define NB_OF_DUST_MODELS_WD 3
@@ -220,9 +219,11 @@ public:
 
 	// divided by 2hv/lambda^2, the arrays containing grain temperatures and concentrations must be given, [cm-1]:
 	double emissivity(double energy, double *temperature, double *concentration) const;
+	double emissivity(double energy, const std::vector<double> temperature, const std::vector<double> concentration) const;
 	
 	// concentration of grains of different dust components must be given, [cm-1]:
 	double absorption(double energy, double *concentration) const;
+	double absorption(double energy, const std::vector<double> & concentration) const;
 	
 	// dust component parameters, there is no check if i lies in the correct range:
 	double get_grain_radius(int i) const { return components[i]->radius; }

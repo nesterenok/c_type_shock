@@ -191,8 +191,8 @@ h2_ph2_flower_data::h2_ph2_flower_data(const std::string &data_path, const energ
 	}
 }
 
-// Rate coefficients involving level 24 of ortho-H2 (v=1,j) are set to zero, one can set them equal to those involving level 25 (v=3,j=7). 
-// Rate coefficients involving level 27 of para-H2 (v=1,j) are set to zero, one can set them equal to those involving level 28 (v=3, j=8).
+// Rate coefficients involving level 24 of ortho-H2 (v=2,j=11) are set to zero, one can set them equal to those involving level 25 (v=3,j=7). 
+// Rate coefficients involving level 27 of para-H2 (v=1,j=14) are set to zero, one can set them equal to those involving level 28 (v=3,j=8).
 h2_he_flower_data::h2_he_flower_data(const std::string &data_path, const energy_diagram *h2_di, int verbosity)
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];

@@ -18,9 +18,6 @@
     <ClCompile Include="c_type_shock\chemical_reaction_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="c_type_shock\chemistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="c_type_shock\coll_rates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -82,6 +79,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\input_data\mathematics\linear_algebra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="c_type_shock\chemistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,10 +155,10 @@
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\interpolation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\input_data\mathematics\constants.h">
+    <ClInclude Include="..\..\..\..\..\input_data\mathematics\linear_algebra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\input_data\mathematics\linear_algebra.h">
+    <ClInclude Include="..\..\input_data\mathematics\constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -829,11 +829,29 @@ double dust_model::absorption(double energy, double *concentration) const
 	return a;
 }
 
+double dust_model::absorption(double energy, const vector<double> & concentration) const
+{
+	double a(0.);
+	for (int i = 0; i < (int)components.size(); i++) {
+		a += components[i]->absorption(energy) * concentration[i];
+	}
+	return a;
+}
+
 double dust_model::emissivity(double energy, double *temperature, double *concentration) const
 {
 	double a(0.);
 	for (int i = 0; i < (int) components.size(); i++) {
 		a += components[i]->emissivity(energy, temperature[i]) *concentration[i];
+	}
+	return a;
+}
+
+double dust_model::emissivity(double energy, const vector<double> temperature, const vector<double> concentration) const
+{
+	double a(0.);
+	for (int i = 0; i < (int)components.size(); i++) {
+		a += components[i]->emissivity(energy, temperature[i]) * concentration[i];
 	}
 	return a;
 }

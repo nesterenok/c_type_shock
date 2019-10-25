@@ -51,10 +51,10 @@ molecule::molecule(const string &n, int is, double m, double sp)
 //
 
 energy_level::energy_level()
-: nb(0), v(0), syminv(0), g(0), j(0.), k1(0.), k2(0.), spin(0.), energy(0.), name("")
+: nb(0), v(0), syminv(0), g(0), j(0.), k1(0.), k2(0.), spin(0.), energy(0.), hf(0.), name("")
 {;}
 
-energy_diagram::energy_diagram(molecule m, int verb) : mol(m), nb_lev(0), verbosity(verb)
+energy_diagram::energy_diagram(molecule m, int verb) : mol(m), nb_lev(0), verbosity(verb), hyperfine_splitting(false)
 {;}
 
 energy_diagram::~energy_diagram() {
@@ -434,6 +434,7 @@ oh_diagram::oh_diagram(const std::string &path, molecule m, int &n_l, int verb) 
 	
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input >> i_max;
 
 	nb = 0;
@@ -446,6 +447,7 @@ oh_diagram::oh_diagram(const std::string &path, molecule m, int &n_l, int verb) 
 		level.k1 = omega;
 		level.syminv = parity;
 		level.energy = energy;
+        level.spin = mol.spin;
 
 		level.g = 2*(rounding(2.*j) + 1); // factor 2 is due to hyperfine splitting;
 		level.nb = nb;
@@ -469,6 +471,66 @@ int oh_diagram::get_nb(int parity, int v, double j, double omega) const
 	return -1;
 }
 
+oh_hf_diagram::oh_hf_diagram(const std::string& path, molecule m, int& n_l, int verb) : energy_diagram(m, verb)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int i_max, v, nb, parity;
+    double j, omega, hf, energy; // j is float value here, hf is the total angular momentum including spin F = J+S
+
+    string fname;
+    ifstream input;
+    energy_level level;
+
+    fname = path + "spectroscopy/levels_oh_hf.txt";
+    input.open(fname.c_str(), ios_base::in);
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
+        exit(1);
+    }
+
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input >> i_max;
+
+    nb = 0;
+    while (nb < n_l && nb < i_max)
+    {
+        input >> v >> j >> omega >> parity >> hf >> energy;
+
+        level.v = v;
+        level.j = j;
+        level.k1 = omega;
+        level.syminv = parity;
+        level.hf = hf;
+        level.energy = energy;
+        level.spin = mol.spin;
+
+        level.g = rounding(2.*hf) + 1; // there is no any factor;
+        level.nb = nb;
+
+        lev_array.push_back(level);
+        nb++;
+    }
+    input.close();
+
+    hyperfine_splitting = true;
+    nb_lev = n_l = (int)lev_array.size();
+    report(fname);
+}
+
+// note: the angular momentum is rational number,
+int oh_hf_diagram::get_nb(int parity, int v, double j, double omega, double hf) const
+{
+    for (int i = 0; i < nb_lev; i++) {
+        if (lev_array[i].v == v && rounding(2. * lev_array[i].j) == rounding(2. * j) && rounding(2. * lev_array[i].k1) == rounding(2. * omega)
+            && rounding(2.*lev_array[i].hf) == rounding(2.*hf) && lev_array[i].syminv == parity)
+            return i;
+    }
+    return -1;
+}
+
 // NH3
 nh3_diagram::nh3_diagram(const std::string &path, molecule m, int &n_l, int verb) : energy_diagram(m, verb)
 {
@@ -488,6 +550,7 @@ nh3_diagram::nh3_diagram(const std::string &path, molecule m, int &n_l, int verb
 		exit(1);
 	}
 	
+	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input >> i_max;
@@ -877,6 +940,49 @@ oh_einstein_coeff::oh_einstein_coeff(const string &path, const energy_diagram *d
 	input.close();
 	if (verbosity) 
 		cout << "  data are read from file " << file_name << endl;
+}
+
+oh_hf_einstein_coeff::oh_hf_einstein_coeff(const std::string& path, const energy_diagram *di, int verbosity) : einstein_coeff(di)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int	i, i_max, parity, v, up, low;
+    double coeff, energy, j, omega, hf;
+
+    string file_name;
+    ifstream input;
+
+    if (verbosity)
+        cout << "OH molecule radiative coefficients (including HF splitting) are being initializing..." << endl;
+
+    file_name = path + "spectroscopy/radiative_oh_hf.txt";
+    input.open(file_name.c_str(), ios_base::in);
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+        exit(1);
+    }
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input >> i_max;
+
+    for (i = 0; i < i_max; i++)
+    {
+        input >> v >> j >> omega >> parity >> hf;
+        up = di->get_nb(parity, v, j, omega, hf);
+
+        input >> v >> j >> omega >> parity >> hf;
+        low = di->get_nb(parity, v, j, omega, hf);
+
+        input >> coeff >> energy;
+        if (low != -1 && up != -1)
+        {
+            arr[up][low] = coeff;
+            arr[low][up] = di->lev_array[up].g * coeff / ((double)di->lev_array[low].g);
+        }
+    }
+    input.close();
+    if (verbosity)
+        cout << "  data are read from file " << file_name << endl;
 }
 
 nh3_einstein_coeff::nh3_einstein_coeff(const string &path, const energy_diagram *di, int verbosity) : einstein_coeff(di)

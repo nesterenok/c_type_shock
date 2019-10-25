@@ -1,4 +1,4 @@
-//
+﻿//
 // 17.03.2017. Check for errors.
 // 20.03.2017. Bug was found in calculating the reaction rates for A+Ion->Ion+Ion+e- and A+Ion->B+C+Ion:
 //		max rate was not calculated, A coefficient was incorrect for second reaction;

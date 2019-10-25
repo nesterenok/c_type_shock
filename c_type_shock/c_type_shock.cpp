@@ -456,6 +456,8 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	nb_lev_co = 30; // number of levels lower than first vibrationally excited level is 33;
 	
 	nb_vibr_ch3oh = 0;
+// the number of levels in cold cloud simulations should be no higher than for shock simulations, check it
+// may be, it is not necessary to take in to account level nb > 1 for species below 
 #if (CALCULATE_POPUL_METHANOL)
 	nb_lev_ch3oh = 100;
 #else
@@ -463,11 +465,11 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 #endif
 
 #if (CALCULATE_POPUL_NH3_OH)
-    nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
-    nb_lev_pnh3 = 34;
-    nb_lev_oh = 20;
+    nb_lev_onh3 = 9; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_pnh3 = 16; // para-NH3: He coll data - 16, H2 coll data - 34
+    nb_lev_oh = 10; // OH: He coll data - 44, H2 coll data - 20
 #else
-    nb_lev_onh3 = 1; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;
     nb_lev_oh = 1;
 #endif
@@ -1019,63 +1021,63 @@ void assign_cloud_data(const string &path, evolution_data *user_data, vector<dou
 		if (j >= 0)
 			iy[j] = chem_abund[i];
 	}
-	// It is assumed that nb of levels of a specimen in the file data is <= than given in user_data 
-	for (i = 0; i < (int) h2_popul_dens.size(); i++) {
+	// The nb of levels of a specimen in the file data may be != than value given in user_data 
+	for (i = 0; i < (int) h2_popul_dens.size() && i < nb_lev_h2; i++) {
 		iy[nb_of_species + i] = h2_popul_dens[i];
 	}
 	nb = nb_of_species + nb_lev_h2;
 	
-	for (i = 0; i < (int) ph2o_popul_dens.size(); i++) {
+	for (i = 0; i < (int) ph2o_popul_dens.size() && i < nb_lev_h2o; i++) {
 		iy[nb + i] = ph2o_popul_dens[i];
 	}
 	nb += nb_lev_h2o;
 	
-	for (i = 0; i < (int) oh2o_popul_dens.size(); i++) {
+	for (i = 0; i < (int) oh2o_popul_dens.size() && i < nb_lev_h2o; i++) {
 		iy[nb + i] = oh2o_popul_dens[i];
 	}
 	nb += nb_lev_h2o;
 	
-	for (i = 0; i < (int) co_popul_dens.size(); i++) {
+	for (i = 0; i < (int) co_popul_dens.size() && i < nb_lev_co; i++) {
 		iy[nb + i] = co_popul_dens[i];
 	}
 	nb += nb_lev_co;
 	
-	for (i = 0; i < (int) oh_popul_dens.size(); i++) {
+	for (i = 0; i < (int) oh_popul_dens.size() && i < nb_lev_oh; i++) {
 		iy[nb + i] = oh_popul_dens[i];
 	}
 	nb += nb_lev_oh;
 
-	for (i = 0; i < (int) pnh3_popul_dens.size(); i++) {
+	for (i = 0; i < (int) pnh3_popul_dens.size() && i < nb_lev_pnh3; i++) {
 		iy[nb + i] = pnh3_popul_dens[i];
 	}
 	nb += nb_lev_pnh3;
 
-	for (i = 0; i < (int) onh3_popul_dens.size(); i++) {
+	for (i = 0; i < (int) onh3_popul_dens.size() && i < nb_lev_onh3; i++) {
 		iy[nb + i] = onh3_popul_dens[i];
 	}
 	nb += nb_lev_onh3;
 
-	for (i = 0; i < (int) ch3oh_a_popul_dens.size(); i++) {
+	for (i = 0; i < (int) ch3oh_a_popul_dens.size() && i < nb_lev_ch3oh; i++) {
 		iy[nb + i] = ch3oh_a_popul_dens[i];
 	}
 	nb += nb_lev_ch3oh;
 
-	for (i = 0; i < (int) ch3oh_e_popul_dens.size(); i++) {
+	for (i = 0; i < (int) ch3oh_e_popul_dens.size() && i < nb_lev_ch3oh; i++) {
 		iy[nb + i] = ch3oh_e_popul_dens[i];
 	}
 	nb += nb_lev_ch3oh;
 	
-	for (i = 0; i < (int) ci_popul_dens.size(); i++) {
+	for (i = 0; i < (int) ci_popul_dens.size() && i < nb_lev_ci; i++) {
 		iy[nb + i] = ci_popul_dens[i];
 	}
 	nb += nb_lev_ci;
 	
-	for (i = 0; i < (int) oi_popul_dens.size(); i++) {
+	for (i = 0; i < (int) oi_popul_dens.size() && i < nb_lev_oi; i++) {
 		iy[nb + i] = oi_popul_dens[i];
 	}
 	nb += nb_lev_oi;
 	
-	for (i = 0; i < (int) cii_popul_dens.size(); i++) {
+	for (i = 0; i < (int) cii_popul_dens.size() && i < nb_lev_cii; i++) {
 		iy[nb + i] = cii_popul_dens[i];
 	}
 	nb += nb_lev_cii;
@@ -1156,11 +1158,11 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #endif
 
 #if (CALCULATE_POPUL_NH3_OH)
-    nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
-    nb_lev_pnh3 = 34;
-    nb_lev_oh = 20;
+	nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
+	nb_lev_pnh3 = 34; // para-NH3: He coll data - 16, H2 coll data - 34
+	nb_lev_oh = 20;  // OH: He coll data - 44, H2 coll data - 20
 #else
-    nb_lev_onh3 = 1; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;
     nb_lev_oh = 1;
 #endif
@@ -1196,7 +1198,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		NV_Ith_S(y, i) = new_y[i];
 	}
 	NV_Ith_S(y, nb_mhd + 3) = shock_vel;
-	NV_Ith_S(y, nb_mhd + 4) = 0.9995*shock_vel;
+	NV_Ith_S(y, nb_mhd + 4) = 0.9995*shock_vel; // 
 	
 	temp_n = NV_Ith_S(y, nb_mhd);
 	temp_i = NV_Ith_S(y, nb_mhd + 1);
@@ -1245,7 +1247,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
     ty = z = z_saved = zout = 0.;
     dz = 0.01*magn_precursor_length; // cm
     zfin = 1000.*magn_precursor_length;
-    dv_to_v_lim = 0.02;
+    dv_to_v_lim = 0.01; 
 
     // relative difference between ion and neutral speeds, at which shock stops;
     dvel_shock_stop = 0.03; // for studies of chemical evolution of post-shock gas, set 0.001
@@ -1333,7 +1335,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		flag = CV_SUCCESS; 
         zout = z + dz; // updating zout
 
-		while (i < 150 && flag == CV_SUCCESS && z < zout) {
+		while (i < 100 && flag == CV_SUCCESS && z < zout) {
 			flag = CVode(cvode_mem, zout, y, &z, CV_ONE_STEP); // CV_NORMAL or CV_ONE_STEP     
      	    i++;
 		}
@@ -1353,7 +1355,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 << "calc time (s): " << setw(8) << (int)(time(NULL) - timer) << "nb of steps: " << i << endl;
         }
 
-		// Calculation of velocity gradients, some arbitrary parameter for velocity difference:
+		// Calculation of velocity gradients, some arbitrary parameter for velocity difference,
+		// these parameters must be close to the instantaneous velocity gradients
 		dz_arr.push_back(dz);
 		i = (int) dz_arr.size();
         a = 0.;
@@ -1527,7 +1530,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             a = fabs(vel_n_grad / user_data.get_veln_grad());
             b = fabs(vel_i_grad / user_data.get_veli_grad());
 
-            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.1 || a < 0.9)) ||
+			// this parameter is important for radiative transport modelling (fluctuations of the level populations)
+            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.05 || a < 0.95)) ||
                 ((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
             {
                 is_new_vg = true;
@@ -2942,6 +2946,28 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 		output << left << setw(13) << i;
 	}
 	output.close();
+
+	fname = output_path + "sim_data_pnh3.txt";
+	output.open(fname.c_str());
+
+	output << comm1.str() << nb_lev_pnh3 << endl;
+	output << comm2.str();
+
+	for (i = 1; i <= nb_lev_pnh3; i++) {
+		output << left << setw(13) << i;
+	}
+	output.close();
+
+	fname = output_path + "sim_data_onh3.txt";
+	output.open(fname.c_str());
+
+	output << comm1.str() << nb_lev_onh3 << endl;
+	output << comm2.str();
+
+	for (i = 1; i <= nb_lev_onh3; i++) {
+		output << left << setw(13) << i;
+	}
+	output.close();
 #endif
 
 #if (CALCULATE_POPUL_METHANOL)
@@ -3057,9 +3083,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a; // level population densities are saved, [cm-3]
 	}
 	output.close();
-	
-	// para-H2O molecule
 	nb += nb_lev_h2;
+
+	// para-H2O molecule
 	conc_mol = 0.;
 	for (i = 0; i < nb_lev_h2o; i++) {
 		conc_mol += NV_Ith_S(y, nb + i);
@@ -3079,9 +3105,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
-	
-	// ortho-H2O molecule
 	nb += nb_lev_h2o;
+
+	// ortho-H2O molecule
 	conc_mol = 0.;
 	for (i = 0; i < nb_lev_h2o; i++) {
 		conc_mol += NV_Ith_S(y, nb + i);
@@ -3101,9 +3127,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
-	
-	// CO molecule
 	nb += nb_lev_h2o;
+
+	// CO molecule
 	conc_mol = NV_Ith_S(y, network->find_specimen("CO"));
 
 	fname = output_path + "sim_data_co.txt";
@@ -3120,10 +3146,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
-
-	// OH molecule
 	nb += nb_lev_co;
-
+	
+	// OH molecule
 #if (CALCULATE_POPUL_NH3_OH)
 	conc_mol = NV_Ith_S(y, network->find_specimen("OH"));
 
@@ -3142,9 +3167,52 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	}
 	output.close();
 #endif
-
 	nb += nb_lev_oh;
+
+#if (CALCULATE_POPUL_NH3_OH)
+	conc_mol = 0.;
+	for (i = 0; i < nb_lev_pnh3; i++) {
+		conc_mol += NV_Ith_S(y, nb + i);
+	}
+
+	fname = output_path + "sim_data_pnh3.txt";
+	output.open(fname.c_str(), ios::app);
+
+	output << scientific;
+	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
+	for (i = 0; i < nb_lev_pnh3; i++) {
+		a = NV_Ith_S(y, nb + i);
+		if (a < MINIMAL_ABUNDANCE * conc_mol)
+			a = 0.;
+		output << left << setw(13) << a;
+	}
+	output.close();
+#endif
 	nb += nb_lev_pnh3;
+	
+#if (CALCULATE_POPUL_NH3_OH)
+	conc_mol = 0.;
+	for (i = 0; i < nb_lev_onh3; i++) {
+		conc_mol += NV_Ith_S(y, nb + i);
+	}
+
+	fname = output_path + "sim_data_onh3.txt";
+	output.open(fname.c_str(), ios::app);
+
+	output << scientific;
+	output.precision(4);
+	output << left << endl << ss.str() << setw(13) << conc_mol;
+
+	for (i = 0; i < nb_lev_onh3; i++) {
+		a = NV_Ith_S(y, nb + i);
+		if (a < MINIMAL_ABUNDANCE * conc_mol)
+			a = 0.;
+		output << left << setw(13) << a;
+	}
+	output.close();
+#endif	
 	nb += nb_lev_onh3;
 
 	// CH3OH molecule
@@ -3168,7 +3236,6 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	}
 	output.close();
 #endif
-
 	nb += nb_lev_ch3oh;
 
 #if (CALCULATE_POPUL_METHANOL)
@@ -3191,9 +3258,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	}
 	output.close();
 #endif
-
-	// CI ion
 	nb += nb_lev_ch3oh;
+	
+	// CI ion
 	conc_mol = NV_Ith_S(y, network->find_specimen("C"));
 
 	fname = output_path + "sim_data_ci.txt";
@@ -3210,9 +3277,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
-
-	// OI ion
 	nb += nb_lev_ci;
+	
+	// OI ion
 	conc_mol = NV_Ith_S(y, network->find_specimen("O"));
 
 	fname = output_path + "sim_data_oi.txt";
@@ -3229,9 +3296,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
-
-	// CII ion
 	nb += nb_lev_oi;
+	
+	// CII ion
 	conc_mol = NV_Ith_S(y, network->find_specimen("C+"));
 
 	fname = output_path + "sim_data_cii.txt";

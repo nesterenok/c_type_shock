@@ -1,4 +1,3 @@
-
 // Changes:
 // 1. The interstellar radiation field was added;
 // 2. class of dust radiation was removed to the dust_model.cpp file;
@@ -151,7 +150,7 @@ CR_induced_UV_field::CR_induced_UV_field(double norm_factor)
 	en_min = 5.7e+4;
 	en_max = 1.18e+5; 
 
-    // Ibanez-Meja et al. 2019, E = 90330 - 109690 cm-1
+    // Ibanez-Meja et al. 2019, E = 90330 - 109690 cm-1
     // en_min = 9.0e+4;
     // en_max = 1.1e+5;
 

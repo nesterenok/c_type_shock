@@ -4,7 +4,7 @@
 
 
 // The ortho and para levels of NH3 and H2 do not interconvert in inelastic collisions;
-// data on NH3-He collisions, BASECOL data, 5 < T < 500 K;
+// data on NH3-He collisions, BASECOL data, 5 < T < 300 K;
 // Machin & Roueff, J. Phys. B 38, p. 1519, 2005; ortho-NH3 j <= 7 (22 levels), para-NH3 - j <= 4 (16 levels);
 class nh3_he_coll_data : public collision_data
 {

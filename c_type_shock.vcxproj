@@ -113,6 +113,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Users\Александр\Documents\Visual Studio 2019\cvode-4.1.0-install\include;C:\Users\Александр\Documents\input_data\mathematics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
+      <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\Александр\Documents\Visual Studio 2019\cvode-4.1.0-install\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -155,10 +156,10 @@
     <ClCompile Include="c_type_shock\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\input_data\mathematics\constants.h" />
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\integration.h" />
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\interpolation.h" />
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\linear_algebra.h" />
+    <ClInclude Include="..\..\input_data\mathematics\constants.h" />
     <ClInclude Include="c_type_shock\chemical_reaction_data.h" />
     <ClInclude Include="c_type_shock\chemistry.h" />
     <ClInclude Include="c_type_shock\coll_rates.h" />

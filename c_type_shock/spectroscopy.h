@@ -48,14 +48,14 @@ class energy_level
 public:
 	// level nb, sym inv (+1,-1), statistical weight, vibrational quantum number, 
 	int nb, syminv, g, v;
-	// angular momentum, projections of the angular momentum on molecule axes, molecule spin, energy (cm-1)
-	double j, k1, k2, spin, energy;
+	// angular momentum, projections of the angular momentum on molecule axes, molecule spin, energy (cm-1), hyperfine splitting quantum number
+	double j, k1, k2, spin, energy, hf;
 	std::string name;
 
 	// The relation operators are needed to sort by energy; the levels are equal if all quantum numbers coincide:
 	bool operator == (const energy_level &obj) const {
 		return (v == obj.v && syminv == obj.syminv && rounding(2.*j) == rounding(2.*obj.j) && rounding(2.*k1) == rounding(2.*obj.k1) 
-			&& rounding(2.*k2) == rounding(2.*obj.k2));
+			&& rounding(2.*k2) == rounding(2.*obj.k2) && rounding(2.*hf) == rounding(2.*obj.hf));
 	}
 	bool operator != (const energy_level &obj) const {return !(*this == obj);}
 	bool operator < (const energy_level &obj) const {return (energy < obj.energy && !(*this == obj));}	
@@ -67,14 +67,16 @@ public:
 class energy_diagram
 {
 public:
+    bool hyperfine_splitting;
 	int nb_lev, verbosity;
 	const molecule mol;
 	std::vector<energy_level> lev_array;
 
-	virtual int get_nb(int v, double j) const {return 0;}
-	virtual int get_nb(int v, double j, double k) const {return 0;}
-	virtual int get_nb(const std::string, int stat_w) const {return 0;}
-	virtual int get_nb(int syminv, int v, double j, double k) const {return 0;}
+	virtual int get_nb(int v, double j) const {return -1;}
+	virtual int get_nb(int v, double j, double k) const {return -1;}
+	virtual int get_nb(const std::string, int stat_w) const {return -1;}
+	virtual int get_nb(int syminv, int v, double j, double k) const {return -1;}
+    virtual int get_nb(int syminv, int v, double j, double k, double hf) const { return -1; }
     
     void report(const std::string & fname);
 
@@ -132,6 +134,15 @@ class oh_diagram : public energy_diagram
 public:
 	int get_nb(int parity, int v, double j, double omega) const;
 	oh_diagram(const std::string &path, molecule m, int &n_l, int verbosity =1);
+};
+
+// the hyperfine splitting of OH is taken into account in this class: 
+class oh_hf_diagram : public energy_diagram
+{
+public:
+    // hf is the total angular momentum F = J + S
+    int get_nb(int parity, int v, double j, double omega, double hf) const;
+    oh_hf_diagram(const std::string& path, molecule m, int& n_l, int verbosity = 1);
 };
 
 // NH3 can be ortho- and para-
@@ -199,6 +210,13 @@ class oh_einstein_coeff : public einstein_coeff
 {
 public:
 	oh_einstein_coeff(const std::string &path, const energy_diagram *, int verbosity =1);
+};
+
+// OH molecule radiative transitions, including hyperfine splitting;
+class oh_hf_einstein_coeff : public einstein_coeff
+{
+public:
+    oh_hf_einstein_coeff(const std::string& path, const energy_diagram*, int verbosity = 1);
 };
 
 // NH3 molecule radiative transitions;

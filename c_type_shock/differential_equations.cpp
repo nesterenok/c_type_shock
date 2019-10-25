@@ -225,14 +225,14 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
         nb_lev_oh = 20;
 	
     mass = 17.*ATOMIC_MASS_UNIT;
-	molecule oh_mol("OH", isotope = 1, mass, spin = 0.);
+	molecule oh_mol("OH", isotope = 1, mass, spin = 0.5);
 
 #if (CALCULATE_POPUL_NH3_OH)
 	oh_di = new oh_diagram(path, oh_mol, nb_lev_oh, verbosity);
 	oh_einst = new oh_einstein_coeff(path, oh_di, verbosity);
 	oh_coll = new oh_collisions(path, oh_di, verbosity);
 #endif
-	// NH3 molecule data
+	// NH3 molecule data, o-NH3 has k = 3n, n is an integer, for p-NH3 k != 3n
 	if (nb_lev_onh3 > 17)
         nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
 	
@@ -1452,8 +1452,6 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	nb += nb_lev_co;
 	
 	// calculation of the level population gain for OH molecule	
-    c = oh_prod/conc_oh;
-
 #if (CALCULATE_POPUL_NH3_OH)
 	oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_h2j0, conc_h2-conc_h2j0, conc_h, conc_e, coll_partn_conc, indices);
 
@@ -1463,14 +1461,13 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     energy_gain_n += neut_heat_oh;
 #endif
 
+	c = oh_prod/conc_oh;
 	for (i = 0; i < nb_lev_oh; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
 	nb += nb_lev_oh;
 	
 	// calculation of the level population gain for para-NH3 molecule;
-    c = nh3_prod/conc_nh3;
-
 #if (CALCULATE_POPUL_NH3_OH)
 	pnh3_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
@@ -1480,7 +1477,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     energy_gain_n += neut_heat_pnh3;
 #endif	
 	
-    for (i = 0; i < nb_lev_pnh3; i++) {
+    c = nh3_prod/conc_nh3;
+	for (i = 0; i < nb_lev_pnh3; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
 	nb += nb_lev_pnh3;
