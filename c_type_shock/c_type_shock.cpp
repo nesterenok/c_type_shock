@@ -160,10 +160,10 @@ int main(int argc, char** argv)
 
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
-//    path = "C:/Users/Александр/Александр/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
+    path = "C:/Users/Александр/Documents/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
-//    path = "C:/Users/Александр/Documents/Visual Studio 2017/c_type_shock/output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
-//    production_routes(path, path);
+    path += "output_data_2e5/";
+    production_routes(path, path + "shock_cr1-15_15/");
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -467,7 +467,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 #if (CALCULATE_POPUL_NH3_OH)
     nb_lev_onh3 = 9; // ortho-NH3: He coll data - 22, H2 coll data - 17
     nb_lev_pnh3 = 16; // para-NH3: He coll data - 16, H2 coll data - 34
-    nb_lev_oh = 10; // OH: He coll data - 44, H2 coll data - 20
+    nb_lev_oh = 10; // OH: He coll data - 44, H2 coll data - 20 (without HF splitting)
 #else
     nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;
@@ -549,14 +549,15 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	NV_Ith_S(y, nb) = NV_Ith_S(y, network->oh_nb);
 	nb += nb_lev_oh;
 
-	// ortho/para ratio for NH3 is assumed 2;
-	NV_Ith_S(y, nb) = 0.333333*NV_Ith_S(y, network->nh3_nb);
+	// ortho/para statistical weights are 2, but paraNH3 has two times larger number of levels;
+	NV_Ith_S(y, nb) = 0.5*NV_Ith_S(y, network->nh3_nb);
 	nb += nb_lev_pnh3;
 
-	NV_Ith_S(y, nb) = 0.666667*NV_Ith_S(y, network->nh3_nb);
+	NV_Ith_S(y, nb) = 0.5*NV_Ith_S(y, network->nh3_nb);
 	nb += nb_lev_onh3;
 
 	// A-/E- methanol ratio is assumed 1;
+    // see Holdship et al. ApJ 880, p. 138 (2019) 
 	NV_Ith_S(y, nb) = 0.5*NV_Ith_S(y, network->ch3oh_nb);
 	nb += nb_lev_ch3oh;
 
@@ -637,7 +638,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	create_file_nautilus_data(output_path);
 	create_file_mhd_vode(output_path);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 	user_data.create_file_radiative_transfer(output_path);
 #endif
 
@@ -713,7 +714,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 			save_chem_heating_rates(output_path, &user_data, ty);
 			save_mhd_vode(data_path, output_path, network, y, conc_h_tot, ty);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 			user_data.save_radiative_transfer_data(output_path, ty);
 #endif
 		}
@@ -1160,7 +1161,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #if (CALCULATE_POPUL_NH3_OH)
 	nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
 	nb_lev_pnh3 = 34; // para-NH3: He coll data - 16, H2 coll data - 34
-	nb_lev_oh = 20;  // OH: He coll data - 44, H2 coll data - 20
+	nb_lev_oh = 24;  // OH: He coll data - 44, H2 coll data - 20 (without HF splitting); 24 (H2), 56 (He) - with HF splitting
 #else
     nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;
@@ -1318,7 +1319,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	create_file_mol_data(output_path2, &user_data);
 	create_file_h2_chemistry(output_path2);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
 
@@ -1404,7 +1405,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 nb_saved_cloud_param = i;
                 //save_cloud_parameters(&user_data, output_path2, ty, visual_extinct, cr_ioniz_rate, uv_field_strength, ir_field_strength, c_abund_pah, y);
                 save_chem_heating_rates(output_path2, &user_data, ty);
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
                 user_data.save_radiative_transfer_data(output_path2, ty);
 #endif
             }
@@ -1531,7 +1532,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             b = fabs(vel_i_grad / user_data.get_veli_grad());
 
 			// this parameter is important for radiative transport modelling (fluctuations of the level populations)
-            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.05 || a < 0.95)) ||
+            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.1 || a < 0.9)) ||
                 ((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
             {
                 is_new_vg = true;
@@ -1731,7 +1732,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	create_file_nautilus_data(output_path2);
 	create_file_mhd_vode(output_path2);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
 
@@ -1805,7 +1806,7 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 			save_chem_heating_rates(output_path2, &user_data, ty);
 			save_mhd_vode(data_path, output_path2, network, y, conc_h_tot, ty);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 			user_data.save_radiative_transfer_data(output_path2, ty);
 #endif
 		}

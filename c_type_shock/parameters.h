@@ -167,7 +167,11 @@
 
 // the data on radiative transfer parameters gamma and delta, dust heating efficiencies of molecule lines are saved;
 // 1 - radiative transfer factors are saved;
-#define SAVE_RADIATIVE_TRANSFER_FACTORS 0
+#define SAVE_RADIATIVE_FACTORS 1
+#define SAVE_RADIATIVE_FACTORS_H2 0
+#define SAVE_RADIATIVE_FACTORS_CO 0
+#define SAVE_RADIATIVE_FACTORS_H2O 0
+#define SAVE_RADIATIVE_FACTORS_OH 1
 
 // Calculate methanol levels, 1 - yes
 #define CALCULATE_POPUL_METHANOL 0

@@ -20,12 +20,19 @@ public:
 	oh_he_coll_data(const std::string path, const energy_diagram *, int verbosity=1);
 };
 
-// Offer et al., J. of Chemical Physics 100, 362 (1994);
+// Offer et al., J. of Chemical Physics 100, 362 (1994); 24 lowest rotational levels (taking into account the hypefine splitting), 15 < T < 200 K;
 // the data in the files are in simple format (only rate coefficients), original data are in LAMBDA format,
 class oh_hf_h2_coll_data : public collision_data
 {
 public:
     oh_hf_h2_coll_data(const std::string path, const energy_diagram*, bool coll_partner_is_ortho, int verbosity = 1);
+};
+
+// Marinakis S., Kalugina Y., Klos J., Lique F., A&A vol 629, A130 (2019); 56 lowest rotational levels, 5 < T < 300 K; 
+class oh_hf_he_coll_data : public collision_data
+{
+public:
+    oh_hf_he_coll_data(const std::string path, const energy_diagram*, int verbosity = 1);
 };
 
 

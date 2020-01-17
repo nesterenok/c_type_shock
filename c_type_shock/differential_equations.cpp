@@ -220,17 +220,18 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	co_einst = new co_einstein_coeff(path, co_di, verbosity);
 	co_coll = new co_collisions(path, co_di, verbosity);
 
-	// OH molecule data:
-	if (nb_lev_oh > 20)
-        nb_lev_oh = 20;
+	// OH molecule data, without hyperfine splitting the number of levels - 20 (H2), 46 (He)  
+    // with hyperfine splitting - 24 (H2), 56 (He)
+	if (nb_lev_oh > 56)
+        nb_lev_oh = 56;
 	
     mass = 17.*ATOMIC_MASS_UNIT;
 	molecule oh_mol("OH", isotope = 1, mass, spin = 0.5);
 
 #if (CALCULATE_POPUL_NH3_OH)
-	oh_di = new oh_diagram(path, oh_mol, nb_lev_oh, verbosity);
-	oh_einst = new oh_einstein_coeff(path, oh_di, verbosity);
-	oh_coll = new oh_collisions(path, oh_di, verbosity);
+	oh_di = new oh_hf_diagram(path, oh_mol, nb_lev_oh, verbosity);
+	oh_einst = new oh_hf_einstein_coeff(path, oh_di, verbosity);
+	oh_coll = new oh_hf_collisions(path, oh_di, verbosity);
 #endif
 	// NH3 molecule data, o-NH3 has k = 3n, n is an integer, for p-NH3 k != 3n
 	if (nb_lev_onh3 > 17)
@@ -256,8 +257,8 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	angm_ch3oh_max = 15; // the available collisional data is restricted to this value;
 	mass = 32.*ATOMIC_MASS_UNIT;
 
-	molecule ch3oh_a_mol("ch3oh_a", isotope = 1, mass, spin = 1.5);
-	molecule ch3oh_e_mol("ch3oh_e", isotope = 1, mass, spin = 0.5);
+	molecule ch3oh_a_mol("CH3OHa", isotope = 1, mass, spin = 1.5);
+	molecule ch3oh_e_mol("CH3OHe", isotope = 1, mass, spin = 0.5);
 
 #if (CALCULATE_POPUL_METHANOL)
 	ch3oh_a_di = new ch3oh_diagram(path, ch3oh_a_mol, nb_lev_ch3oh, nb_vibr_ch3oh, angm_ch3oh_max);
@@ -270,9 +271,9 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 #endif
 
 	// LVG data:
-	loss_func_line_phot = new lvg_method_data(path, "lvg_loss_func.txt", verbosity);
+	loss_func_line_phot = new lvg_method_data(path, "lvg/lvg_loss_func.txt", verbosity);
 	// the data is used for which integration range for mu is [0.01;1],
-	loss_func_cont_phot = new lvg_method_data(path, "lvg_loss_func_qt1_mu1e-2.txt", verbosity);
+	loss_func_cont_phot = new lvg_method_data(path, "lvg/lvg_loss_func_qt1_mu1e-2.txt", verbosity);
 
 	// 2-component dust model:
 	dust = new two_component_dust_model(path, c_abund_pah, dg_ratio = 0.01, HE_TO_H_NB_RATIO, STANDARD_NB_CR_PHOTONS, 
@@ -422,7 +423,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	ion_neutr_rate = new double [nb_of_dust_comp];
 	el_att_rate = new double [nb_of_dust_comp];
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 	nb_rtd = nb_lev_h2*(nb_lev_h2-1)/2 + nb_lev_h2o*(nb_lev_h2o-1) + nb_lev_co*(nb_lev_co-1)/2 + nb_lev_oh*(nb_lev_oh-1)/2 
 		+ nb_lev_pnh3*(nb_lev_pnh3-1)/2 + nb_lev_onh3*(nb_lev_onh3-1)/2	+ nb_lev_ch3oh*(nb_lev_ch3oh-1) + 
 		nb_lev_ci*(nb_lev_ci-1)/2 + nb_lev_oi*(nb_lev_oi-1)/2 + nb_lev_cii*(nb_lev_cii-1)/2;
@@ -1231,7 +1232,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	memset(dust_heat_h2_line, 0, nb_of_dust_comp*sizeof(double));
 	memset(dust_heat_mline, 0, nb_of_dust_comp*sizeof(double));
 	
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS)
 	memset(gamma_factors, 0, nb_rtd*sizeof(double));
 	memset(delta_factors, 0, nb_rtd*sizeof(double));
 	memset(dheat_efficiency, 0, nb_rtd*sizeof(double));
@@ -1266,7 +1267,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	specimen_population_derivative(y_data, ydot_data, nb_of_species, h2_di, h2_einst, h2_coll, coll_partn_conc, indices, vel_n_grad,
 		neut_heat_h2, el_heat_h2, ion_heat_h2, dust_heat_h2_line);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
+#if (SAVE_RADIATIVE_FACTORS_H2)
     calc_radiative_coeff(y_data, nb_of_species, h2_di, h2_einst, h2_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, 0);
 #endif
@@ -1388,7 +1389,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	energy_gain_n += neut_heat_h2 + h2_h_diss_cooling + h2_h2_diss_cooling;
 	energy_gain_e += el_heat_h2 + h2_e_diss_cooling; // electron fluid cools in H2-e dissociation
     energy_gain_i += ion_heat_h2;
+    
     nb = nb_of_species + nb_lev_h2;
+    nb2 = nb_lev_h2*(nb_lev_h2-1)/2;
 	
 	// calculation of the level population gain for para-H2O molecule (not normalized to H2O concentration);
 	ph2o_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
@@ -1396,8 +1399,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	specimen_population_derivative(y_data, ydot_data, nb, ph2o_di, ph2o_einst, ph2o_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_ph2o, el_heat_ph2o, a, dust_heat_mline);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
-    nb2 = nb_lev_h2*(nb_lev_h2-1)/2;
+#if (SAVE_RADIATIVE_FACTORS_H2O)
     calc_radiative_coeff(y_data, nb, ph2o_di, ph2o_einst, ph2o_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1410,7 +1412,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	energy_gain_n += neut_heat_ph2o;
 	energy_gain_e += el_heat_ph2o;
-	nb += nb_lev_h2o;
+	
+    nb += nb_lev_h2o;
+    nb2 += nb_lev_h2o * (nb_lev_h2o - 1) / 2;
 	
 	// calculation of the level population gain for ortho-H2O molecule
 	oh2o_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
@@ -1418,8 +1422,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	specimen_population_derivative(y_data, ydot_data, nb, oh2o_di, oh2o_einst, oh2o_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_oh2o, el_heat_oh2o, a, dust_heat_mline);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
-    nb2 += nb_lev_h2o * (nb_lev_h2o - 1) / 2;
+#if (SAVE_RADIATIVE_FACTORS_H2O)
     calc_radiative_coeff(y_data, nb, oh2o_di, oh2o_einst, oh2o_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1430,7 +1433,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	energy_gain_n += neut_heat_oh2o;
 	energy_gain_e += el_heat_oh2o;
-	nb += nb_lev_h2o;
+	
+    nb += nb_lev_h2o;
+    nb2 += nb_lev_h2o*(nb_lev_h2o-1)/2;
 
 	// calculation of the level population gain for CO molecule
 	co_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
@@ -1438,8 +1443,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	specimen_population_derivative(y_data, ydot_data, nb, co_di, co_einst, co_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_co, a, a, dust_heat_mline);
 
-#if (SAVE_RADIATIVE_TRANSFER_FACTORS)
-    nb2 += nb_lev_h2o*(nb_lev_h2o-1)/2;
+#if (SAVE_RADIATIVE_FACTORS_CO)
     calc_radiative_coeff(y_data, nb, co_di, co_einst, co_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1450,13 +1454,21 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	}
 	energy_gain_n += neut_heat_co;
 	nb += nb_lev_co;
-	
+	nb2 += nb_lev_co * (nb_lev_co - 1) / 2;
+
 	// calculation of the level population gain for OH molecule	
 #if (CALCULATE_POPUL_NH3_OH)
-	oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_h2j0, conc_h2-conc_h2j0, conc_h, conc_e, coll_partn_conc, indices);
+    // different data need different arguments for para- and ortho-H2
+	// oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_h2j0, conc_h2-conc_h2j0, conc_h, conc_e, coll_partn_conc, indices);
+    oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_oh, a, a, dust_heat_mline);
+
+#if (SAVE_RADIATIVE_FACTORS_OH)
+    calc_radiative_coeff(y_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors,
+        delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
+#endif
 
     energy_gain_n += neut_heat_oh;
 #endif
@@ -1793,7 +1805,7 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
                     delta = fabs(vel_grad) / (vd*dust_op);
 
                     // linear interpolation is used in calculating escape probabilities:
-                    ep1 = loss_func_line_phot->get_esc_func_2(gamma, delta);
+                    ep1 = loss_func_line_phot->get_esc_func(gamma, delta);
 
                     c = line_em / line_op * ep1;
                     d = mol_einst->arr[i][l] * upl *(1. + c);
@@ -1807,7 +1819,7 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
                     arr[l] -= d;
 
                     // dust heating:
-                    ep2 = loss_func_cont_phot->get_esc_func_2(gamma, delta);
+                    ep2 = loss_func_cont_phot->get_esc_func(gamma, delta);
                     c = mol_einst->arr[i][l] * upl*energy*ep2 / dust_op; // cm-1 s-1 cm-2
 
                     for (k = 0; k < nb_of_dust_comp; k++) { // absorption in cm2, heating rate of one grain in cm-1 s-1 
@@ -1864,7 +1876,8 @@ void evolution_data::calc_radiative_coeff(const realtype *y_data, int nb, const 
 #pragma omp for schedule(dynamic, 1)
 		for (l = 0; l < nb_lev - 1; l++) {
             lowl = y_data[nb + l];
-			for (i = l + 1; i < nb_lev; i++) {					
+			
+            for (i = l + 1; i < nb_lev; i++) {					
 				if (mol_einst->arr[i][l] > 1.e-99)
 				{        
                     upl = y_data[nb + i];                    
@@ -1885,10 +1898,10 @@ void evolution_data::calc_radiative_coeff(const realtype *y_data, int nb, const 
 					delta = fabs(vel_grad) /(vd*dust_op);
 
 					// linear interpolation is used in calculating escape probabilities:
-					ep1 = loss_func_line_phot->get_esc_func_2(gamma, delta);
+					ep1 = loss_func_line_phot->get_esc_func(gamma, delta);
 					
 					// dust heating:
-					ep2 = loss_func_cont_phot->get_esc_func_2(gamma, delta);
+					ep2 = loss_func_cont_phot->get_esc_func(gamma, delta);
 					c = mol_einst->arr[i][l]*upl*energy*ep2/dust_op; // cm-1 s-1 cm-2
 					
 		            g_arr[l][i] = gamma;
@@ -2778,9 +2791,9 @@ void evolution_data::create_file_radiative_transfer(const string & output_path) 
 
 void evolution_data::save_radiative_transfer_data(const string & output_path, double ty) const
 {
-	const double min_heff1 = 1.e-4, min_heff2 = 3.e-3; // for H2 and other molecules
-	int l, i, k, nb;
-	double hr1, hr2;
+    const double g_factor_max = 1.e+8;
+	int l, i, k, j, m, nb;
+	double hr1, hr2, dx, vd;
 
 	string fname = output_path + "sim_rad_transf.txt";
 	ofstream output;
@@ -2794,7 +2807,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 	}
 
 	output.open(fname.c_str(), ios::app);
-	output << scientific;
+    output.setf(ios::scientific);
 	output.precision(2);
 	
 	output << "# Evolution age (years):" << endl;
@@ -2803,39 +2816,42 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 		<< "# Dust heating rate by other molecules [cm-1 cm-3 s-1]: " << hr2 << endl;
 
 	// effici - the relative contribution of a line to the heating process;
-	output << left << setw(5) << "# nb" << setw(5) << "v_u" << setw(5) << "j_u" << setw(5) << "t_u" 
-		<< setw(5) << "v_l" << setw(5) << "j_l" << setw(5) << "t_l" << setw(10) << "en(cm-1)" 
-		<< setw(10) << "g" << setw(10) << "d" << setw(10) << "effici" << setw(10) << "ep_int1" << setw(10) << "ep_int2" << endl;
+#if (SAVE_RADIATIVE_FACTORS_H2)
+	output << left << setw(5) << "# nb" << setw(5) << "v_u" << setw(5) << "j_u" << setw(10) << "t_u" 
+		<< setw(5) << "v_l" << setw(5) << "j_l" << setw(10) << "t_l" 
+        << setw(10) << "en(cm-1)" << setw(10) << "g" << setw(10) << "d" << setw(10) << "effici" << setw(10) << "ep_int1" << setw(10) << "ep_int2" << endl;
 
 	// H2
 	output << "# Radiative transfer data for H2" << endl;
 	k = 0;
 	for (l = 0; l < h2_di->nb_lev-1; l++) {
-		for (i = l+1; i < h2_di->nb_lev; i++) 
-		{
-			if (h2_einst->arr[i][l] > DBL_EPSILON && dheat_efficiency[i*(i-1)/2+l]/hr1 > min_heff1)
+		for (i = l+1; i < h2_di->nb_lev; i++) {
+			if (h2_einst->arr[i][l] > DBL_EPSILON && gamma_factors[i*(i-1)/2+l] < g_factor_max)
 			{
-				output << left << setw(5) << k << setw(5) << h2_di->lev_array[i].v << setw(10) << rounding(h2_di->lev_array[i].j) 
-					<< setw(5) << h2_di->lev_array[l].v << setw(10) << rounding(h2_di->lev_array[l].j) << setw(10) << h2_di->lev_array[i].energy - h2_di->lev_array[l].energy 
+				output << left << setw(5) << k << setw(5) << h2_di->lev_array[i].v << setw(15) << rounding(h2_di->lev_array[i].j) 
+					<< setw(5) << h2_di->lev_array[l].v << setw(15) << rounding(h2_di->lev_array[l].j) 
+                    << setw(10) << h2_di->lev_array[i].energy - h2_di->lev_array[l].energy 
 					<< setw(10) << gamma_factors[i*(i-1)/2+l] << setw(10) << delta_factors[i*(i-1)/2+l] << setw(10) << dheat_efficiency[i*(i-1)/2+l]/hr1 
 					<< setw(10) << esc_prob_int1[i*(i-1)/2+l] << setw(10) << esc_prob_int2[i*(i-1)/2+l] << endl;
 				k++;
 			}
 		}
 	}
-	// p-H2O
+#endif
+    
+    // p-H2O
+    nb = nb_lev_h2*(nb_lev_h2-1)/2;
+#if(SAVE_RADIATIVE_FACTORS_H2O)
 	output << "# Radiative transfer for p-H2O" << endl;
 	k = 0;
-	nb = nb_lev_h2*(nb_lev_h2-1)/2;
-	
+
 	for (l = 0; l < ph2o_di->nb_lev-1; l++) {
-		for (i = l+1; i < ph2o_di->nb_lev; i++) 
-		{
-			if (ph2o_einst->arr[i][l] > DBL_EPSILON && dheat_efficiency[nb+i*(i-1)/2+l]/hr2 > min_heff2)
+		for (i = l+1; i < ph2o_di->nb_lev; i++) {
+			if (ph2o_einst->arr[i][l] > DBL_EPSILON && gamma_factors[nb+ i*(i-1)/2+l] < g_factor_max)
 			{
 				output << left << setw(5) << k << setw(5) << ph2o_di->lev_array[i].v << setw(5) << rounding(ph2o_di->lev_array[i].j) 
-					<< setw(5) << rounding(ph2o_di->lev_array[i].k1 - ph2o_di->lev_array[i].k2)
-					<< setw(5) << ph2o_di->lev_array[l].v << setw(5) << rounding(ph2o_di->lev_array[l].j) << setw(5) << rounding(ph2o_di->lev_array[l].k1 - ph2o_di->lev_array[l].k2)
+					<< setw(10) << rounding(ph2o_di->lev_array[i].k1 - ph2o_di->lev_array[i].k2)
+					<< setw(5) << ph2o_di->lev_array[l].v << setw(5) << rounding(ph2o_di->lev_array[l].j) << setw(10) << rounding(ph2o_di->lev_array[l].k1 - ph2o_di->lev_array[l].k2)
 					<< setw(10) << ph2o_di->lev_array[i].energy - ph2o_di->lev_array[l].energy 
 					<< setw(10) << gamma_factors[nb+i*(i-1)/2+l] << setw(10) << delta_factors[nb+i*(i-1)/2+l] << setw(10) << dheat_efficiency[nb+i*(i-1)/2+l]/hr2 
 					<< setw(10) << esc_prob_int1[nb+i*(i-1)/2+l] << setw(10) << esc_prob_int2[nb+i*(i-1)/2+l] << endl;
@@ -2843,20 +2859,21 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 			}
 		}
 	}
-
-	// o-H2O
-	output << "# Radiative transfer for o-H2O" << endl;
-	k = 0;
-	nb += nb_lev_h2o*(nb_lev_h2o-1)/2;
+#endif
 	
+    // o-H2O
+    nb += nb_lev_h2o*(nb_lev_h2o-1)/2;
+#if(SAVE_RADIATIVE_FACTORS_H2O)	
+    output << "# Radiative transfer for o-H2O" << endl;
+	k = 0;
+
 	for (l = 0; l < oh2o_di->nb_lev-1; l++) {
-		for (i = l+1; i < oh2o_di->nb_lev; i++) 
-		{
-			if (oh2o_einst->arr[i][l] > DBL_EPSILON && dheat_efficiency[nb+i*(i-1)/2+l]/hr2 > min_heff2)
+		for (i = l+1; i < oh2o_di->nb_lev; i++) {
+			if (oh2o_einst->arr[i][l] > DBL_EPSILON && gamma_factors[nb+i*(i-1)/2+l] < g_factor_max)
 			{
 				output << left << setw(5) << k << setw(5) << oh2o_di->lev_array[i].v << setw(5) << rounding(oh2o_di->lev_array[i].j) 
-					<< setw(5) << rounding(oh2o_di->lev_array[i].k1 - oh2o_di->lev_array[i].k2)
-					<< setw(5) << oh2o_di->lev_array[l].v << setw(5) << rounding(oh2o_di->lev_array[l].j) << setw(5) << rounding(oh2o_di->lev_array[l].k1 - oh2o_di->lev_array[l].k2)
+					<< setw(10) << rounding(oh2o_di->lev_array[i].k1 - oh2o_di->lev_array[i].k2)
+					<< setw(5) << oh2o_di->lev_array[l].v << setw(5) << rounding(oh2o_di->lev_array[l].j) << setw(10) << rounding(oh2o_di->lev_array[l].k1 - oh2o_di->lev_array[l].k2)
 					<< setw(10) << oh2o_di->lev_array[i].energy - oh2o_di->lev_array[l].energy 
 					<< setw(10) << gamma_factors[nb+i*(i-1)/2+l] << setw(10) << delta_factors[nb+i*(i-1)/2+l] << setw(10) << dheat_efficiency[nb+i*(i-1)/2+l]/hr2 
 					<< setw(10) << esc_prob_int1[nb+i*(i-1)/2+l] << setw(10) << esc_prob_int2[nb+i*(i-1)/2+l] << endl;
@@ -2864,25 +2881,80 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 			}
 		}
 	}
+#endif
+
 	// CO
-	output << "# Radiative transfer for CO" << endl;
+    nb += nb_lev_h2o*(nb_lev_h2o-1)/2;
+#if(SAVE_RADIATIVE_FACTORS_CO)
+    output << "# Radiative transfer for CO" << endl;
 	k = 0;
-	nb += nb_lev_h2o*(nb_lev_h2o-1)/2;
 	
 	for (l = 0; l < co_di->nb_lev-1; l++) {
-		for (i = l+1; i < co_di->nb_lev; i++) 
-		{
-			if (co_einst->arr[i][l] > DBL_EPSILON && dheat_efficiency[nb+i*(i-1)/2+l]/hr2 > min_heff2)
+		for (i = l+1; i < co_di->nb_lev; i++) {
+			if (co_einst->arr[i][l] > DBL_EPSILON && gamma_factors[nb + i*(i-1)/2+l] < g_factor_max)
 			{
-				output << left << setw(5) << k << setw(5) << co_di->lev_array[i].v << setw(10) << rounding(co_di->lev_array[i].j) 
-					<< setw(5) << co_di->lev_array[l].v << setw(10) << rounding(co_di->lev_array[l].j) << setw(10) << co_di->lev_array[i].energy - co_di->lev_array[l].energy 
+				output << left << setw(5) << k << setw(5) << co_di->lev_array[i].v << setw(15) << rounding(co_di->lev_array[i].j) 
+					<< setw(5) << co_di->lev_array[l].v << setw(15) << rounding(co_di->lev_array[l].j) 
+                    << setw(10) << co_di->lev_array[i].energy - co_di->lev_array[l].energy 
 					<< setw(10) << gamma_factors[nb+i*(i-1)/2+l] << setw(10) << delta_factors[nb+i*(i-1)/2+l] << setw(10) << dheat_efficiency[nb+i*(i-1)/2+l]/hr2 
 					<< setw(10) << esc_prob_int1[nb+i*(i-1)/2+l] << setw(10) << esc_prob_int2[nb+i*(i-1)/2+l] << endl;
 				k++;
 			}
 		}
 	}
-	output.close();
+#endif
+ 
+    //OH
+    nb = nb_lev_h2 * (nb_lev_h2 - 1) / 2 + nb_lev_h2o * (nb_lev_h2o - 1) + nb_lev_co * (nb_lev_co - 1) / 2;
+#if (CALCULATE_POPUL_NH3_OH && SAVE_RADIATIVE_FACTORS_OH)
+    if (oh_di->hyperfine_splitting) {
+        output << "# Radiative transfer for OH, line overlap parameters" << endl;
+        output << left << setw(5) << "# nb" << setw(7) << "j_u" << setw(7) << "omega" << setw(7) << "parity" << setw(7) << "f_u"
+            << setw(10) << "j_l" << setw(7) << "omega" << setw(7) << "parity" << setw(7) << "f_l"
+            << setw(13) << "en(cm-1)" << setw(10) << "g" << setw(10) << "d" << setw(10) << "dx"
+            << setw(10) << "effici" << setw(10) << "ep_int1" << setw(10) << "ep_int2" << endl;
+  
+        vd = pow(2. * BOLTZMANN_CONSTANT * temp_n / oh_di->mol.mass + vel_turb * vel_turb, 0.5);
+        for (i = 2; i < oh_di->nb_lev; i += 2) {
+            for (l = 0; l < i; l += 2) {
+                k = 0;
+                // the transitions between the doublets are not considered,
+                for (m = 0; m < 2; m++) {
+                    for (j = 0; j < 2; j++)
+                    {                
+                        if (oh_einst->arr[i + m][l + j] > 1.-99) {
+                            dx = (oh_di->lev_array[i + m].energy - oh_di->lev_array[l + j].energy - oh_di->lev_array[i].energy + oh_di->lev_array[l].energy)
+                                /(oh_di->lev_array[i].energy - oh_di->lev_array[l].energy)
+                                * SPEED_OF_LIGHT /vd;
+                            
+                            output.unsetf(ios_base::floatfield);
+
+                            output << left << setw(5) << k
+                                << setw(7) << oh_di->lev_array[i + m].j << setw(7) << oh_di->lev_array[i + m].k1
+                                << setw(7) << oh_di->lev_array[i + m].syminv << setw(7) << oh_di->lev_array[i + m].hf
+                                << setw(10) << oh_di->lev_array[l + j].j << setw(7) << oh_di->lev_array[l + j].k1
+                                << setw(7) << oh_di->lev_array[l + j].syminv << setw(7) << oh_di->lev_array[l + j].hf;
+
+                            output.setf(ios::scientific);
+                            output.precision(5);
+                            output << left << setw(13) << oh_di->lev_array[i + m].energy - oh_di->lev_array[l + j].energy;
+
+                            output.precision(2);
+                            output << left << setw(10) << gamma_factors[nb + (i + m) * (i + m - 1) / 2 + l + j] 
+                                << setw(10) << delta_factors[nb + (i + m) * (i + m - 1) / 2 + l + j] 
+                                << setw(10) << dx
+                                << setw(10) << dheat_efficiency[nb + (i + m) * (i + m - 1) / 2 + l + j] / hr2
+                                << setw(10) << esc_prob_int1[nb + (i + m) * (i + m - 1) / 2 + l + j] 
+                                << setw(10) << esc_prob_int2[nb + (i + m) * (i + m - 1) / 2 + l + j] << endl;
+                            k++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+#endif 
+    output.close();
 }
 
 chemistry_evolution_data::chemistry_evolution_data(const std::string &input_path, const std::string &output_path, int nb_h2, 

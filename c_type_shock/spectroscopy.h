@@ -129,6 +129,7 @@ public:
 	co_diagram(const std::string &path, molecule m, int &n_l, int nb_vibr =NB_VIBR_EXCIT_CO, int verbosity =1);
 };
 
+// v, j, k1 is omega, syminv is parity, 
 class oh_diagram : public energy_diagram
 {
 public:
@@ -136,7 +137,8 @@ public:
 	oh_diagram(const std::string &path, molecule m, int &n_l, int verbosity =1);
 };
 
-// the hyperfine splitting of OH is taken into account in this class: 
+// the hyperfine splitting of OH is taken into account in this class:
+// additional quantum number hf - total angular momentum
 class oh_hf_diagram : public energy_diagram
 {
 public:

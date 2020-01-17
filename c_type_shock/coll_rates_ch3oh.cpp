@@ -10,6 +10,7 @@
 #include <fstream>
 #include <cmath>
 #include <sstream>
+#include <cfloat>
 
 #include "constants.h"
 #include "utils.h"
@@ -95,7 +96,7 @@ ch3oh_he_coll_data::ch3oh_he_coll_data(const string &path, const energy_diagram 
 				{
 					input >> rate;
 					// some values are in the form a.b-dfg without E symbol; 
-					if (fabs(rate) > 1.) {
+					if (fabs(rate) >= 1. - DBL_EPSILON) {
 						input >> a; 
 						rate = 0.;
 					}
@@ -179,7 +180,7 @@ ch3oh_he_coll_data::ch3oh_he_coll_data(const string &path, const energy_diagram 
 			{
 				input >> rate;					
 				// some values are in the form a.b-dfg without E symbol; 
-				if (fabs(rate) > 1.) {
+				if (fabs(rate) >= 1. - DBL_EPSILON) {
 					input >> a; 
 					rate = 0.;
 				}
@@ -295,7 +296,7 @@ ch3oh_ph2_coll_data::ch3oh_ph2_coll_data(const string &path, const energy_diagra
 				{
 					input >> rate; 
 					// some values are in the form a.b-dfg without E symbol; 
-					if (fabs(rate) > 1.) {
+					if (fabs(rate) >= 1.-DBL_EPSILON) {
 						input >> a; 
 						rate = 0.;
 					}
@@ -402,7 +403,7 @@ ch3oh_oh2_coll_data::ch3oh_oh2_coll_data(const string &path, const energy_diagra
 			{
 				input >> rate;
 				// some values are in the form a.b-dfg without E symbol; 
-				if (fabs(rate) > 1.) {
+				if (fabs(rate) >= 1. - DBL_EPSILON) {
 					input >> a; 
 					rate = 0.;
 				}
@@ -501,8 +502,8 @@ void ch3oh_collisions::get_rate_neutrals(const energy_level &up_lev, const energ
 		down_rate += coll_data[0]->get_rate(up_lev.nb, low_lev.nb, indices[0], (temp_neutrals < max_temp[0]) ? temp_neutrals : max_temp[0]) *concentration[0];
 	}
 	else {
-	// For torsionally inelastic transition induced by para-H2, Rabli, Flower (2011) suggested using the rate coefficients 
-	// for He, and three times these values for collisions with ortho-H2. 
+	// For torsionally inelastic transition induced by para-H2, Rabli, Flower (2011) suggested using the rate coefficients for He, 
+	// and three times these values for collisions with ortho-H2. 
 	// initial data sets are available for <= 400 K;
 		down_rate = coll_data[0]->get_rate(up_lev.nb, low_lev.nb, indices[0], (temp_neutrals < max_temp[0]) ? temp_neutrals : max_temp[0]) 
 				*(concentration[0] + concentration[1] + 3.*concentration[2]);

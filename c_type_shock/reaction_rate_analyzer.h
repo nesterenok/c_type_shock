@@ -9,6 +9,11 @@
 // path1 - the location of files with chemical species and reactions, 
 // path2 - the location of data file, the output is written in this location
 void production_routes(std::string path1, std::string path2);
+void add_cosmicray_chemistry(std::vector<std::string>& specimen_names);
+void add_oxygen_chemistry(std::vector<std::string>& specimen_names);
+void add_carbon_chemistry(std::vector<std::string>& specimen_names);
+void add_nitrogen_chemistry(std::vector<std::string>& specimen_names);
+
 
 // The time grid in NAUTILUS data and in the compared data must be the same:
 void nautilus_comparison(std::string path);
@@ -35,6 +40,7 @@ public:
 	friend bool operator > (const reaction_data &, const reaction_data &);
 };
 
+/*
 class depth_temperature_dependence
 {
 private:
@@ -46,4 +52,4 @@ public:
 
     double get_gas_temperature(double depth);
     depth_temperature_dependence(std::string path);
-};
+};*/

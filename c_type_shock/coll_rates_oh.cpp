@@ -180,6 +180,59 @@ oh_hf_h2_coll_data::oh_hf_h2_coll_data(const std::string path, const energy_diag
     }
 }
 
+oh_hf_he_coll_data::oh_hf_he_coll_data(const std::string path, const energy_diagram*, int verbosity)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int i, j, li, lf, nb;
+    
+    string fname;
+    ifstream input;
+
+    fname = path + "coll_oh/coll_oh_hf_he.txt";
+    input.open(fname.c_str(), ios_base::in);
+
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << fname << endl;
+        exit(1);
+    }
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+
+    input >> nb_lev >> jmax;
+    jmax++;      // one point is reserved for 0 K;
+    imax = nb_lev * (nb_lev - 1) / 2;
+
+    tgrid = new double[jmax];
+    coeff = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff, 0, jmax * imax * sizeof(double));
+
+    coeff_deriv = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff_deriv, 0, imax * jmax * sizeof(double));
+
+    tgrid[0] = 0.;
+    for (j = 1; j < jmax; j++) {
+        input >> tgrid[j];
+    }
+
+    for (i = 0; i < imax; i++)
+    {
+        input >> li >> lf >> j >> j;
+        nb = (li - 2) * (li - 1) / 2 + lf - 1; // the numeration of levels in the file starts from 1
+
+        for (j = 1; j < jmax; j++) {
+            input >> coeff[nb][j];
+        }
+    }
+    input.close();
+    calc_coeff_deriv();
+
+    if (verbosity) {
+        cout << "  data have been read from file " << fname << endl
+            << "  temperature range " << (int)tgrid[1] << " - " << (int)tgrid[jmax - 1] << endl;
+    }
+}
+
 //
 // The class calculates collisional rates
 //
@@ -247,7 +300,7 @@ oh_hf_collisions::oh_hf_collisions(const string& data_path, const energy_diagram
 
     nb_lev = oh_di->nb_lev;
 
-    // coll_data.push_back(new oh_he_coll_data(data_path, oh_di, verbosity));
+    coll_data.push_back(new oh_hf_he_coll_data(data_path, oh_di, verbosity));
     coll_data.push_back(new oh_hf_h2_coll_data(data_path, oh_di, coll_partner_is_ortho = false, verbosity));
     coll_data.push_back(new oh_hf_h2_coll_data(data_path, oh_di, coll_partner_is_ortho = true, verbosity));
     nb1 = (int)coll_data.size();
@@ -270,9 +323,9 @@ void oh_hf_collisions::set_gas_param(double temp_neutrals, double temp_el, doubl
     collisional_transitions::set_gas_param(temp_neutrals, temp_el, he_conc, ph2_conc, oh2_conc, h_conc, el_conc, concentration,
         indices);
 
-    //concentration[0] = he_conc;
-    concentration[0] = ph2_conc;
-    concentration[1] = oh2_conc;
+    concentration[0] = he_conc;
+    concentration[1] = ph2_conc;
+    concentration[2] = oh2_conc;
 }
 
 // The energy of the first level is higher, up_lev.nb > low_lev.nb;
@@ -280,11 +333,12 @@ void oh_hf_collisions::get_rate_neutrals(const energy_level& up_lev, const energ
     double& up_rate, double temp_neutrals, const double* concentration, const int* indices) const
 {
     up_rate = down_rate = 0.;
-    // down_rate = coll_data[0]->get_rate(up_lev.nb, low_lev.nb, indices[0], (temp_neutrals < max_temp[0]) ? temp_neutrals : max_temp[0]) * concentration[0];
-
     if (up_lev.nb < coll_data[0]->nb_lev) {
-        down_rate += coll_data[0]->get_rate(up_lev.nb, low_lev.nb, indices[0], (temp_neutrals < max_temp[0]) ? temp_neutrals : max_temp[0]) * concentration[0]
-            + coll_data[1]->get_rate(up_lev.nb, low_lev.nb, indices[1], (temp_neutrals < max_temp[1]) ? temp_neutrals : max_temp[1]) * concentration[1];
+        down_rate = coll_data[0]->get_rate(up_lev.nb, low_lev.nb, indices[0], (temp_neutrals < max_temp[0]) ? temp_neutrals : max_temp[0]) * concentration[0];
+    }
+    if (up_lev.nb < coll_data[1]->nb_lev) {
+        down_rate += coll_data[1]->get_rate(up_lev.nb, low_lev.nb, indices[1], (temp_neutrals < max_temp[1]) ? temp_neutrals : max_temp[1]) * concentration[1]
+            + coll_data[2]->get_rate(up_lev.nb, low_lev.nb, indices[2], (temp_neutrals < max_temp[2]) ? temp_neutrals : max_temp[2]) * concentration[2];
     }
 
     if (down_rate > MIN_COLLISION_RATE)
