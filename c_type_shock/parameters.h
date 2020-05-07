@@ -56,7 +56,7 @@
 // constant must be multiplied by sqrt(binding energy in K/ mass in a.m.u.);
 #define SURF_VIBR_FREQ 4104.71*sqrt(GRAIN_SITES_PER_CM2)
 
-// Garrod et al. A&A 457, p.927 (2006) introduces value of 0.5; Reboussin et al. MNRAS 440, p.3557 (2014) also uses this value;
+// Garrod et al. A&A 457, p.927 (2006) introduces value of 0.5; Reboussin et al. MNRAS 440, p.3557 (2014) also use this value;
 // Karssemeijer & Cuppen, A&A 569, p. 107 (2014) obtained values 0.3 for CO and 0.4 for CO2; 
 #define DIFFUSION_TO_BINDING_ENERGY_RATIO 0.35
 // Garrod et al., A&A 467, p. 1103 (2007), description of chemical desorption mechanism;
@@ -105,7 +105,7 @@
 // see the discussion by Hollenbach et al., ApJ 690, p. 1497 (2009):
 #define MIN_ADSORPTION_RADIUS 2.e-7
 
-// the grains with radius less then this values are strongly coupled to ion fluid;
+// the grains with radius less then this values are strongly coupled to the ion fluid;
 #define MAX_ION_COUPLED_GRAIN_RADIUS 3.e-7  // in cm
 
 // this number must be odd (to include zero charge);
@@ -125,6 +125,7 @@
 
 #define MINIMAL_ABUNDANCE 1.e-99 // for saving in file
 #define MINIMAL_REACTION_RATE 1.e-99
+
 //--------------------------------------------------
 // Switchers
 //--------------------------------------------------
@@ -137,8 +138,8 @@
 // The ad-hoc formation of H2 on grain surface assumes that each accretion events of two H atoms leads to the formation of H2. 
 // In this prescription when the ad-hoc H2 formation is activated, 50% of the adsorbed H are available for grain reactions 
 // (other than H2 formation) and 50% for the formation of H2 (as in NAUTILUS code).
-// 0 - H2 formation is modelled (grain surface chemistry must be on); 
-// 1 - "ad hoc" (as described higher); 2 - semiempirical H2 formation rate; 
+// 0 - H2 formation is modeled (grain surface chemistry must be on); 
+// 1 - "ad hoc" (as described higher); 2 - semi-empirical H2 formation rate; 
 #define H2_FORMATION_MODE 0 // must be re-considered
 
 // Hollenbach, Tielens, Reviews of Modern Physics 71, p. 173, 1999; k = c*n_H*n_H_tot, c = (1-3)*1e-17 cm3 s-1;

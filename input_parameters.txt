@@ -6,7 +6,7 @@ C:/Users/Александр/Documents/input_data/
 # Computation mode: DC - dark cloud, 
 # CS - C-type shock, CS_ - a set of C-type shock models for a grid of velocities (check the directory name), 
 # CR - dark cloud with increasing cosmic ray ionization:
-CS
+DC
 # carbon abundance in PAH molecules relative to H nuclei (typical value is 1.e-5).
 0.
 # 2. Parameters relevant for dark cloud simulations:

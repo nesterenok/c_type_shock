@@ -16,17 +16,18 @@ public:
 };
 
 // Class containing the table with escape probability values;
+// gamma = 1./( line absorp coeff * resonance length), delta = 1./( continuum absorp coeff * resonance length), 
+// gamma > 0, delta > 0 for these data,
+// across the resonance length the flow velocity shifts on the magnitude of the thermal velocity, 
+// the function returns the value v, one-sided escape probability is p = 0.5(1-v), 	
 class lvg_method_data {
 protected:
 	int		nb_g, nb_d;
 	double	mu_c;
-	double  *delta_arr, *gamma_arr;
-	double  **p_arr;
+	double  *delta_arr, *gamma_arr, **p_arr;
 
 public:
-	// gamma = 1./( line absorp coeff * resonance length), delta = 1./( continuum absorp coeff * resonance length),
-	// the function returns the value v, one-sided escape probability is p = 0.5(1-v), 
-	// linear interpolation:
+    // linear interpolation:
 	virtual double get_esc_func(double gamma, double delta) const;
 	
 	// the function returns G(b, g, t) + G(b, g, T-t), see Hummer, Rybicki (1985);
@@ -50,16 +51,22 @@ public:
     double get_esc_func(double gamma, double delta) const;
 };
 
-
+// not derived from previous classes,
 class lvg_line_overlap_data
 {
-private:
-    int nb_g, nb_gr, nb_dx;
+protected:
+    int nb_d, nb_g, nb_gr, nb_dx;
+    double *delta_arr, *gamma_arr, *gratio_arr, *dx_arr, ** p_arr;
 
 public:
-    // linear interpolation,
-    // gamma = g1, gamma_ratio = g2/g1
-    double get_esc_func(double gamma, double gamma_ratio, double delta_x) const;
+    // logarithmic interpolation for delta, linear interpolation for other parameters,
+    // gamma, delta for first line, delta = d1, gamma = g1, gamma_ratio = g2/g1, dx = (fr1 - fr2) / dfr, linear interpolation,
+    // gamma > 0, delta > 0 (for gamma < 0, delta < 0, one has to  gamma -> -gamma, delta -> -delta, dx -> -dx)
+    double get_esc_func(double gamma, double delta, double gamma_ratio, double delta_x) const;
+    double get_dx_lim() const { return fabs(dx_arr[0]); } // the array values may not be symmetric,
+
+    lvg_line_overlap_data(const std::string& path, std::string name, int verbosity = 1);
+    ~lvg_line_overlap_data();
 };
 
 /*

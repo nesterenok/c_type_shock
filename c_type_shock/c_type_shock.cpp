@@ -161,9 +161,9 @@ int main(int argc, char** argv)
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
     path = "C:/Users/Александр/Documents/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-//    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
-    path += "output_data_2e5/";
-    production_routes(path, path + "shock_cr1-15_15/");
+//    path += "output_data_2e3/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
+    path += "output_data_2e3/";
+//    production_routes(path, path + "shock_cr1-15_20/"); //+ "shock_cr1-15_20/"
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -330,7 +330,7 @@ int main(int argc, char** argv)
             }
             else if (mode == "CS_") {
                 // starting shock speed is given in the input data file,
-                max_shock_speed = 120.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
+                max_shock_speed = 35.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();
@@ -467,7 +467,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 #if (CALCULATE_POPUL_NH3_OH)
     nb_lev_onh3 = 9; // ortho-NH3: He coll data - 22, H2 coll data - 17
     nb_lev_pnh3 = 16; // para-NH3: He coll data - 16, H2 coll data - 34
-    nb_lev_oh = 10; // OH: He coll data - 44, H2 coll data - 20 (without HF splitting)
+    nb_lev_oh = 10; // OH without HF splitting: He coll data - 44, H2 coll data - 20 
 #else
     nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;

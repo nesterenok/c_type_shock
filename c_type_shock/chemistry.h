@@ -90,7 +90,7 @@ void chemistry_source_terms(double & mom_gain_n, double & mom_gain_i, double & m
 	const std::vector<chem_specimen> &, const chem_reaction &, double vel_n, double vel_i, 
 	double ads_grain_velz, double ads_grain_veln2, double temp_n, double temp_i, double temp_e, double temp_d, double rate);
 
-// Matar et al., J. Chem. Phys. 133, 104507, 2010; temperature must be in K;
+// Matar et al., J. Chem. Phys. 133, 104507, 2010; temperature must be in K;
 double get_h_sticking_coeff(double gas_temp, double dust_temp);
 double get_h2_sticking_coeff(double gas_temp, double dust_temp);
 

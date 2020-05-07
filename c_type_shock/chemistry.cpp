@@ -2379,7 +2379,8 @@ double reaction_rate(const vector<chem_specimen> & species, const accretion_rate
 
 	// CR desorption:
 	case 29: // "*A + CR -> A"
-		// alternative approach; Roberts et al., MNRAS 382, 733–742, 2007; 
+		// alternative approach; Roberts et al., MNRAS 382, 733–742, 2007;
+        // see also Dartois et al., arXiv:2001.06349v1 (2020); Faure et al. MNRAS 487, 3392 (2019), appendix A;
 		if (species[ reaction.reactant[0] ].bind_en < CR_DESORPTION_LIM_BENERGY)
 			k = CR_DESORPTION_YIELD*desorption_factor_cr; 
 		

@@ -97,7 +97,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
     // 3. Approximately one can take thermal = turbulent, at T = 10 K, v = 0.2 km/s; at high ionization rates the temperature is higher, 
 	vel_turb = 3.e+4; // cm/s
 	
-	// the ratio of velocity dispersion divided by characterictic scale, in cm/s/cm;
+	// the ratio of velocity dispersion divided by characteristic scale, in cm/s/cm;
 	// 1. Goldsmith, ApJ 557, p.736 (2001), this parameter can be estimated from virial equilibrium for a uniform density sphere
 	// characteristic value for molecular clouds, dv/dz = 1 km s-1 pc-1 = 3.2e-14 cm s-1 cm-1; 
     // 2. Goodman et al. ApJ 406, p.528 (1993), 0.3-4 km s-1 pc-1
@@ -276,8 +276,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	loss_func_cont_phot = new lvg_method_data(path, "lvg/lvg_loss_func_qt1_mu1e-2.txt", verbosity);
 
 	// 2-component dust model:
-	dust = new two_component_dust_model(path, c_abund_pah, dg_ratio = 0.01, HE_TO_H_NB_RATIO, STANDARD_NB_CR_PHOTONS, 
-		verbosity);
+	dust = new two_component_dust_model(path, c_abund_pah, dg_ratio = 0.01, HE_TO_H_NB_RATIO, STANDARD_NB_CR_PHOTONS, verbosity);
 	nb_of_dust_comp = dust->nb_of_comp;
 
 	// Arrays for dust heating rates by interstellar radiation field:
@@ -1805,6 +1804,7 @@ void evolution_data::specimen_population_derivative(const realtype *y_data, real
                     delta = fabs(vel_grad) / (vd*dust_op);
 
                     // linear interpolation is used in calculating escape probabilities:
+                    // Note that delta is calculated based on adopted dust composition (mono-size grain model) that may inadequately predict dust extinction
                     ep1 = loss_func_line_phot->get_esc_func(gamma, delta);
 
                     c = line_em / line_op * ep1;
@@ -2826,7 +2826,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 	k = 0;
 	for (l = 0; l < h2_di->nb_lev-1; l++) {
 		for (i = l+1; i < h2_di->nb_lev; i++) {
-			if (h2_einst->arr[i][l] > DBL_EPSILON && gamma_factors[i*(i-1)/2+l] < g_factor_max)
+			if (h2_einst->arr[i][l] > 1.e-99 && gamma_factors[i*(i-1)/2+l] < g_factor_max)
 			{
 				output << left << setw(5) << k << setw(5) << h2_di->lev_array[i].v << setw(15) << rounding(h2_di->lev_array[i].j) 
 					<< setw(5) << h2_di->lev_array[l].v << setw(15) << rounding(h2_di->lev_array[l].j) 
@@ -2847,7 +2847,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 
 	for (l = 0; l < ph2o_di->nb_lev-1; l++) {
 		for (i = l+1; i < ph2o_di->nb_lev; i++) {
-			if (ph2o_einst->arr[i][l] > DBL_EPSILON && gamma_factors[nb+ i*(i-1)/2+l] < g_factor_max)
+			if (ph2o_einst->arr[i][l] > 1.e-99 && gamma_factors[nb+ i*(i-1)/2+l] < g_factor_max)
 			{
 				output << left << setw(5) << k << setw(5) << ph2o_di->lev_array[i].v << setw(5) << rounding(ph2o_di->lev_array[i].j) 
 					<< setw(10) << rounding(ph2o_di->lev_array[i].k1 - ph2o_di->lev_array[i].k2)
@@ -2869,7 +2869,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 
 	for (l = 0; l < oh2o_di->nb_lev-1; l++) {
 		for (i = l+1; i < oh2o_di->nb_lev; i++) {
-			if (oh2o_einst->arr[i][l] > DBL_EPSILON && gamma_factors[nb+i*(i-1)/2+l] < g_factor_max)
+			if (oh2o_einst->arr[i][l] > 1.e-99 && gamma_factors[nb+i*(i-1)/2+l] < g_factor_max)
 			{
 				output << left << setw(5) << k << setw(5) << oh2o_di->lev_array[i].v << setw(5) << rounding(oh2o_di->lev_array[i].j) 
 					<< setw(10) << rounding(oh2o_di->lev_array[i].k1 - oh2o_di->lev_array[i].k2)
@@ -2891,7 +2891,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 	
 	for (l = 0; l < co_di->nb_lev-1; l++) {
 		for (i = l+1; i < co_di->nb_lev; i++) {
-			if (co_einst->arr[i][l] > DBL_EPSILON && gamma_factors[nb + i*(i-1)/2+l] < g_factor_max)
+			if (co_einst->arr[i][l] > 1.e-99 && gamma_factors[nb + i*(i-1)/2+l] < g_factor_max)
 			{
 				output << left << setw(5) << k << setw(5) << co_di->lev_array[i].v << setw(15) << rounding(co_di->lev_array[i].j) 
 					<< setw(5) << co_di->lev_array[l].v << setw(15) << rounding(co_di->lev_array[l].j) 
@@ -2909,8 +2909,8 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 #if (CALCULATE_POPUL_NH3_OH && SAVE_RADIATIVE_FACTORS_OH)
     if (oh_di->hyperfine_splitting) {
         output << "# Radiative transfer for OH, line overlap parameters" << endl;
-        output << left << setw(5) << "# nb" << setw(7) << "j_u" << setw(7) << "omega" << setw(7) << "parity" << setw(7) << "f_u"
-            << setw(10) << "j_l" << setw(7) << "omega" << setw(7) << "parity" << setw(7) << "f_l"
+        output << left << setw(5) << "# nb" << setw(7) << "j_u" << setw(7) << "omega" << setw(7) << "parity" << setw(10) << "f_u"
+            << setw(7) << "j_l" << setw(7) << "omega" << setw(7) << "parity" << setw(7) << "f_l"
             << setw(13) << "en(cm-1)" << setw(10) << "g" << setw(10) << "d" << setw(10) << "dx"
             << setw(10) << "effici" << setw(10) << "ep_int1" << setw(10) << "ep_int2" << endl;
   
@@ -2918,21 +2918,22 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
         for (i = 2; i < oh_di->nb_lev; i += 2) {
             for (l = 0; l < i; l += 2) {
                 k = 0;
-                // the transitions between the doublets are not considered,
+                // the transitions inside the doublets are not considered,
                 for (m = 0; m < 2; m++) {
                     for (j = 0; j < 2; j++)
                     {                
-                        if (oh_einst->arr[i + m][l + j] > 1.-99) {
+                        if (oh_einst->arr[i + m][l + j] > 1.e-99 
+                            && gamma_factors[nb + (i + m) * (i + m - 1) / 2 + l + j] < g_factor_max) // ?
+                        {
                             dx = (oh_di->lev_array[i + m].energy - oh_di->lev_array[l + j].energy - oh_di->lev_array[i].energy + oh_di->lev_array[l].energy)
-                                /(oh_di->lev_array[i].energy - oh_di->lev_array[l].energy)
-                                * SPEED_OF_LIGHT /vd;
+                                * SPEED_OF_LIGHT / (vd * (oh_di->lev_array[i].energy - oh_di->lev_array[l].energy));
                             
                             output.unsetf(ios_base::floatfield);
 
                             output << left << setw(5) << k
                                 << setw(7) << oh_di->lev_array[i + m].j << setw(7) << oh_di->lev_array[i + m].k1
-                                << setw(7) << oh_di->lev_array[i + m].syminv << setw(7) << oh_di->lev_array[i + m].hf
-                                << setw(10) << oh_di->lev_array[l + j].j << setw(7) << oh_di->lev_array[l + j].k1
+                                << setw(7) << oh_di->lev_array[i + m].syminv << setw(10) << oh_di->lev_array[i + m].hf
+                                << setw(7) << oh_di->lev_array[l + j].j << setw(7) << oh_di->lev_array[l + j].k1
                                 << setw(7) << oh_di->lev_array[l + j].syminv << setw(7) << oh_di->lev_array[l + j].hf;
 
                             output.setf(ios::scientific);
