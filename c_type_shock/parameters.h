@@ -89,6 +89,7 @@
 // additional factor 0.5 is attributed to grain shielding;
 // The experiments are all suggestive of that photodissociation in ice and gas are of the same order of magnitude but that 
 // the effective cross sections are much lower due to fast back-reactions in pure ices (Oberg et al. 2016);
+// Jin & Garrod, ApJS (2020), suggested that photodissociation rates in ice are lower by factor 3;
 #define ICE_PHOTODISS_EFFICIENCY 0.1 // estimate
 
 

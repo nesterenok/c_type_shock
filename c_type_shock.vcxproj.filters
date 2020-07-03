@@ -84,6 +84,9 @@
     <ClCompile Include="c_type_shock\chemistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="c_type_shock\coll_rates_h2co.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="c_type_shock\chemical_reaction_data.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\input_data\mathematics\constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c_type_shock\coll_rates_h2co.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

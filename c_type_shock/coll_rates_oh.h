@@ -1,6 +1,7 @@
 #pragma once
 #include "spectroscopy.h"
 #include "coll_rates.h"
+#define USE_EXTENDED_OH_HF_H2_DATA 0 // 0 - false, 1 true
 
 // data on OH-H2 collisions; 20 rotational levels of ground vibrational state of OH are considered, 10 < T < 150 K;
 // Klos et al., MNRAS 471, 4249 (2017);
@@ -26,6 +27,15 @@ class oh_hf_h2_coll_data : public collision_data
 {
 public:
     oh_hf_h2_coll_data(const std::string path, const energy_diagram*, bool coll_partner_is_ortho, int verbosity = 1);
+};
+
+// Cragg, Sobolev, and Godfrey, MNRAS 331, p.521 (2002), description on p.523;
+// unpublished data, provided by Dr. Offer to Dr. Cragg, extrapolations by Dr. Cragg; given to me by Drs. Ostrovski and Sobolev (15.05.2020);
+// 48 lowest levels, 10 < T < 300 K;
+class oh_hf_h2_ext_coll_data : public collision_data
+{
+public:
+    oh_hf_h2_ext_coll_data(const std::string path, const energy_diagram*, bool coll_partner_is_ortho, int verbosity = 1);
 };
 
 // Marinakis S., Kalugina Y., Klos J., Lique F., A&A vol 629, A130 (2019); 56 lowest rotational levels, 5 < T < 300 K; 

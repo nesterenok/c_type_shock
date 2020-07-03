@@ -180,6 +180,61 @@ oh_hf_h2_coll_data::oh_hf_h2_coll_data(const std::string path, const energy_diag
     }
 }
 
+oh_hf_h2_ext_coll_data::oh_hf_h2_ext_coll_data(const std::string path, const energy_diagram*, bool coll_partner_is_ortho, int verbosity)
+{
+    char text_line[MAX_TEXT_LINE_WIDTH];
+    int i, j, li, lf, nb;
+    double a;
+    string fname;
+    ifstream input;
+
+    if (coll_partner_is_ortho)
+        fname = path + "coll_oh/coll_oh_hf_oh2_ext.txt";
+    else fname = path + "coll_oh/coll_oh_hf_ph2_ext.txt";
+
+    input.open(fname.c_str(), ios_base::in);
+    if (!input) {
+        cout << "Error in " << SOURCE_NAME << ": can't open file with collisional data " << fname << endl;
+        exit(1);
+    }
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+    input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+
+    input >> nb_lev >> jmax;
+    jmax++;      // one point is reserved for 0 K;
+    imax = nb_lev * (nb_lev - 1) / 2;
+
+    tgrid = new double[jmax];
+    coeff = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff, 0, jmax * imax * sizeof(double));
+
+    coeff_deriv = alloc_2d_array<double>(imax, jmax);
+    memset(*coeff_deriv, 0, imax * jmax * sizeof(double));
+
+    tgrid[0] = 0.;
+    for (j = 1; j < jmax; j++) {
+        input >> tgrid[j];
+        for (i = 0; i < imax + nb_lev; i++) {
+            input >> li >> lf;
+
+            if (li > lf) {
+                nb = (li - 2) * (li - 1) / 2 + lf - 1; // the numeration of levels in the file starts from 1
+                input >> coeff[nb][j];
+            }
+            else 
+                input >> a;
+        }
+    }
+    input.close();
+    calc_coeff_deriv();
+
+    if (verbosity) {
+        cout << "  data have been read from file " << fname << endl
+            << "  temperature range " << (int)tgrid[1] << " - " << (int)tgrid[jmax - 1] << endl;
+    }
+}
+
 oh_hf_he_coll_data::oh_hf_he_coll_data(const std::string path, const energy_diagram*, int verbosity)
 {
     char text_line[MAX_TEXT_LINE_WIDTH];
@@ -301,8 +356,13 @@ oh_hf_collisions::oh_hf_collisions(const string& data_path, const energy_diagram
     nb_lev = oh_di->nb_lev;
 
     coll_data.push_back(new oh_hf_he_coll_data(data_path, oh_di, verbosity));
+#if (!USE_EXTENDED_OH_HF_H2_DATA)
     coll_data.push_back(new oh_hf_h2_coll_data(data_path, oh_di, coll_partner_is_ortho = false, verbosity));
     coll_data.push_back(new oh_hf_h2_coll_data(data_path, oh_di, coll_partner_is_ortho = true, verbosity));
+#else
+    coll_data.push_back(new oh_hf_h2_ext_coll_data(data_path, oh_di, coll_partner_is_ortho = false, verbosity));
+    coll_data.push_back(new oh_hf_h2_ext_coll_data(data_path, oh_di, coll_partner_is_ortho = true, verbosity));
+#endif
     nb1 = (int)coll_data.size();
 
     // the data on electron collisions must be here;

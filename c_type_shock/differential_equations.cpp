@@ -326,7 +326,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 //	network->init_gmantle_species(path + "chemistry/UMIST_2012/surface_binding_energies_NAUTILUS.txt");
 	network->init_gmantle_species(path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt");
 	
-	// in order to prevent adsorbtion of large amount of H2 molecules on grains:
+	// in order to prevent adsorption of large amount of H2 molecules on grains:
 	if (GRAIN_SURFACE_CHEMISTRY_ON == 0) {
 		network->exclude_chem_specimen("*H2");
 	}
@@ -348,7 +348,10 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 
 	// ion neutral reactions for CH3O and CH2OH and other neutrals (including updates):
 	network->init_network_umistf(path + "chemistry/reactions_ion_neutrals.txt");
-	
+
+	// update (experimental)
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update.txt");
+
 	if (H2_FORMATION_MODE > 0)
 		network->init_h2_formation();
 	
@@ -365,7 +368,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	nb_of_gmantle_species = network->nb_of_gmantle_species;
 	nb_of_gas_species = nb_of_species - nb_of_gmantle_species;  
 	
-	// auxulary variables that facilitate access to the data;
+	// auxiliary variables that facilitate access to the data;
 	nb_dch = new int [nb_of_dust_comp+1];
 	memset(nb_dch, 0, (nb_of_dust_comp+1)*sizeof(int));
 
@@ -898,7 +901,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
             // saving the rates of chemical heating of neutral fluid (erg cm-3 s-1):
             arr_chhe[i] = en_n - a;
 
-            // saving H2 formation rate on grains (only surface reactions are teaken into account):
+            // saving H2 formation rate on grains (only surface reactions are taken into account):
             if (reaction.type >= 36 && reaction.type <= 38) { 
                 for (k = 0; k < reaction.nb_of_products; k++) {
                     if (reaction.product[k] == network->ah2_nb || reaction.product[k] == network->h2_nb)

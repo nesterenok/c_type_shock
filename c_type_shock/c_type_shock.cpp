@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 	double conc_h_tot, op_ratio_h2, visual_extinct, shock_vel, magnetic_field, cr_ioniz_rate, c_abund_pah, uv_field_strength,
         ir_field_strength, ty, cr_ir_factor, incr_time, max_shock_speed;
 	
-	string data_path = "C:/input_data/";
+	string data_path = "C:/Users/Александр/Documents/input_data/";
 	string mode, path, input_path, output_path;
 	stringstream ss;
 	ifstream input;
@@ -157,13 +157,14 @@ int main(int argc, char** argv)
 //	calc_grain_photoelectron_rates(data_path);
 //	construct_gas_grain_reactions(data_path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt", path);
 //	construct_ion_recomb_grains(path);
+//	analysis_umist_database(data_path);
 
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
     path = "C:/Users/Александр/Documents/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
 //    path += "output_data_2e3/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
-    path += "output_data_2e3/";
-//    production_routes(path, path + "shock_cr1-15_20/"); //+ "shock_cr1-15_20/"
+    path += "output_data_2e4_new_chem/";
+//    production_routes(path, path + "shock_cr1-16_45_2/");
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -330,7 +331,7 @@ int main(int argc, char** argv)
             }
             else if (mode == "CS_") {
                 // starting shock speed is given in the input data file,
-                max_shock_speed = 35.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
+                max_shock_speed = 120.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
                 shock_state = SHOCK_STATE_NORMAL;
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();
@@ -451,13 +452,18 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	// max nb of ortho- and para-H2 levels for which data are given by Wrathmall et al. (2007) - 109;
 	nb_lev_h2 = 100; 	
 	nb_vibr_h2o = 0;
-	nb_lev_h2o = 45; // must be <= 52, otherwise vibrational state levels must be taken into acount;
+	nb_lev_h2o = 45; // must be <= 52, otherwise vibrational state levels must be taken into account;
 	nb_vibr_co = 0;
 	nb_lev_co = 30; // number of levels lower than first vibrationally excited level is 33;
 	
+ // it is not necessary to take in to account level nb > 1 for species below 
 	nb_vibr_ch3oh = 0;
+    nb_lev_ch3oh = 1;
+    nb_lev_onh3 = 1;
+    nb_lev_pnh3 = 1;
+    nb_lev_oh = 1;
+/*
 // the number of levels in cold cloud simulations should be no higher than for shock simulations, check it
-// may be, it is not necessary to take in to account level nb > 1 for species below 
 #if (CALCULATE_POPUL_METHANOL)
 	nb_lev_ch3oh = 100;
 #else
@@ -467,13 +473,13 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 #if (CALCULATE_POPUL_NH3_OH)
     nb_lev_onh3 = 9; // ortho-NH3: He coll data - 22, H2 coll data - 17
     nb_lev_pnh3 = 16; // para-NH3: He coll data - 16, H2 coll data - 34
-    nb_lev_oh = 10; // OH without HF splitting: He coll data - 44, H2 coll data - 20 
+    nb_lev_oh = 12; // OH with HF splitting by default, He coll data - 56, H2 coll data - 24 
 #else
     nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;
     nb_lev_oh = 1;
 #endif
-
+*/
 	timer = time(NULL);
 	cout << ctime(&timer) << "Chemical evolution of static cloud is simulated" << endl;
 
@@ -1531,7 +1537,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             a = fabs(vel_n_grad / user_data.get_veln_grad());
             b = fabs(vel_i_grad / user_data.get_veli_grad());
 
-			// this parameter is important for radiative transport modelling (fluctuations of the level populations)
+			// this parameter is important for radiative transport modeling (fluctuations of the level populations)
             if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.1 || a < 0.9)) ||
                 ((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
             {

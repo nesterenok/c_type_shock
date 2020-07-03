@@ -98,12 +98,14 @@ chem_specimen::chem_specimen() : charge(0), n_nb(0), enthalpy(0.), mass(0.), bin
 // Chemical reaction class
 //
 chem_reaction::chem_reaction() : rate_data(0), reactant(0), product(0), temp_min(0), temp_max(0), parameters(0), 
-	type(0), nb_of_reactants(0), nb_of_products(0), nb_of_fits(0), nb_of_param(0), cs_reconstr(0), energy_released(0.), 
+    is_energy_released_def(false), nb(0), type(0), nb_of_reactants(0), nb_of_products(0), nb_of_fits(0), nb_of_param(0), cs_reconstr(0), energy_released(0.),
 	mass1(0.), mass2(0.), reduced_mass(0.), mass_sum(0.), min_rate(0.), max_rate(0.), name(""), rcode("")
 {;}
 
 chem_reaction::chem_reaction(const chem_reaction & obj)
 {
+	is_energy_released_def = obj.is_energy_released_def;
+	nb = obj.nb;
 	type = obj.type;
 	nb_of_reactants = obj.nb_of_reactants;
 	nb_of_products = obj.nb_of_products;
@@ -147,6 +149,8 @@ chem_reaction & chem_reaction::operator=(const chem_reaction &obj)
 
 	delete_data();
 
+	is_energy_released_def = obj.is_energy_released_def;
+	nb = obj.nb;
 	type = obj.type;
 	nb_of_reactants = obj.nb_of_reactants;
 	nb_of_products = obj.nb_of_products;
@@ -186,7 +190,8 @@ chem_reaction & chem_reaction::operator=(const chem_reaction &obj)
 
 void chem_reaction::delete_data()
 {
-	type = nb_of_reactants = nb_of_products = nb_of_fits = nb_of_param = cs_reconstr = 0;
+	is_energy_released_def = false;
+	nb = type = nb_of_reactants = nb_of_products = nb_of_fits = nb_of_param = cs_reconstr = 0;
 	energy_released = mass1 = mass2 = reduced_mass = mass_sum = min_rate = max_rate = 0.;
 	name = rcode = "";
 
@@ -531,11 +536,11 @@ void chem_network::init_species_nbs()
 	oi_nb = find_specimen("O");
 	ci_nb = find_specimen("C");
 	cii_nb = find_specimen("C+");
-	ah2_nb = find_specimen("*H2");
+	ah2_nb = find_specimen("*H2");  // is not necessary, may be equal to -1;
     hp_nb = find_specimen("H+");
     h3p_nb = find_specimen("H3+");
 
-	if (h2_nb < 0 || ah2_nb < 0 || h_nb < 0 || he_nb < 0 || e_nb < 0 || h2o_nb < 0 || co_nb < 0 || oh_nb < 0 || nh3_nb < 0 || ch3oh_nb < 0
+	if (h2_nb < 0 || h_nb < 0 || he_nb < 0 || e_nb < 0 || h2o_nb < 0 || co_nb < 0 || oh_nb < 0 || nh3_nb < 0 || ch3oh_nb < 0
 		|| oi_nb < 0 || ci_nb < 0 || cii_nb < 0 || hp_nb < 0 || h3p_nb < 0) {
 		cout << "Error in " << SOURCE_NAME << ": can't find necessary chemical specimen in the list";
 		exit(1);
@@ -845,8 +850,13 @@ void chem_network::init_network_umistf(const std::string file_name, bool update)
 					if (!species[ product[i] ].is_enth_def)
 						failed = true;
 				}
-				if (failed)
+
+				if (failed) {
+					reaction.is_energy_released_def = false;
 					reaction.energy_released = 0.;
+				}
+				else 
+					reaction.is_energy_released_def = true;
 
 				// neutral-ion reactions:
 				if (reaction.type == 20 || reaction.type == 21 || reaction.type == 22)
@@ -973,6 +983,7 @@ void chem_network::init_h2_formation()
 	reaction.mass_sum = 2.*ATOMIC_MASS_UNIT;
 	reaction.reduced_mass = 0.5*ATOMIC_MASS_UNIT;
 
+	reaction.is_energy_released_def = true;
 	reaction.energy_released = 2.*species[h_nb].enthalpy - species[h2_nb].enthalpy;
 
 	reaction.parameters = new double [reaction.nb_of_param];
@@ -1191,8 +1202,13 @@ void chem_network::init_photoreact_surface_chemistry()
 			if (!species[ new_reactions[i].product[j] ].is_enth_def)
 				failed = true;
 		}
-		if (failed)
+
+		if (failed) {
+			new_reactions[i].is_energy_released_def = false;
 			new_reactions[i].energy_released = 0.;
+		}
+		else
+			new_reactions[i].is_energy_released_def = true;
 	}
 	
 	for (i = 0; i < (int) new_reactions.size(); i++) { 
@@ -1212,7 +1228,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 	
 	bool failed;
 	int i, j, k, l, m, n, nb_of_reactants, nb_of_products;
-	double chem_barrier_factor, diff_barrier_factor, barrier;
+	double bind_en, desorption_prob, chem_barrier_factor, diff_barrier_factor, barrier;
 	int *reactant, *product;
 	
 	string str;
@@ -1278,8 +1294,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 				str[0] = '*';
 				reactant[j] = find_specimen(str);
 				
-				if (reactant[j] < 0) 
-				{
+				if (reactant[j] < 0) {
 					failed = true;
 					for (k = 0; k < (int) undef_species.size(); k++) {
 						if (undef_species[k] == str)
@@ -1309,8 +1324,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 					str[0] = '*';
 				product[j] = find_specimen(str);
 				
-				if (product[j] < 0) 
-				{
+				if (product[j] < 0) {
 					failed = true;
 					for (k = 0; k < (int) undef_species.size(); k++) {
 						if (undef_species[k] == str)
@@ -1365,7 +1379,8 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 				j = reaction.reactant[0];
 				k = reaction.reactant[1];
 
-				// Be careful with treatments of homogeneous reactions (involving the same species, H + H -> H2), 
+				// initialization of reaction parameters,
+				// be careful with treatments of homogeneous reactions (involving the same species, H + H -> H2), 
 				// their rates by statistical arguments are only half of those for heterogeneous reactions (Semenov et al., A&A 522, A42, 2010);
 				if (j == k)
 					reaction.parameters[0] = 0.5;
@@ -1404,19 +1419,78 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 							diff_barrier_factor*sqrt(2.*species[k].mass *BOLTZMANN_CONSTANT *reaction.parameters[5]);
 					}
 				}
+				
+				// calculation of the energy that is released in reaction, in erg
+				// the parameter failed is used later in the code !!
+				failed = false;
+				reaction.energy_released = 0.;
+				for (j = 0; j < reaction.nb_of_reactants; j++)
+				{
+					reaction.energy_released += species[reaction.reactant[j]].enthalpy;
+					if (!species[reaction.reactant[j]].is_enth_def)
+						failed = true;
+				}
+				for (j = 0; j < reaction.nb_of_products; j++) {
+					reaction.energy_released -= species[reaction.product[j]].enthalpy;
+					if (!species[reaction.product[j]].is_enth_def)
+						failed = true;
+				}
+				if (failed) {
+					reaction.is_energy_released_def = false;
+					reaction.energy_released = 0.;
+				}
+				else
+					reaction.is_energy_released_def = true;
+
+				// initialization of chemical desorption (Garrod et al., A&A 467, p.1103, 2007):
+				// the parameter energy release may be <, =, > 0, 
+				// but if it is undefined, = 0;
+				if (reaction.nb_of_products == 1) 
+				{
+					for (n = 0, m = 0; m < NB_OF_CHEM_ELEMENTS; m++) {
+						n += species[reaction.product[0]].formula[m];
+					}
+					if (n > 2)
+						n = 3 * n - 5;
+
+					// it is assumed that both the neutral and adsorbed species are presented in the specimen list,
+					if (species[reaction.product[0]].type == "neutral") {
+						bind_en = species[find_specimen('*' + species[reaction.product[0]].name)].bind_en * BOLTZMANN_CONSTANT;
+						
+						if (!reaction.is_energy_released_def) {
+							desorption_prob = CHEM_DESORPTION_FACTOR;  // energy released is not defined,
+						}
+						else if (reaction.energy_released > 0.) {
+							desorption_prob = CHEM_DESORPTION_FACTOR
+								* pow(1. - bind_en / (reaction.energy_released + bind_en), n - 1);
+						}
+						else {
+							desorption_prob = 0.;
+						}
+						desorption_prob = desorption_prob / (1. + desorption_prob);
+						reaction.parameters[0] *= desorption_prob;
+					}
+					else if (species[reaction.product[0]].type == "adsorbed") {
+						bind_en = species[reaction.product[0]].bind_en * BOLTZMANN_CONSTANT;
+						
+						if (!reaction.is_energy_released_def) {
+							desorption_prob = CHEM_DESORPTION_FACTOR;
+						}
+						else if (reaction.energy_released > bind_en) {
+							desorption_prob = CHEM_DESORPTION_FACTOR
+								* pow(1. - bind_en / reaction.energy_released, n - 1);
+						}
+						else {
+							desorption_prob = 0.;
+						}
+						desorption_prob = desorption_prob / (1. + desorption_prob);
+						reaction.parameters[0] *= 1. - desorption_prob;
+					}
+				}
 				else 
-				{ // initialisation of chemical desorption (Garrod et al. 2007):
-					if (reaction.nb_of_products == 1) 
-					{
-						if (species[ reaction.product[0] ].type == "neutral")
-							reaction.parameters[0] *= CHEM_DESORPTION_FACTOR;
-						else reaction.parameters[0] *= 1. - CHEM_DESORPTION_FACTOR;
-					}
-					else 
-					{
-						if (species[ reaction.product[0] ].type == "neutral")
-							reaction.parameters[0] = 0.; // reactive desorption for reactions with multiple products is not allowed;
-					}
+{
+					if (species[ reaction.product[0] ].type == "neutral")
+						reaction.parameters[0] = 0.; // reactive desorption for reactions with multiple products is not allowed;
 				}
 				
                 // perhaps, chemical desorption factors must be redefined here:
@@ -1428,26 +1502,6 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 					new_reactions.push_back(reaction);
 			}
 		}
-	}
-
-	// the energy that is released in reaction:
-	for (i = 0; i < (int) new_reactions.size(); i++) 
-	{
-		failed = false;
-		new_reactions[i].energy_released = 0.;
-		for (j = 0; j < new_reactions[i].nb_of_reactants; j++) 
-		{
-			new_reactions[i].energy_released += species[ new_reactions[i].reactant[j] ].enthalpy;
-			if (!species[ new_reactions[i].reactant[j] ].is_enth_def)
-				failed = true;
-		}
-		for (j = 0; j < new_reactions[i].nb_of_products; j++) {
-			new_reactions[i].energy_released -= species[ new_reactions[i].product[j] ].enthalpy;
-			if (!species[ new_reactions[i].product[j] ].is_enth_def)
-				failed = true;
-		}
-		if (failed)
-			new_reactions[i].energy_released = 0.;
 	}
 
 	// Calculation of branching ratio:
@@ -1482,8 +1536,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 				}
 			}
 			
-			if (m > 1) 
-			{
+			if (m > 1) {
 				// for reactions without activation barrier;
 				if (!failed) {
 					new_reactions[i].parameters[0] /= m;
@@ -1510,7 +1563,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 					}
 
 					if (new_reactions[i].nb_of_products == 1) 
-						memcpy(new_reactions[i+1].parameters+1, new_reactions[i].parameters+1, (nb_of_param-1)*sizeof(double));
+						memcpy(new_reactions[i + 1].parameters+1, new_reactions[i].parameters+1, (nb_of_param-1)*sizeof(double));
 
 					if (verbosity) {
 						cout << left << setw(5) << i << setw(30) << new_reactions[i].name << " activ. barrier ";
@@ -1637,8 +1690,7 @@ void chem_network::check_reactions()
 		}
 	}
 
-	for (i = 0; i < nb_of_species; i++)
-	{
+	for (i = 0; i < nb_of_species; i++) {
 		k = 0;
 		for (l = 0; l < nb_of_reactions; l++)
 		{
@@ -1754,6 +1806,11 @@ void chem_network::check_reactions()
 	}
 	if (is_failed)
 		exit(1);
+
+	// assigning the nb to each reaction,
+	for (i = 0; i < nb_of_reactions; i++) {
+		reaction_array[i].nb = i;
+	}
 }
 
 void chem_network::print_network(const string &path)
@@ -1782,10 +1839,10 @@ void chem_network::print_network(const string &path)
 		output << left << species[i].enthalpy << endl;
 	}
 	output << "Chemical reactions taken into account, nb = " << (int) reaction_array.size() << endl 
-		<< "name, energy released (erg per reaction), type, min and max rates:" << endl;
+		<< "nb (starting from zero), name, energy released (erg per reaction), type, min and max rates:" << endl;
 
 	for (i = 0; i < (int) reaction_array.size(); i++) {
-		output << left << setw(5) << i+1 << setw(45) << reaction_array[i].name << setw(11) << reaction_array[i].energy_released 
+		output << left << setw(5) << reaction_array[i].nb << setw(45) << reaction_array[i].name << setw(11) << reaction_array[i].energy_released 
 			<< setw(30) << get_reaction_type(reaction_array[i].type) << setw(10) << reaction_array[i].min_rate 
 			<< setw(10) << reaction_array[i].max_rate << endl;
 	}
@@ -2197,7 +2254,7 @@ double reaction_rate(const vector<chem_specimen> & species, const accretion_rate
 {
 	int i, j;
 	double k(0.), tempr, teff, s, r;
-
+	
 	switch (reaction.type) 
 	{
 	case 0: // "A + CR -> Ion + e-"
@@ -3035,6 +3092,83 @@ void reformat_chemical_data_Belloche2014(const std::string &path)
 		if (i+1 < (int) rd_v.size())
 			output << endl;
 	}
+	output.close();
+}
+
+void analysis_umist_database(const string & path)
+{
+	bool failed;
+	int i, nb, verbosity(1);
+	double t;
+	char ch, text_line[MAX_TEXT_LINE_WIDTH], str[MAX_TEXT_LINE_WIDTH];
+	
+	string s, fname;
+	stringstream ss;
+	ifstream input;
+	ofstream output;
+
+	chem_network *network 
+		= new chem_network(path, verbosity);
+
+	network->add_element("H");
+	network->add_element("He");
+	network->add_element("O");
+	network->add_element("C");
+	network->set_max_nb_carbon(11);
+	network->add_element("N");
+
+	network->init_gas_phase_species(path + "chemistry/UMIST_2012/species_UMIST2012.txt");
+	network->init_species_nbs();
+
+	input.open(path + "chemistry/UMIST_2012/rates_UMIST2012.txt", ios_base::in);
+
+	if (!input) {
+		cout << "Error in " << SOURCE_NAME << ": can't open file with chemical reactions " << fname << endl;
+		exit(1);
+	}
+	
+	output.open("umist_analysis.txt");
+	output << "Network " << fname << endl;
+	
+	while (!input.eof())
+	{
+		// comment lines are read, comment lines can be located throught the file:
+		do
+			input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+		while (text_line[0] == '#');
+
+		if (text_line[0] == '\0') // check for empty line at the file end;
+			break;
+
+		ss.clear();
+		ss.str(text_line);
+		// reading the number of reaction:
+		ss >> nb >> ch;
+		// reading the reaction type:
+		ss.getline(str, MAX_TEXT_LINE_WIDTH, ':');
+		s = str;
+		if (s == "NN") 
+		{
+			failed = false;
+			ss.getline(str, MAX_TEXT_LINE_WIDTH, ':');
+			i = network->find_specimen(str);
+			if (i < 0)
+				failed = true;
+
+			ss.getline(str, MAX_TEXT_LINE_WIDTH, ':');
+			i = network->find_specimen(str);
+			if (i < 0)
+				failed = true;
+			
+			for (i = 0; i < 9; i++) {
+				ss.getline(str, MAX_TEXT_LINE_WIDTH, ':');
+			}
+			ss >> t;
+			if (t < 1000. && !failed)
+				output << text_line << endl;
+		}
+	}
+	input.close();
 	output.close();
 }
 

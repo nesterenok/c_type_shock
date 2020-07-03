@@ -139,6 +139,7 @@
     <ClCompile Include="c_type_shock\coll_rates_ch3oh.cpp" />
     <ClCompile Include="c_type_shock\coll_rates_co.cpp" />
     <ClCompile Include="c_type_shock\coll_rates_h2.cpp" />
+    <ClCompile Include="c_type_shock\coll_rates_h2co.cpp" />
     <ClCompile Include="c_type_shock\coll_rates_h2o.cpp" />
     <ClCompile Include="c_type_shock\coll_rates_ions.cpp" />
     <ClCompile Include="c_type_shock\coll_rates_nh3.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="c_type_shock\coll_rates_ch3oh.h" />
     <ClInclude Include="c_type_shock\coll_rates_co.h" />
     <ClInclude Include="c_type_shock\coll_rates_h2.h" />
+    <ClInclude Include="c_type_shock\coll_rates_h2co.h" />
     <ClInclude Include="c_type_shock\coll_rates_h2o.h" />
     <ClInclude Include="c_type_shock\coll_rates_ions.h" />
     <ClInclude Include="c_type_shock\coll_rates_nh3.h" />

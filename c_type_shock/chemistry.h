@@ -136,7 +136,8 @@ public:
 class chem_reaction
 {
 public:
-	int type, nb_of_reactants, nb_of_products, nb_of_fits, nb_of_param, cs_reconstr;
+	bool is_energy_released_def;
+	int nb, type, nb_of_reactants, nb_of_products, nb_of_fits, nb_of_param, cs_reconstr;
 	int	*reactant, *product;
 	
 	// Note: for unimolecular reactions only mass1 is defined;
@@ -211,3 +212,5 @@ public:
 
 // path to the data
 void reformat_chemical_data_Belloche2014(const std::string &path);
+
+void analysis_umist_database(const std::string& file_name);
