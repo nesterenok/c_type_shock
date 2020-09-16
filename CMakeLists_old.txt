@@ -1,0 +1,57 @@
+# -----------------------------------------------------------------
+# $Revision: 4483 $
+# $Date: 2015-04-22 16:30:17 -0700 (Wed, 22 Apr 2015) $
+# -----------------------------------------------------------------
+
+cmake_minimum_required(VERSION 2.8)
+
+# Specify project name
+PROJECT(c_type_shock CXX)
+
+MARK_AS_ADVANCED(EXECUTABLE_OUTPUT_PATH LIBRARY_OUTPUT_PATH)
+
+# Set names of examples specific dependency source files
+SET(examples_dependencies chemistry.cpp chemical_reaction_data.cpp coll_rates.cpp coll_rates_h2.cpp coll_rates_h2o.cpp coll_rates_ions.cpp coll_rates_co.cpp coll_rates_nh3.cpp coll_rates_oh.cpp coll_rates_ch3oh.cpp coll_rates_h2co.cpp differential_equations.cpp dust_model.cpp photoelectric_emission.cpp elastic_scattering.cpp lvg_method_functions.cpp radiation_field.cpp spectroscopy.cpp integration.cpp interpolation.cpp special_functions.cpp linear_algebra.cpp reaction_rate_analyzer.cpp)
+
+# Specify path to SUNDIALS header files
+SET(SUNDIALS_INC_DIR
+  /disk2/nester/cvode-5.3.0-install/include
+  CACHE STRING
+  "Location of SUNDIALS header files")
+
+# Add path to SUNDIALS header files
+INCLUDE_DIRECTORIES(${SUNDIALS_INC_DIR})
+
+# Set search path for SUNDIALS libraries 
+SET(SUNDIALS_LIB_DIR /disk2/nester/cvode-5.3.0-install/lib)
+
+# Find the SUNDIALS solver's library
+FIND_LIBRARY(SUNDIALS_SOLVER_LIB
+  sundials_cvode ${SUNDIALS_LIB_DIR}
+  DOC "CVODE library")
+
+# Find the NVECTOR library
+FIND_LIBRARY(SUNDIALS_NVEC_LIB
+  sundials_nvecserial ${SUNDIALS_LIB_DIR}
+  DOC "NVECTOR library")
+
+# Find the NVECTOR library
+FIND_LIBRARY(SUNDIALS_SUNMATRIXDENSE_LIB
+  sundials_sunmatrixdense ${SUNDIALS_LIB_DIR}
+  DOC "SUNMATRIXDENSE library")
+  
+# Set additional libraries
+SET(SUNDIALS_EXTRA_LIB  -lm /usr/lib/x86_64-linux-gnu/librt.so CACHE STRING "Additional libraries")
+
+# List of all libraries
+SET(SUNDIALS_LIBS ${SUNDIALS_SOLVER_LIB} ${SUNDIALS_NVEC_LIB} ${SUNDIALS_SUNMATRIXDENSE_LIB} ${SUNDIALS_EXTRA_LIB})
+
+find_package(OpenMP)
+if(OPENMP_FOUND)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+
+ADD_EXECUTABLE(c_type_shock c_type_shock.cpp ${examples_dependencies})
+TARGET_LINK_LIBRARIES(c_type_shock ${SUNDIALS_LIBS})

@@ -84,8 +84,8 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
     h2_e_diss_rate(0.), h2_e_diss_cooling(0.),
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
 	dust_heat_coll(0), dust_heat_chem(0), chem_reaction_rates(0), gamma_factors(0), delta_factors(0), dheat_efficiency(0), 
-	esc_prob_int1(0), esc_prob_int2(0), ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), 
-	ch3oh_e_coll(0)
+	esc_prob_int1(0), esc_prob_int2(0), 
+	ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), ch3oh_e_coll(0)
 {
 	int i, isotope, angm_ch3oh_max;
 	bool update;
@@ -179,6 +179,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	molecule ion_CI("CI", isotope = 1, mass);
 	molecule ion_CII("CII", isotope = 1, mass);
 
+#if (CALCULATE_POPUL_IONS)
 	nb_lev_oi = 5;
 	OI_di = new ion_diagram(path, ion_OI, nb_lev_oi, verbosity);
 	OI_einst = new ion_einstein_coeff(path, OI_di, verbosity);
@@ -193,12 +194,18 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	CII_di = new ion_diagram(path, ion_CII, nb_lev_cii, verbosity);
 	CII_einst = new ion_einstein_coeff(path, CII_di, verbosity);
 	CII_coll = new CII_collisions(path, CII_di, verbosity);
+#else
+	nb_lev_oi = 1;
+	nb_lev_ci = 1;
+	nb_lev_cii = 1;
+#endif
 
 	// H2O molecule data:
 	mass = 18.*ATOMIC_MASS_UNIT;
 	molecule ph2o_mol("pH2O", isotope = 1, mass, spin = 0.);
 	molecule oh2o_mol("oH2O", isotope = 1, mass, spin = 1.);
 
+#if (CALCULATE_POPUL_H2O)
 	h2o_diagram *di = new h2o_diagram(path, ph2o_mol, nb_lev_h2o, nb_vibr_h2o, verbosity);
 	ph2o_di = di;
 	
@@ -211,14 +218,17 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	
 	oh2o_einst = new h2o_einstein_coeff(path, di, verbosity);
 	oh2o_coll =	new h2o_collisions(path, oh2o_di, false, verbosity);
+#endif
 
 	// CO molecule data:
 	mass = 28.*ATOMIC_MASS_UNIT;
 	molecule co_mol("CO", isotope = 1, mass, spin = 0.);
 
+#if (CALCULATE_POPUL_CO)
 	co_di = new co_diagram(path, co_mol, nb_lev_co, nb_vibr_co, verbosity);
 	co_einst = new co_einstein_coeff(path, co_di, verbosity);
 	co_coll = new co_collisions(path, co_di, verbosity);
+#endif
 
 	// OH molecule data, without hyperfine splitting the number of levels - 20 (H2), 46 (He)  
     // with hyperfine splitting - 24 (H2), 56 (He)
@@ -253,6 +263,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	pnh3_einst = new nh3_einstein_coeff(path, pnh3_di, verbosity);
 	pnh3_coll = new nh3_collisions(path, pnh3_di, verbosity);
 #endif
+
 	// CH3OH molecule data
 	angm_ch3oh_max = 15; // the available collisional data is restricted to this value;
 	mass = 32.*ATOMIC_MASS_UNIT;
@@ -1396,12 +1407,17 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     nb2 = nb_lev_h2*(nb_lev_h2-1)/2;
 	
 	// calculation of the level population gain for para-H2O molecule (not normalized to H2O concentration);
+#if (CALCULATE_POPUL_H2O)
 	ph2o_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, ph2o_di, ph2o_einst, ph2o_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_ph2o, el_heat_ph2o, a, dust_heat_mline);
 
-#if (SAVE_RADIATIVE_FACTORS_H2O)
+	energy_gain_n += neut_heat_ph2o;
+	energy_gain_e += el_heat_ph2o;	
+#endif
+
+#if (CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS_H2O)
     calc_radiative_coeff(y_data, nb, ph2o_di, ph2o_einst, ph2o_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1411,20 +1427,21 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	for (i = 0; i < nb_lev_h2o; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
-
-	energy_gain_n += neut_heat_ph2o;
-	energy_gain_e += el_heat_ph2o;
-	
     nb += nb_lev_h2o;
     nb2 += nb_lev_h2o * (nb_lev_h2o - 1) / 2;
 	
 	// calculation of the level population gain for ortho-H2O molecule
+#if (CALCULATE_POPUL_H2O)
 	oh2o_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, oh2o_di, oh2o_einst, oh2o_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_oh2o, el_heat_oh2o, a, dust_heat_mline);
+	
+	energy_gain_n += neut_heat_oh2o;
+	energy_gain_e += el_heat_oh2o;
+#endif
 
-#if (SAVE_RADIATIVE_FACTORS_H2O)
+#if (CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS_H2O)
     calc_radiative_coeff(y_data, nb, oh2o_di, oh2o_einst, oh2o_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1432,20 +1449,20 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	for (i = 0; i < nb_lev_h2o; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c; // c is defined higher
 	}
-
-	energy_gain_n += neut_heat_oh2o;
-	energy_gain_e += el_heat_oh2o;
-	
     nb += nb_lev_h2o;
     nb2 += nb_lev_h2o*(nb_lev_h2o-1)/2;
 
 	// calculation of the level population gain for CO molecule
+#if (CALCULATE_POPUL_CO)
 	co_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, co_di, co_einst, co_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_co, a, a, dust_heat_mline);
 
-#if (SAVE_RADIATIVE_FACTORS_CO)
+	energy_gain_n += neut_heat_co;
+#endif
+
+#if (CALCULATE_POPUL_CO && SAVE_RADIATIVE_FACTORS_CO)
     calc_radiative_coeff(y_data, nb, co_di, co_einst, co_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1454,7 +1471,6 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	for (i = 0; i < nb_lev_co; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
-	energy_gain_n += neut_heat_co;
 	nb += nb_lev_co;
 	nb2 += nb_lev_co * (nb_lev_co - 1) / 2;
 
@@ -1466,13 +1482,13 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 
 	specimen_population_derivative(y_data, ydot_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_oh, a, a, dust_heat_mline);
-
-#if (SAVE_RADIATIVE_FACTORS_OH)
-    calc_radiative_coeff(y_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors,
-        delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
+	
+	energy_gain_n += neut_heat_oh;   
 #endif
 
-    energy_gain_n += neut_heat_oh;
+#if (CALCULATE_POPUL_NH3_OH && SAVE_RADIATIVE_FACTORS_OH)
+    calc_radiative_coeff(y_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors,
+        delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
 
 	c = oh_prod/conc_oh;
@@ -1512,8 +1528,6 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	nb += nb_lev_onh3;
 	
 	// calculation of the level population gain for CH3OH A and E
-	c = ch3oh_prod/conc_ch3oh;
-
 #if (CALCULATE_POPUL_METHANOL)
 	ch3oh_a_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
@@ -1523,8 +1537,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	energy_gain_n += neut_heat_ch3oh_a;
 #endif
 
+	c = ch3oh_prod/conc_ch3oh;
 	for (i = 0; i < nb_lev_ch3oh; i++) {
-		ydot_data[nb + i] += y_data[nb + i]*c; // c is defined higher
+		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
 	nb += nb_lev_ch3oh;
 	
@@ -1543,51 +1558,60 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	nb += nb_lev_ch3oh;
 	
 	// calculation of the level population gain for CI:
+	en_n = en_e = 0.;
+#if(CALCULATE_POPUL_IONS)
 	CI_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 	
 	specimen_population_derivative(y_data, ydot_data, nb, CI_di, CI_einst, CI_coll, coll_partn_conc, indices, vel_n_grad, 
 		en_n, en_e, a, dust_heat_mline);
+#endif
+
+	neut_heat_atoms = en_n;
+	el_heat_atoms = en_e;
 
 	c = ci_prod/conc_ci;
 	for (i = 0; i < nb_lev_ci; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
-
-	neut_heat_atoms = en_n;
-	el_heat_atoms = en_e;
 	nb += nb_lev_ci;
 	
 	// calculation of the level population gain for OI:
+	en_n = en_e = 0.;
+#if(CALCULATE_POPUL_IONS)
 	OI_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, OI_di, OI_einst, OI_coll, coll_partn_conc, indices, vel_n_grad, 
 		en_n, en_e, a, dust_heat_mline);
+#endif
+
+	neut_heat_atoms += en_n;
+	el_heat_atoms += en_e;
 
 	c = oi_prod/conc_oi;
 	for (i = 0; i < nb_lev_oi; i++) {
 		ydot_data[nb + i] += y_data[nb + i]*c;
 	}
-
-	neut_heat_atoms += en_n;
-	el_heat_atoms += en_e;
 	nb += nb_lev_oi;
 	
 	// calculation of the level population gain for CII:
+	en_n = en_e = 0.;
+#if (CALCULATE_POPUL_IONS)
 	CII_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
 
 	specimen_population_derivative(y_data, ydot_data, nb, CII_di, CII_einst, CII_coll, coll_partn_conc, indices, vel_i_grad, 
 		en_n, en_e, a, dust_heat_mline);
-
-	c = cii_prod/conc_cii;
-	for (i = 0; i < nb_lev_cii; i++) {
-		ydot_data[nb + i] += y_data[nb + i]*c;
-	}
+#endif
 
 	neut_heat_atoms += en_n;
 	el_heat_atoms += en_e;
 
 	energy_gain_n += neut_heat_atoms;
 	energy_gain_e += el_heat_atoms;
+
+	c = cii_prod/conc_cii;
+	for (i = 0; i < nb_lev_cii; i++) {
+		ydot_data[nb + i] += y_data[nb + i]*c;
+	}
 
 	// Heating of the gas by cosmic rays - secondary electrons, Dalgarno et al., ApJSS 125, 237 (1999);
 	// It is assumed that cosmic ray ionization rate is in s-1 per H_2 (it is accounted by factor 0.5),
@@ -2844,7 +2868,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
     
     // p-H2O
     nb = nb_lev_h2*(nb_lev_h2-1)/2;
-#if(SAVE_RADIATIVE_FACTORS_H2O)
+#if(CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS_H2O)
 	output << "# Radiative transfer for p-H2O" << endl;
 	k = 0;
 
@@ -2866,7 +2890,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 	
     // o-H2O
     nb += nb_lev_h2o*(nb_lev_h2o-1)/2;
-#if(SAVE_RADIATIVE_FACTORS_H2O)	
+#if(CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS_H2O)	
     output << "# Radiative transfer for o-H2O" << endl;
 	k = 0;
 
@@ -2888,7 +2912,7 @@ void evolution_data::save_radiative_transfer_data(const string & output_path, do
 
 	// CO
     nb += nb_lev_h2o*(nb_lev_h2o-1)/2;
-#if(SAVE_RADIATIVE_FACTORS_CO)
+#if(CALCULATE_POPUL_CO && SAVE_RADIATIVE_FACTORS_CO)
     output << "# Radiative transfer for CO" << endl;
 	k = 0;
 	

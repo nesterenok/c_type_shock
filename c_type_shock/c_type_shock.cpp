@@ -14,6 +14,7 @@ Temperature is measured in K units; velocity - cm/s;
 #include "stdafx.h"
 #endif
 
+// works only with static libraries (shared must not be installed)
 #include <cvode/cvode.h>               /* prototypes for CVODE fcts., consts.  */
 #include <nvector/nvector_serial.h>    /* access to serial N_Vector            */
 #include <sunmatrix/sunmatrix_dense.h> /* access to dense SUNMatrix            */
@@ -448,38 +449,33 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	// initial temperature in K:
 	init_temp = 10.;
 
-	// Spectroscopic parameters for H2, H2O and CO molecule:
+	// Spectroscopic parameters for H2, H2O and CO molecule (are the main cooling agents in the cold gas):
 	// max nb of ortho- and para-H2 levels for which data are given by Wrathmall et al. (2007) - 109;
-	nb_lev_h2 = 100; 	
+	nb_lev_h2 = 100;
+
+#if (CALCULATE_POPUL_H2O)
 	nb_vibr_h2o = 0;
 	nb_lev_h2o = 45; // must be <= 52, otherwise vibrational state levels must be taken into account;
+#else
+	nb_vibr_h2o = 0;
+	nb_lev_h2o = 1;
+#endif
+
+#if (CALCULATE_POPUL_CO)
 	nb_vibr_co = 0;
 	nb_lev_co = 30; // number of levels lower than first vibrationally excited level is 33;
-	
+#else
+	nb_vibr_co = 0;
+	nb_lev_co = 1; // number of levels lower than first vibrationally excited level is 33;
+#endif
+
  // it is not necessary to take in to account level nb > 1 for species below 
 	nb_vibr_ch3oh = 0;
     nb_lev_ch3oh = 1;
     nb_lev_onh3 = 1;
     nb_lev_pnh3 = 1;
     nb_lev_oh = 1;
-/*
-// the number of levels in cold cloud simulations should be no higher than for shock simulations, check it
-#if (CALCULATE_POPUL_METHANOL)
-	nb_lev_ch3oh = 100;
-#else
-	nb_lev_ch3oh = 1;
-#endif
 
-#if (CALCULATE_POPUL_NH3_OH)
-    nb_lev_onh3 = 9; // ortho-NH3: He coll data - 22, H2 coll data - 17
-    nb_lev_pnh3 = 16; // para-NH3: He coll data - 16, H2 coll data - 34
-    nb_lev_oh = 12; // OH with HF splitting by default, He coll data - 56, H2 coll data - 24 
-#else
-    nb_lev_onh3 = 1; 
-    nb_lev_pnh3 = 1;
-    nb_lev_oh = 1;
-#endif
-*/
 	timer = time(NULL);
 	cout << ctime(&timer) << "Chemical evolution of static cloud is simulated" << endl;
 
@@ -1151,11 +1147,23 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	cout << ctime(&timer) << "Shock wave is simulated" << endl;
 
 	nb_lev_h2 = 298; // the maximal number for which Einstein coefficients are provided - 298 levels,
+
+#if (CALCULATE_POPUL_H2O)	
 	nb_vibr_h2o = 1;
 	nb_lev_h2o = 150;
+#else
+	nb_vibr_h2o = 0;
+	nb_lev_h2o = 1;
+#endif
+
+#if (CALCULATE_POPUL_CO)
 	nb_vibr_co = 0;
 	nb_lev_co = 41; // 41
-	
+#else
+	nb_vibr_co = 0;
+	nb_lev_co = 1;
+#endif
+
 #if (CALCULATE_POPUL_METHANOL)
 	nb_vibr_ch3oh = 1;
 	nb_lev_ch3oh = 300;
@@ -1624,11 +1632,23 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 	cout << ctime(&timer) << "Study of the chemistry response on the increase of CR flux" << endl;
 
 	// Spectroscopic parameters for H2, H2O and CO molecule - the same as for static cloud
-	nb_lev_h2 = 100; 	
+	nb_lev_h2 = 100;
+
+#if (CALCULATE_POPUL_H2O)
 	nb_vibr_h2o = 0;
 	nb_lev_h2o = 45;
+#else
+	nb_vibr_h2o = 0;
+	nb_lev_h2o = 1;
+#endif
+
+#if(CALCULATE_POPUL_CO)
 	nb_vibr_co = 0;
 	nb_lev_co = 30; 
+#else
+	nb_vibr_co = 0;
+	nb_lev_co = 1;
+#endif
 
 	nb_vibr_ch3oh = 0;
 #if (CALCULATE_POPUL_METHANOL)
@@ -2909,6 +2929,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	} // no '\n' symbol at the end 
 	output.close();
 
+#if (CALCULATE_POPUL_H2O)
 	fname = output_path + "sim_data_ph2o.txt";
 	output.open(fname.c_str());
 	
@@ -2930,7 +2951,9 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 		output << left << setw(13) << i;
 	}
 	output.close();
+#endif
 
+#if (CALCULATE_POPUL_CO)
 	fname = output_path + "sim_data_co.txt";
 	output.open(fname.c_str());
 	
@@ -2941,6 +2964,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 		output << left << setw(13) << i;
 	}
 	output.close();
+#endif
 
 #if (CALCULATE_POPUL_NH3_OH)
 	fname = output_path + "sim_data_oh.txt";
@@ -3093,6 +3117,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	nb += nb_lev_h2;
 
 	// para-H2O molecule
+#if (CALCULATE_POPUL_H2O)
 	conc_mol = 0.;
 	for (i = 0; i < nb_lev_h2o; i++) {
 		conc_mol += NV_Ith_S(y, nb + i);
@@ -3112,9 +3137,11 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
+#endif
 	nb += nb_lev_h2o;
 
 	// ortho-H2O molecule
+#if (CALCULATE_POPUL_H2O)
 	conc_mol = 0.;
 	for (i = 0; i < nb_lev_h2o; i++) {
 		conc_mol += NV_Ith_S(y, nb + i);
@@ -3134,9 +3161,11 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
+#endif
 	nb += nb_lev_h2o;
 
 	// CO molecule
+#if (CALCULATE_POPUL_CO)
 	conc_mol = NV_Ith_S(y, network->find_specimen("CO"));
 
 	fname = output_path + "sim_data_co.txt";
@@ -3153,8 +3182,9 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
+#endif
 	nb += nb_lev_co;
-	
+
 	// OH molecule
 #if (CALCULATE_POPUL_NH3_OH)
 	conc_mol = NV_Ith_S(y, network->find_specimen("OH"));

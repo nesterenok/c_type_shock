@@ -475,7 +475,7 @@ oh_hf_diagram::oh_hf_diagram(const std::string& path, molecule m, int& n_l, int 
 {
     char text_line[MAX_TEXT_LINE_WIDTH];
     int i_max, v, nb, parity, hf;
-    double j, omega, energy; // j is float value here, hf is the total angular momentum including spin F = J+S (is integer)
+    double j, omega, energy; // j is double here, hf is the total angular momentum including spin F = J+S (is integer)
 
     string fname;
     ifstream input;

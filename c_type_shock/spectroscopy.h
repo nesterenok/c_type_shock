@@ -151,7 +151,7 @@ public:
     oh_hf_diagram(const std::string& path, molecule m, int& n_l, int verbosity = 1);
 };
 
-// NH3, either ortho- or para-H2O molecules are considered - molecule spin must be defined,
+// NH3, either ortho- or para- molecules are considered - molecule spin must be defined,
 class nh3_diagram : public energy_diagram
 {
 public:
@@ -159,12 +159,12 @@ public:
 	nh3_diagram(const std::string &path, molecule m, int &n_l, int verbosity =1);
 };
 
-// H2CO, either ortho- or para-H2O molecules are considered - molecule spin must be defined,
+// H2CO, either ortho- or para- molecules are considered - molecule spin must be defined,
 // some para- levels have equal energy - must be taken into account in the code or fixed in file data, the level with higher k2 must have lower nb, 
 class h2co_diagram : public energy_diagram
 {
 public:
-	int get_nb(int v, double j, double k) const;  // k1 = ka, k2 = kc, k1 - k2 is considered as a third parameter,
+	int get_nb(int v, double j, double k) const;  // k1 - k2 is considered as a third parameter, k1 = ka, k2 = kc, 
 	h2co_diagram(const std::string& path, molecule m, int& n_l, int verbosity = 1);
 };
 

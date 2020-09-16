@@ -1,7 +1,7 @@
 #pragma once
 #include "spectroscopy.h"
 #include "coll_rates.h"
-#define USE_EXTENDED_OH_HF_H2_DATA 0 // 0 - false, 1 true
+#define USE_EXTENDED_OH_HF_H2_DATA 1 // 0 - false (Offer et al., 1994), 1 - true (Cragg et al. 2002)
 
 // data on OH-H2 collisions; 20 rotational levels of ground vibrational state of OH are considered, 10 < T < 150 K;
 // Klos et al., MNRAS 471, 4249 (2017);
@@ -13,7 +13,7 @@ public:
 };
 
 // data on OH-He collisions, 46 lowest rotational levels of ground vibrational state of OH are considered, 5 < T < 500 K; 
-// there is a discrepancy betweeb HITRAN 2016 and adopted level list for these data for 45,46 levels,
+// there is a discrepancy between HITRAN 2016 and adopted level list for these data for 45,46 levels,
 // Klos et al., Chemical Physics Letters 445, 12 (2007);
 class oh_he_coll_data : public collision_data
 {

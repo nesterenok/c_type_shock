@@ -1421,7 +1421,6 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 				}
 				
 				// calculation of the energy that is released in reaction, in erg
-				// the parameter failed is used later in the code !!
 				failed = false;
 				reaction.energy_released = 0.;
 				for (j = 0; j < reaction.nb_of_reactants; j++)
@@ -1447,6 +1446,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 				// but if it is undefined, = 0;
 				if (reaction.nb_of_products == 1) 
 				{
+					// the number of vibrational modes in the molecule/surface - bond system,
 					for (n = 0, m = 0; m < NB_OF_CHEM_ELEMENTS; m++) {
 						n += species[reaction.product[0]].formula[m];
 					}
@@ -1547,8 +1547,8 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 						new_reactions[i+1].parameters[0] /= m;
 
 					if (verbosity) {
-						cout << left << setw(5) << i << setw(30) << new_reactions[i].name << " " 
-							<< "branching ratio " << 1./m << endl;
+						cout << left << setw(5) << i << setw(30) << new_reactions[i].name 
+							<< "  branching ratio " << 1./m << "  activ. barrier " << new_reactions[i].parameters[1] << endl;
 					}
 				}
 				// for reactions with activation barrier;
@@ -3120,7 +3120,8 @@ void analysis_umist_database(const string & path)
 	network->init_gas_phase_species(path + "chemistry/UMIST_2012/species_UMIST2012.txt");
 	network->init_species_nbs();
 
-	input.open(path + "chemistry/UMIST_2012/rates_UMIST2012.txt", ios_base::in);
+	fname = path + "chemistry/UMIST_2012/rates_UMIST2012.txt";
+	input.open(fname.c_str(), ios_base::in);
 
 	if (!input) {
 		cout << "Error in " << SOURCE_NAME << ": can't open file with chemical reactions " << fname << endl;

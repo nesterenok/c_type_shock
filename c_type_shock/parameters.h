@@ -169,17 +169,26 @@
 
 // the data on radiative transfer parameters gamma and delta, dust heating efficiencies of molecule lines are saved;
 // 1 - radiative transfer factors are saved;
-#define SAVE_RADIATIVE_FACTORS 1
+#define SAVE_RADIATIVE_FACTORS 0
 #define SAVE_RADIATIVE_FACTORS_H2 0
 #define SAVE_RADIATIVE_FACTORS_CO 0
 #define SAVE_RADIATIVE_FACTORS_H2O 0
-#define SAVE_RADIATIVE_FACTORS_OH 1
+#define SAVE_RADIATIVE_FACTORS_OH 0
+
+// Calculate CO levels, 1 - yes
+#define CALCULATE_POPUL_CO 0
+
+// Calculate H2O levels, 1 - yes
+#define CALCULATE_POPUL_H2O 0
+
+// Calculate ion levels, 1 - yes
+#define CALCULATE_POPUL_IONS 0
 
 // Calculate methanol levels, 1 - yes
 #define CALCULATE_POPUL_METHANOL 0
 
 // Calculate OH and NH3 populations, 1 - yes
-#define CALCULATE_POPUL_NH3_OH 1
+#define CALCULATE_POPUL_NH3_OH 0
 
 // 0 - switch off
 // 1 - data are used by Tine et al., ApJ 481, p.282 (1997)

@@ -1,4 +1,4 @@
-8446
+8932
 1       3    403  16   401  -1   -1   C + C- -> C2 + e-
 2       6    403  20   401  -1   -1   CH2 + C- -> C2H2 + e-
 3       4    403  18   401  -1   -1   CH + C- -> C2H + e-
@@ -8139,309 +8139,795 @@
 8138    430  468  464  431  -1   -1   *H + *CH3O -> *H2CO + *H2
 8139    430  474  470  431  -1   -1   *H + *CH3OH -> *CH2OH + *H2
 8140    430  474  468  431  -1   -1   *H + *CH3OH -> *CH3O + *H2
-8141    162  -1   0    -1   -1   -1   H+ + GRAIN -> H + GRAIN
-8142    163  -1   1    -1   -1   -1   H2+ + GRAIN -> H2 + GRAIN
-8143    163  -1   0    0    -1   -1   H2+ + GRAIN -> H + H + GRAIN
-8144    164  -1   1    0    -1   -1   H3+ + GRAIN -> H2 + H + GRAIN
-8145    165  -1   2    -1   -1   -1   He+ + GRAIN -> He + GRAIN
-8146    166  -1   2    0    -1   -1   HeH+ + GRAIN -> He + H + GRAIN
-8147    167  -1   3    -1   -1   -1   C+ + GRAIN -> C + GRAIN
-8148    168  -1   4    -1   -1   -1   CH+ + GRAIN -> CH + GRAIN
-8149    168  -1   3    0    -1   -1   CH+ + GRAIN -> C + H + GRAIN
-8150    170  -1   6    -1   -1   -1   CH2+ + GRAIN -> CH2 + GRAIN
-8151    170  -1   4    0    -1   -1   CH2+ + GRAIN -> CH + H + GRAIN
-8152    169  -1   5    -1   -1   -1   N+ + GRAIN -> N + GRAIN
-8153    171  -1   7    -1   -1   -1   NH+ + GRAIN -> NH + GRAIN
-8154    171  -1   5    0    -1   -1   NH+ + GRAIN -> N + H + GRAIN
-8155    172  -1   8    -1   -1   -1   CH3+ + GRAIN -> CH3 + GRAIN
-8156    172  -1   6    0    -1   -1   CH3+ + GRAIN -> CH2 + H + GRAIN
-8157    175  -1   11   -1   -1   -1   NH2+ + GRAIN -> NH2 + GRAIN
-8158    175  -1   7    0    -1   -1   NH2+ + GRAIN -> NH + H + GRAIN
-8159    173  -1   9    -1   -1   -1   O+ + GRAIN -> O + GRAIN
-8160    174  -1   10   -1   -1   -1   CH4+ + GRAIN -> CH4 + GRAIN
-8161    174  -1   8    0    -1   -1   CH4+ + GRAIN -> CH3 + H + GRAIN
-8162    176  -1   12   -1   -1   -1   OH+ + GRAIN -> OH + GRAIN
-8163    176  -1   9    0    -1   -1   OH+ + GRAIN -> O + H + GRAIN
-8164    178  -1   13   -1   -1   -1   NH3+ + GRAIN -> NH3 + GRAIN
-8165    178  -1   11   0    -1   -1   NH3+ + GRAIN -> NH2 + H + GRAIN
-8166    177  -1   10   0    -1   -1   CH5+ + GRAIN -> CH4 + H + GRAIN
-8167    180  -1   13   0    -1   -1   NH4+ + GRAIN -> NH3 + H + GRAIN
-8168    179  -1   14   -1   -1   -1   H2O+ + GRAIN -> H2O + GRAIN
-8169    179  -1   12   0    -1   -1   H2O+ + GRAIN -> OH + H + GRAIN
-8170    181  -1   14   0    -1   -1   H3O+ + GRAIN -> H2O + H + GRAIN
-8171    182  -1   15   -1   -1   -1   Na+ + GRAIN -> Na + GRAIN
-8172    183  -1   16   -1   -1   -1   C2+ + GRAIN -> C2 + GRAIN
-8173    184  -1   17   -1   -1   -1   Mg+ + GRAIN -> Mg + GRAIN
-8174    185  -1   18   -1   -1   -1   C2H+ + GRAIN -> C2H + GRAIN
-8175    185  -1   16   0    -1   -1   C2H+ + GRAIN -> C2 + H + GRAIN
-8176    187  -1   20   -1   -1   -1   C2H2+ + GRAIN -> C2H2 + GRAIN
-8177    187  -1   18   0    -1   -1   C2H2+ + GRAIN -> C2H + H + GRAIN
-8178    186  -1   19   -1   -1   -1   CN+ + GRAIN -> CN + GRAIN
-8179    189  -1   23   -1   -1   -1   C2H3+ + GRAIN -> C2H3 + GRAIN
-8180    189  -1   20   0    -1   -1   C2H3+ + GRAIN -> C2H2 + H + GRAIN
-8181    188  -1   21   -1   -1   -1   HCN+ + GRAIN -> HCN + GRAIN
-8182    188  -1   19   0    -1   -1   HCN+ + GRAIN -> CN + H + GRAIN
-8183    190  -1   24   -1   -1   -1   CO+ + GRAIN -> CO + GRAIN
-8184    192  -1   26   -1   -1   -1   Si+ + GRAIN -> Si + GRAIN
-8185    191  -1   25   -1   -1   -1   N2+ + GRAIN -> N2 + GRAIN
-8186    194  -1   22   0    -1   -1   H2NC+ + GRAIN -> HNC + H + GRAIN
-8187    195  -1   21   0    -1   -1   HCNH+ + GRAIN -> HCN + H + GRAIN
-8188    193  -1   27   -1   -1   -1   C2H4+ + GRAIN -> C2H4 + GRAIN
-8189    193  -1   23   0    -1   -1   C2H4+ + GRAIN -> C2H3 + H + GRAIN
-8190    199  -1   30   -1   -1   -1   SiH+ + GRAIN -> SiH + GRAIN
-8191    199  -1   26   0    -1   -1   SiH+ + GRAIN -> Si + H + GRAIN
-8192    196  -1   29   -1   -1   -1   HCO+ + GRAIN -> HCO + GRAIN
-8193    196  -1   24   0    -1   -1   HCO+ + GRAIN -> CO + H + GRAIN
-8194    197  -1   24   0    -1   -1   HOC+ + GRAIN -> CO + H + GRAIN
-8195    200  -1   31   -1   -1   -1   C2H5+ + GRAIN -> C2H5 + GRAIN
-8196    200  -1   27   0    -1   -1   C2H5+ + GRAIN -> C2H4 + H + GRAIN
-8197    198  -1   25   0    -1   -1   N2H+ + GRAIN -> N2 + H + GRAIN
-8198    203  -1   34   -1   -1   -1   H2CO+ + GRAIN -> H2CO + GRAIN
-8199    203  -1   29   0    -1   -1   H2CO+ + GRAIN -> HCO + H + GRAIN
-8200    204  -1   35   -1   -1   -1   SiH2+ + GRAIN -> SiH2 + GRAIN
-8201    204  -1   30   0    -1   -1   SiH2+ + GRAIN -> SiH + H + GRAIN
-8202    202  -1   32   0    -1   -1   CH4N+ + GRAIN -> CH2NH + H + GRAIN
-8203    201  -1   33   -1   -1   -1   NO+ + GRAIN -> NO + GRAIN
-8204    205  -1   32   0    -1   -1   CH2NH2+ + GRAIN -> CH2NH + H + GRAIN
-8205    206  -1   36   -1   -1   -1   CH3CH3+ + GRAIN -> CH3CH3 + GRAIN
-8206    206  -1   31   0    -1   -1   CH3CH3+ + GRAIN -> C2H5 + H + GRAIN
-8207    210  -1   39   -1   -1   -1   SiH3+ + GRAIN -> SiH3 + GRAIN
-8208    210  -1   35   0    -1   -1   SiH3+ + GRAIN -> SiH2 + H + GRAIN
-8209    209  -1   38   -1   -1   -1   H3CO+ + GRAIN -> CH3O + GRAIN
-8210    209  -1   34   0    -1   -1   H3CO+ + GRAIN -> H2CO + H + GRAIN
-8211    208  -1   36   0    -1   -1   C2H7+ + GRAIN -> CH3CH3 + H + GRAIN
-8212    207  -1   37   -1   -1   -1   HNO+ + GRAIN -> HNO + GRAIN
-8213    207  -1   33   0    -1   -1   HNO+ + GRAIN -> NO + H + GRAIN
-8214    211  -1   41   -1   -1   -1   S+ + GRAIN -> S + GRAIN
-8215    212  -1   42   -1   -1   -1   O2+ + GRAIN -> O2 + GRAIN
-8216    214  -1   43   -1   -1   -1   SiH4+ + GRAIN -> SiH4 + GRAIN
-8217    214  -1   39   0    -1   -1   SiH4+ + GRAIN -> SiH3 + H + GRAIN
-8218    215  -1   44   -1   -1   -1   CH3OH+ + GRAIN -> CH3OH + GRAIN
-8219    215  -1   38   0    -1   -1   CH3OH+ + GRAIN -> CH3O + H + GRAIN
-8220    213  -1   37   0    -1   -1   H2NO+ + GRAIN -> HNO + H + GRAIN
-8221    217  -1   46   -1   -1   -1   O2H+ + GRAIN -> O2H + GRAIN
-8222    217  -1   42   0    -1   -1   O2H+ + GRAIN -> O2 + H + GRAIN
-8223    218  -1   43   0    -1   -1   SiH5+ + GRAIN -> SiH4 + H + GRAIN
-8224    219  -1   44   0    -1   -1   CH3OH2+ + GRAIN -> CH3OH + H + GRAIN
-8225    216  -1   45   -1   -1   -1   HS+ + GRAIN -> HS + GRAIN
-8226    216  -1   41   0    -1   -1   HS+ + GRAIN -> S + H + GRAIN
-8227    220  -1   47   -1   -1   -1   H2S+ + GRAIN -> H2S + GRAIN
-8228    220  -1   45   0    -1   -1   H2S+ + GRAIN -> HS + H + GRAIN
-8229    222  -1   47   0    -1   -1   H3S+ + GRAIN -> H2S + H + GRAIN
-8230    221  -1   49   -1   -1   -1   Cl+ + GRAIN -> Cl + GRAIN
-8231    223  -1   50   -1   -1   -1   C3+ + GRAIN -> C3 + GRAIN
-8232    224  -1   51   -1   -1   -1   HCl+ + GRAIN -> HCl + GRAIN
-8233    224  -1   49   0    -1   -1   HCl+ + GRAIN -> Cl + H + GRAIN
-8234    226  -1   51   0    -1   -1   H2Cl+ + GRAIN -> HCl + H + GRAIN
-8235    225  -1   52   -1   -1   -1   C3H+ + GRAIN -> C3H + GRAIN
-8236    225  -1   50   0    -1   -1   C3H+ + GRAIN -> C3 + H + GRAIN
-8237    229  -1   54   -1   -1   -1   C3H2+ + GRAIN -> C3H2 + GRAIN
-8238    229  -1   52   0    -1   -1   C3H2+ + GRAIN -> C3H + H + GRAIN
-8239    227  -1   53   -1   -1   -1   C2N+ + GRAIN -> C2N + GRAIN
-8240    232  -1   56   -1   -1   -1   CH2CCH+ + GRAIN -> CH2CCH + GRAIN
-8241    232  -1   55   0    -1   -1   CH2CCH+ + GRAIN -> H2CCC + H + GRAIN
-8242    230  -1   53   0    -1   -1   C2NH+ + GRAIN -> C2N + H + GRAIN
-8243    231  -1   54   0    -1   -1   C3H3+ + GRAIN -> C3H2 + H + GRAIN
-8244    233  -1   57   -1   -1   -1   C2O+ + GRAIN -> C2O + GRAIN
-8245    236  -1   59   -1   -1   -1   CH2CN+ + GRAIN -> CH2CN + GRAIN
-8246    235  -1   60   -1   -1   -1   C3H4+ + GRAIN -> CH3CCH + GRAIN
-8247    234  -1   58   -1   -1   -1   SiC+ + GRAIN -> SiC + GRAIN
-8248    237  -1   60   0    -1   -1   C3H5+ + GRAIN -> CH3CCH + H + GRAIN
-8249    240  -1   64   -1   -1   -1   CH3CN+ + GRAIN -> CH3CN + GRAIN
-8250    240  -1   59   0    -1   -1   CH3CN+ + GRAIN -> CH2CN + H + GRAIN
-8251    238  -1   57   0    -1   -1   HC2O+ + GRAIN -> C2O + H + GRAIN
-8252    239  -1   63   -1   -1   -1   HCSi+ + GRAIN -> HCSi + GRAIN
-8253    239  -1   58   0    -1   -1   HCSi+ + GRAIN -> SiC + H + GRAIN
-8254    244  -1   68   -1   -1   -1   CH2CO+ + GRAIN -> CH2CO + GRAIN
-8255    241  -1   66   -1   -1   -1   OCN+ + GRAIN -> OCN + GRAIN
-8256    245  -1   70   -1   -1   -1   SiCH2+ + GRAIN -> SiCH2 + GRAIN
-8257    245  -1   63   0    -1   -1   SiCH2+ + GRAIN -> HCSi + H + GRAIN
-8258    242  -1   67   -1   -1   -1   SiN+ + GRAIN -> SiN + GRAIN
-8259    246  -1   64   0    -1   -1   CH3CNH+ + GRAIN -> CH3CN + H + GRAIN
-8260    247  -1   71   0    -1   -1   C3H7+ + GRAIN -> CH3CHCH2 + H + GRAIN
-8261    250  -1   74   -1   -1   -1   HNSi+ + GRAIN -> HNSi + GRAIN
-8262    250  -1   67   0    -1   -1   HNSi+ + GRAIN -> SiN + H + GRAIN
-8263    248  -1   72   -1   -1   -1   HCNO+ + GRAIN -> HCNO + GRAIN
-8264    248  -1   65   0    -1   -1   HCNO+ + GRAIN -> CNO + H + GRAIN
-8265    254  -1   78   -1   -1   -1   SiCH3+ + GRAIN -> SiCH3 + GRAIN
-8266    254  -1   70   0    -1   -1   SiCH3+ + GRAIN -> SiCH2 + H + GRAIN
-8267    253  -1   68   0    -1   -1   CH3CO+ + GRAIN -> CH2CO + H + GRAIN
-8268    252  -1   76   -1   -1   -1   HONC+ + GRAIN -> HONC + GRAIN
-8269    252  -1   65   0    -1   -1   HONC+ + GRAIN -> CNO + H + GRAIN
-8270    249  -1   73   -1   -1   -1   HNCO+ + GRAIN -> HNCO + GRAIN
-8271    249  -1   66   0    -1   -1   HNCO+ + GRAIN -> OCN + H + GRAIN
-8272    251  -1   75   -1   -1   -1   HOCN+ + GRAIN -> HOCN + GRAIN
-8273    251  -1   66   0    -1   -1   HOCN+ + GRAIN -> OCN + H + GRAIN
-8274    255  -1   69   0    -1   -1   NH2CNH+ + GRAIN -> NH2CN + H + GRAIN
-8275    258  -1   81   -1   -1   -1   N2O+ + GRAIN -> N2O + GRAIN
-8276    259  -1   82   -1   -1   -1   SiO+ + GRAIN -> SiO + GRAIN
-8277    263  -1   76   0    -1   -1   HCNOH+ + GRAIN -> HONC + H + GRAIN
-8278    256  -1   79   -1   -1   -1   CS+ + GRAIN -> CS + GRAIN
-8279    260  -1   72   0    -1   -1   H2CNO+ + GRAIN -> HCNO + H + GRAIN
-8280    261  -1   73   0    -1   -1   H2NCO+ + GRAIN -> HNCO + H + GRAIN
-8281    257  -1   80   -1   -1   -1   CO2+ + GRAIN -> CO2 + GRAIN
-8282    265  -1   78   0    -1   -1   SiCH4+ + GRAIN -> SiCH3 + H + GRAIN
-8283    262  -1   75   0    -1   -1   H2OCN+ + GRAIN -> HOCN + H + GRAIN
-8284    267  -1   83   -1   -1   -1   CH3CHO+ + GRAIN -> CH3CHO + GRAIN
-8285    264  -1   75   0    -1   -1   HNCOH+ + GRAIN -> HOCN + H + GRAIN
-8286    266  -1   74   0    -1   -1   SiNH2+ + GRAIN -> HNSi + H + GRAIN
-8287    268  -1   84   -1   -1   -1   HCS+ + GRAIN -> HCS + GRAIN
-8288    268  -1   79   0    -1   -1   HCS+ + GRAIN -> CS + H + GRAIN
-8289    271  -1   82   0    -1   -1   SiOH+ + GRAIN -> SiO + H + GRAIN
-8290    270  -1   81   0    -1   -1   HN2O+ + GRAIN -> N2O + H + GRAIN
-8291    272  -1   83   0    -1   -1   CH3CHOH+ + GRAIN -> CH3CHO + H + GRAIN
-8292    269  -1   80   0    -1   -1   HCO2+ + GRAIN -> CO2 + H + GRAIN
-8293    277  -1   91   -1   -1   -1   HCOOH+ + GRAIN -> HCOOH + GRAIN
-8294    278  -1   92   -1   -1   -1   C2H5OH+ + GRAIN -> C2H5OH + GRAIN
-8295    273  -1   87   -1   -1   -1   NS+ + GRAIN -> NS + GRAIN
-8296    275  -1   89   -1   -1   -1   H2CS+ + GRAIN -> H2CS + GRAIN
-8297    275  -1   84   0    -1   -1   H2CS+ + GRAIN -> HCS + H + GRAIN
-8298    274  -1   88   -1   -1   -1   NO2+ + GRAIN -> NO2 + GRAIN
-8299    276  -1   90   -1   -1   -1   H2SiO+ + GRAIN -> H2SiO + GRAIN
-8300    279  -1   93   -1   -1   -1   CH3OCH3+ + GRAIN -> CH3OCH3 + GRAIN
-8301    281  -1   87   0    -1   -1   HNS+ + GRAIN -> NS + H + GRAIN
-8302    283  -1   90   0    -1   -1   H3SiO+ + GRAIN -> H2SiO + H + GRAIN
-8303    280  -1   94   -1   -1   -1   CCl+ + GRAIN -> CCl + GRAIN
-8304    282  -1   89   0    -1   -1   H3CS+ + GRAIN -> H2CS + H + GRAIN
-8305    286  -1   93   0    -1   -1   CH3OCH4+ + GRAIN -> CH3OCH3 + H + GRAIN
-8306    285  -1   92   0    -1   -1   C2H5OH2+ + GRAIN -> C2H5OH + H + GRAIN
-8307    284  -1   91   0    -1   -1   HCOOH2+ + GRAIN -> HCOOH + H + GRAIN
-8308    287  -1   95   -1   -1   -1   C4+ + GRAIN -> C4 + GRAIN
-8309    288  -1   96   -1   -1   -1   SO+ + GRAIN -> SO + GRAIN
-8310    289  -1   97   -1   -1   -1   C4H+ + GRAIN -> C4H + GRAIN
-8311    289  -1   95   0    -1   -1   C4H+ + GRAIN -> C4 + H + GRAIN
-8312    290  -1   96   0    -1   -1   HSO+ + GRAIN -> SO + H + GRAIN
-8313    292  -1   98   -1   -1   -1   C3N+ + GRAIN -> C3N + GRAIN
-8314    293  -1   99   -1   -1   -1   C4H2+ + GRAIN -> HC4H + GRAIN
-8315    293  -1   97   0    -1   -1   C4H2+ + GRAIN -> C4H + H + GRAIN
-8316    296  -1   102  -1   -1   -1   HC3N+ + GRAIN -> HC3N + GRAIN
-8317    296  -1   98   0    -1   -1   HC3N+ + GRAIN -> C3N + H + GRAIN
-8318    294  -1   100  -1   -1   -1   ClO+ + GRAIN -> ClO + GRAIN
-8319    295  -1   101  -1   -1   -1   C4H3+ + GRAIN -> C4H3 + GRAIN
-8320    295  -1   99   0    -1   -1   C4H3+ + GRAIN -> HC4H + H + GRAIN
-8321    298  -1   105  -1   -1   -1   C2N2+ + GRAIN -> NCCN + GRAIN
-8322    299  -1   101  0    -1   -1   C4H4+ + GRAIN -> C4H3 + H + GRAIN
-8323    300  -1   106  -1   -1   -1   SiC2+ + GRAIN -> SiC2 + GRAIN
-8324    297  -1   104  -1   -1   -1   C3O+ + GRAIN -> C3O + GRAIN
-8325    303  -1   104  0    -1   -1   HC3O+ + GRAIN -> C3O + H + GRAIN
-8326    305  -1   108  -1   -1   -1   SiC2H+ + GRAIN -> SiC2H + GRAIN
-8327    305  -1   106  0    -1   -1   SiC2H+ + GRAIN -> SiC2 + H + GRAIN
-8328    306  -1   109  -1   -1   -1   CH2CHCN+ + GRAIN -> CH2CHCN + GRAIN
-8329    304  -1   105  0    -1   -1   NCCNH+ + GRAIN -> NCCN + H + GRAIN
-8330    307  -1   110  -1   -1   -1   SiNC+ + GRAIN -> SiNC + GRAIN
-8331    310  -1   109  0    -1   -1   CH2CHCNH+ + GRAIN -> CH2CHCN + H + GRAIN
-8332    309  -1   111  -1   -1   -1   SiC2H2+ + GRAIN -> SiC2H2 + GRAIN
-8333    309  -1   108  0    -1   -1   SiC2H2+ + GRAIN -> SiC2H + H + GRAIN
-8334    314  -1   111  0    -1   -1   SiC2H3+ + GRAIN -> SiC2H2 + H + GRAIN
-8335    313  -1   110  0    -1   -1   SiNCH+ + GRAIN -> SiNC + H + GRAIN
-8336    315  -1   114  -1   -1   -1   Fe+ + GRAIN -> Fe + GRAIN
-8337    317  -1   113  0    -1   -1   C2H5CNH+ + GRAIN -> C2H5CN + H + GRAIN
-8338    316  -1   115  -1   -1   -1   C2S+ + GRAIN -> C2S + GRAIN
-8339    318  -1   115  0    -1   -1   HC2S+ + GRAIN -> C2S + H + GRAIN
-8340    319  -1   116  -1   -1   -1   CH3COCH3+ + GRAIN -> CH3COCH3 + GRAIN
-8341    321  -1   116  0    -1   -1   CH3COCH4+ + GRAIN -> CH3COCH3 + H + GRAIN
-8342    325  -1   121  -1   -1   -1   COOCH4+ + GRAIN -> HCOOCH3 + GRAIN
-8343    323  -1   118  -1   -1   -1   OCS+ + GRAIN -> OCS + GRAIN
-8344    322  -1   117  -1   -1   -1   C5+ + GRAIN -> C5 + GRAIN
-8345    324  -1   119  -1   -1   -1   SiS+ + GRAIN -> SiS + GRAIN
-8346    327  -1   118  0    -1   -1   HOCS+ + GRAIN -> OCS + H + GRAIN
-8347    328  -1   119  0    -1   -1   HSiS+ + GRAIN -> SiS + H + GRAIN
-8348    326  -1   122  -1   -1   -1   C5H+ + GRAIN -> C5H + GRAIN
-8349    326  -1   117  0    -1   -1   C5H+ + GRAIN -> C5 + H + GRAIN
-8350    329  -1   120  0    -1   -1   HSiO2+ + GRAIN -> SiO2 + H + GRAIN
-8351    330  -1   121  0    -1   -1   H5C2O2+ + GRAIN -> HCOOCH3 + H + GRAIN
-8352    332  -1   124  -1   -1   -1   C5H2+ + GRAIN -> C5H2 + GRAIN
-8353    332  -1   122  0    -1   -1   C5H2+ + GRAIN -> C5H + H + GRAIN
-8354    331  -1   123  -1   -1   -1   C4N+ + GRAIN -> C4N + GRAIN
-8355    333  -1   124  0    -1   -1   C5H3+ + GRAIN -> C5H2 + H + GRAIN
-8356    334  -1   123  0    -1   -1   HC4N+ + GRAIN -> C4N + H + GRAIN
-8357    337  -1   127  -1   -1   -1   SiC3+ + GRAIN -> SiC3 + GRAIN
-8358    339  -1   128  -1   -1   -1   CH3C4H+ + GRAIN -> CH3C4H + GRAIN
-8359    336  -1   126  -1   -1   -1   SO2+ + GRAIN -> SO2 + GRAIN
-8360    335  -1   125  -1   -1   -1   S2+ + GRAIN -> S2 + GRAIN
-8361    341  -1   128  0    -1   -1   C5H5+ + GRAIN -> CH3C4H + H + GRAIN
-8362    342  -1   126  0    -1   -1   HSO2+ + GRAIN -> SO2 + H + GRAIN
-8363    340  -1   129  -1   -1   -1   HS2+ + GRAIN -> HS2 + GRAIN
-8364    340  -1   125  0    -1   -1   HS2+ + GRAIN -> S2 + H + GRAIN
-8365    344  -1   131  -1   -1   -1   CH3C3N+ + GRAIN -> CH3C3N + GRAIN
-8366    343  -1   130  -1   -1   -1   SiC3H+ + GRAIN -> SiC3H + GRAIN
-8367    343  -1   127  0    -1   -1   SiC3H+ + GRAIN -> SiC3 + H + GRAIN
-8368    345  -1   132  -1   -1   -1   H2S2+ + GRAIN -> H2S2 + GRAIN
-8369    345  -1   129  0    -1   -1   H2S2+ + GRAIN -> HS2 + H + GRAIN
-8370    347  -1   131  0    -1   -1   CH3C3NH+ + GRAIN -> CH3C3N + H + GRAIN
-8371    346  -1   130  0    -1   -1   SiC3H2+ + GRAIN -> SiC3H + H + GRAIN
-8372    348  -1   132  0    -1   -1   H3S2+ + GRAIN -> H2S2 + H + GRAIN
-8373    350  -1   133  -1   -1   -1   C3S+ + GRAIN -> C3S + GRAIN
-8374    351  -1   133  0    -1   -1   HC3S+ + GRAIN -> C3S + H + GRAIN
-8375    352  -1   134  -1   -1   -1   C6+ + GRAIN -> C6 + GRAIN
-8376    353  -1   135  -1   -1   -1   C6H+ + GRAIN -> C6H + GRAIN
-8377    353  -1   134  0    -1   -1   C6H+ + GRAIN -> C6 + H + GRAIN
-8378    354  -1   136  -1   -1   -1   C5N+ + GRAIN -> C5N + GRAIN
-8379    355  -1   137  -1   -1   -1   C6H2+ + GRAIN -> C6H2 + GRAIN
-8380    355  -1   135  0    -1   -1   C6H2+ + GRAIN -> C6H + H + GRAIN
-8381    357  -1   138  -1   -1   -1   HC5N+ + GRAIN -> HC5N + GRAIN
-8382    357  -1   136  0    -1   -1   HC5N+ + GRAIN -> C5N + H + GRAIN
-8383    356  -1   137  0    -1   -1   C6H3+ + GRAIN -> C6H2 + H + GRAIN
-8384    360  -1   138  0    -1   -1   HC5NH+ + GRAIN -> HC5N + H + GRAIN
-8385    359  -1   139  -1   -1   -1   SiC4+ + GRAIN -> SiC4 + GRAIN
-8386    363  -1   139  0    -1   -1   SiC4H+ + GRAIN -> SiC4 + H + GRAIN
-8387    364  -1   140  -1   -1   -1   C6H6+ + GRAIN -> C6H6 + GRAIN
-8388    365  -1   140  0    -1   -1   C6H7+ + GRAIN -> C6H6 + H + GRAIN
-8389    366  -1   141  -1   -1   -1   C4S+ + GRAIN -> C4S + GRAIN
-8390    367  -1   141  0    -1   -1   HC4S+ + GRAIN -> C4S + H + GRAIN
-8391    368  -1   142  -1   -1   -1   C7+ + GRAIN -> C7 + GRAIN
-8392    369  -1   143  -1   -1   -1   C7H+ + GRAIN -> C7H + GRAIN
-8393    369  -1   142  0    -1   -1   C7H+ + GRAIN -> C7 + H + GRAIN
-8394    370  -1   144  -1   -1   -1   C7H2+ + GRAIN -> C7H2 + GRAIN
-8395    370  -1   143  0    -1   -1   C7H2+ + GRAIN -> C7H + H + GRAIN
-8396    371  -1   144  0    -1   -1   C7H3+ + GRAIN -> C7H2 + H + GRAIN
-8397    372  -1   145  -1   -1   -1   C7H4+ + GRAIN -> CH3C6H + GRAIN
-8398    373  -1   145  0    -1   -1   C7H5+ + GRAIN -> CH3C6H + H + GRAIN
-8399    374  -1   146  0    -1   -1   CH3C5NH+ + GRAIN -> CH3C5N + H + GRAIN
-8400    375  -1   147  -1   -1   -1   C8+ + GRAIN -> C8 + GRAIN
-8401    376  -1   148  -1   -1   -1   C8H+ + GRAIN -> C8H + GRAIN
-8402    376  -1   147  0    -1   -1   C8H+ + GRAIN -> C8 + H + GRAIN
-8403    377  -1   149  -1   -1   -1   C7N+ + GRAIN -> C7N + GRAIN
-8404    378  -1   150  -1   -1   -1   C8H2+ + GRAIN -> C8H2 + GRAIN
-8405    378  -1   148  0    -1   -1   C8H2+ + GRAIN -> C8H + H + GRAIN
-8406    380  -1   151  -1   -1   -1   HC7N+ + GRAIN -> HC7N + GRAIN
-8407    380  -1   149  0    -1   -1   HC7N+ + GRAIN -> C7N + H + GRAIN
-8408    379  -1   150  0    -1   -1   C8H3+ + GRAIN -> C8H2 + H + GRAIN
-8409    382  -1   151  0    -1   -1   H2C7N+ + GRAIN -> HC7N + H + GRAIN
-8410    385  -1   152  -1   -1   -1   C9+ + GRAIN -> C9 + GRAIN
-8411    386  -1   153  -1   -1   -1   C9H+ + GRAIN -> C9H + GRAIN
-8412    386  -1   152  0    -1   -1   C9H+ + GRAIN -> C9 + H + GRAIN
-8413    387  -1   154  -1   -1   -1   C9H2+ + GRAIN -> C9H2 + GRAIN
-8414    387  -1   153  0    -1   -1   C9H2+ + GRAIN -> C9H + H + GRAIN
-8415    388  -1   154  0    -1   -1   C9H3+ + GRAIN -> C9H2 + H + GRAIN
-8416    391  -1   155  0    -1   -1   CH3C7NH+ + GRAIN -> CH3C7N + H + GRAIN
-8417    392  -1   156  -1   -1   -1   C10+ + GRAIN -> C10 + GRAIN
-8418    393  -1   157  -1   -1   -1   C10H+ + GRAIN -> C10H + GRAIN
-8419    393  -1   156  0    -1   -1   C10H+ + GRAIN -> C10 + H + GRAIN
-8420    395  -1   159  -1   -1   -1   C10H2+ + GRAIN -> C10H2 + GRAIN
-8421    395  -1   157  0    -1   -1   C10H2+ + GRAIN -> C10H + H + GRAIN
-8422    394  -1   158  -1   -1   -1   C9N+ + GRAIN -> C9N + GRAIN
-8423    396  -1   160  -1   -1   -1   HC9N+ + GRAIN -> HC9N + GRAIN
-8424    396  -1   158  0    -1   -1   HC9N+ + GRAIN -> C9N + H + GRAIN
-8425    397  -1   159  0    -1   -1   C10H3+ + GRAIN -> C10H2 + H + GRAIN
-8426    398  -1   160  0    -1   -1   H2C9N+ + GRAIN -> HC9N + H + GRAIN
-8427    400  -1   161  -1   -1   -1   C11+ + GRAIN -> C11 + GRAIN
-8428    228  -1   19   3    -1   -1   CNC+ + GRAIN -> CN + C + GRAIN
-8429    243  -1   60   1    -1   -1   C3H6+ + GRAIN -> CH3CCH + H2 + GRAIN
-8430    291  -1   94   0    0    -1   H2CCl+ + GRAIN -> CCl + H + H + GRAIN
-8431    302  -1   60   4    -1   -1   C4H5+ + GRAIN -> CH3CCH + CH + GRAIN
-8432    308  -1   24   20   -1   -1   C3H2O+ + GRAIN -> CO + C2H2 + GRAIN
-8433    312  -1   104  1    0    -1   H3C3O+ + GRAIN -> C3O + H2 + H + GRAIN
-8434    311  -1   101  1    1    -1   C4H7+ + GRAIN -> C4H3 + H2 + H2 + GRAIN
-8435    320  -1   8    79   -1   -1   CH3CS+ + GRAIN -> CH3 + CS + GRAIN
-8436    338  -1   102  4    -1   -1   H2C4N+ + GRAIN -> HC3N + CH + GRAIN
-8437    349  -1   105  8    -1   -1   NCCNCH3+ + GRAIN -> NCCN + CH3 + GRAIN
-8438    358  -1   137  1    -1   -1   C6H4+ + GRAIN -> C6H2 + H2 + GRAIN
-8439    361  -1   135  1    1    -1   C6H5+ + GRAIN -> C6H + H2 + H2 + GRAIN
-8440    362  -1   138  1    -1   -1   H3C5N+ + GRAIN -> HC5N + H2 + GRAIN
-8441    381  -1   150  1    -1   -1   C8H4+ + GRAIN -> C8H2 + H2 + GRAIN
-8442    384  -1   151  1    -1   -1   H3C7N+ + GRAIN -> HC7N + H2 + GRAIN
-8443    383  -1   148  1    1    -1   C8H5+ + GRAIN -> C8H + H2 + H2 + GRAIN
-8444    389  -1   154  1    -1   -1   C9H4+ + GRAIN -> C9H2 + H2 + GRAIN
-8445    390  -1   153  1    1    -1   C9H5+ + GRAIN -> C9H + H2 + H2 + GRAIN
-8446    399  -1   160  1    -1   -1   H3C9N+ + GRAIN -> HC9N + H2 + GRAIN
+8141    433  1    3    1    -1   -1   *C + H2 -> C + H2
+8142    433  2    3    2    -1   -1   *C + He -> C + He
+8143    433  24   3    24   -1   -1   *C + CO -> C + CO
+8144    446  1    16   1    -1   -1   *C2 + H2 -> C2 + H2
+8145    446  2    16   2    -1   -1   *C2 + He -> C2 + He
+8146    446  24   16   24   -1   -1   *C2 + CO -> C2 + CO
+8147    448  1    18   1    -1   -1   *C2H + H2 -> C2H + H2
+8148    448  2    18   2    -1   -1   *C2H + He -> C2H + He
+8149    448  24   18   24   -1   -1   *C2H + CO -> C2H + CO
+8150    450  1    20   1    -1   -1   *C2H2 + H2 -> C2H2 + H2
+8151    450  2    20   2    -1   -1   *C2H2 + He -> C2H2 + He
+8152    450  24   20   24   -1   -1   *C2H2 + CO -> C2H2 + CO
+8153    453  1    23   1    -1   -1   *C2H3 + H2 -> C2H3 + H2
+8154    453  2    23   2    -1   -1   *C2H3 + He -> C2H3 + He
+8155    453  24   23   24   -1   -1   *C2H3 + CO -> C2H3 + CO
+8156    457  1    27   1    -1   -1   *C2H4 + H2 -> C2H4 + H2
+8157    457  2    27   2    -1   -1   *C2H4 + He -> C2H4 + He
+8158    457  24   27   24   -1   -1   *C2H4 + CO -> C2H4 + CO
+8159    461  1    31   1    -1   -1   *C2H5 + H2 -> C2H5 + H2
+8160    461  2    31   2    -1   -1   *C2H5 + He -> C2H5 + He
+8161    461  24   31   24   -1   -1   *C2H5 + CO -> C2H5 + CO
+8162    543  1    113  1    -1   -1   *C2H5CN + H2 -> C2H5CN + H2
+8163    543  2    113  2    -1   -1   *C2H5CN + He -> C2H5CN + He
+8164    543  24   113  24   -1   -1   *C2H5CN + CO -> C2H5CN + CO
+8165    522  1    92   1    -1   -1   *C2H5OH + H2 -> C2H5OH + H2
+8166    522  2    92   2    -1   -1   *C2H5OH + He -> C2H5OH + He
+8167    522  24   92   24   -1   -1   *C2H5OH + CO -> C2H5OH + CO
+8168    466  1    36   1    -1   -1   *CH3CH3 + H2 -> CH3CH3 + H2
+8169    466  2    36   2    -1   -1   *CH3CH3 + He -> CH3CH3 + He
+8170    466  24   36   24   -1   -1   *CH3CH3 + CO -> CH3CH3 + CO
+8171    483  1    53   1    -1   -1   *C2N + H2 -> C2N + H2
+8172    483  2    53   2    -1   -1   *C2N + He -> C2N + He
+8173    483  24   53   24   -1   -1   *C2N + CO -> C2N + CO
+8174    487  1    57   1    -1   -1   *C2O + H2 -> C2O + H2
+8175    487  2    57   2    -1   -1   *C2O + He -> C2O + He
+8176    487  24   57   24   -1   -1   *C2O + CO -> C2O + CO
+8177    545  1    115  1    -1   -1   *C2S + H2 -> C2S + H2
+8178    545  2    115  2    -1   -1   *C2S + He -> C2S + He
+8179    545  24   115  24   -1   -1   *C2S + CO -> C2S + CO
+8180    480  1    50   1    -1   -1   *C3 + H2 -> C3 + H2
+8181    480  2    50   2    -1   -1   *C3 + He -> C3 + He
+8182    480  24   50   24   -1   -1   *C3 + CO -> C3 + CO
+8183    482  1    52   1    -1   -1   *C3H + H2 -> C3H + H2
+8184    482  2    52   2    -1   -1   *C3H + He -> C3H + He
+8185    482  24   52   24   -1   -1   *C3H + CO -> C3H + CO
+8186    484  1    54   1    -1   -1   *C3H2 + H2 -> C3H2 + H2
+8187    484  2    54   2    -1   -1   *C3H2 + He -> C3H2 + He
+8188    484  24   54   24   -1   -1   *C3H2 + CO -> C3H2 + CO
+8189    528  1    98   1    -1   -1   *C3N + H2 -> C3N + H2
+8190    528  2    98   2    -1   -1   *C3N + He -> C3N + He
+8191    528  24   98   24   -1   -1   *C3N + CO -> C3N + CO
+8192    534  1    104  1    -1   -1   *C3O + H2 -> C3O + H2
+8193    534  2    104  2    -1   -1   *C3O + He -> C3O + He
+8194    534  24   104  24   -1   -1   *C3O + CO -> C3O + CO
+8195    563  1    133  1    -1   -1   *C3S + H2 -> C3S + H2
+8196    563  2    133  2    -1   -1   *C3S + He -> C3S + He
+8197    563  24   133  24   -1   -1   *C3S + CO -> C3S + CO
+8198    525  1    95   1    -1   -1   *C4 + H2 -> C4 + H2
+8199    525  2    95   2    -1   -1   *C4 + He -> C4 + He
+8200    525  24   95   24   -1   -1   *C4 + CO -> C4 + CO
+8201    527  1    97   1    -1   -1   *C4H + H2 -> C4H + H2
+8202    527  2    97   2    -1   -1   *C4H + He -> C4H + He
+8203    527  24   97   24   -1   -1   *C4H + CO -> C4H + CO
+8204    529  1    99   1    -1   -1   *HC4H + H2 -> HC4H + H2
+8205    529  2    99   2    -1   -1   *HC4H + He -> HC4H + He
+8206    529  24   99   24   -1   -1   *HC4H + CO -> HC4H + CO
+8207    531  1    101  1    -1   -1   *C4H3 + H2 -> C4H3 + H2
+8208    531  2    101  2    -1   -1   *C4H3 + He -> C4H3 + He
+8209    531  24   101  24   -1   -1   *C4H3 + CO -> C4H3 + CO
+8210    542  1    112  1    -1   -1   *CH2CHCHCH2 + H2 -> CH2CHCHCH2 + H2
+8211    542  2    112  2    -1   -1   *CH2CHCHCH2 + He -> CH2CHCHCH2 + He
+8212    542  24   112  24   -1   -1   *CH2CHCHCH2 + CO -> CH2CHCHCH2 + CO
+8213    553  1    123  1    -1   -1   *C4N + H2 -> C4N + H2
+8214    553  2    123  2    -1   -1   *C4N + He -> C4N + He
+8215    553  24   123  24   -1   -1   *C4N + CO -> C4N + CO
+8216    571  1    141  1    -1   -1   *C4S + H2 -> C4S + H2
+8217    571  2    141  2    -1   -1   *C4S + He -> C4S + He
+8218    571  24   141  24   -1   -1   *C4S + CO -> C4S + CO
+8219    547  1    117  1    -1   -1   *C5 + H2 -> C5 + H2
+8220    547  2    117  2    -1   -1   *C5 + He -> C5 + He
+8221    547  24   117  24   -1   -1   *C5 + CO -> C5 + CO
+8222    552  1    122  1    -1   -1   *C5H + H2 -> C5H + H2
+8223    552  2    122  2    -1   -1   *C5H + He -> C5H + He
+8224    552  24   122  24   -1   -1   *C5H + CO -> C5H + CO
+8225    554  1    124  1    -1   -1   *C5H2 + H2 -> C5H2 + H2
+8226    554  2    124  2    -1   -1   *C5H2 + He -> C5H2 + He
+8227    554  24   124  24   -1   -1   *C5H2 + CO -> C5H2 + CO
+8228    566  1    136  1    -1   -1   *C5N + H2 -> C5N + H2
+8229    566  2    136  2    -1   -1   *C5N + He -> C5N + He
+8230    566  24   136  24   -1   -1   *C5N + CO -> C5N + CO
+8231    564  1    134  1    -1   -1   *C6 + H2 -> C6 + H2
+8232    564  2    134  2    -1   -1   *C6 + He -> C6 + He
+8233    564  24   134  24   -1   -1   *C6 + CO -> C6 + CO
+8234    565  1    135  1    -1   -1   *C6H + H2 -> C6H + H2
+8235    565  2    135  2    -1   -1   *C6H + He -> C6H + He
+8236    565  24   135  24   -1   -1   *C6H + CO -> C6H + CO
+8237    567  1    137  1    -1   -1   *C6H2 + H2 -> C6H2 + H2
+8238    567  2    137  2    -1   -1   *C6H2 + He -> C6H2 + He
+8239    567  24   137  24   -1   -1   *C6H2 + CO -> C6H2 + CO
+8240    570  1    140  1    -1   -1   *C6H6 + H2 -> C6H6 + H2
+8241    570  2    140  2    -1   -1   *C6H6 + He -> C6H6 + He
+8242    570  24   140  24   -1   -1   *C6H6 + CO -> C6H6 + CO
+8243    572  1    142  1    -1   -1   *C7 + H2 -> C7 + H2
+8244    572  2    142  2    -1   -1   *C7 + He -> C7 + He
+8245    572  24   142  24   -1   -1   *C7 + CO -> C7 + CO
+8246    573  1    143  1    -1   -1   *C7H + H2 -> C7H + H2
+8247    573  2    143  2    -1   -1   *C7H + He -> C7H + He
+8248    573  24   143  24   -1   -1   *C7H + CO -> C7H + CO
+8249    574  1    144  1    -1   -1   *C7H2 + H2 -> C7H2 + H2
+8250    574  2    144  2    -1   -1   *C7H2 + He -> C7H2 + He
+8251    574  24   144  24   -1   -1   *C7H2 + CO -> C7H2 + CO
+8252    579  1    149  1    -1   -1   *C7N + H2 -> C7N + H2
+8253    579  2    149  2    -1   -1   *C7N + He -> C7N + He
+8254    579  24   149  24   -1   -1   *C7N + CO -> C7N + CO
+8255    577  1    147  1    -1   -1   *C8 + H2 -> C8 + H2
+8256    577  2    147  2    -1   -1   *C8 + He -> C8 + He
+8257    577  24   147  24   -1   -1   *C8 + CO -> C8 + CO
+8258    578  1    148  1    -1   -1   *C8H + H2 -> C8H + H2
+8259    578  2    148  2    -1   -1   *C8H + He -> C8H + He
+8260    578  24   148  24   -1   -1   *C8H + CO -> C8H + CO
+8261    580  1    150  1    -1   -1   *C8H2 + H2 -> C8H2 + H2
+8262    580  2    150  2    -1   -1   *C8H2 + He -> C8H2 + He
+8263    580  24   150  24   -1   -1   *C8H2 + CO -> C8H2 + CO
+8264    582  1    152  1    -1   -1   *C9 + H2 -> C9 + H2
+8265    582  2    152  2    -1   -1   *C9 + He -> C9 + He
+8266    582  24   152  24   -1   -1   *C9 + CO -> C9 + CO
+8267    583  1    153  1    -1   -1   *C9H + H2 -> C9H + H2
+8268    583  2    153  2    -1   -1   *C9H + He -> C9H + He
+8269    583  24   153  24   -1   -1   *C9H + CO -> C9H + CO
+8270    584  1    154  1    -1   -1   *C9H2 + H2 -> C9H2 + H2
+8271    584  2    154  2    -1   -1   *C9H2 + He -> C9H2 + He
+8272    584  24   154  24   -1   -1   *C9H2 + CO -> C9H2 + CO
+8273    588  1    158  1    -1   -1   *C9N + H2 -> C9N + H2
+8274    588  2    158  2    -1   -1   *C9N + He -> C9N + He
+8275    588  24   158  24   -1   -1   *C9N + CO -> C9N + CO
+8276    586  1    156  1    -1   -1   *C10 + H2 -> C10 + H2
+8277    586  2    156  2    -1   -1   *C10 + He -> C10 + He
+8278    586  24   156  24   -1   -1   *C10 + CO -> C10 + CO
+8279    587  1    157  1    -1   -1   *C10H + H2 -> C10H + H2
+8280    587  2    157  2    -1   -1   *C10H + He -> C10H + He
+8281    587  24   157  24   -1   -1   *C10H + CO -> C10H + CO
+8282    589  1    159  1    -1   -1   *C10H2 + H2 -> C10H2 + H2
+8283    589  2    159  2    -1   -1   *C10H2 + He -> C10H2 + He
+8284    589  24   159  24   -1   -1   *C10H2 + CO -> C10H2 + CO
+8285    591  1    161  1    -1   -1   *C11 + H2 -> C11 + H2
+8286    591  2    161  2    -1   -1   *C11 + He -> C11 + He
+8287    591  24   161  24   -1   -1   *C11 + CO -> C11 + CO
+8288    524  1    94   1    -1   -1   *CCl + H2 -> CCl + H2
+8289    524  2    94   2    -1   -1   *CCl + He -> CCl + He
+8290    524  24   94   24   -1   -1   *CCl + CO -> CCl + CO
+8291    434  1    4    1    -1   -1   *CH + H2 -> CH + H2
+8292    434  2    4    2    -1   -1   *CH + He -> CH + He
+8293    434  24   4    24   -1   -1   *CH + CO -> CH + CO
+8294    436  1    6    1    -1   -1   *CH2 + H2 -> CH2 + H2
+8295    436  2    6    2    -1   -1   *CH2 + He -> CH2 + He
+8296    436  24   6    24   -1   -1   *CH2 + CO -> CH2 + CO
+8297    486  1    56   1    -1   -1   *CH2CCH + H2 -> CH2CCH + H2
+8298    486  2    56   2    -1   -1   *CH2CCH + He -> CH2CCH + He
+8299    486  24   56   24   -1   -1   *CH2CCH + CO -> CH2CCH + CO
+8300    491  1    61   1    -1   -1   *CH2CCH2 + H2 -> CH2CCH2 + H2
+8301    491  2    61   2    -1   -1   *CH2CCH2 + He -> CH2CCH2 + He
+8302    491  24   61   24   -1   -1   *CH2CCH2 + CO -> CH2CCH2 + CO
+8303    537  1    107  1    -1   -1   *CH2CHCCH + H2 -> CH2CHCCH + H2
+8304    537  2    107  2    -1   -1   *CH2CHCCH + He -> CH2CHCCH + He
+8305    537  24   107  24   -1   -1   *CH2CHCCH + CO -> CH2CHCCH + CO
+8306    539  1    109  1    -1   -1   *CH2CHCN + H2 -> CH2CHCN + H2
+8307    539  2    109  2    -1   -1   *CH2CHCN + He -> CH2CHCN + He
+8308    539  24   109  24   -1   -1   *CH2CHCN + CO -> CH2CHCN + CO
+8309    489  1    59   1    -1   -1   *CH2CN + H2 -> CH2CN + H2
+8310    489  2    59   2    -1   -1   *CH2CN + He -> CH2CN + He
+8311    489  24   59   24   -1   -1   *CH2CN + CO -> CH2CN + CO
+8312    498  1    68   1    -1   -1   *CH2CO + H2 -> CH2CO + H2
+8313    498  2    68   2    -1   -1   *CH2CO + He -> CH2CO + He
+8314    498  24   68   24   -1   -1   *CH2CO + CO -> CH2CO + CO
+8315    462  1    32   1    -1   -1   *CH2NH + H2 -> CH2NH + H2
+8316    462  2    32   2    -1   -1   *CH2NH + He -> CH2NH + He
+8317    462  24   32   24   -1   -1   *CH2NH + CO -> CH2NH + CO
+8318    470  1    40   1    -1   -1   *CH2OH + H2 -> CH2OH + H2
+8319    470  2    40   2    -1   -1   *CH2OH + He -> CH2OH + He
+8320    470  24   40   24   -1   -1   *CH2OH + CO -> CH2OH + CO
+8321    438  1    8    1    -1   -1   *CH3 + H2 -> CH3 + H2
+8322    438  2    8    2    -1   -1   *CH3 + He -> CH3 + He
+8323    438  24   8    24   -1   -1   *CH3 + CO -> CH3 + CO
+8324    561  1    131  1    -1   -1   *CH3C3N + H2 -> CH3C3N + H2
+8325    561  2    131  2    -1   -1   *CH3C3N + He -> CH3C3N + He
+8326    561  24   131  24   -1   -1   *CH3C3N + CO -> CH3C3N + CO
+8327    558  1    128  1    -1   -1   *CH3C4H + H2 -> CH3C4H + H2
+8328    558  2    128  2    -1   -1   *CH3C4H + He -> CH3C4H + He
+8329    558  24   128  24   -1   -1   *CH3C4H + CO -> CH3C4H + CO
+8330    576  1    146  1    -1   -1   *CH3C5N + H2 -> CH3C5N + H2
+8331    576  2    146  2    -1   -1   *CH3C5N + He -> CH3C5N + He
+8332    576  24   146  24   -1   -1   *CH3C5N + CO -> CH3C5N + CO
+8333    575  1    145  1    -1   -1   *CH3C6H + H2 -> CH3C6H + H2
+8334    575  2    145  2    -1   -1   *CH3C6H + He -> CH3C6H + He
+8335    575  24   145  24   -1   -1   *CH3C6H + CO -> CH3C6H + CO
+8336    585  1    155  1    -1   -1   *CH3C7N + H2 -> CH3C7N + H2
+8337    585  2    155  2    -1   -1   *CH3C7N + He -> CH3C7N + He
+8338    585  24   155  24   -1   -1   *CH3C7N + CO -> CH3C7N + CO
+8339    490  1    60   1    -1   -1   *CH3CCH + H2 -> CH3CCH + H2
+8340    490  2    60   2    -1   -1   *CH3CCH + He -> CH3CCH + He
+8341    490  24   60   24   -1   -1   *CH3CCH + CO -> CH3CCH + CO
+8342    501  1    71   1    -1   -1   *CH3CHCH2 + H2 -> CH3CHCH2 + H2
+8343    501  2    71   2    -1   -1   *CH3CHCH2 + He -> CH3CHCH2 + He
+8344    501  24   71   24   -1   -1   *CH3CHCH2 + CO -> CH3CHCH2 + CO
+8345    513  1    83   1    -1   -1   *CH3CHO + H2 -> CH3CHO + H2
+8346    513  2    83   2    -1   -1   *CH3CHO + He -> CH3CHO + He
+8347    513  24   83   24   -1   -1   *CH3CHO + CO -> CH3CHO + CO
+8348    494  1    64   1    -1   -1   *CH3CN + H2 -> CH3CN + H2
+8349    494  2    64   2    -1   -1   *CH3CN + He -> CH3CN + He
+8350    494  24   64   24   -1   -1   *CH3CN + CO -> CH3CN + CO
+8351    507  1    77   1    -1   -1   *CH3CO + H2 -> CH3CO + H2
+8352    507  2    77   2    -1   -1   *CH3CO + He -> CH3CO + He
+8353    507  24   77   24   -1   -1   *CH3CO + CO -> CH3CO + CO
+8354    546  1    116  1    -1   -1   *CH3COCH3 + H2 -> CH3COCH3 + H2
+8355    546  2    116  2    -1   -1   *CH3COCH3 + He -> CH3COCH3 + He
+8356    546  24   116  24   -1   -1   *CH3COCH3 + CO -> CH3COCH3 + CO
+8357    468  1    38   1    -1   -1   *CH3O + H2 -> CH3O + H2
+8358    468  2    38   2    -1   -1   *CH3O + He -> CH3O + He
+8359    468  24   38   24   -1   -1   *CH3O + CO -> CH3O + CO
+8360    523  1    93   1    -1   -1   *CH3OCH3 + H2 -> CH3OCH3 + H2
+8361    523  2    93   2    -1   -1   *CH3OCH3 + He -> CH3OCH3 + He
+8362    523  24   93   24   -1   -1   *CH3OCH3 + CO -> CH3OCH3 + CO
+8363    474  1    44   1    -1   -1   *CH3OH + H2 -> CH3OH + H2
+8364    474  2    44   2    -1   -1   *CH3OH + He -> CH3OH + He
+8365    474  24   44   24   -1   -1   *CH3OH + CO -> CH3OH + CO
+8366    440  1    10   1    -1   -1   *CH4 + H2 -> CH4 + H2
+8367    440  2    10   2    -1   -1   *CH4 + He -> CH4 + He
+8368    440  24   10   24   -1   -1   *CH4 + CO -> CH4 + CO
+8369    449  1    19   1    -1   -1   *CN + H2 -> CN + H2
+8370    449  2    19   2    -1   -1   *CN + He -> CN + He
+8371    449  24   19   24   -1   -1   *CN + CO -> CN + CO
+8372    495  1    65   1    -1   -1   *CNO + H2 -> CNO + H2
+8373    495  2    65   2    -1   -1   *CNO + He -> CNO + He
+8374    495  24   65   24   -1   -1   *CNO + CO -> CNO + CO
+8375    454  1    24   1    -1   -1   *CO + H2 -> CO + H2
+8376    454  2    24   2    -1   -1   *CO + He -> CO + He
+8377    454  24   24   24   -1   -1   *CO + CO -> CO + CO
+8378    510  1    80   1    -1   -1   *CO2 + H2 -> CO2 + H2
+8379    510  2    80   2    -1   -1   *CO2 + He -> CO2 + He
+8380    510  24   80   24   -1   -1   *CO2 + CO -> CO2 + CO
+8381    515  1    85   1    -1   -1   *HOCO + H2 -> HOCO + H2
+8382    515  2    85   2    -1   -1   *HOCO + He -> HOCO + He
+8383    515  24   85   24   -1   -1   *HOCO + CO -> HOCO + CO
+8384    509  1    79   1    -1   -1   *CS + H2 -> CS + H2
+8385    509  2    79   2    -1   -1   *CS + He -> CS + He
+8386    509  24   79   24   -1   -1   *CS + CO -> CS + CO
+8387    479  1    49   1    -1   -1   *Cl + H2 -> Cl + H2
+8388    479  2    49   2    -1   -1   *Cl + He -> Cl + He
+8389    479  24   49   24   -1   -1   *Cl + CO -> Cl + CO
+8390    530  1    100  1    -1   -1   *ClO + H2 -> ClO + H2
+8391    530  2    100  2    -1   -1   *ClO + He -> ClO + He
+8392    530  24   100  24   -1   -1   *ClO + CO -> ClO + CO
+8393    430  1    0    1    -1   -1   *H + H2 -> H + H2
+8394    430  2    0    2    -1   -1   *H + He -> H + He
+8395    430  24   0    24   -1   -1   *H + CO -> H + CO
+8396    431  1    1    1    -1   -1   *H2 + H2 -> H2 + H2
+8397    431  2    1    2    -1   -1   *H2 + He -> H2 + He
+8398    431  24   1    24   -1   -1   *H2 + CO -> H2 + CO
+8399    485  1    55   1    -1   -1   *H2CCC + H2 -> H2CCC + H2
+8400    485  2    55   2    -1   -1   *H2CCC + He -> H2CCC + He
+8401    485  24   55   24   -1   -1   *H2CCC + CO -> H2CCC + CO
+8402    458  1    28   1    -1   -1   *H2CN + H2 -> H2CN + H2
+8403    458  2    28   2    -1   -1   *H2CN + He -> H2CN + He
+8404    458  24   28   24   -1   -1   *H2CN + CO -> H2CN + CO
+8405    464  1    34   1    -1   -1   *H2CO + H2 -> H2CO + H2
+8406    464  2    34   2    -1   -1   *H2CO + He -> H2CO + He
+8407    464  24   34   24   -1   -1   *H2CO + CO -> H2CO + CO
+8408    519  1    89   1    -1   -1   *H2CS + H2 -> H2CS + H2
+8409    519  2    89   2    -1   -1   *H2CS + He -> H2CS + He
+8410    519  24   89   24   -1   -1   *H2CS + CO -> H2CS + CO
+8411    444  1    14   1    -1   -1   *H2O + H2 -> H2O + H2
+8412    444  2    14   2    -1   -1   *H2O + He -> H2O + He
+8413    444  24   14   24   -1   -1   *H2O + CO -> H2O + CO
+8414    478  1    48   1    -1   -1   *H2O2 + H2 -> H2O2 + H2
+8415    478  2    48   2    -1   -1   *H2O2 + He -> H2O2 + He
+8416    478  24   48   24   -1   -1   *H2O2 + CO -> H2O2 + CO
+8417    477  1    47   1    -1   -1   *H2S + H2 -> H2S + H2
+8418    477  2    47   2    -1   -1   *H2S + He -> H2S + He
+8419    477  24   47   24   -1   -1   *H2S + CO -> H2S + CO
+8420    562  1    132  1    -1   -1   *H2S2 + H2 -> H2S2 + H2
+8421    562  2    132  2    -1   -1   *H2S2 + He -> H2S2 + He
+8422    562  24   132  24   -1   -1   *H2S2 + CO -> H2S2 + CO
+8423    520  1    90   1    -1   -1   *H2SiO + H2 -> H2SiO + H2
+8424    520  2    90   2    -1   -1   *H2SiO + He -> H2SiO + He
+8425    520  24   90   24   -1   -1   *H2SiO + CO -> H2SiO + CO
+8426    492  1    62   1    -1   -1   *HC2O + H2 -> HC2O + H2
+8427    492  2    62   2    -1   -1   *HC2O + He -> HC2O + He
+8428    492  24   62   24   -1   -1   *HC2O + CO -> HC2O + CO
+8429    532  1    102  1    -1   -1   *HC3N + H2 -> HC3N + H2
+8430    532  2    102  2    -1   -1   *HC3N + He -> HC3N + He
+8431    532  24   102  24   -1   -1   *HC3N + CO -> HC3N + CO
+8432    568  1    138  1    -1   -1   *HC5N + H2 -> HC5N + H2
+8433    568  2    138  2    -1   -1   *HC5N + He -> HC5N + He
+8434    568  24   138  24   -1   -1   *HC5N + CO -> HC5N + CO
+8435    581  1    151  1    -1   -1   *HC7N + H2 -> HC7N + H2
+8436    581  2    151  2    -1   -1   *HC7N + He -> HC7N + He
+8437    581  24   151  24   -1   -1   *HC7N + CO -> HC7N + CO
+8438    590  1    160  1    -1   -1   *HC9N + H2 -> HC9N + H2
+8439    590  2    160  2    -1   -1   *HC9N + He -> HC9N + He
+8440    590  24   160  24   -1   -1   *HC9N + CO -> HC9N + CO
+8441    451  1    21   1    -1   -1   *HCN + H2 -> HCN + H2
+8442    451  2    21   2    -1   -1   *HCN + He -> HCN + He
+8443    451  24   21   24   -1   -1   *HCN + CO -> HCN + CO
+8444    502  1    72   1    -1   -1   *HCNO + H2 -> HCNO + H2
+8445    502  2    72   2    -1   -1   *HCNO + He -> HCNO + He
+8446    502  24   72   24   -1   -1   *HCNO + CO -> HCNO + CO
+8447    459  1    29   1    -1   -1   *HCO + H2 -> HCO + H2
+8448    459  2    29   2    -1   -1   *HCO + He -> HCO + He
+8449    459  24   29   24   -1   -1   *HCO + CO -> HCO + CO
+8450    551  1    121  1    -1   -1   *HCOOCH3 + H2 -> HCOOCH3 + H2
+8451    551  2    121  2    -1   -1   *HCOOCH3 + He -> HCOOCH3 + He
+8452    551  24   121  24   -1   -1   *HCOOCH3 + CO -> HCOOCH3 + CO
+8453    521  1    91   1    -1   -1   *HCOOH + H2 -> HCOOH + H2
+8454    521  2    91   2    -1   -1   *HCOOH + He -> HCOOH + He
+8455    521  24   91   24   -1   -1   *HCOOH + CO -> HCOOH + CO
+8456    514  1    84   1    -1   -1   *HCS + H2 -> HCS + H2
+8457    514  2    84   2    -1   -1   *HCS + He -> HCS + He
+8458    514  24   84   24   -1   -1   *HCS + CO -> HCS + CO
+8459    493  1    63   1    -1   -1   *HCSi + H2 -> HCSi + H2
+8460    493  2    63   2    -1   -1   *HCSi + He -> HCSi + He
+8461    493  24   63   24   -1   -1   *HCSi + CO -> HCSi + CO
+8462    432  1    2    1    -1   -1   *He + H2 -> He + H2
+8463    432  2    2    2    -1   -1   *He + He -> He + He
+8464    432  24   2    24   -1   -1   *He + CO -> He + CO
+8465    452  1    22   1    -1   -1   *HNC + H2 -> HNC + H2
+8466    452  2    22   2    -1   -1   *HNC + He -> HNC + He
+8467    452  24   22   24   -1   -1   *HNC + CO -> HNC + CO
+8468    533  1    103  1    -1   -1   *HNC3 + H2 -> HNC3 + H2
+8469    533  2    103  2    -1   -1   *HNC3 + He -> HNC3 + He
+8470    533  24   103  24   -1   -1   *HNC3 + CO -> HNC3 + CO
+8471    503  1    73   1    -1   -1   *HNCO + H2 -> HNCO + H2
+8472    503  2    73   2    -1   -1   *HNCO + He -> HNCO + He
+8473    503  24   73   24   -1   -1   *HNCO + CO -> HNCO + CO
+8474    467  1    37   1    -1   -1   *HNO + H2 -> HNO + H2
+8475    467  2    37   2    -1   -1   *HNO + He -> HNO + He
+8476    467  24   37   24   -1   -1   *HNO + CO -> HNO + CO
+8477    504  1    74   1    -1   -1   *HNSi + H2 -> HNSi + H2
+8478    504  2    74   2    -1   -1   *HNSi + He -> HNSi + He
+8479    504  24   74   24   -1   -1   *HNSi + CO -> HNSi + CO
+8480    505  1    75   1    -1   -1   *HOCN + H2 -> HOCN + H2
+8481    505  2    75   2    -1   -1   *HOCN + He -> HOCN + He
+8482    505  24   75   24   -1   -1   *HOCN + CO -> HOCN + CO
+8483    506  1    76   1    -1   -1   *HONC + H2 -> HONC + H2
+8484    506  2    76   2    -1   -1   *HONC + He -> HONC + He
+8485    506  24   76   24   -1   -1   *HONC + CO -> HONC + CO
+8486    475  1    45   1    -1   -1   *HS + H2 -> HS + H2
+8487    475  2    45   2    -1   -1   *HS + He -> HS + He
+8488    475  24   45   24   -1   -1   *HS + CO -> HS + CO
+8489    559  1    129  1    -1   -1   *HS2 + H2 -> HS2 + H2
+8490    559  2    129  2    -1   -1   *HS2 + He -> HS2 + He
+8491    559  24   129  24   -1   -1   *HS2 + CO -> HS2 + CO
+8492    481  1    51   1    -1   -1   *HCl + H2 -> HCl + H2
+8493    481  2    51   2    -1   -1   *HCl + He -> HCl + He
+8494    481  24   51   24   -1   -1   *HCl + CO -> HCl + CO
+8495    544  1    114  1    -1   -1   *Fe + H2 -> Fe + H2
+8496    544  2    114  2    -1   -1   *Fe + He -> Fe + He
+8497    544  24   114  24   -1   -1   *Fe + CO -> Fe + CO
+8498    447  1    17   1    -1   -1   *Mg + H2 -> Mg + H2
+8499    447  2    17   2    -1   -1   *Mg + He -> Mg + He
+8500    447  24   17   24   -1   -1   *Mg + CO -> Mg + CO
+8501    435  1    5    1    -1   -1   *N + H2 -> N + H2
+8502    435  2    5    2    -1   -1   *N + He -> N + He
+8503    435  24   5    24   -1   -1   *N + CO -> N + CO
+8504    455  1    25   1    -1   -1   *N2 + H2 -> N2 + H2
+8505    455  2    25   2    -1   -1   *N2 + He -> N2 + He
+8506    455  24   25   24   -1   -1   *N2 + CO -> N2 + CO
+8507    511  1    81   1    -1   -1   *N2O + H2 -> N2O + H2
+8508    511  2    81   2    -1   -1   *N2O + He -> N2O + He
+8509    511  24   81   24   -1   -1   *N2O + CO -> N2O + CO
+8510    535  1    105  1    -1   -1   *NCCN + H2 -> NCCN + H2
+8511    535  2    105  2    -1   -1   *NCCN + He -> NCCN + He
+8512    535  24   105  24   -1   -1   *NCCN + CO -> NCCN + CO
+8513    437  1    7    1    -1   -1   *NH + H2 -> NH + H2
+8514    437  2    7    2    -1   -1   *NH + He -> NH + He
+8515    437  24   7    24   -1   -1   *NH + CO -> NH + CO
+8516    441  1    11   1    -1   -1   *NH2 + H2 -> NH2 + H2
+8517    441  2    11   2    -1   -1   *NH2 + He -> NH2 + He
+8518    441  24   11   24   -1   -1   *NH2 + CO -> NH2 + CO
+8519    499  1    69   1    -1   -1   *NH2CN + H2 -> NH2CN + H2
+8520    499  2    69   2    -1   -1   *NH2CN + He -> NH2CN + He
+8521    499  24   69   24   -1   -1   *NH2CN + CO -> NH2CN + CO
+8522    443  1    13   1    -1   -1   *NH3 + H2 -> NH3 + H2
+8523    443  2    13   2    -1   -1   *NH3 + He -> NH3 + He
+8524    443  24   13   24   -1   -1   *NH3 + CO -> NH3 + CO
+8525    463  1    33   1    -1   -1   *NO + H2 -> NO + H2
+8526    463  2    33   2    -1   -1   *NO + He -> NO + He
+8527    463  24   33   24   -1   -1   *NO + CO -> NO + CO
+8528    518  1    88   1    -1   -1   *NO2 + H2 -> NO2 + H2
+8529    518  2    88   2    -1   -1   *NO2 + He -> NO2 + He
+8530    518  24   88   24   -1   -1   *NO2 + CO -> NO2 + CO
+8531    517  1    87   1    -1   -1   *NS + H2 -> NS + H2
+8532    517  2    87   2    -1   -1   *NS + He -> NS + He
+8533    517  24   87   24   -1   -1   *NS + CO -> NS + CO
+8534    445  1    15   1    -1   -1   *Na + H2 -> Na + H2
+8535    445  2    15   2    -1   -1   *Na + He -> Na + He
+8536    445  24   15   24   -1   -1   *Na + CO -> Na + CO
+8537    439  1    9    1    -1   -1   *O + H2 -> O + H2
+8538    439  2    9    2    -1   -1   *O + He -> O + He
+8539    439  24   9    24   -1   -1   *O + CO -> O + CO
+8540    472  1    42   1    -1   -1   *O2 + H2 -> O2 + H2
+8541    472  2    42   2    -1   -1   *O2 + He -> O2 + He
+8542    472  24   42   24   -1   -1   *O2 + CO -> O2 + CO
+8543    476  1    46   1    -1   -1   *O2H + H2 -> O2H + H2
+8544    476  2    46   2    -1   -1   *O2H + He -> O2H + He
+8545    476  24   46   24   -1   -1   *O2H + CO -> O2H + CO
+8546    496  1    66   1    -1   -1   *OCN + H2 -> OCN + H2
+8547    496  2    66   2    -1   -1   *OCN + He -> OCN + He
+8548    496  24   66   24   -1   -1   *OCN + CO -> OCN + CO
+8549    548  1    118  1    -1   -1   *OCS + H2 -> OCS + H2
+8550    548  2    118  2    -1   -1   *OCS + He -> OCS + He
+8551    548  24   118  24   -1   -1   *OCS + CO -> OCS + CO
+8552    442  1    12   1    -1   -1   *OH + H2 -> OH + H2
+8553    442  2    12   2    -1   -1   *OH + He -> OH + He
+8554    442  24   12   24   -1   -1   *OH + CO -> OH + CO
+8555    471  1    41   1    -1   -1   *S + H2 -> S + H2
+8556    471  2    41   2    -1   -1   *S + He -> S + He
+8557    471  24   41   24   -1   -1   *S + CO -> S + CO
+8558    555  1    125  1    -1   -1   *S2 + H2 -> S2 + H2
+8559    555  2    125  2    -1   -1   *S2 + He -> S2 + He
+8560    555  24   125  24   -1   -1   *S2 + CO -> S2 + CO
+8561    456  1    26   1    -1   -1   *Si + H2 -> Si + H2
+8562    456  2    26   2    -1   -1   *Si + He -> Si + He
+8563    456  24   26   24   -1   -1   *Si + CO -> Si + CO
+8564    488  1    58   1    -1   -1   *SiC + H2 -> SiC + H2
+8565    488  2    58   2    -1   -1   *SiC + He -> SiC + He
+8566    488  24   58   24   -1   -1   *SiC + CO -> SiC + CO
+8567    536  1    106  1    -1   -1   *SiC2 + H2 -> SiC2 + H2
+8568    536  2    106  2    -1   -1   *SiC2 + He -> SiC2 + He
+8569    536  24   106  24   -1   -1   *SiC2 + CO -> SiC2 + CO
+8570    538  1    108  1    -1   -1   *SiC2H + H2 -> SiC2H + H2
+8571    538  2    108  2    -1   -1   *SiC2H + He -> SiC2H + He
+8572    538  24   108  24   -1   -1   *SiC2H + CO -> SiC2H + CO
+8573    541  1    111  1    -1   -1   *SiC2H2 + H2 -> SiC2H2 + H2
+8574    541  2    111  2    -1   -1   *SiC2H2 + He -> SiC2H2 + He
+8575    541  24   111  24   -1   -1   *SiC2H2 + CO -> SiC2H2 + CO
+8576    557  1    127  1    -1   -1   *SiC3 + H2 -> SiC3 + H2
+8577    557  2    127  2    -1   -1   *SiC3 + He -> SiC3 + He
+8578    557  24   127  24   -1   -1   *SiC3 + CO -> SiC3 + CO
+8579    560  1    130  1    -1   -1   *SiC3H + H2 -> SiC3H + H2
+8580    560  2    130  2    -1   -1   *SiC3H + He -> SiC3H + He
+8581    560  24   130  24   -1   -1   *SiC3H + CO -> SiC3H + CO
+8582    569  1    139  1    -1   -1   *SiC4 + H2 -> SiC4 + H2
+8583    569  2    139  2    -1   -1   *SiC4 + He -> SiC4 + He
+8584    569  24   139  24   -1   -1   *SiC4 + CO -> SiC4 + CO
+8585    500  1    70   1    -1   -1   *SiCH2 + H2 -> SiCH2 + H2
+8586    500  2    70   2    -1   -1   *SiCH2 + He -> SiCH2 + He
+8587    500  24   70   24   -1   -1   *SiCH2 + CO -> SiCH2 + CO
+8588    508  1    78   1    -1   -1   *SiCH3 + H2 -> SiCH3 + H2
+8589    508  2    78   2    -1   -1   *SiCH3 + He -> SiCH3 + He
+8590    508  24   78   24   -1   -1   *SiCH3 + CO -> SiCH3 + CO
+8591    460  1    30   1    -1   -1   *SiH + H2 -> SiH + H2
+8592    460  2    30   2    -1   -1   *SiH + He -> SiH + He
+8593    460  24   30   24   -1   -1   *SiH + CO -> SiH + CO
+8594    465  1    35   1    -1   -1   *SiH2 + H2 -> SiH2 + H2
+8595    465  2    35   2    -1   -1   *SiH2 + He -> SiH2 + He
+8596    465  24   35   24   -1   -1   *SiH2 + CO -> SiH2 + CO
+8597    469  1    39   1    -1   -1   *SiH3 + H2 -> SiH3 + H2
+8598    469  2    39   2    -1   -1   *SiH3 + He -> SiH3 + He
+8599    469  24   39   24   -1   -1   *SiH3 + CO -> SiH3 + CO
+8600    473  1    43   1    -1   -1   *SiH4 + H2 -> SiH4 + H2
+8601    473  2    43   2    -1   -1   *SiH4 + He -> SiH4 + He
+8602    473  24   43   24   -1   -1   *SiH4 + CO -> SiH4 + CO
+8603    497  1    67   1    -1   -1   *SiN + H2 -> SiN + H2
+8604    497  2    67   2    -1   -1   *SiN + He -> SiN + He
+8605    497  24   67   24   -1   -1   *SiN + CO -> SiN + CO
+8606    540  1    110  1    -1   -1   *SiNC + H2 -> SiNC + H2
+8607    540  2    110  2    -1   -1   *SiNC + He -> SiNC + He
+8608    540  24   110  24   -1   -1   *SiNC + CO -> SiNC + CO
+8609    512  1    82   1    -1   -1   *SiO + H2 -> SiO + H2
+8610    512  2    82   2    -1   -1   *SiO + He -> SiO + He
+8611    512  24   82   24   -1   -1   *SiO + CO -> SiO + CO
+8612    550  1    120  1    -1   -1   *SiO2 + H2 -> SiO2 + H2
+8613    550  2    120  2    -1   -1   *SiO2 + He -> SiO2 + He
+8614    550  24   120  24   -1   -1   *SiO2 + CO -> SiO2 + CO
+8615    549  1    119  1    -1   -1   *SiS + H2 -> SiS + H2
+8616    549  2    119  2    -1   -1   *SiS + He -> SiS + He
+8617    549  24   119  24   -1   -1   *SiS + CO -> SiS + CO
+8618    526  1    96   1    -1   -1   *SO + H2 -> SO + H2
+8619    526  2    96   2    -1   -1   *SO + He -> SO + He
+8620    526  24   96   24   -1   -1   *SO + CO -> SO + CO
+8621    556  1    126  1    -1   -1   *SO2 + H2 -> SO2 + H2
+8622    556  2    126  2    -1   -1   *SO2 + He -> SO2 + He
+8623    556  24   126  24   -1   -1   *SO2 + CO -> SO2 + CO
+8624    516  1    86   1    -1   -1   *CH3OCH2 + H2 -> CH3OCH2 + H2
+8625    516  2    86   2    -1   -1   *CH3OCH2 + He -> CH3OCH2 + He
+8626    516  24   86   24   -1   -1   *CH3OCH2 + CO -> CH3OCH2 + CO
+8627    162  -1   0    -1   -1   -1   H+ + GRAIN -> H + GRAIN
+8628    163  -1   1    -1   -1   -1   H2+ + GRAIN -> H2 + GRAIN
+8629    163  -1   0    0    -1   -1   H2+ + GRAIN -> H + H + GRAIN
+8630    164  -1   1    0    -1   -1   H3+ + GRAIN -> H2 + H + GRAIN
+8631    165  -1   2    -1   -1   -1   He+ + GRAIN -> He + GRAIN
+8632    166  -1   2    0    -1   -1   HeH+ + GRAIN -> He + H + GRAIN
+8633    167  -1   3    -1   -1   -1   C+ + GRAIN -> C + GRAIN
+8634    168  -1   4    -1   -1   -1   CH+ + GRAIN -> CH + GRAIN
+8635    168  -1   3    0    -1   -1   CH+ + GRAIN -> C + H + GRAIN
+8636    170  -1   6    -1   -1   -1   CH2+ + GRAIN -> CH2 + GRAIN
+8637    170  -1   4    0    -1   -1   CH2+ + GRAIN -> CH + H + GRAIN
+8638    169  -1   5    -1   -1   -1   N+ + GRAIN -> N + GRAIN
+8639    171  -1   7    -1   -1   -1   NH+ + GRAIN -> NH + GRAIN
+8640    171  -1   5    0    -1   -1   NH+ + GRAIN -> N + H + GRAIN
+8641    172  -1   8    -1   -1   -1   CH3+ + GRAIN -> CH3 + GRAIN
+8642    172  -1   6    0    -1   -1   CH3+ + GRAIN -> CH2 + H + GRAIN
+8643    175  -1   11   -1   -1   -1   NH2+ + GRAIN -> NH2 + GRAIN
+8644    175  -1   7    0    -1   -1   NH2+ + GRAIN -> NH + H + GRAIN
+8645    173  -1   9    -1   -1   -1   O+ + GRAIN -> O + GRAIN
+8646    174  -1   10   -1   -1   -1   CH4+ + GRAIN -> CH4 + GRAIN
+8647    174  -1   8    0    -1   -1   CH4+ + GRAIN -> CH3 + H + GRAIN
+8648    176  -1   12   -1   -1   -1   OH+ + GRAIN -> OH + GRAIN
+8649    176  -1   9    0    -1   -1   OH+ + GRAIN -> O + H + GRAIN
+8650    178  -1   13   -1   -1   -1   NH3+ + GRAIN -> NH3 + GRAIN
+8651    178  -1   11   0    -1   -1   NH3+ + GRAIN -> NH2 + H + GRAIN
+8652    177  -1   10   0    -1   -1   CH5+ + GRAIN -> CH4 + H + GRAIN
+8653    180  -1   13   0    -1   -1   NH4+ + GRAIN -> NH3 + H + GRAIN
+8654    179  -1   14   -1   -1   -1   H2O+ + GRAIN -> H2O + GRAIN
+8655    179  -1   12   0    -1   -1   H2O+ + GRAIN -> OH + H + GRAIN
+8656    181  -1   14   0    -1   -1   H3O+ + GRAIN -> H2O + H + GRAIN
+8657    182  -1   15   -1   -1   -1   Na+ + GRAIN -> Na + GRAIN
+8658    183  -1   16   -1   -1   -1   C2+ + GRAIN -> C2 + GRAIN
+8659    184  -1   17   -1   -1   -1   Mg+ + GRAIN -> Mg + GRAIN
+8660    185  -1   18   -1   -1   -1   C2H+ + GRAIN -> C2H + GRAIN
+8661    185  -1   16   0    -1   -1   C2H+ + GRAIN -> C2 + H + GRAIN
+8662    187  -1   20   -1   -1   -1   C2H2+ + GRAIN -> C2H2 + GRAIN
+8663    187  -1   18   0    -1   -1   C2H2+ + GRAIN -> C2H + H + GRAIN
+8664    186  -1   19   -1   -1   -1   CN+ + GRAIN -> CN + GRAIN
+8665    189  -1   23   -1   -1   -1   C2H3+ + GRAIN -> C2H3 + GRAIN
+8666    189  -1   20   0    -1   -1   C2H3+ + GRAIN -> C2H2 + H + GRAIN
+8667    188  -1   21   -1   -1   -1   HCN+ + GRAIN -> HCN + GRAIN
+8668    188  -1   19   0    -1   -1   HCN+ + GRAIN -> CN + H + GRAIN
+8669    190  -1   24   -1   -1   -1   CO+ + GRAIN -> CO + GRAIN
+8670    192  -1   26   -1   -1   -1   Si+ + GRAIN -> Si + GRAIN
+8671    191  -1   25   -1   -1   -1   N2+ + GRAIN -> N2 + GRAIN
+8672    194  -1   22   0    -1   -1   H2NC+ + GRAIN -> HNC + H + GRAIN
+8673    195  -1   21   0    -1   -1   HCNH+ + GRAIN -> HCN + H + GRAIN
+8674    193  -1   27   -1   -1   -1   C2H4+ + GRAIN -> C2H4 + GRAIN
+8675    193  -1   23   0    -1   -1   C2H4+ + GRAIN -> C2H3 + H + GRAIN
+8676    199  -1   30   -1   -1   -1   SiH+ + GRAIN -> SiH + GRAIN
+8677    199  -1   26   0    -1   -1   SiH+ + GRAIN -> Si + H + GRAIN
+8678    196  -1   29   -1   -1   -1   HCO+ + GRAIN -> HCO + GRAIN
+8679    196  -1   24   0    -1   -1   HCO+ + GRAIN -> CO + H + GRAIN
+8680    197  -1   24   0    -1   -1   HOC+ + GRAIN -> CO + H + GRAIN
+8681    200  -1   31   -1   -1   -1   C2H5+ + GRAIN -> C2H5 + GRAIN
+8682    200  -1   27   0    -1   -1   C2H5+ + GRAIN -> C2H4 + H + GRAIN
+8683    198  -1   25   0    -1   -1   N2H+ + GRAIN -> N2 + H + GRAIN
+8684    203  -1   34   -1   -1   -1   H2CO+ + GRAIN -> H2CO + GRAIN
+8685    203  -1   29   0    -1   -1   H2CO+ + GRAIN -> HCO + H + GRAIN
+8686    204  -1   35   -1   -1   -1   SiH2+ + GRAIN -> SiH2 + GRAIN
+8687    204  -1   30   0    -1   -1   SiH2+ + GRAIN -> SiH + H + GRAIN
+8688    202  -1   32   0    -1   -1   CH4N+ + GRAIN -> CH2NH + H + GRAIN
+8689    201  -1   33   -1   -1   -1   NO+ + GRAIN -> NO + GRAIN
+8690    205  -1   32   0    -1   -1   CH2NH2+ + GRAIN -> CH2NH + H + GRAIN
+8691    206  -1   36   -1   -1   -1   CH3CH3+ + GRAIN -> CH3CH3 + GRAIN
+8692    206  -1   31   0    -1   -1   CH3CH3+ + GRAIN -> C2H5 + H + GRAIN
+8693    210  -1   39   -1   -1   -1   SiH3+ + GRAIN -> SiH3 + GRAIN
+8694    210  -1   35   0    -1   -1   SiH3+ + GRAIN -> SiH2 + H + GRAIN
+8695    209  -1   38   -1   -1   -1   H3CO+ + GRAIN -> CH3O + GRAIN
+8696    209  -1   34   0    -1   -1   H3CO+ + GRAIN -> H2CO + H + GRAIN
+8697    208  -1   36   0    -1   -1   C2H7+ + GRAIN -> CH3CH3 + H + GRAIN
+8698    207  -1   37   -1   -1   -1   HNO+ + GRAIN -> HNO + GRAIN
+8699    207  -1   33   0    -1   -1   HNO+ + GRAIN -> NO + H + GRAIN
+8700    211  -1   41   -1   -1   -1   S+ + GRAIN -> S + GRAIN
+8701    212  -1   42   -1   -1   -1   O2+ + GRAIN -> O2 + GRAIN
+8702    214  -1   43   -1   -1   -1   SiH4+ + GRAIN -> SiH4 + GRAIN
+8703    214  -1   39   0    -1   -1   SiH4+ + GRAIN -> SiH3 + H + GRAIN
+8704    215  -1   44   -1   -1   -1   CH3OH+ + GRAIN -> CH3OH + GRAIN
+8705    215  -1   38   0    -1   -1   CH3OH+ + GRAIN -> CH3O + H + GRAIN
+8706    213  -1   37   0    -1   -1   H2NO+ + GRAIN -> HNO + H + GRAIN
+8707    217  -1   46   -1   -1   -1   O2H+ + GRAIN -> O2H + GRAIN
+8708    217  -1   42   0    -1   -1   O2H+ + GRAIN -> O2 + H + GRAIN
+8709    218  -1   43   0    -1   -1   SiH5+ + GRAIN -> SiH4 + H + GRAIN
+8710    219  -1   44   0    -1   -1   CH3OH2+ + GRAIN -> CH3OH + H + GRAIN
+8711    216  -1   45   -1   -1   -1   HS+ + GRAIN -> HS + GRAIN
+8712    216  -1   41   0    -1   -1   HS+ + GRAIN -> S + H + GRAIN
+8713    220  -1   47   -1   -1   -1   H2S+ + GRAIN -> H2S + GRAIN
+8714    220  -1   45   0    -1   -1   H2S+ + GRAIN -> HS + H + GRAIN
+8715    222  -1   47   0    -1   -1   H3S+ + GRAIN -> H2S + H + GRAIN
+8716    221  -1   49   -1   -1   -1   Cl+ + GRAIN -> Cl + GRAIN
+8717    223  -1   50   -1   -1   -1   C3+ + GRAIN -> C3 + GRAIN
+8718    224  -1   51   -1   -1   -1   HCl+ + GRAIN -> HCl + GRAIN
+8719    224  -1   49   0    -1   -1   HCl+ + GRAIN -> Cl + H + GRAIN
+8720    226  -1   51   0    -1   -1   H2Cl+ + GRAIN -> HCl + H + GRAIN
+8721    225  -1   52   -1   -1   -1   C3H+ + GRAIN -> C3H + GRAIN
+8722    225  -1   50   0    -1   -1   C3H+ + GRAIN -> C3 + H + GRAIN
+8723    229  -1   54   -1   -1   -1   C3H2+ + GRAIN -> C3H2 + GRAIN
+8724    229  -1   52   0    -1   -1   C3H2+ + GRAIN -> C3H + H + GRAIN
+8725    227  -1   53   -1   -1   -1   C2N+ + GRAIN -> C2N + GRAIN
+8726    232  -1   56   -1   -1   -1   CH2CCH+ + GRAIN -> CH2CCH + GRAIN
+8727    232  -1   55   0    -1   -1   CH2CCH+ + GRAIN -> H2CCC + H + GRAIN
+8728    230  -1   53   0    -1   -1   C2NH+ + GRAIN -> C2N + H + GRAIN
+8729    231  -1   54   0    -1   -1   C3H3+ + GRAIN -> C3H2 + H + GRAIN
+8730    233  -1   57   -1   -1   -1   C2O+ + GRAIN -> C2O + GRAIN
+8731    236  -1   59   -1   -1   -1   CH2CN+ + GRAIN -> CH2CN + GRAIN
+8732    235  -1   60   -1   -1   -1   C3H4+ + GRAIN -> CH3CCH + GRAIN
+8733    234  -1   58   -1   -1   -1   SiC+ + GRAIN -> SiC + GRAIN
+8734    237  -1   60   0    -1   -1   C3H5+ + GRAIN -> CH3CCH + H + GRAIN
+8735    240  -1   64   -1   -1   -1   CH3CN+ + GRAIN -> CH3CN + GRAIN
+8736    240  -1   59   0    -1   -1   CH3CN+ + GRAIN -> CH2CN + H + GRAIN
+8737    238  -1   57   0    -1   -1   HC2O+ + GRAIN -> C2O + H + GRAIN
+8738    239  -1   63   -1   -1   -1   HCSi+ + GRAIN -> HCSi + GRAIN
+8739    239  -1   58   0    -1   -1   HCSi+ + GRAIN -> SiC + H + GRAIN
+8740    244  -1   68   -1   -1   -1   CH2CO+ + GRAIN -> CH2CO + GRAIN
+8741    241  -1   66   -1   -1   -1   OCN+ + GRAIN -> OCN + GRAIN
+8742    245  -1   70   -1   -1   -1   SiCH2+ + GRAIN -> SiCH2 + GRAIN
+8743    245  -1   63   0    -1   -1   SiCH2+ + GRAIN -> HCSi + H + GRAIN
+8744    242  -1   67   -1   -1   -1   SiN+ + GRAIN -> SiN + GRAIN
+8745    246  -1   64   0    -1   -1   CH3CNH+ + GRAIN -> CH3CN + H + GRAIN
+8746    247  -1   71   0    -1   -1   C3H7+ + GRAIN -> CH3CHCH2 + H + GRAIN
+8747    250  -1   74   -1   -1   -1   HNSi+ + GRAIN -> HNSi + GRAIN
+8748    250  -1   67   0    -1   -1   HNSi+ + GRAIN -> SiN + H + GRAIN
+8749    248  -1   72   -1   -1   -1   HCNO+ + GRAIN -> HCNO + GRAIN
+8750    248  -1   65   0    -1   -1   HCNO+ + GRAIN -> CNO + H + GRAIN
+8751    254  -1   78   -1   -1   -1   SiCH3+ + GRAIN -> SiCH3 + GRAIN
+8752    254  -1   70   0    -1   -1   SiCH3+ + GRAIN -> SiCH2 + H + GRAIN
+8753    253  -1   68   0    -1   -1   CH3CO+ + GRAIN -> CH2CO + H + GRAIN
+8754    252  -1   76   -1   -1   -1   HONC+ + GRAIN -> HONC + GRAIN
+8755    252  -1   65   0    -1   -1   HONC+ + GRAIN -> CNO + H + GRAIN
+8756    249  -1   73   -1   -1   -1   HNCO+ + GRAIN -> HNCO + GRAIN
+8757    249  -1   66   0    -1   -1   HNCO+ + GRAIN -> OCN + H + GRAIN
+8758    251  -1   75   -1   -1   -1   HOCN+ + GRAIN -> HOCN + GRAIN
+8759    251  -1   66   0    -1   -1   HOCN+ + GRAIN -> OCN + H + GRAIN
+8760    255  -1   69   0    -1   -1   NH2CNH+ + GRAIN -> NH2CN + H + GRAIN
+8761    258  -1   81   -1   -1   -1   N2O+ + GRAIN -> N2O + GRAIN
+8762    259  -1   82   -1   -1   -1   SiO+ + GRAIN -> SiO + GRAIN
+8763    263  -1   76   0    -1   -1   HCNOH+ + GRAIN -> HONC + H + GRAIN
+8764    256  -1   79   -1   -1   -1   CS+ + GRAIN -> CS + GRAIN
+8765    260  -1   72   0    -1   -1   H2CNO+ + GRAIN -> HCNO + H + GRAIN
+8766    261  -1   73   0    -1   -1   H2NCO+ + GRAIN -> HNCO + H + GRAIN
+8767    257  -1   80   -1   -1   -1   CO2+ + GRAIN -> CO2 + GRAIN
+8768    265  -1   78   0    -1   -1   SiCH4+ + GRAIN -> SiCH3 + H + GRAIN
+8769    262  -1   75   0    -1   -1   H2OCN+ + GRAIN -> HOCN + H + GRAIN
+8770    267  -1   83   -1   -1   -1   CH3CHO+ + GRAIN -> CH3CHO + GRAIN
+8771    264  -1   75   0    -1   -1   HNCOH+ + GRAIN -> HOCN + H + GRAIN
+8772    266  -1   74   0    -1   -1   SiNH2+ + GRAIN -> HNSi + H + GRAIN
+8773    268  -1   84   -1   -1   -1   HCS+ + GRAIN -> HCS + GRAIN
+8774    268  -1   79   0    -1   -1   HCS+ + GRAIN -> CS + H + GRAIN
+8775    271  -1   82   0    -1   -1   SiOH+ + GRAIN -> SiO + H + GRAIN
+8776    270  -1   81   0    -1   -1   HN2O+ + GRAIN -> N2O + H + GRAIN
+8777    272  -1   83   0    -1   -1   CH3CHOH+ + GRAIN -> CH3CHO + H + GRAIN
+8778    269  -1   80   0    -1   -1   HCO2+ + GRAIN -> CO2 + H + GRAIN
+8779    277  -1   91   -1   -1   -1   HCOOH+ + GRAIN -> HCOOH + GRAIN
+8780    278  -1   92   -1   -1   -1   C2H5OH+ + GRAIN -> C2H5OH + GRAIN
+8781    273  -1   87   -1   -1   -1   NS+ + GRAIN -> NS + GRAIN
+8782    275  -1   89   -1   -1   -1   H2CS+ + GRAIN -> H2CS + GRAIN
+8783    275  -1   84   0    -1   -1   H2CS+ + GRAIN -> HCS + H + GRAIN
+8784    274  -1   88   -1   -1   -1   NO2+ + GRAIN -> NO2 + GRAIN
+8785    276  -1   90   -1   -1   -1   H2SiO+ + GRAIN -> H2SiO + GRAIN
+8786    279  -1   93   -1   -1   -1   CH3OCH3+ + GRAIN -> CH3OCH3 + GRAIN
+8787    281  -1   87   0    -1   -1   HNS+ + GRAIN -> NS + H + GRAIN
+8788    283  -1   90   0    -1   -1   H3SiO+ + GRAIN -> H2SiO + H + GRAIN
+8789    280  -1   94   -1   -1   -1   CCl+ + GRAIN -> CCl + GRAIN
+8790    282  -1   89   0    -1   -1   H3CS+ + GRAIN -> H2CS + H + GRAIN
+8791    286  -1   93   0    -1   -1   CH3OCH4+ + GRAIN -> CH3OCH3 + H + GRAIN
+8792    285  -1   92   0    -1   -1   C2H5OH2+ + GRAIN -> C2H5OH + H + GRAIN
+8793    284  -1   91   0    -1   -1   HCOOH2+ + GRAIN -> HCOOH + H + GRAIN
+8794    287  -1   95   -1   -1   -1   C4+ + GRAIN -> C4 + GRAIN
+8795    288  -1   96   -1   -1   -1   SO+ + GRAIN -> SO + GRAIN
+8796    289  -1   97   -1   -1   -1   C4H+ + GRAIN -> C4H + GRAIN
+8797    289  -1   95   0    -1   -1   C4H+ + GRAIN -> C4 + H + GRAIN
+8798    290  -1   96   0    -1   -1   HSO+ + GRAIN -> SO + H + GRAIN
+8799    292  -1   98   -1   -1   -1   C3N+ + GRAIN -> C3N + GRAIN
+8800    293  -1   99   -1   -1   -1   C4H2+ + GRAIN -> HC4H + GRAIN
+8801    293  -1   97   0    -1   -1   C4H2+ + GRAIN -> C4H + H + GRAIN
+8802    296  -1   102  -1   -1   -1   HC3N+ + GRAIN -> HC3N + GRAIN
+8803    296  -1   98   0    -1   -1   HC3N+ + GRAIN -> C3N + H + GRAIN
+8804    294  -1   100  -1   -1   -1   ClO+ + GRAIN -> ClO + GRAIN
+8805    295  -1   101  -1   -1   -1   C4H3+ + GRAIN -> C4H3 + GRAIN
+8806    295  -1   99   0    -1   -1   C4H3+ + GRAIN -> HC4H + H + GRAIN
+8807    298  -1   105  -1   -1   -1   C2N2+ + GRAIN -> NCCN + GRAIN
+8808    299  -1   101  0    -1   -1   C4H4+ + GRAIN -> C4H3 + H + GRAIN
+8809    300  -1   106  -1   -1   -1   SiC2+ + GRAIN -> SiC2 + GRAIN
+8810    297  -1   104  -1   -1   -1   C3O+ + GRAIN -> C3O + GRAIN
+8811    303  -1   104  0    -1   -1   HC3O+ + GRAIN -> C3O + H + GRAIN
+8812    305  -1   108  -1   -1   -1   SiC2H+ + GRAIN -> SiC2H + GRAIN
+8813    305  -1   106  0    -1   -1   SiC2H+ + GRAIN -> SiC2 + H + GRAIN
+8814    306  -1   109  -1   -1   -1   CH2CHCN+ + GRAIN -> CH2CHCN + GRAIN
+8815    304  -1   105  0    -1   -1   NCCNH+ + GRAIN -> NCCN + H + GRAIN
+8816    307  -1   110  -1   -1   -1   SiNC+ + GRAIN -> SiNC + GRAIN
+8817    310  -1   109  0    -1   -1   CH2CHCNH+ + GRAIN -> CH2CHCN + H + GRAIN
+8818    309  -1   111  -1   -1   -1   SiC2H2+ + GRAIN -> SiC2H2 + GRAIN
+8819    309  -1   108  0    -1   -1   SiC2H2+ + GRAIN -> SiC2H + H + GRAIN
+8820    314  -1   111  0    -1   -1   SiC2H3+ + GRAIN -> SiC2H2 + H + GRAIN
+8821    313  -1   110  0    -1   -1   SiNCH+ + GRAIN -> SiNC + H + GRAIN
+8822    315  -1   114  -1   -1   -1   Fe+ + GRAIN -> Fe + GRAIN
+8823    317  -1   113  0    -1   -1   C2H5CNH+ + GRAIN -> C2H5CN + H + GRAIN
+8824    316  -1   115  -1   -1   -1   C2S+ + GRAIN -> C2S + GRAIN
+8825    318  -1   115  0    -1   -1   HC2S+ + GRAIN -> C2S + H + GRAIN
+8826    319  -1   116  -1   -1   -1   CH3COCH3+ + GRAIN -> CH3COCH3 + GRAIN
+8827    321  -1   116  0    -1   -1   CH3COCH4+ + GRAIN -> CH3COCH3 + H + GRAIN
+8828    325  -1   121  -1   -1   -1   COOCH4+ + GRAIN -> HCOOCH3 + GRAIN
+8829    323  -1   118  -1   -1   -1   OCS+ + GRAIN -> OCS + GRAIN
+8830    322  -1   117  -1   -1   -1   C5+ + GRAIN -> C5 + GRAIN
+8831    324  -1   119  -1   -1   -1   SiS+ + GRAIN -> SiS + GRAIN
+8832    327  -1   118  0    -1   -1   HOCS+ + GRAIN -> OCS + H + GRAIN
+8833    328  -1   119  0    -1   -1   HSiS+ + GRAIN -> SiS + H + GRAIN
+8834    326  -1   122  -1   -1   -1   C5H+ + GRAIN -> C5H + GRAIN
+8835    326  -1   117  0    -1   -1   C5H+ + GRAIN -> C5 + H + GRAIN
+8836    329  -1   120  0    -1   -1   HSiO2+ + GRAIN -> SiO2 + H + GRAIN
+8837    330  -1   121  0    -1   -1   H5C2O2+ + GRAIN -> HCOOCH3 + H + GRAIN
+8838    332  -1   124  -1   -1   -1   C5H2+ + GRAIN -> C5H2 + GRAIN
+8839    332  -1   122  0    -1   -1   C5H2+ + GRAIN -> C5H + H + GRAIN
+8840    331  -1   123  -1   -1   -1   C4N+ + GRAIN -> C4N + GRAIN
+8841    333  -1   124  0    -1   -1   C5H3+ + GRAIN -> C5H2 + H + GRAIN
+8842    334  -1   123  0    -1   -1   HC4N+ + GRAIN -> C4N + H + GRAIN
+8843    337  -1   127  -1   -1   -1   SiC3+ + GRAIN -> SiC3 + GRAIN
+8844    339  -1   128  -1   -1   -1   CH3C4H+ + GRAIN -> CH3C4H + GRAIN
+8845    336  -1   126  -1   -1   -1   SO2+ + GRAIN -> SO2 + GRAIN
+8846    335  -1   125  -1   -1   -1   S2+ + GRAIN -> S2 + GRAIN
+8847    341  -1   128  0    -1   -1   C5H5+ + GRAIN -> CH3C4H + H + GRAIN
+8848    342  -1   126  0    -1   -1   HSO2+ + GRAIN -> SO2 + H + GRAIN
+8849    340  -1   129  -1   -1   -1   HS2+ + GRAIN -> HS2 + GRAIN
+8850    340  -1   125  0    -1   -1   HS2+ + GRAIN -> S2 + H + GRAIN
+8851    344  -1   131  -1   -1   -1   CH3C3N+ + GRAIN -> CH3C3N + GRAIN
+8852    343  -1   130  -1   -1   -1   SiC3H+ + GRAIN -> SiC3H + GRAIN
+8853    343  -1   127  0    -1   -1   SiC3H+ + GRAIN -> SiC3 + H + GRAIN
+8854    345  -1   132  -1   -1   -1   H2S2+ + GRAIN -> H2S2 + GRAIN
+8855    345  -1   129  0    -1   -1   H2S2+ + GRAIN -> HS2 + H + GRAIN
+8856    347  -1   131  0    -1   -1   CH3C3NH+ + GRAIN -> CH3C3N + H + GRAIN
+8857    346  -1   130  0    -1   -1   SiC3H2+ + GRAIN -> SiC3H + H + GRAIN
+8858    348  -1   132  0    -1   -1   H3S2+ + GRAIN -> H2S2 + H + GRAIN
+8859    350  -1   133  -1   -1   -1   C3S+ + GRAIN -> C3S + GRAIN
+8860    351  -1   133  0    -1   -1   HC3S+ + GRAIN -> C3S + H + GRAIN
+8861    352  -1   134  -1   -1   -1   C6+ + GRAIN -> C6 + GRAIN
+8862    353  -1   135  -1   -1   -1   C6H+ + GRAIN -> C6H + GRAIN
+8863    353  -1   134  0    -1   -1   C6H+ + GRAIN -> C6 + H + GRAIN
+8864    354  -1   136  -1   -1   -1   C5N+ + GRAIN -> C5N + GRAIN
+8865    355  -1   137  -1   -1   -1   C6H2+ + GRAIN -> C6H2 + GRAIN
+8866    355  -1   135  0    -1   -1   C6H2+ + GRAIN -> C6H + H + GRAIN
+8867    357  -1   138  -1   -1   -1   HC5N+ + GRAIN -> HC5N + GRAIN
+8868    357  -1   136  0    -1   -1   HC5N+ + GRAIN -> C5N + H + GRAIN
+8869    356  -1   137  0    -1   -1   C6H3+ + GRAIN -> C6H2 + H + GRAIN
+8870    360  -1   138  0    -1   -1   HC5NH+ + GRAIN -> HC5N + H + GRAIN
+8871    359  -1   139  -1   -1   -1   SiC4+ + GRAIN -> SiC4 + GRAIN
+8872    363  -1   139  0    -1   -1   SiC4H+ + GRAIN -> SiC4 + H + GRAIN
+8873    364  -1   140  -1   -1   -1   C6H6+ + GRAIN -> C6H6 + GRAIN
+8874    365  -1   140  0    -1   -1   C6H7+ + GRAIN -> C6H6 + H + GRAIN
+8875    366  -1   141  -1   -1   -1   C4S+ + GRAIN -> C4S + GRAIN
+8876    367  -1   141  0    -1   -1   HC4S+ + GRAIN -> C4S + H + GRAIN
+8877    368  -1   142  -1   -1   -1   C7+ + GRAIN -> C7 + GRAIN
+8878    369  -1   143  -1   -1   -1   C7H+ + GRAIN -> C7H + GRAIN
+8879    369  -1   142  0    -1   -1   C7H+ + GRAIN -> C7 + H + GRAIN
+8880    370  -1   144  -1   -1   -1   C7H2+ + GRAIN -> C7H2 + GRAIN
+8881    370  -1   143  0    -1   -1   C7H2+ + GRAIN -> C7H + H + GRAIN
+8882    371  -1   144  0    -1   -1   C7H3+ + GRAIN -> C7H2 + H + GRAIN
+8883    372  -1   145  -1   -1   -1   C7H4+ + GRAIN -> CH3C6H + GRAIN
+8884    373  -1   145  0    -1   -1   C7H5+ + GRAIN -> CH3C6H + H + GRAIN
+8885    374  -1   146  0    -1   -1   CH3C5NH+ + GRAIN -> CH3C5N + H + GRAIN
+8886    375  -1   147  -1   -1   -1   C8+ + GRAIN -> C8 + GRAIN
+8887    376  -1   148  -1   -1   -1   C8H+ + GRAIN -> C8H + GRAIN
+8888    376  -1   147  0    -1   -1   C8H+ + GRAIN -> C8 + H + GRAIN
+8889    377  -1   149  -1   -1   -1   C7N+ + GRAIN -> C7N + GRAIN
+8890    378  -1   150  -1   -1   -1   C8H2+ + GRAIN -> C8H2 + GRAIN
+8891    378  -1   148  0    -1   -1   C8H2+ + GRAIN -> C8H + H + GRAIN
+8892    380  -1   151  -1   -1   -1   HC7N+ + GRAIN -> HC7N + GRAIN
+8893    380  -1   149  0    -1   -1   HC7N+ + GRAIN -> C7N + H + GRAIN
+8894    379  -1   150  0    -1   -1   C8H3+ + GRAIN -> C8H2 + H + GRAIN
+8895    382  -1   151  0    -1   -1   H2C7N+ + GRAIN -> HC7N + H + GRAIN
+8896    385  -1   152  -1   -1   -1   C9+ + GRAIN -> C9 + GRAIN
+8897    386  -1   153  -1   -1   -1   C9H+ + GRAIN -> C9H + GRAIN
+8898    386  -1   152  0    -1   -1   C9H+ + GRAIN -> C9 + H + GRAIN
+8899    387  -1   154  -1   -1   -1   C9H2+ + GRAIN -> C9H2 + GRAIN
+8900    387  -1   153  0    -1   -1   C9H2+ + GRAIN -> C9H + H + GRAIN
+8901    388  -1   154  0    -1   -1   C9H3+ + GRAIN -> C9H2 + H + GRAIN
+8902    391  -1   155  0    -1   -1   CH3C7NH+ + GRAIN -> CH3C7N + H + GRAIN
+8903    392  -1   156  -1   -1   -1   C10+ + GRAIN -> C10 + GRAIN
+8904    393  -1   157  -1   -1   -1   C10H+ + GRAIN -> C10H + GRAIN
+8905    393  -1   156  0    -1   -1   C10H+ + GRAIN -> C10 + H + GRAIN
+8906    395  -1   159  -1   -1   -1   C10H2+ + GRAIN -> C10H2 + GRAIN
+8907    395  -1   157  0    -1   -1   C10H2+ + GRAIN -> C10H + H + GRAIN
+8908    394  -1   158  -1   -1   -1   C9N+ + GRAIN -> C9N + GRAIN
+8909    396  -1   160  -1   -1   -1   HC9N+ + GRAIN -> HC9N + GRAIN
+8910    396  -1   158  0    -1   -1   HC9N+ + GRAIN -> C9N + H + GRAIN
+8911    397  -1   159  0    -1   -1   C10H3+ + GRAIN -> C10H2 + H + GRAIN
+8912    398  -1   160  0    -1   -1   H2C9N+ + GRAIN -> HC9N + H + GRAIN
+8913    400  -1   161  -1   -1   -1   C11+ + GRAIN -> C11 + GRAIN
+8914    228  -1   19   3    -1   -1   CNC+ + GRAIN -> CN + C + GRAIN
+8915    243  -1   60   1    -1   -1   C3H6+ + GRAIN -> CH3CCH + H2 + GRAIN
+8916    291  -1   94   0    0    -1   H2CCl+ + GRAIN -> CCl + H + H + GRAIN
+8917    302  -1   60   4    -1   -1   C4H5+ + GRAIN -> CH3CCH + CH + GRAIN
+8918    308  -1   24   20   -1   -1   C3H2O+ + GRAIN -> CO + C2H2 + GRAIN
+8919    312  -1   104  1    0    -1   H3C3O+ + GRAIN -> C3O + H2 + H + GRAIN
+8920    311  -1   101  1    1    -1   C4H7+ + GRAIN -> C4H3 + H2 + H2 + GRAIN
+8921    320  -1   8    79   -1   -1   CH3CS+ + GRAIN -> CH3 + CS + GRAIN
+8922    338  -1   102  4    -1   -1   H2C4N+ + GRAIN -> HC3N + CH + GRAIN
+8923    349  -1   105  8    -1   -1   NCCNCH3+ + GRAIN -> NCCN + CH3 + GRAIN
+8924    358  -1   137  1    -1   -1   C6H4+ + GRAIN -> C6H2 + H2 + GRAIN
+8925    361  -1   135  1    1    -1   C6H5+ + GRAIN -> C6H + H2 + H2 + GRAIN
+8926    362  -1   138  1    -1   -1   H3C5N+ + GRAIN -> HC5N + H2 + GRAIN
+8927    381  -1   150  1    -1   -1   C8H4+ + GRAIN -> C8H2 + H2 + GRAIN
+8928    384  -1   151  1    -1   -1   H3C7N+ + GRAIN -> HC7N + H2 + GRAIN
+8929    383  -1   148  1    1    -1   C8H5+ + GRAIN -> C8H + H2 + H2 + GRAIN
+8930    389  -1   154  1    -1   -1   C9H4+ + GRAIN -> C9H2 + H2 + GRAIN
+8931    390  -1   153  1    1    -1   C9H5+ + GRAIN -> C9H + H2 + H2 + GRAIN
+8932    399  -1   160  1    -1   -1   H3C9N+ + GRAIN -> HC9N + H2 + GRAIN
