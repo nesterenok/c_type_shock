@@ -85,6 +85,9 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	photoem_factor_is_uv(0), photoem_factor_is_vis(0), coll_partn_conc(0), indices(0), dust_heat_h2_line(0), dust_heat_mline(0), 
 	dust_heat_coll(0), dust_heat_chem(0), chem_reaction_rates(0), gamma_factors(0), delta_factors(0), dheat_efficiency(0), 
 	esc_prob_int1(0), esc_prob_int2(0), 
+	OI_di(0), OI_einst(0), OI_coll(0), CI_di(0), CI_coll(0), CI_einst(0), CII_di(0), CII_einst(0), CII_coll(0), h2_di(0), h2_einst(0), h2_coll(0), 
+	ph2o_di(0), ph2o_einst(0), ph2o_coll(0), oh2o_di(0), oh2o_einst(0), oh2o_coll(0), co_di(0), co_einst(0), co_coll(0), 
+	oh_di(0), oh_einst(0), oh_coll(0), onh3_di(0), onh3_einst(0), onh3_coll(0), pnh3_di(0), pnh3_einst(0), pnh3_coll(0), 
 	ch3oh_a_di(0), ch3oh_e_di(0), ch3oh_a_einst(0), ch3oh_e_einst(0), ch3oh_a_coll(0), ch3oh_e_coll(0)
 {
 	int i, isotope, angm_ch3oh_max;
@@ -231,7 +234,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 #endif
 
 	// OH molecule data, without hyperfine splitting the number of levels - 20 (H2), 46 (He)  
-    // with hyperfine splitting - 24 (H2), 56 (He)
+    // with hyperfine splitting - 48 (H2), 56 (He)
 	if (nb_lev_oh > 56)
         nb_lev_oh = 56;
 	
@@ -349,6 +352,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_ISRFphoto_Heys2017.txt");
 	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_Chabot2013.txt");
 	
+	// the photodesorption of CH3OH is accompanied with it destruction - this is not taken into account
 	network->init_network_umistf(path + "chemistry/reactions_adsorp_desorption.txt");
 	network->init_network_umistf(path + "chemistry/reactions_ion_recomb_grains.txt");
 	
@@ -1280,7 +1284,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	specimen_population_derivative(y_data, ydot_data, nb_of_species, h2_di, h2_einst, h2_coll, coll_partn_conc, indices, vel_n_grad,
 		neut_heat_h2, el_heat_h2, ion_heat_h2, dust_heat_h2_line);
 
-#if (SAVE_RADIATIVE_FACTORS_H2)
+#if (SAVE_RADIATIVE_FACTORS && SAVE_RADIATIVE_FACTORS_H2)
     calc_radiative_coeff(y_data, nb_of_species, h2_di, h2_einst, h2_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, 0);
 #endif
@@ -1417,7 +1421,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	energy_gain_e += el_heat_ph2o;	
 #endif
 
-#if (CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS_H2O)
+#if (CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS && SAVE_RADIATIVE_FACTORS_H2O)
     calc_radiative_coeff(y_data, nb, ph2o_di, ph2o_einst, ph2o_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1441,7 +1445,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	energy_gain_e += el_heat_oh2o;
 #endif
 
-#if (CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS_H2O)
+#if (CALCULATE_POPUL_H2O && SAVE_RADIATIVE_FACTORS &&  SAVE_RADIATIVE_FACTORS_H2O)
     calc_radiative_coeff(y_data, nb, oh2o_di, oh2o_einst, oh2o_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1462,7 +1466,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	energy_gain_n += neut_heat_co;
 #endif
 
-#if (CALCULATE_POPUL_CO && SAVE_RADIATIVE_FACTORS_CO)
+#if (CALCULATE_POPUL_CO && SAVE_RADIATIVE_FACTORS && SAVE_RADIATIVE_FACTORS_CO)
     calc_radiative_coeff(y_data, nb, co_di, co_einst, co_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors, 
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -1486,7 +1490,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 	energy_gain_n += neut_heat_oh;   
 #endif
 
-#if (CALCULATE_POPUL_NH3_OH && SAVE_RADIATIVE_FACTORS_OH)
+#if (CALCULATE_POPUL_NH3_OH && SAVE_RADIATIVE_FACTORS && SAVE_RADIATIVE_FACTORS_OH)
     calc_radiative_coeff(y_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, gamma_factors,
         delta_factors, dheat_efficiency, esc_prob_int1, esc_prob_int2, nb2);
 #endif
@@ -2777,6 +2781,8 @@ void evolution_data::set_parameters(double vis_ext, double cr_ion, double uv_fie
 	uv_field_strength = uv_field;
 	ir_field_strength = ir_field;
 	
+	// Rawlings & Williams, MNRAS (2020), factor exp(-1.8*Av)
+	// Ruaud et al., MNRAS 459, 3756 (2016), factor exp(-2*Av)
 	// approximate scaling with visual extinction, for dust charging:
 	photoem_factor_is_uv = uv_field_strength *exp(-2.*visual_extinct);
 	// the rates are calculated for photons < 5 eV, may be more accurate scaling?:

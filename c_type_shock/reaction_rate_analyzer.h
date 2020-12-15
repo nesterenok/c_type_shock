@@ -6,7 +6,7 @@
 #include <algorithm>
 
 // the array of gas-phase chemical species is given in input, adsorbed species are considered automatically in the routine;
-// path1 - the location of files with chemical species and reactions, 
+// path1 - the location of files with chemical species and reaction list, 
 // path2 - the location of data file, the output is written in this location
 void production_routes(std::string path1, std::string path2);
 void add_cosmicray_chemistry(std::vector<std::string>& specimen_names);

@@ -179,6 +179,7 @@ void add_carbon_chemistry(std::vector<string>& specimen_names) {
     specimen_names.push_back("CH2OH");
     specimen_names.push_back("CH3OH");
     specimen_names.push_back("CH4");
+	specimen_names.push_back("CH3");
     specimen_names.push_back("CH");
 }
 

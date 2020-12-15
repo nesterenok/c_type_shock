@@ -162,10 +162,10 @@ int main(int argc, char** argv)
 
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
-    path = "C:/Users/Александр/Documents/Данные и графики/paper C-type shocks - new data on H-H2 collisions/";
-//    path += "output_data_2e3/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
-    path += "output_data_2e4_new_chem/";
-//    production_routes(path, path + "shock_cr1-16_45_2/");
+    path = "C:/Users/Александр/Documents/Данные и графики/paper Cosmic masers in C-type shocks/";
+    // path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17/";
+	path += "output_data_2e4/";
+//    production_routes(path, path + "shock_cr3-15_15/");
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -330,25 +330,36 @@ int main(int argc, char** argv)
                 cout << "   shock ended with the code " << (int) shock_state << endl;
                 break;
             }
+			// note, new velocity grid. If you do not want fine grid - comment out,
             else if (mode == "CS_") {
                 // starting shock speed is given in the input data file,
                 max_shock_speed = 120.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
                 shock_state = SHOCK_STATE_NORMAL;
+
                 for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
                     ss.clear();
                     ss.str("");
                     ss << output_path;
                     
-                    j = static_cast<int>(1.e-5*shock_vel + 0.1);
+                    j = static_cast<int>(1.e-5*shock_vel + 0.01);
                     if (j < 10)
                         ss << "0";
-                    ss << j << "/";
+                    ss << j;
+
+					// in the case if velocity in km/s is not integer number,
+					j = static_cast<int>(1.e-4 * (shock_vel - 1.e+5 * j) + 0.01);
+					if (j > 0)
+						ss << "-" << j;
+					ss << "/";
 
                     cout << left << setw(5) << i+1 << ss.str() << endl;
                     shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
-                    
                     cout << "   shock ended with the code " << (int) shock_state << endl;
-                    shock_vel += 5.0e+5;
+
+					if (shock_vel > 9.999e+5 && shock_vel < 29.999e+5)
+						shock_vel += 2.5e+5;
+					else
+						shock_vel += 5.0e+5;
                 }
                 break;
             }
@@ -499,7 +510,8 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	// Initialization of the initial chemical abundances.
 	// Note! Concentrations of molecules and atoms, for which the equations for level populations are integrated, must be > 0.;
 	chem_abund = new double [nb_of_species];
-	fname = data_path + "chemistry/initial_abund_hincelin2011.txt";
+	//fname = data_path + "chemistry/initial_abund_hincelin2011.txt";
+	fname = data_path + "chemistry/initial_abund_ruaud2016.txt";
 	
 	init_chem_abund(fname, network, chem_abund);
 	conc_e = chem_abund[network->e_nb]*conc_h_tot;
@@ -510,7 +522,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	t = 0.;
 	tfin = 1.01e+8*YEARS_TO_SECONDS;
 	tout = YEARS_TO_SECONDS;
-	tmult = pow(10, 0.03125); // 1/16 = 0.0625; 1/32 = 0.03125
+	tmult = pow(10, 0.015625);  // 1/16 = 0.0625; 1/32 = 0.03125; 1/64 = 0.015625
 	
 	N_Vector y, ydot, abs_tol;
 	SUNMatrix A(NULL);
@@ -538,7 +550,7 @@ void calc_chem_evolution(const string &data_path, const string &output_path, dou
 	NV_Ith_S(y, nb_of_species + 1) = op_ratio_h2/(op_ratio_h2 + 1.) *NV_Ith_S(y, network->h2_nb);
     nb = nb_of_species + nb_lev_h2; 
 	
-	// ortho/para ratio for H2O is 3;
+	// ortho/para ratio for H2O is 3, Emprechtinger et al. ApJ 765, p. 61 (2013);
 	NV_Ith_S(y, nb) = 0.25*NV_Ith_S(y, network->h2o_nb);
 	nb += nb_lev_h2o;
 
@@ -1175,7 +1187,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #if (CALCULATE_POPUL_NH3_OH)
 	nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
 	nb_lev_pnh3 = 34; // para-NH3: He coll data - 16, H2 coll data - 34
-	nb_lev_oh = 24;  // OH: He coll data - 44, H2 coll data - 20 (without HF splitting); 24 (H2), 56 (He) - with HF splitting
+	nb_lev_oh = 24;  // OH: He coll data - 44, H2 coll data - 20 (without HF splitting); 24 (Offer) 48 (extended) H2, 56 He - with HF splitting
 #else
     nb_lev_onh3 = 1; 
     nb_lev_pnh3 = 1;
@@ -1651,21 +1663,11 @@ void calc_cr_dominated_region(const string &data_path, const string &output_path
 #endif
 
 	nb_vibr_ch3oh = 0;
-#if (CALCULATE_POPUL_METHANOL)
-	nb_lev_ch3oh = 100;
-#else
 	nb_lev_ch3oh = 1;
-#endif
-
-#if (CALCULATE_POPUL_NH3_OH)
-    nb_lev_onh3 = 17; // ortho-NH3: He coll data - 22, H2 coll data - 17
-    nb_lev_pnh3 = 34;
-    nb_lev_oh = 20;
-#else
-    nb_lev_onh3 = 1; // ortho-NH3: He coll data - 22, H2 coll data - 17
+    nb_lev_onh3 = 1;
     nb_lev_pnh3 = 1;
     nb_lev_oh = 1;
-#endif
+
 	// initialization of the data necessary for differential equation integration:
 	chemistry_evolution_data user_data(data_path, output_path2, nb_lev_h2, nb_vibr_h2o, nb_lev_h2o, nb_vibr_co, nb_lev_co, 
         nb_lev_pnh3, nb_lev_onh3, nb_lev_oh, nb_vibr_ch3oh, nb_lev_ch3oh, c_abund_pah, verbosity);
@@ -3025,6 +3027,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 	output.close();
 #endif
 
+#if (CALCULATE_POPUL_IONS)
 	fname = output_path + "sim_data_ci.txt";
 	output.open(fname.c_str());
 	
@@ -3057,6 +3060,7 @@ void create_file_mol_data(const string & output_path, const evolution_data *user
 		output << left << setw(13) << i;
 	}
 	output.close();
+#endif
 }
 
 void save_mol_data(const string & output_path, const evolution_data *user_data, const N_Vector &y, double var)
@@ -3298,6 +3302,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 	nb += nb_lev_ch3oh;
 	
 	// CI ion
+#if (CALCULATE_POPUL_IONS)
 	conc_mol = NV_Ith_S(y, network->find_specimen("C"));
 
 	fname = output_path + "sim_data_ci.txt";
@@ -3314,9 +3319,11 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
+#endif
 	nb += nb_lev_ci;
 	
 	// OI ion
+#if (CALCULATE_POPUL_IONS)
 	conc_mol = NV_Ith_S(y, network->find_specimen("O"));
 
 	fname = output_path + "sim_data_oi.txt";
@@ -3333,9 +3340,11 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
+#endif
 	nb += nb_lev_oi;
 	
 	// CII ion
+#if (CALCULATE_POPUL_IONS)
 	conc_mol = NV_Ith_S(y, network->find_specimen("C+"));
 
 	fname = output_path + "sim_data_cii.txt";
@@ -3352,6 +3361,7 @@ void save_mol_data(const string & output_path, const evolution_data *user_data, 
 		output << left << setw(13) << a;
 	}
 	output.close();
+#endif
 }
 
 void create_file_h2_chemistry(const string & output_path)

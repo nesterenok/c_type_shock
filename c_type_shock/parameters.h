@@ -17,6 +17,8 @@
 // Fe/H = 4.e-4 (> 5 GeV), Grieder, Cosmic Rays at Earth (2005);
 // Fe/H = 1.6e-4 (> 0.02 GeV/n), Leger et al. A&A 144, 147, 1985);
 // Fe/H = 7.e-4, Meyer et al., Space Sci. Rev. 86, 179 (1998);
+// Cosmic ray flux adopted by Shingledecker & Herbst, Phys. Chem. Chem. Phys. 20, 5359 (2018), p.5
+//   flux = 8.6 particles cm-2 s-1, at cosmic ray ionization rate 1.36e-17 s-1;
 // LIS proton flux is about 18 cm-2 s-1 (Webber, ApJ 506, 329, 1998; Webber, Yushak, ApJ 275, 391, 1983) that corresponds to CR ionization of 2.e-17 s-1 (Draine 2011);
 // our estimate of iron flux for CR ionization rate 1.3e-17 s-1 and for Fe/H = 1.6e-4:
 #define STANDARD_FLUX_CR_IRON 2.e-3 // cm-2 s-1
@@ -90,7 +92,7 @@
 // The experiments are all suggestive of that photodissociation in ice and gas are of the same order of magnitude but that 
 // the effective cross sections are much lower due to fast back-reactions in pure ices (Oberg et al. 2016);
 // Jin & Garrod, ApJS (2020), suggested that photodissociation rates in ice are lower by factor 3;
-#define ICE_PHOTODISS_EFFICIENCY 0.1 // estimate
+#define ICE_PHOTODISS_EFFICIENCY 0.1  // estimate
 
 
 //-----------------------------------------------
@@ -146,14 +148,14 @@
 // Hollenbach, Tielens, Reviews of Modern Physics 71, p. 173, 1999; k = c*n_H*n_H_tot, c = (1-3)*1e-17 cm3 s-1;
 #define STANDARD_H2_FORMATION_RATE 3.e-17
 
-// 1 - surface chemistry is on ("minimal" model - 0) 
+// 1 - surface chemistry is on ("minimal" model - 0 ?) 
 #define GRAIN_SURFACE_CHEMISTRY_ON 1
 
 // 1 - H and H2 migrate via quantum tunneling or thermal hopping depending on which is faster;
 #define H_H2_QUANTUM_TUNNELING_DIFF_ON 1
 
 // Grain heating by molecular emission,
-// 0 - no heating taken into account ("minimal" model - 0)
+// 0 - no heating taken into account ("minimal" model - 0 ?)
 #define GRAIN_HEATING_BY_MOLECULES_ON 0
 
 // Dust heating by chemical reactions on the surface of dust grains
@@ -182,7 +184,7 @@
 #define CALCULATE_POPUL_H2O 0
 
 // Calculate ion levels, 1 - yes
-#define CALCULATE_POPUL_IONS 0
+#define CALCULATE_POPUL_IONS 1
 
 // Calculate methanol levels, 1 - yes
 #define CALCULATE_POPUL_METHANOL 0
