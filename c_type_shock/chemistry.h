@@ -43,9 +43,9 @@ const std::string chemical_reaction_types[] = {
 	"*A + GRAIN -> A + GRAIN",		// 28	THD, thermal desorption
 	"*A + CR -> A",					// 29	CPD
 	"*A + CRPhoton -> A",			// 30	  CRD
-	"*A + CRPhoton -> A + B",		// 31	  CRD
+	"*A + CRPhoton -> A + B + C + D",// 31	  CRD
 	"*A + ISPhoton -> A",			// 32	PHD
-	"*A + ISPhoton -> A + B",		// 33	PHD
+	"*A + ISPhoton -> A + B + C + D",// 33	PHD
 	"*A + C -> A + C",				// 34	  SPU, sputtering
 	"*A + C -> A + B + C",			// 35	  SPU
 	"*A + *B -> *C + *D + *E",		// 36	GS, grain surface reactions

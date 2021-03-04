@@ -1,0 +1,1117 @@
+Tue Dec 22 01:20:03 2020
+Chemical evolution of static cloud is simulated
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Calculating the elastic scattering data...
+Specimen levels have been initialized: H2
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_h2.txt
+    number of levels: 100
+H2 molecule radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_h2.txt
+H2 level has not radiative decay coefficient, (v,j): 0    0.000e+00
+H2 level has not radiative decay coefficient, (v,j): 0    1.000e+00
+H2 collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_he.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h2_wan2018.txt
+  temperature range 1 - 10000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_ph2.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h2_wan2018.txt
+  temperature range 1 - 10000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_oh2.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_l.txt
+  temperature range 100 - 5000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_b.txt
+  temperature range 100 - 20000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_w.txt
+  temperature range 100 - 6000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_h_m.txt
+  temperature range 500 - 20000
+  data have been read from file /disk2/nester/input_data/coll_h2/coll_h2_e.txt
+  temperature range 5 - 30000
+  data have been read for H2-H+ 
+  temperature range 1 - 3000
+  data have been read from file /disk2/nester/input_data/coll_h2/diss_h2_h_b.txt
+  temperature range 100 - 20000
+  data have been read from file /disk2/nester/input_data/coll_h2/diss_h2-h2_martin1998.txt
+  temperature range 1000 - 40000
+  data have been read from file /disk2/nester/input_data/coll_h2/diss_h2-h2_ceballos2002.txt
+  temperature range 1000 - 4000
+  data have been read from file /disk2/nester/input_data/xray_efficiencies.txt
+Specimen levels have been initialized: OI
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_OI.txt
+    number of levels: 5
+OI ion radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_OI.txt
+OI collisional rate coefficients are being initializing...
+  data for OI-pH2 collisions (approx. Glover & Jappsen, 2007; Jaquet et al., 1992)
+  temperature range 10 - 1359 (original data 20-1500 K)
+  data for OI-oH2 collisions (approx. Glover & Jappsen, 2007; Jaquet et al., 1992)
+  temperature range 10 - 1359 (original data 20-1500 K)
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_OI_he_monteiro1987.txt
+  temperature range 100 - 1000
+  data for OI-H collisions (Abrahamsson & Krems, 2007; Krems et al., 2006)
+  temperature range 30 - 10243
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_OI_e_bell1998.txt
+  temperature range 50 - 3000
+  data for OI-e collisions (Berrington & Burke 1982; Berrington, 1988)
+  temperature range 10 - 9999
+Specimen levels have been initialized: CI
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_CI.txt
+    number of levels: 3
+CI ion radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_CI.txt
+CI collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CI_he_staemmler1991.txt
+  temperature range 10 - 150
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CI_ph2_schroder1991.txt
+  temperature range 10 - 1200
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CI_oh2_schroder1991.txt
+  temperature range 10 - 1200
+  data for CI-H collisions (Abrahamsson & Krems, 2007)
+  temperature range 5 - 1077
+  data for CI-e collisions (Johnson et al., 1987)
+  temperature range 7 - 10195
+Specimen levels have been initialized: CII
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_CII.txt
+    number of levels: 2
+CII ion radiative coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/spectroscopy/radiative_CII.txt
+CII collisional rate coefficients are being initializing...
+  data for CII-H2 collisions (Lique et al. 2013)
+  temperature range 10 - 500
+  data for CII-H2 collisions (Lique et al. 2013)
+  temperature range 10 - 500
+  data have been read from file /disk2/nester/input_data/coll_ions/coll_CII_h_barinovs2005.txt
+  temperature range 20 - 2000
+  data for CII-e collisions (Tayal, 2008)
+  temperature range 3 - 87859
+Specimen levels have been initialized: pH2O
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_h2o16.txt
+    number of levels: 45
+H2O molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_h2o16.txt
+H2O collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_he.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_he_rovibr.txt
+  temperature range 120 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_ph2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_oh2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_h2_rovibr.txt
+  temperature range 200 - 5000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_h.txt
+  temperature range 5 - 1500
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_ph2o_e_rovibr.txt
+  temperature range 200 - 5000
+Specimen levels have been initialized: oH2O
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_h2o16.txt
+    number of levels: 45
+H2O molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_h2o16.txt
+H2O collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_he.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_he_rovibr.txt
+  temperature range 120 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_ph2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_oh2.txt
+  temperature range 20 - 2000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_h2_rovibr.txt
+  temperature range 200 - 5000
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_h.txt
+  temperature range 5 - 1500
+  data have been read from file /disk2/nester/input_data/coll_h2o/coll_oh2o_e_rovibr.txt
+  temperature range 200 - 5000
+Specimen levels have been initialized: CO
+    data have been read from file: /disk2/nester/input_data/spectroscopy/levels_co.txt
+    number of levels: 30
+CO molecule radiative coefficients are being initializing...
+  data are read from file /disk2/nester/input_data/spectroscopy/radiative_co.txt
+CO collisional rate coefficients are being initializing...
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_he.txt
+  temperature range 5 - 500
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_ph2.txt
+  temperature range 2 - 3000
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_oh2.txt
+  temperature range 2 - 3000
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_h_vibr0-0.txt
+  temperature range 2 - 3000
+  data have been read from file /disk2/nester/input_data/coll_co/coll_co_h_vibr.txt
+  temperature range 10 - 3000
+The data on LVG method have been initialized.
+The data on LVG method have been initialized.
+Dust component is initializing: Sil
+  calculation of integrated emissivity for dust component Sil ...
+  calculation of photoelectron emission rate for dust component Sil ...
+  dust component is added to the model: Sil
+The element was added to the network list: H
+The element was added to the network list: He
+The element was added to the network list: O
+The element was added to the network list: C
+The element was added to the network list: N
+The element was added to the network list: Si
+The element was added to the network list: S
+The element was added to the network list: Fe
+The element was added to the network list: Na
+The element was added to the network list: Mg
+The element was added to the network list: Cl
+The data is read from file: /disk2/nester/input_data/chemistry/UMIST_2012/species_UMIST2012.txt
+The data is read from file: /disk2/nester/input_data/chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt
+  following grain mantle species are not identified: 
+   C2H4CN C3P C4P CCP CH2OHCHO CH2OHCO CH2PH CH3COOH CH3NH CH3NH2 COOCH3 CP HC2P HCCN HCP HF HNCHO HNOH HPO F NH2CHO NH2CO NH2OH O3 P PH PH2 PN PO
+
+Can't find neutral for the ion specimen: H3+, HeH+, CH5+, NH4+, H3O+, H2NC+, HCNH+, HOC+, N2H+, CH4N+, CH2NH2+, C2H7+, H3CO+, H2NO+, SiH5+, CH3OH2+, H3S+, H2Cl+, CNC+, C2NH+, C3H3+, C3H4+, C3H5+, C3H6+, CH3CNH+, C3H7+, NH2CNH+, H2CNO+, H2NCO+, H2OCN+, HCNOH+, HNCOH+, SiCH4+, SiNH2+, HCO2+, HN2O+, SiOH+, CH3CHOH+, HNS+, H3CS+, H3SiO+, HCOOH2+, C2H5OH2+, CH3OCH4+, HSO+, H2CCl+, C4H2+, C2N2+, C4H4+, HC3NH+, C4H5+, HC3O+, NCCNH+, C3H2O+, CH2CHCNH+, C4H7+, H3C3O+, SiNCH+, SiC2H3+, C2H5CNH+, HC2S+, CH3CS+, CH3COCH4+, COOCH4+, HOCS+, HSiS+, HSiO2+, H5C2O2+, C5H3+, HC4N+, H2C4N+, C5H5+, HSO2+, SiC3H2+, CH3C3NH+, H3S2+, NCCNCH3+, HC3S+, C6H3+, C6H4+, HC5NH+, C6H5+, H3C5N+, SiC4H+, C6H7+, HC4S+, C7H3+, C7H4+, C7H5+, CH3C5NH+, C8H3+, C8H4+, H2C7N+, C8H5+, H3C7N+, C9H3+, C9H4+, C9H5+, CH3C7NH+, C10H3+, H2C9N+, H3C9N+, 
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_UMIST2012.txt
+    undefined species:
+  CCP  CCP+  CP  CP+  HCP  HCP+  HPO  HPO+  P  P+  PH  PH+  PO  PO+  PN+  PN  C4P  C4P+  HC2P  HC2P+  PH2  PH2+  F+  F  C3P  CH2PH  HF  CF+  H2F+  H2PO+  HF+  HPN+  PC2H2+  PC2H3+  PC2H4+  PC3H+  PC4H+  PCH2+  PCH3+  PCH4+  PH3+  PNH2+  PNH3+  SiF+
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_update_CRphoto_Heys2017.txt
+1 reaction data were updated for C2 + CRPhoton -> C + C
+2 reaction data were updated for C2H2 + CRPhoton -> C2H2+ + e-
+3 reaction data were updated for C2H2 + CRPhoton -> C2H + H
+4 reaction data were updated for C2H4 + CRPhoton -> C2H2 + H2
+5 reaction data were updated for C2H4 + CRPhoton -> C2H4+ + e-
+6 reaction data were updated for C2H5OH + CRPhoton -> C2H5 + OH
+7 reaction data were updated for C2H5OH + CRPhoton -> C2H5OH+ + e-
+8 reaction data were updated for C2H + CRPhoton -> C2 + H
+9 reaction data were updated for C3 + CRPhoton -> C2 + C
+10 reaction data were updated for C3H2 + CRPhoton -> C3H + H
+11 reaction data were updated for C + CRPhoton -> C+ + e-
+12 reaction data were updated for CH+ + CRPhoton -> H + C+
+13 reaction data were updated for CH2 + CRPhoton -> CH + H
+14 reaction data were updated for CH3 + CRPhoton -> CH2 + H
+15 reaction data were updated for CH3 + CRPhoton -> CH3+ + e-
+16 reaction data were updated for CH3 + CRPhoton -> CH + H2
+17 reaction data were updated for CH3CH3 + CRPhoton -> C2H4 + H2
+18 reaction data were updated for CH3CH3 + CRPhoton -> CH3CH3+ + e-
+19 reaction data were updated for CH3CHO + CRPhoton -> CH3CHO+ + e-
+20 reaction data were updated for CH3CHO + CRPhoton -> CO + CH4
+21 reaction data were updated for CH3CHO + CRPhoton -> HCO + CH3
+22 reaction data were updated for CH3CN + CRPhoton -> CH3CN+ + e-
+23 reaction data were updated for CH3CN + CRPhoton -> CN + CH3
+24 reaction data were updated for CH3OH + CRPhoton -> CH3OH+ + e-
+25 reaction data were updated for CH3OH + CRPhoton -> H2CO + H2
+26 reaction data were updated for CH3OH + CRPhoton -> OH + CH3
+27 reaction data were updated for CH4 + CRPhoton -> CH2 + H2
+28 reaction data were updated for CH + CRPhoton -> C + H
+29 reaction data were updated for CN + CRPhoton -> N + C
+30 reaction data were updated for CO2 + CRPhoton -> CO + O
+31 reaction data were updated for CO + CRPhoton -> O + C
+32 reaction data were updated for CS + CRPhoton -> CS+ + e-
+33 reaction data were updated for CS + CRPhoton -> S + C
+34 reaction data were updated for Cl + CRPhoton -> Cl+ + e-
+35 reaction data were updated for Fe + CRPhoton -> Fe+ + e-
+36 reaction data were updated for H- + CRPhoton -> H + e-
+37 reaction data were updated for H2CCC + CRPhoton -> C3H + H
+38 reaction data were updated for H2CO + CRPhoton -> CO + H2
+39 reaction data were updated for H2O2 + CRPhoton -> OH + OH
+40 reaction data were updated for H2O + CRPhoton -> OH + H
+41 reaction data were updated for H2S + CRPhoton -> H2S+ + e-
+42 reaction data were updated for H2S + CRPhoton -> S + H2
+43 reaction data were updated for HC3N + CRPhoton -> CN + C2H
+44 reaction data were updated for HCN + CRPhoton -> CN + H
+45 reaction data were updated for HCO + CRPhoton -> CO + H
+46 reaction data were updated for HCl + CRPhoton -> Cl + H
+47 reaction data were updated for HS + CRPhoton -> S + H
+48 reaction data were updated for Mg + CRPhoton -> Mg+ + e-
+49 reaction data were updated for N2 + CRPhoton -> N + N
+50 reaction data were updated for N2O + CRPhoton -> NO + N
+51 reaction data were updated for N + CRPhoton -> N+ + e-
+52 reaction data were updated for NH2 + CRPhoton -> NH2+ + e-
+53 reaction data were updated for NH2 + CRPhoton -> NH + H
+54 reaction data were updated for NH3 + CRPhoton -> NH2 + H
+55 reaction data were updated for NH3 + CRPhoton -> NH3+ + e-
+56 reaction data were updated for NH3 + CRPhoton -> NH + H2
+57 reaction data were updated for NH + CRPhoton -> N + H
+58 reaction data were updated for NH + CRPhoton -> NH+ + e-
+59 reaction data were updated for NO2 + CRPhoton -> NO + O
+60 reaction data were updated for NO + CRPhoton -> NO+ + e-
+61 reaction data were updated for NO + CRPhoton -> O + N
+62 reaction data were updated for Na + CRPhoton -> Na+ + e-
+63 reaction data were updated for O2 + CRPhoton -> O2+ + e-
+64 reaction data were updated for O2 + CRPhoton -> O + O
+65 reaction data were updated for O2H + CRPhoton -> O2 + H
+66 reaction data were updated for O + CRPhoton -> O+ + e-
+67 reaction data were updated for OCS + CRPhoton -> OCS+ + e-
+68 reaction data were updated for OCS + CRPhoton -> S + CO
+69 reaction data were updated for OH + CRPhoton -> O + H
+70 reaction data were updated for S2 + CRPhoton -> S + S
+71 reaction data were updated for S + CRPhoton -> S+ + e-
+72 reaction data were updated for SO2 + CRPhoton -> SO + O
+73 reaction data were updated for SO + CRPhoton -> S + O
+74 reaction data were updated for SO + CRPhoton -> SO+ + e-
+75 reaction data were updated for Si + CRPhoton -> Si+ + e-
+76 reaction data were updated for SiH + CRPhoton -> Si + H
+77 reaction data were updated for SiO + CRPhoton -> Si + O
+78 reaction data were updated for C4 + CRPhoton -> C2 + C2
+79 reaction data were updated for C4 + CRPhoton -> C3 + C
+80 reaction data were updated for C4H + CRPhoton -> C2H + C2
+81 reaction data were updated for C4H + CRPhoton -> C4 + H
+82 reaction data were updated for C5H + CRPhoton -> C3 + C2H
+83 reaction data were updated for C5H + CRPhoton -> C3H + C2
+84 reaction data were updated for C5H + CRPhoton -> C5 + H
+85 reaction data were updated for H2 + CRP -> H + H
+    undefined species:
+  HF  F  P  P+  PH  PH+
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_update_ISRFphoto_Heys2017.txt
+1 reaction data were updated for C + ISPhoton -> C+ + e-
+2 reaction data were updated for C2 + ISPhoton -> C2+ + e-
+3 reaction data were updated for C2 + ISPhoton -> C + C
+4 reaction data were updated for C2H + ISPhoton -> C2 + H
+5 reaction data were updated for C2H2 + ISPhoton -> C2H2+ + e-
+6 reaction data were updated for C2H2 + ISPhoton -> C2H + H
+7 reaction data were updated for C2H4 + ISPhoton -> C2H2 + H2
+8 reaction data were updated for C2H4 + ISPhoton -> C2H4+ + e-
+9 reaction data were updated for C2H5OH + ISPhoton -> C2H5 + OH
+10 reaction data were updated for C2H5OH + ISPhoton -> C2H5OH+ + e-
+11 reaction data were updated for CH3CH3 + ISPhoton -> CH3CH3+ + e-
+12 reaction data were updated for C3 + ISPhoton -> C2 + C
+13 reaction data were updated for CH + ISPhoton -> C + H
+14 reaction data were updated for CH + ISPhoton -> CH+ + e-
+15 reaction data were updated for CH+ + ISPhoton -> C + H+
+16 reaction data were updated for CH2 + ISPhoton -> CH + H
+17 reaction data were updated for CH2+ + ISPhoton -> H2 + C+
+18 reaction data were updated for CH2+ + ISPhoton -> H + CH+
+19 reaction data were updated for CH2+ + ISPhoton -> CH + H+
+20 reaction data were updated for CH3 + ISPhoton -> CH2 + H
+21 reaction data were updated for CH3 + ISPhoton -> CH + H2
+22 reaction data were updated for CH3 + ISPhoton -> CH3+ + e-
+23 reaction data were updated for CH3CHO + ISPhoton -> CH3CHO+ + e-
+24 reaction data were updated for CH3CHO + ISPhoton -> CO + CH4
+25 reaction data were updated for CH3CHO + ISPhoton -> HCO + CH3
+26 reaction data were updated for CH3CN + ISPhoton -> CH3CN+ + e-
+27 reaction data were updated for CH3CN + ISPhoton -> CN + CH3
+28 reaction data were updated for CH3OH + ISPhoton -> CH3OH+ + e-
+29 reaction data were updated for CH3OH + ISPhoton -> H + H3CO+ + e-
+30 reaction data were updated for CH3OH + ISPhoton -> H2CO + H2
+31 reaction data were updated for CH3OH + ISPhoton -> OH + CH3
+32 reaction data were updated for CH4 + ISPhoton -> CH2 + H2
+33 reaction data were updated for CH4 + ISPhoton -> CH3 + H
+34 reaction data were updated for CH4 + ISPhoton -> CH + H2 + H
+35 reaction data were updated for CH4 + ISPhoton -> CH4+ + e-
+36 reaction data were updated for CH4+ + ISPhoton -> H2 + CH2+
+37 reaction data were updated for CH4+ + ISPhoton -> H + CH3+
+38 reaction data were updated for CN + ISPhoton -> N + C
+39 reaction data were updated for CO + ISPhoton -> O + C
+40 reaction data were updated for CO+ + ISPhoton -> O + C+
+41 reaction data were updated for CO2 + ISPhoton -> CO + O
+42 reaction data were updated for CS + ISPhoton -> CS+ + e-
+43 reaction data were updated for CS + ISPhoton -> S + C
+44 reaction data were updated for Cl + ISPhoton -> Cl+ + e-
+45 reaction data were updated for Fe + ISPhoton -> Fe+ + e-
+46 reaction data were updated for H- + ISPhoton -> H + e-
+47 reaction data were updated for H2+ + ISPhoton -> H + H+
+48 reaction data were updated for H2CO + ISPhoton -> CO + H2
+49 reaction data were updated for H2CO + ISPhoton -> CO + H + H
+50 reaction data were updated for H2CO + ISPhoton -> H2CO+ + e-
+51 reaction data were updated for H2CO + ISPhoton -> H + HCO+ + e-
+52 reaction data were updated for H2O + ISPhoton -> H2O+ + e-
+53 reaction data were updated for H2O + ISPhoton -> OH + H
+54 reaction data were updated for H2O2 + ISPhoton -> OH + OH
+55 reaction data were updated for H2S + ISPhoton -> H2S+ + e-
+56 reaction data were updated for H2S + ISPhoton -> HS + H
+57 reaction data were updated for H2S + ISPhoton -> S + H2
+58 reaction data were updated for HC3N + ISPhoton -> CN + C2H
+59 reaction data were updated for HCN + ISPhoton -> CN + H
+60 reaction data were updated for HCO + ISPhoton -> CO + H
+61 reaction data were updated for HCO+ + ISPhoton -> H + CO+
+62 reaction data were updated for HCl + ISPhoton -> Cl + H
+63 reaction data were updated for HCl + ISPhoton -> HCl+ + e-
+64 reaction data were updated for O2H + ISPhoton -> O2 + H
+65 reaction data were updated for O2H + ISPhoton -> OH + O
+66 reaction data were updated for Mg + ISPhoton -> Mg+ + e-
+67 reaction data were updated for N2 + ISPhoton -> N + N
+68 reaction data were updated for N2O + ISPhoton -> N2 + O
+69 reaction data were updated for N2O + ISPhoton -> NO + N
+70 reaction data were updated for N2O + ISPhoton -> N2O+ + e-
+71 reaction data were updated for NH + ISPhoton -> N + H
+72 reaction data were updated for NH + ISPhoton -> NH+ + e-
+73 reaction data were updated for NH+ + ISPhoton -> N + H+
+74 reaction data were updated for NH2 + ISPhoton -> NH2+ + e-
+75 reaction data were updated for NH2 + ISPhoton -> NH + H
+76 reaction data were updated for NH3 + ISPhoton -> NH2 + H
+77 reaction data were updated for NH3 + ISPhoton -> NH + H2
+78 reaction data were updated for NH3 + ISPhoton -> NH3+ + e-
+79 reaction data were updated for NO + ISPhoton -> NO+ + e-
+80 reaction data were updated for NO + ISPhoton -> O + N
+81 reaction data were updated for NO2 + ISPhoton -> NO2+ + e-
+82 reaction data were updated for NO2 + ISPhoton -> NO + O
+83 reaction data were updated for Na + ISPhoton -> Na+ + e-
+84 reaction data were updated for O2 + ISPhoton -> O2+ + e-
+85 reaction data were updated for O2 + ISPhoton -> O + O
+86 reaction data were updated for O2+ + ISPhoton -> O + O+
+87 reaction data were updated for OCS + ISPhoton -> OCS+ + e-
+88 reaction data were updated for OCS + ISPhoton -> S + CO
+89 reaction data were updated for OH + ISPhoton -> O + H
+90 reaction data were updated for OH+ + ISPhoton -> H + O+
+91 reaction data were updated for S + ISPhoton -> S+ + e-
+92 reaction data were updated for S2 + ISPhoton -> S2+ + e-
+93 reaction data were updated for S2 + ISPhoton -> S + S
+94 reaction data were updated for HS + ISPhoton -> H + S
+95 reaction data were updated for HS+ + ISPhoton -> H + S+
+96 reaction data were updated for HS+ + ISPhoton -> S + H+
+97 reaction data were updated for SO + ISPhoton -> S + O
+98 reaction data were updated for SO + ISPhoton -> SO+ + e-
+99 reaction data were updated for SO2 + ISPhoton -> SO + O
+100 reaction data were updated for Si + ISPhoton -> Si+ + e-
+101 reaction data were updated for SiH + ISPhoton -> Si + H
+102 reaction data were updated for SiH+ + ISPhoton -> H + Si+
+103 reaction data were updated for SiO + ISPhoton -> Si + O
+104 reaction data were updated for H2CCC + ISPhoton -> C3 + H2
+105 reaction data were updated for H2CCC + ISPhoton -> C3H + H
+106 reaction data were updated for C3H2 + ISPhoton -> C3H + H
+107 reaction data were updated for C4 + ISPhoton -> C2 + C2
+108 reaction data were updated for C4 + ISPhoton -> C3 + C
+109 reaction data were updated for C4H + ISPhoton -> C2H + C2
+110 reaction data were updated for C4H + ISPhoton -> C4 + H
+111 reaction data were updated for C5H + ISPhoton -> C3 + C2H
+112 reaction data were updated for C5H + ISPhoton -> C3H + C2
+113 reaction data were updated for C5H + ISPhoton -> C5 + H
+    undefined species:
+  HF  F  P  P+  PH  PH+
+Network /disk2/nester/input_data/chemistry/UMIST_2012/rates_update_Chabot2013.txt
+1 reaction data were updated for C4- + C+ -> C + C4
+2 reaction data were updated for C5- + C+ -> C + C5
+3 reaction data were updated for C6- + C+ -> C + C6
+4 reaction data were updated for C7- + C+ -> C + C7
+5 reaction data were updated for C8- + C+ -> C + C8
+6 reaction data were updated for C9- + C+ -> C + C9
+7 reaction data were updated for C3- + C+ -> C + C3
+8 reaction data were updated for C4 + C+ -> C5+
+9 reaction data were updated for C5 + C+ -> C6+
+10 reaction data were updated for C6 + C+ -> C7+
+11 reaction data were updated for C7 + C+ -> C8+
+12 reaction data were updated for C8 + C+ -> C9+
+13 reaction data were updated for C9 + C+ -> C10+
+14 reaction data were updated for C5+ + e- -> C3 + C2
+15 reaction data were updated for C6+ + e- -> C4 + C2
+16 reaction data were updated for C6+ + e- -> C5 + C
+17 reaction data were updated for C7+ + e- -> C4 + C3
+18 reaction data were updated for C7+ + e- -> C5 + C2
+19 reaction data were updated for C7+ + e- -> C6 + C
+20 reaction data were updated for C8+ + e- -> C6 + C2
+21 reaction data were updated for C8+ + e- -> C7 + C
+22 reaction data were updated for C9+ + e- -> C7 + C2
+23 reaction data were updated for C9+ + e- -> C8 + C
+24 reaction data were updated for C10+ + e- -> C8 + C2
+25 reaction data were updated for C10+ + e- -> C9 + C
+26 reaction data were updated for C2H+ + e- -> C2 + H
+27 reaction data were updated for C2H+ + e- -> CH + C
+28 reaction data were updated for C3H+ + e- -> C2H + C
+29 reaction data were updated for C3H+ + e- -> C3 + H
+30 reaction data were updated for C4H+ + e- -> C4 + H
+31 reaction data were updated for C3H2+ + e- -> C2 + CH2
+32 reaction data were updated for C3H2+ + e- -> C2H2 + C
+33 reaction data were updated for C3H2+ + e- -> C3 + H2
+34 reaction data were updated for C3H2+ + e- -> C3 + H + H
+35 reaction data were updated for C3H2+ + e- -> C3H + H
+36 reaction data were updated for C4 + He+ -> C2 + He + C2+
+37 reaction data were updated for C4 + He+ -> C + He + C3+
+38 reaction data were updated for C4 + He+ -> C3 + He + C+
+39 reaction data were updated for C5 + He+ -> C2 + He + C3+
+40 reaction data were updated for C5 + He+ -> C + He + C4+
+41 reaction data were updated for C6 + He+ -> C2 + He + C4+
+42 reaction data were updated for C6 + He+ -> C + He + C5+
+43 reaction data were updated for C7 + He+ -> C2 + He + C5+
+44 reaction data were updated for C7 + He+ -> C + He + C6+
+45 reaction data were updated for C8 + He+ -> C2 + He + C6+
+46 reaction data were updated for C8 + He+ -> C + He + C7+
+47 reaction data were updated for C9 + He+ -> C2 + He + C7+
+48 reaction data were updated for C9 + He+ -> C + He + C8+
+49 reaction data were updated for C10 + He+ -> C5 + He + C5+
+50 reaction data were updated for C10 + He+ -> C3 + C + He + C6+
+51 reaction data were updated for C10 + He+ -> C4 + He + C6+
+52 reaction data were updated for C10 + He+ -> C3 + He + C7+
+53 reaction data were updated for C10 + He+ -> C + He + C9+
+54 reaction data were updated for C10 + He+ -> He + C10+
+55 reaction data were updated for C10 + He+ -> C2 + He + C8+
+56 reaction data were updated for C2H + He+ -> He + H + C2+
+57 reaction data were updated for C2H + He+ -> C + He + CH+
+58 reaction data were updated for C2H + He+ -> CH + He + C+
+59 reaction data were updated for C3H + He+ -> He + H + C3+
+60 reaction data were updated for C4H + He+ -> C2 + He + C2H+
+61 reaction data were updated for C4H + He+ -> He + H + C4+
+62 reaction data were updated for H2CCC + He+ -> He + H2 + C3+
+63 reaction data were updated for H2CCC + He+ -> He + H + C3H+
+64 reaction data were updated for C3H2 + He+ -> He + H + C3H+
+65 reaction data were updated for C3H + C+ -> H + C4+
+66 reaction data were updated for C2 + H+ -> H + C2+
+67 reaction data were updated for C4 + H+ -> H + C4+
+68 reaction data were updated for C3H + H+ -> H + C3H+
+69 reaction data were updated for C3H + H+ -> H2 + C3+
+70 reaction data were updated for C2 + C2+ -> C + C3+
+71 reaction data were updated for CH + C2+ -> H + C3+
+72 reaction data were updated for CH + C2+ -> C2 + CH+
+73 reaction data were updated for CH2 + C2+ -> H + C3H+
+74 reaction data were updated for CH2 + C2+ -> C2 + CH2+
+75 reaction data were updated for C + CH+ -> H + C2+
+76 reaction data were updated for C2 + CH+ -> H + C3+
+77 reaction data were updated for C2H + CH+ -> H2 + C3+
+78 reaction data were updated for C + C2H+ -> H + C3+
+79 reaction data were updated for CH + C2H+ -> H + C3H+
+80 reaction data were updated for CH + C2H+ -> C2 + CH2+
+81 reaction data were updated for C + C2H2+ -> H + C3H+
+82 reaction data were updated for C + C6 -> C2 + C5
+83 reaction data were updated for C + C6 -> C3 + C4
+84 reaction data were updated for C + C8 -> C2 + C7
+85 reaction data were updated for C + C3H -> C4 + H
+86 reaction data were updated for C + C2H2 -> C3 + H2
+87 reaction data were updated for C + C2H2 -> C3H + H
+    undefined species:
+
+Network /disk2/nester/input_data/chemistry/reactions_adsorp_desorption.txt
+    undefined species:
+  C2H4CN  *C2H4CN  C3P  *C3P  C4P  *C4P  CCP  *CCP  CH2OHCHO  *CH2OHCHO  CH2OHCO  *CH2OHCO  CH2PH  *CH2PH  CH3COOH  *CH3COOH  CH3NH  *CH3NH  CH3NH2  *CH3NH2  COOCH3  *COOCH3  CP  *CP  HC2P  *HC2P  HCCN  *HCCN  HCP  *HCP  HF  *HF  HNCHO  *HNCHO  HNOH  *HNOH  HPO  *HPO  F  *F  NH2CHO  *NH2CHO  NH2CO  *NH2CO  NH2OH  *NH2OH  O3  *O3  P  *P  PH  *PH  PH2  *PH2  PN  *PN  PO  *PO
+Network /disk2/nester/input_data/chemistry/reactions_ion_recomb_grains.txt
+    undefined species:
+  F+  F  HF+  HF  H2F+  P+  P  PH+  PH  PH2+  PH2  PH3+  CP+  CP  HCP+  HCP  PN+  PN  PCH2+  HPN+  PCH4+  CH2PH  PO+  PO  HPO+  HPO  H2PO+  CCP+  CCP  HC2P+  HC2P  PC2H2+  PC3H+  C3P  C4P+  C4P  PC4H+  CF+  PCH3+  SiF+  PNH2+  PNH3+  PC2H3+  PC2H4+
+Network /disk2/nester/input_data/chemistry/reactions_COM_Palau2017.txt
+    undefined species:
+
+Network /disk2/nester/input_data/chemistry/reactions_colldiss.txt
+    undefined species:
+
+Network /disk2/nester/input_data/chemistry/reactions_ion_neutrals.txt
+1 reaction data were updated for CH3OCH3 + He+ -> H2CO + He + H + CH3+
+2 reaction data were updated for HCOOCH3 + He+ -> CH3 + He + HCO2+
+3 reaction data were updated for CH3OCH3 + H3+ -> H2 + CH3OCH4+
+4 reaction data were updated for HCOOCH3 + H3+ -> H2 + H5C2O2+
+    undefined species:
+
+Photo-reactions on grain surface (based on gas-phase chemistry)... 
+Network /disk2/nester/input_data/chemistry/nautilus_networks/bimolecular_gs_reactions.txt
+54   *C + *NO -> *CN + *O            branching ratio 5.000e-01  activ. barrier 0.000e+00
+55   *C + *NO -> *OCN                branching ratio 5.000e-01  activ. barrier 0.000e+00
+68   *CH + *C2H -> *C3H2             branching ratio 5.000e-01  activ. barrier 0.000e+00
+70   *CH + *C2H -> *H2CCC            branching ratio 5.000e-01  activ. barrier 0.000e+00
+105  *CH + *NH -> *HCN + *H          branching ratio 5.000e-01  activ. barrier 0.000e+00
+106  *CH + *NH -> *HNC + *H          branching ratio 5.000e-01  activ. barrier 0.000e+00
+198  *H + *CN -> *HCN                branching ratio 5.000e-01  activ. barrier 0.000e+00
+208  *H + *H2O2 -> *H2O + *OH       activ. barrier 1.400e+03   1.900e+03   
+209  *H + *H2O2 -> *O2H + *H2       activ. barrier 1.900e+03   1.400e+03   
+211  *H + *HCO -> *H2CO              branching ratio 5.000e-01  activ. barrier 0.000e+00
+324  *O + *HCO -> *CO2 + *H          branching ratio 5.000e-01  activ. barrier 0.000e+00
+325  *O + *HCO -> *CO + *OH          branching ratio 5.000e-01  activ. barrier 0.000e+00
+343  *OH + *CO -> *CO2 + *H         activ. barrier 1.500e+02   1.500e+02   
+363  *H + *CH2OH -> *CH3OH           branching ratio 5.000e-01  activ. barrier 0.000e+00
+365  *H + *CH3O -> *CH3OH            branching ratio 5.000e-01  activ. barrier 0.000e+00
+367  *H + *H2CO -> *CH2OH           activ. barrier 5.400e+03   2.200e+03   1.740e+03   
+369  *H + *H2CO -> *CH3O            activ. barrier 2.200e+03   5.400e+03   1.740e+03   
+371  *H + *H2CO -> *HCO + *H2       activ. barrier 1.740e+03   5.400e+03   2.200e+03   
+396  *H + *HOCO -> *HCOOH            branching ratio 3.333e-01  activ. barrier 0.000e+00
+398  *H + *HOCO -> *H2 + *CO2        branching ratio 3.333e-01  activ. barrier 0.000e+00
+399  *H + *HOCO -> *H2O + *CO        branching ratio 3.333e-01  activ. barrier 0.000e+00
+401  *N + *HOCO -> *OH + *OCN        branching ratio 5.000e-01  activ. barrier 0.000e+00
+402  *N + *HOCO -> *NH + *CO2        branching ratio 5.000e-01  activ. barrier 0.000e+00
+403  *OH + *CO -> *HOCO             activ. barrier 1.500e+02   1.500e+02   
+406  *H + *CN -> *HNC                branching ratio 5.000e-01  activ. barrier 0.000e+00
+408  *H + *HCO -> *CO + *H2          branching ratio 5.000e-01  activ. barrier 0.000e+00
+409  *H + *CH2OH -> *H2CO + *H2      branching ratio 5.000e-01  activ. barrier 0.000e+00
+410  *H + *CH3O -> *H2CO + *H2       branching ratio 5.000e-01  activ. barrier 0.000e+00
+411  *H + *CH3OH -> *CH2OH + *H2    activ. barrier 4.380e+03   6.640e+03   
+412  *H + *CH3OH -> *CH3O + *H2     activ. barrier 6.640e+03   4.380e+03   
+    undefined species:
+*l-C3H
+l-C3H
+*FeH
+FeH
+*MgH
+MgH
+*MgH2
+MgH2
+*NaH
+NaH
+*O3
+*CH3NH2
+CH3NH2
+*NH2CHO
+NH2CHO
+O3
+*F
+*HF
+HF
+*C5H3
+C5H3
+*C5H4
+C5H4
+*C6H3
+C6H3
+*C6H4
+C6H4
+*C7H3
+C7H3
+*C7H4
+C7H4
+*C8H3
+C8H3
+*C8H4
+C8H4
+*C9H3
+C9H3
+*C9H4
+C9H4
+*C-H2O
+*CH-H2O
+*C-CH3OH
+*CH-CH3OH
+*CH2NH2
+CH2NH2
+*C-NH3
+*CH-NH3
+*C-CO2
+*HCOCO
+HCOCO
+*CH-CO2
+*HCOCHO
+HCOCHO
+*CH2-CO2
+*CH3-CO2
+*CH4-CO2
+*C-CH4
+*O-CO
+
+Warning: adsorbed specimen has not destruction other than desorption: *He
+Warning: adsorbed specimen has not destruction other than desorption: *Na
+Warning: adsorbed specimen has not destruction other than desorption: *Mg
+Warning: adsorbed specimen has not destruction other than desorption: *Fe
+CR induced photoreactions are absent for neutral species: 
+	H2 
+Interstellar UV induced photoreactions are absent for neutral species: 
+	H He N O CH3O CH2OH HC2O CH3CO HOCO CH3OCH2 
+Identical reactions:
+1   ISDGS1 *CH3OH + ISPhoton -> *CH + *H2O + *H *CH3OH + ISPhoton -> *H + *CH + *H2O
+2   ISDGS1 *CH3OH + ISPhoton -> *H2CO + *H + *H *CH3OH + ISPhoton -> *H + *H2CO + *H
+3   ISDGS1 *H2CO + ISPhoton -> *CO + *H + *H *H2CO + ISPhoton -> *H + *CO + *H
+Total nb of differential equations 862
+Error occurred while reading the file /disk2/nester/input_data/chemistry/initial_abund_ruaud2016.txt
+cloud age (yr): 1.000e+00   calc time (s): 238     nb of steps: 1046
+cloud age (yr): 1.037e+00   calc time (s): 238     nb of steps: 1050
+cloud age (yr): 1.075e+00   calc time (s): 243     nb of steps: 1054
+cloud age (yr): 1.114e+00   calc time (s): 244     nb of steps: 1057
+cloud age (yr): 1.155e+00   calc time (s): 244     nb of steps: 1060
+cloud age (yr): 1.197e+00   calc time (s): 244     nb of steps: 1063
+cloud age (yr): 1.241e+00   calc time (s): 244     nb of steps: 1066
+cloud age (yr): 1.286e+00   calc time (s): 244     nb of steps: 1069
+cloud age (yr): 1.334e+00   calc time (s): 244     nb of steps: 1072
+cloud age (yr): 1.382e+00   calc time (s): 244     nb of steps: 1076
+cloud age (yr): 1.433e+00   calc time (s): 245     nb of steps: 1079
+cloud age (yr): 1.486e+00   calc time (s): 249     nb of steps: 1082
+cloud age (yr): 1.540e+00   calc time (s): 249     nb of steps: 1086
+cloud age (yr): 1.596e+00   calc time (s): 249     nb of steps: 1090
+cloud age (yr): 1.655e+00   calc time (s): 250     nb of steps: 1093
+cloud age (yr): 1.715e+00   calc time (s): 250     nb of steps: 1095
+cloud age (yr): 1.778e+00   calc time (s): 250     nb of steps: 1098
+cloud age (yr): 1.843e+00   calc time (s): 250     nb of steps: 1101
+cloud age (yr): 1.911e+00   calc time (s): 250     nb of steps: 1104
+cloud age (yr): 1.981e+00   calc time (s): 251     nb of steps: 1107
+cloud age (yr): 2.054e+00   calc time (s): 251     nb of steps: 1111
+cloud age (yr): 2.129e+00   calc time (s): 257     nb of steps: 1114
+cloud age (yr): 2.207e+00   calc time (s): 257     nb of steps: 1117
+cloud age (yr): 2.288e+00   calc time (s): 257     nb of steps: 1121
+cloud age (yr): 2.371e+00   calc time (s): 257     nb of steps: 1125
+cloud age (yr): 2.458e+00   calc time (s): 257     nb of steps: 1129
+cloud age (yr): 2.548e+00   calc time (s): 257     nb of steps: 1133
+cloud age (yr): 2.642e+00   calc time (s): 258     nb of steps: 1137
+cloud age (yr): 2.738e+00   calc time (s): 258     nb of steps: 1141
+cloud age (yr): 2.839e+00   calc time (s): 258     nb of steps: 1146
+cloud age (yr): 2.943e+00   calc time (s): 258     nb of steps: 1150
+cloud age (yr): 3.051e+00   calc time (s): 259     nb of steps: 1155
+cloud age (yr): 3.162e+00   calc time (s): 263     nb of steps: 1160
+cloud age (yr): 3.278e+00   calc time (s): 264     nb of steps: 1164
+cloud age (yr): 3.398e+00   calc time (s): 264     nb of steps: 1167
+cloud age (yr): 3.523e+00   calc time (s): 264     nb of steps: 1170
+cloud age (yr): 3.652e+00   calc time (s): 264     nb of steps: 1174
+cloud age (yr): 3.786e+00   calc time (s): 264     nb of steps: 1177
+cloud age (yr): 3.924e+00   calc time (s): 265     nb of steps: 1181
+cloud age (yr): 4.068e+00   calc time (s): 265     nb of steps: 1187
+cloud age (yr): 4.217e+00   calc time (s): 265     nb of steps: 1193
+cloud age (yr): 4.371e+00   calc time (s): 265     nb of steps: 1200
+cloud age (yr): 4.532e+00   calc time (s): 271     nb of steps: 1207
+cloud age (yr): 4.698e+00   calc time (s): 271     nb of steps: 1214
+cloud age (yr): 4.870e+00   calc time (s): 272     nb of steps: 1219
+cloud age (yr): 5.048e+00   calc time (s): 272     nb of steps: 1223
+cloud age (yr): 5.233e+00   calc time (s): 272     nb of steps: 1227
+cloud age (yr): 5.425e+00   calc time (s): 272     nb of steps: 1231
+cloud age (yr): 5.623e+00   calc time (s): 273     nb of steps: 1237
+cloud age (yr): 5.829e+00   calc time (s): 273     nb of steps: 1244
+cloud age (yr): 6.043e+00   calc time (s): 274     nb of steps: 1252
+cloud age (yr): 6.264e+00   calc time (s): 274     nb of steps: 1259
+cloud age (yr): 6.494e+00   calc time (s): 275     nb of steps: 1267
+cloud age (yr): 6.732e+00   calc time (s): 279     nb of steps: 1276
+cloud age (yr): 6.978e+00   calc time (s): 280     nb of steps: 1281
+cloud age (yr): 7.234e+00   calc time (s): 280     nb of steps: 1286
+cloud age (yr): 7.499e+00   calc time (s): 280     nb of steps: 1292
+cloud age (yr): 7.774e+00   calc time (s): 281     nb of steps: 1297
+cloud age (yr): 8.058e+00   calc time (s): 281     nb of steps: 1303
+cloud age (yr): 8.354e+00   calc time (s): 281     nb of steps: 1309
+cloud age (yr): 8.660e+00   calc time (s): 281     nb of steps: 1315
+cloud age (yr): 8.977e+00   calc time (s): 282     nb of steps: 1321
+cloud age (yr): 9.306e+00   calc time (s): 282     nb of steps: 1328
+cloud age (yr): 9.647e+00   calc time (s): 286     nb of steps: 1335
+cloud age (yr): 1.000e+01   calc time (s): 286     nb of steps: 1342
+cloud age (yr): 1.037e+01   calc time (s): 288     nb of steps: 1347
+cloud age (yr): 1.075e+01   calc time (s): 288     nb of steps: 1353
+cloud age (yr): 1.114e+01   calc time (s): 289     nb of steps: 1360
+cloud age (yr): 1.155e+01   calc time (s): 289     nb of steps: 1370
+cloud age (yr): 1.197e+01   calc time (s): 290     nb of steps: 1384
+cloud age (yr): 1.241e+01   calc time (s): 296     nb of steps: 1400
+cloud age (yr): 1.286e+01   calc time (s): 297     nb of steps: 1405
+cloud age (yr): 1.334e+01   calc time (s): 300     nb of steps: 1414
+cloud age (yr): 1.382e+01   calc time (s): 301     nb of steps: 1420
+cloud age (yr): 1.433e+01   calc time (s): 301     nb of steps: 1425
+cloud age (yr): 1.486e+01   calc time (s): 301     nb of steps: 1429
+cloud age (yr): 1.540e+01   calc time (s): 302     nb of steps: 1435
+cloud age (yr): 1.596e+01   calc time (s): 302     nb of steps: 1443
+cloud age (yr): 1.655e+01   calc time (s): 309     nb of steps: 1456
+cloud age (yr): 1.715e+01   calc time (s): 310     nb of steps: 1465
+cloud age (yr): 1.778e+01   calc time (s): 311     nb of steps: 1471
+cloud age (yr): 1.843e+01   calc time (s): 313     nb of steps: 1479
+cloud age (yr): 1.911e+01   calc time (s): 314     nb of steps: 1486
+cloud age (yr): 1.981e+01   calc time (s): 315     nb of steps: 1493
+cloud age (yr): 2.054e+01   calc time (s): 315     nb of steps: 1500
+cloud age (yr): 2.129e+01   calc time (s): 321     nb of steps: 1509
+cloud age (yr): 2.207e+01   calc time (s): 322     nb of steps: 1513
+cloud age (yr): 2.288e+01   calc time (s): 325     nb of steps: 1525
+cloud age (yr): 2.371e+01   calc time (s): 327     nb of steps: 1532
+cloud age (yr): 2.458e+01   calc time (s): 327     nb of steps: 1539
+cloud age (yr): 2.548e+01   calc time (s): 328     nb of steps: 1547
+cloud age (yr): 2.642e+01   calc time (s): 329     nb of steps: 1558
+cloud age (yr): 2.738e+01   calc time (s): 333     nb of steps: 1572
+cloud age (yr): 2.839e+01   calc time (s): 335     nb of steps: 1580
+cloud age (yr): 2.943e+01   calc time (s): 336     nb of steps: 1583
+cloud age (yr): 3.051e+01   calc time (s): 339     nb of steps: 1592
+cloud age (yr): 3.162e+01   calc time (s): 340     nb of steps: 1597
+cloud age (yr): 3.278e+01   calc time (s): 343     nb of steps: 1608
+cloud age (yr): 3.398e+01   calc time (s): 344     nb of steps: 1613
+cloud age (yr): 3.523e+01   calc time (s): 345     nb of steps: 1618
+cloud age (yr): 3.652e+01   calc time (s): 346     nb of steps: 1624
+cloud age (yr): 3.786e+01   calc time (s): 349     nb of steps: 1629
+cloud age (yr): 3.924e+01   calc time (s): 350     nb of steps: 1637
+cloud age (yr): 4.068e+01   calc time (s): 351     nb of steps: 1640
+cloud age (yr): 4.217e+01   calc time (s): 352     nb of steps: 1644
+cloud age (yr): 4.371e+01   calc time (s): 353     nb of steps: 1648
+cloud age (yr): 4.532e+01   calc time (s): 354     nb of steps: 1652
+cloud age (yr): 4.698e+01   calc time (s): 354     nb of steps: 1657
+cloud age (yr): 4.870e+01   calc time (s): 354     nb of steps: 1663
+cloud age (yr): 5.048e+01   calc time (s): 355     nb of steps: 1671
+cloud age (yr): 5.233e+01   calc time (s): 356     nb of steps: 1678
+cloud age (yr): 5.425e+01   calc time (s): 356     nb of steps: 1684
+cloud age (yr): 5.623e+01   calc time (s): 360     nb of steps: 1691
+cloud age (yr): 5.829e+01   calc time (s): 360     nb of steps: 1698
+cloud age (yr): 6.043e+01   calc time (s): 363     nb of steps: 1702
+cloud age (yr): 6.264e+01   calc time (s): 366     nb of steps: 1709
+cloud age (yr): 6.494e+01   calc time (s): 366     nb of steps: 1712
+cloud age (yr): 6.732e+01   calc time (s): 372     nb of steps: 1726
+cloud age (yr): 6.978e+01   calc time (s): 375     nb of steps: 1731
+cloud age (yr): 7.234e+01   calc time (s): 376     nb of steps: 1739
+cloud age (yr): 7.499e+01   calc time (s): 381     nb of steps: 1743
+cloud age (yr): 7.774e+01   calc time (s): 382     nb of steps: 1749
+cloud age (yr): 8.058e+01   calc time (s): 384     nb of steps: 1753
+cloud age (yr): 8.354e+01   calc time (s): 386     nb of steps: 1759
+cloud age (yr): 8.660e+01   calc time (s): 389     nb of steps: 1765
+cloud age (yr): 8.977e+01   calc time (s): 392     nb of steps: 1771
+cloud age (yr): 9.306e+01   calc time (s): 392     nb of steps: 1774
+cloud age (yr): 9.647e+01   calc time (s): 394     nb of steps: 1782
+cloud age (yr): 1.000e+02   calc time (s): 394     nb of steps: 1791
+cloud age (yr): 1.037e+02   calc time (s): 400     nb of steps: 1802
+cloud age (yr): 1.075e+02   calc time (s): 401     nb of steps: 1806
+cloud age (yr): 1.114e+02   calc time (s): 403     nb of steps: 1811
+cloud age (yr): 1.155e+02   calc time (s): 405     nb of steps: 1818
+cloud age (yr): 1.197e+02   calc time (s): 406     nb of steps: 1824
+cloud age (yr): 1.241e+02   calc time (s): 408     nb of steps: 1834
+cloud age (yr): 1.286e+02   calc time (s): 408     nb of steps: 1838
+cloud age (yr): 1.334e+02   calc time (s): 409     nb of steps: 1845
+cloud age (yr): 1.382e+02   calc time (s): 409     nb of steps: 1853
+cloud age (yr): 1.433e+02   calc time (s): 415     nb of steps: 1862
+cloud age (yr): 1.486e+02   calc time (s): 416     nb of steps: 1868
+cloud age (yr): 1.540e+02   calc time (s): 416     nb of steps: 1872
+cloud age (yr): 1.596e+02   calc time (s): 417     nb of steps: 1877
+cloud age (yr): 1.655e+02   calc time (s): 417     nb of steps: 1883
+cloud age (yr): 1.715e+02   calc time (s): 418     nb of steps: 1889
+cloud age (yr): 1.778e+02   calc time (s): 418     nb of steps: 1899
+cloud age (yr): 1.843e+02   calc time (s): 419     nb of steps: 1912
+cloud age (yr): 1.911e+02   calc time (s): 426     nb of steps: 1923
+cloud age (yr): 1.981e+02   calc time (s): 426     nb of steps: 1929
+cloud age (yr): 2.054e+02   calc time (s): 426     nb of steps: 1935
+cloud age (yr): 2.129e+02   calc time (s): 427     nb of steps: 1941
+cloud age (yr): 2.207e+02   calc time (s): 427     nb of steps: 1947
+cloud age (yr): 2.288e+02   calc time (s): 427     nb of steps: 1954
+cloud age (yr): 2.371e+02   calc time (s): 428     nb of steps: 1961
+cloud age (yr): 2.458e+02   calc time (s): 428     nb of steps: 1968
+cloud age (yr): 2.548e+02   calc time (s): 433     nb of steps: 1978
+cloud age (yr): 2.642e+02   calc time (s): 433     nb of steps: 1987
+cloud age (yr): 2.738e+02   calc time (s): 440     nb of steps: 2004
+cloud age (yr): 2.839e+02   calc time (s): 456     nb of steps: 2058
+cloud age (yr): 2.943e+02   calc time (s): 469     nb of steps: 2096
+cloud age (yr): 3.051e+02   calc time (s): 614     nb of steps: 2513
+cloud age (yr): 3.162e+02   calc time (s): 625     nb of steps: 2560
+cloud age (yr): 3.278e+02   calc time (s): 627     nb of steps: 2577
+cloud age (yr): 3.398e+02   calc time (s): 636     nb of steps: 2600
+cloud age (yr): 3.523e+02   calc time (s): 640     nb of steps: 2615
+cloud age (yr): 3.652e+02   calc time (s): 642     nb of steps: 2625
+cloud age (yr): 3.786e+02   calc time (s): 643     nb of steps: 2632
+cloud age (yr): 3.924e+02   calc time (s): 644     nb of steps: 2650
+cloud age (yr): 4.068e+02   calc time (s): 654     nb of steps: 2668
+cloud age (yr): 4.217e+02   calc time (s): 655     nb of steps: 2675
+cloud age (yr): 4.371e+02   calc time (s): 658     nb of steps: 2685
+cloud age (yr): 4.532e+02   calc time (s): 672     nb of steps: 2715
+cloud age (yr): 4.698e+02   calc time (s): 673     nb of steps: 2725
+cloud age (yr): 4.870e+02   calc time (s): 675     nb of steps: 2735
+cloud age (yr): 5.048e+02   calc time (s): 677     nb of steps: 2751
+cloud age (yr): 5.233e+02   calc time (s): 678     nb of steps: 2764
+cloud age (yr): 5.425e+02   calc time (s): 682     nb of steps: 2776
+cloud age (yr): 5.623e+02   calc time (s): 683     nb of steps: 2784
+cloud age (yr): 5.829e+02   calc time (s): 685     nb of steps: 2790
+cloud age (yr): 6.043e+02   calc time (s): 686     nb of steps: 2796
+cloud age (yr): 6.264e+02   calc time (s): 687     nb of steps: 2800
+cloud age (yr): 6.494e+02   calc time (s): 687     nb of steps: 2806
+cloud age (yr): 6.732e+02   calc time (s): 688     nb of steps: 2815
+cloud age (yr): 6.978e+02   calc time (s): 688     nb of steps: 2826
+cloud age (yr): 7.234e+02   calc time (s): 694     nb of steps: 2836
+cloud age (yr): 7.499e+02   calc time (s): 694     nb of steps: 2839
+cloud age (yr): 7.774e+02   calc time (s): 694     nb of steps: 2843
+cloud age (yr): 8.058e+02   calc time (s): 694     nb of steps: 2847
+cloud age (yr): 8.354e+02   calc time (s): 695     nb of steps: 2852
+cloud age (yr): 8.660e+02   calc time (s): 695     nb of steps: 2860
+cloud age (yr): 8.977e+02   calc time (s): 702     nb of steps: 2879
+cloud age (yr): 9.306e+02   calc time (s): 706     nb of steps: 2895
+cloud age (yr): 9.647e+02   calc time (s): 707     nb of steps: 2903
+cloud age (yr): 1.000e+03   calc time (s): 708     nb of steps: 2907
+cloud age (yr): 1.037e+03   calc time (s): 709     nb of steps: 2913
+cloud age (yr): 1.075e+03   calc time (s): 712     nb of steps: 2920
+cloud age (yr): 1.114e+03   calc time (s): 713     nb of steps: 2926
+cloud age (yr): 1.155e+03   calc time (s): 719     nb of steps: 2937
+cloud age (yr): 1.197e+03   calc time (s): 720     nb of steps: 2946
+cloud age (yr): 1.241e+03   calc time (s): 723     nb of steps: 2955
+cloud age (yr): 1.286e+03   calc time (s): 723     nb of steps: 2961
+cloud age (yr): 1.334e+03   calc time (s): 727     nb of steps: 2976
+cloud age (yr): 1.382e+03   calc time (s): 731     nb of steps: 2991
+cloud age (yr): 1.433e+03   calc time (s): 739     nb of steps: 3017
+cloud age (yr): 1.486e+03   calc time (s): 740     nb of steps: 3027
+cloud age (yr): 1.540e+03   calc time (s): 742     nb of steps: 3045
+cloud age (yr): 1.596e+03   calc time (s): 748     nb of steps: 3060
+cloud age (yr): 1.655e+03   calc time (s): 750     nb of steps: 3069
+cloud age (yr): 1.715e+03   calc time (s): 755     nb of steps: 3077
+cloud age (yr): 1.778e+03   calc time (s): 756     nb of steps: 3086
+cloud age (yr): 1.843e+03   calc time (s): 761     nb of steps: 3102
+cloud age (yr): 1.911e+03   calc time (s): 763     nb of steps: 3114
+cloud age (yr): 1.981e+03   calc time (s): 764     nb of steps: 3125
+cloud age (yr): 2.054e+03   calc time (s): 769     nb of steps: 3141
+cloud age (yr): 2.129e+03   calc time (s): 770     nb of steps: 3161
+cloud age (yr): 2.207e+03   calc time (s): 771     nb of steps: 3188
+cloud age (yr): 2.288e+03   calc time (s): 778     nb of steps: 3203
+cloud age (yr): 2.371e+03   calc time (s): 779     nb of steps: 3213
+cloud age (yr): 2.458e+03   calc time (s): 784     nb of steps: 3225
+cloud age (yr): 2.548e+03   calc time (s): 787     nb of steps: 3249
+cloud age (yr): 2.642e+03   calc time (s): 792     nb of steps: 3273
+cloud age (yr): 2.738e+03   calc time (s): 794     nb of steps: 3293
+cloud age (yr): 2.839e+03   calc time (s): 809     nb of steps: 3327
+cloud age (yr): 2.943e+03   calc time (s): 816     nb of steps: 3362
+cloud age (yr): 3.051e+03   calc time (s): 823     nb of steps: 3411
+cloud age (yr): 3.162e+03   calc time (s): 826     nb of steps: 3430
+cloud age (yr): 3.278e+03   calc time (s): 836     nb of steps: 3448
+cloud age (yr): 3.398e+03   calc time (s): 845     nb of steps: 3482
+cloud age (yr): 3.523e+03   calc time (s): 859     nb of steps: 3515
+cloud age (yr): 3.652e+03   calc time (s): 870     nb of steps: 3562
+cloud age (yr): 3.786e+03   calc time (s): 886     nb of steps: 3635
+cloud age (yr): 3.924e+03   calc time (s): 895     nb of steps: 3668
+cloud age (yr): 4.068e+03   calc time (s): 899     nb of steps: 3683
+cloud age (yr): 4.217e+03   calc time (s): 900     nb of steps: 3698
+cloud age (yr): 4.371e+03   calc time (s): 901     nb of steps: 3713
+cloud age (yr): 4.532e+03   calc time (s): 909     nb of steps: 3733
+cloud age (yr): 4.698e+03   calc time (s): 926     nb of steps: 3776
+cloud age (yr): 4.870e+03   calc time (s): 931     nb of steps: 3795
+cloud age (yr): 5.048e+03   calc time (s): 936     nb of steps: 3819
+cloud age (yr): 5.233e+03   calc time (s): 945     nb of steps: 3854
+cloud age (yr): 5.425e+03   calc time (s): 950     nb of steps: 3880
+cloud age (yr): 5.623e+03   calc time (s): 959     nb of steps: 3905
+cloud age (yr): 5.829e+03   calc time (s): 964     nb of steps: 3926
+cloud age (yr): 6.043e+03   calc time (s): 973     nb of steps: 3957
+cloud age (yr): 6.264e+03   calc time (s): 975     nb of steps: 3977
+cloud age (yr): 6.494e+03   calc time (s): 987     nb of steps: 4005
+cloud age (yr): 6.732e+03   calc time (s): 989     nb of steps: 4025
+cloud age (yr): 6.978e+03   calc time (s): 996     nb of steps: 4053
+cloud age (yr): 7.234e+03   calc time (s): 1002    nb of steps: 4076
+cloud age (yr): 7.499e+03   calc time (s): 1014    nb of steps: 4109
+cloud age (yr): 7.774e+03   calc time (s): 1020    nb of steps: 4133
+cloud age (yr): 8.058e+03   calc time (s): 1022    nb of steps: 4158
+cloud age (yr): 8.354e+03   calc time (s): 1028    nb of steps: 4184
+cloud age (yr): 8.660e+03   calc time (s): 1031    nb of steps: 4202
+cloud age (yr): 8.977e+03   calc time (s): 1038    nb of steps: 4224
+cloud age (yr): 9.306e+03   calc time (s): 1039    nb of steps: 4239
+cloud age (yr): 9.647e+03   calc time (s): 1047    nb of steps: 4263
+cloud age (yr): 1.000e+04   calc time (s): 1048    nb of steps: 4280
+cloud age (yr): 1.037e+04   calc time (s): 1050    nb of steps: 4298
+cloud age (yr): 1.075e+04   calc time (s): 1057    nb of steps: 4319
+cloud age (yr): 1.114e+04   calc time (s): 1072    nb of steps: 4384
+cloud age (yr): 1.155e+04   calc time (s): 1072    nb of steps: 4397
+cloud age (yr): 1.197e+04   calc time (s): 1074    nb of steps: 4411
+cloud age (yr): 1.241e+04   calc time (s): 1079    nb of steps: 4425
+cloud age (yr): 1.286e+04   calc time (s): 1079    nb of steps: 4435
+cloud age (yr): 1.334e+04   calc time (s): 1080    nb of steps: 4446
+cloud age (yr): 1.382e+04   calc time (s): 1081    nb of steps: 4463
+cloud age (yr): 1.433e+04   calc time (s): 1085    nb of steps: 4481
+cloud age (yr): 1.486e+04   calc time (s): 1087    nb of steps: 4491
+cloud age (yr): 1.540e+04   calc time (s): 1088    nb of steps: 4495
+cloud age (yr): 1.596e+04   calc time (s): 1088    nb of steps: 4499
+cloud age (yr): 1.655e+04   calc time (s): 1089    nb of steps: 4504
+cloud age (yr): 1.715e+04   calc time (s): 1091    nb of steps: 4512
+cloud age (yr): 1.778e+04   calc time (s): 1107    nb of steps: 4541
+cloud age (yr): 1.843e+04   calc time (s): 1108    nb of steps: 4547
+cloud age (yr): 1.911e+04   calc time (s): 1108    nb of steps: 4551
+cloud age (yr): 1.981e+04   calc time (s): 1108    nb of steps: 4555
+cloud age (yr): 2.054e+04   calc time (s): 1108    nb of steps: 4559
+cloud age (yr): 2.129e+04   calc time (s): 1108    nb of steps: 4564
+cloud age (yr): 2.207e+04   calc time (s): 1109    nb of steps: 4568
+cloud age (yr): 2.288e+04   calc time (s): 1109    nb of steps: 4573
+cloud age (yr): 2.371e+04   calc time (s): 1109    nb of steps: 4578
+cloud age (yr): 2.458e+04   calc time (s): 1113    nb of steps: 4583
+cloud age (yr): 2.548e+04   calc time (s): 1113    nb of steps: 4589
+cloud age (yr): 2.642e+04   calc time (s): 1114    nb of steps: 4593
+cloud age (yr): 2.738e+04   calc time (s): 1114    nb of steps: 4596
+cloud age (yr): 2.839e+04   calc time (s): 1114    nb of steps: 4600
+cloud age (yr): 2.943e+04   calc time (s): 1114    nb of steps: 4604
+cloud age (yr): 3.051e+04   calc time (s): 1114    nb of steps: 4608
+cloud age (yr): 3.162e+04   calc time (s): 1115    nb of steps: 4612
+cloud age (yr): 3.278e+04   calc time (s): 1115    nb of steps: 4616
+cloud age (yr): 3.398e+04   calc time (s): 1115    nb of steps: 4621
+cloud age (yr): 3.523e+04   calc time (s): 1115    nb of steps: 4626
+cloud age (yr): 3.652e+04   calc time (s): 1116    nb of steps: 4630
+cloud age (yr): 3.786e+04   calc time (s): 1121    nb of steps: 4635
+cloud age (yr): 3.924e+04   calc time (s): 1121    nb of steps: 4641
+cloud age (yr): 4.068e+04   calc time (s): 1123    nb of steps: 4645
+cloud age (yr): 4.217e+04   calc time (s): 1123    nb of steps: 4647
+cloud age (yr): 4.371e+04   calc time (s): 1123    nb of steps: 4649
+cloud age (yr): 4.532e+04   calc time (s): 1123    nb of steps: 4652
+cloud age (yr): 4.698e+04   calc time (s): 1124    nb of steps: 4654
+cloud age (yr): 4.870e+04   calc time (s): 1124    nb of steps: 4658
+cloud age (yr): 5.048e+04   calc time (s): 1126    nb of steps: 4664
+cloud age (yr): 5.233e+04   calc time (s): 1126    nb of steps: 4673
+cloud age (yr): 5.425e+04   calc time (s): 1127    nb of steps: 4682
+cloud age (yr): 5.623e+04   calc time (s): 1132    nb of steps: 4693
+cloud age (yr): 5.829e+04   calc time (s): 1135    nb of steps: 4701
+cloud age (yr): 6.043e+04   calc time (s): 1136    nb of steps: 4703
+cloud age (yr): 6.264e+04   calc time (s): 1136    nb of steps: 4706
+cloud age (yr): 6.494e+04   calc time (s): 1136    nb of steps: 4708
+cloud age (yr): 6.732e+04   calc time (s): 1136    nb of steps: 4710
+cloud age (yr): 6.978e+04   calc time (s): 1136    nb of steps: 4713
+cloud age (yr): 7.234e+04   calc time (s): 1136    nb of steps: 4715
+cloud age (yr): 7.499e+04   calc time (s): 1137    nb of steps: 4718
+cloud age (yr): 7.774e+04   calc time (s): 1138    nb of steps: 4724
+cloud age (yr): 8.058e+04   calc time (s): 1138    nb of steps: 4730
+cloud age (yr): 8.354e+04   calc time (s): 1138    nb of steps: 4736
+cloud age (yr): 8.660e+04   calc time (s): 1139    nb of steps: 4743
+cloud age (yr): 8.977e+04   calc time (s): 1144    nb of steps: 4750
+cloud age (yr): 9.306e+04   calc time (s): 1146    nb of steps: 4758
+cloud age (yr): 9.647e+04   calc time (s): 1147    nb of steps: 4761
+cloud age (yr): 1.000e+05   calc time (s): 1147    nb of steps: 4763
+cloud age (yr): 1.037e+05   calc time (s): 1148    nb of steps: 4768
+cloud age (yr): 1.075e+05   calc time (s): 1148    nb of steps: 4773
+cloud age (yr): 1.114e+05   calc time (s): 1148    nb of steps: 4777
+cloud age (yr): 1.155e+05   calc time (s): 1149    nb of steps: 4785
+cloud age (yr): 1.197e+05   calc time (s): 1149    nb of steps: 4793
+cloud age (yr): 1.241e+05   calc time (s): 1154    nb of steps: 4802
+cloud age (yr): 1.286e+05   calc time (s): 1157    nb of steps: 4805
+cloud age (yr): 1.334e+05   calc time (s): 1157    nb of steps: 4807
+cloud age (yr): 1.382e+05   calc time (s): 1157    nb of steps: 4809
+cloud age (yr): 1.433e+05   calc time (s): 1159    nb of steps: 4813
+cloud age (yr): 1.486e+05   calc time (s): 1159    nb of steps: 4820
+cloud age (yr): 1.540e+05   calc time (s): 1159    nb of steps: 4827
+cloud age (yr): 1.596e+05   calc time (s): 1160    nb of steps: 4834
+cloud age (yr): 1.655e+05   calc time (s): 1162    nb of steps: 4848
+cloud age (yr): 1.715e+05   calc time (s): 1168    nb of steps: 4862
+cloud age (yr): 1.778e+05   calc time (s): 1168    nb of steps: 4867
+cloud age (yr): 1.843e+05   calc time (s): 1169    nb of steps: 4875
+cloud age (yr): 1.911e+05   calc time (s): 1171    nb of steps: 4882
+cloud age (yr): 1.981e+05   calc time (s): 1171    nb of steps: 4887
+cloud age (yr): 2.054e+05   calc time (s): 1172    nb of steps: 4892
+cloud age (yr): 2.129e+05   calc time (s): 1173    nb of steps: 4906
+cloud age (yr): 2.207e+05   calc time (s): 1178    nb of steps: 4920
+cloud age (yr): 2.288e+05   calc time (s): 1180    nb of steps: 4926
+cloud age (yr): 2.371e+05   calc time (s): 1182    nb of steps: 4935
+cloud age (yr): 2.458e+05   calc time (s): 1189    nb of steps: 4947
+cloud age (yr): 2.548e+05   calc time (s): 1191    nb of steps: 4957
+cloud age (yr): 2.642e+05   calc time (s): 1191    nb of steps: 4973
+cloud age (yr): 2.738e+05   calc time (s): 1199    nb of steps: 4981
+cloud age (yr): 2.839e+05   calc time (s): 1202    nb of steps: 4988
+cloud age (yr): 2.943e+05   calc time (s): 1202    nb of steps: 4996
+cloud age (yr): 3.051e+05   calc time (s): 1202    nb of steps: 5005
+cloud age (yr): 3.162e+05   calc time (s): 1203    nb of steps: 5022
+cloud age (yr): 3.278e+05   calc time (s): 1209    nb of steps: 5035
+cloud age (yr): 3.398e+05   calc time (s): 1210    nb of steps: 5043
+cloud age (yr): 3.523e+05   calc time (s): 1218    nb of steps: 5059
+cloud age (yr): 3.652e+05   calc time (s): 1219    nb of steps: 5072
+cloud age (yr): 3.786e+05   calc time (s): 1224    nb of steps: 5091
+cloud age (yr): 3.924e+05   calc time (s): 1229    nb of steps: 5105
+cloud age (yr): 4.068e+05   calc time (s): 1237    nb of steps: 5124
+cloud age (yr): 4.217e+05   calc time (s): 1240    nb of steps: 5147
+cloud age (yr): 4.371e+05   calc time (s): 1250    nb of steps: 5173
+cloud age (yr): 4.532e+05   calc time (s): 1252    nb of steps: 5189
+cloud age (yr): 4.698e+05   calc time (s): 1260    nb of steps: 5213
+cloud age (yr): 4.870e+05   calc time (s): 1265    nb of steps: 5227
+cloud age (yr): 5.048e+05   calc time (s): 1267    nb of steps: 5247
+cloud age (yr): 5.233e+05   calc time (s): 1268    nb of steps: 5271
+cloud age (yr): 5.425e+05   calc time (s): 1273    nb of steps: 5289
+cloud age (yr): 5.623e+05   calc time (s): 1285    nb of steps: 5339
+cloud age (yr): 5.829e+05   calc time (s): 1288    nb of steps: 5358
+cloud age (yr): 6.043e+05   calc time (s): 1296    nb of steps: 5390
+cloud age (yr): 6.264e+05   calc time (s): 1300    nb of steps: 5405
+cloud age (yr): 6.494e+05   calc time (s): 1309    nb of steps: 5448
+cloud age (yr): 6.732e+05   calc time (s): 1315    nb of steps: 5466
+cloud age (yr): 6.978e+05   calc time (s): 1322    nb of steps: 5497
+cloud age (yr): 7.234e+05   calc time (s): 1333    nb of steps: 5526
+cloud age (yr): 7.499e+05   calc time (s): 1342    nb of steps: 5557
+cloud age (yr): 7.774e+05   calc time (s): 1352    nb of steps: 5603
+cloud age (yr): 8.058e+05   calc time (s): 1362    nb of steps: 5643
+cloud age (yr): 8.354e+05   calc time (s): 1369    nb of steps: 5670
+cloud age (yr): 8.660e+05   calc time (s): 1377    nb of steps: 5701
+cloud age (yr): 8.977e+05   calc time (s): 1381    nb of steps: 5728
+cloud age (yr): 9.306e+05   calc time (s): 1392    nb of steps: 5767
+cloud age (yr): 9.647e+05   calc time (s): 1404    nb of steps: 5805
+cloud age (yr): 1.000e+06   calc time (s): 1411    nb of steps: 5827
+cloud age (yr): 1.037e+06   calc time (s): 1414    nb of steps: 5848
+cloud age (yr): 1.075e+06   calc time (s): 1422    nb of steps: 5875
+cloud age (yr): 1.114e+06   calc time (s): 1427    nb of steps: 5905
+cloud age (yr): 1.155e+06   calc time (s): 1439    nb of steps: 5941
+cloud age (yr): 1.197e+06   calc time (s): 1453    nb of steps: 5988
+cloud age (yr): 1.241e+06   calc time (s): 1463    nb of steps: 6035
+cloud age (yr): 1.286e+06   calc time (s): 1478    nb of steps: 6104
+cloud age (yr): 1.334e+06   calc time (s): 1486    nb of steps: 6158
+cloud age (yr): 1.382e+06   calc time (s): 1488    nb of steps: 6190
+cloud age (yr): 1.433e+06   calc time (s): 1495    nb of steps: 6219
+cloud age (yr): 1.486e+06   calc time (s): 1495    nb of steps: 6227
+cloud age (yr): 1.540e+06   calc time (s): 1497    nb of steps: 6237
+cloud age (yr): 1.596e+06   calc time (s): 1498    nb of steps: 6245
+cloud age (yr): 1.655e+06   calc time (s): 1498    nb of steps: 6251
+cloud age (yr): 1.715e+06   calc time (s): 1499    nb of steps: 6255
+cloud age (yr): 1.778e+06   calc time (s): 1499    nb of steps: 6259
+cloud age (yr): 1.843e+06   calc time (s): 1499    nb of steps: 6263
+cloud age (yr): 1.911e+06   calc time (s): 1499    nb of steps: 6267
+cloud age (yr): 1.981e+06   calc time (s): 1499    nb of steps: 6271
+cloud age (yr): 2.054e+06   calc time (s): 1506    nb of steps: 6279
+cloud age (yr): 2.129e+06   calc time (s): 1507    nb of steps: 6284
+cloud age (yr): 2.207e+06   calc time (s): 1507    nb of steps: 6288
+cloud age (yr): 2.288e+06   calc time (s): 1507    nb of steps: 6293
+cloud age (yr): 2.371e+06   calc time (s): 1507    nb of steps: 6297
+cloud age (yr): 2.458e+06   calc time (s): 1507    nb of steps: 6302
+cloud age (yr): 2.548e+06   calc time (s): 1508    nb of steps: 6307
+cloud age (yr): 2.642e+06   calc time (s): 1508    nb of steps: 6312
+cloud age (yr): 2.738e+06   calc time (s): 1508    nb of steps: 6317
+cloud age (yr): 2.839e+06   calc time (s): 1511    nb of steps: 6323
+cloud age (yr): 2.943e+06   calc time (s): 1512    nb of steps: 6327
+cloud age (yr): 3.051e+06   calc time (s): 1512    nb of steps: 6331
+cloud age (yr): 3.162e+06   calc time (s): 1512    nb of steps: 6335
+cloud age (yr): 3.278e+06   calc time (s): 1512    nb of steps: 6339
+cloud age (yr): 3.398e+06   calc time (s): 1513    nb of steps: 6342
+cloud age (yr): 3.523e+06   calc time (s): 1513    nb of steps: 6345
+cloud age (yr): 3.652e+06   calc time (s): 1514    nb of steps: 6347
+cloud age (yr): 3.786e+06   calc time (s): 1514    nb of steps: 6349
+cloud age (yr): 3.924e+06   calc time (s): 1514    nb of steps: 6351
+cloud age (yr): 4.068e+06   calc time (s): 1514    nb of steps: 6353
+cloud age (yr): 4.217e+06   calc time (s): 1514    nb of steps: 6355
+cloud age (yr): 4.371e+06   calc time (s): 1514    nb of steps: 6358
+cloud age (yr): 4.532e+06   calc time (s): 1514    nb of steps: 6360
+cloud age (yr): 4.698e+06   calc time (s): 1514    nb of steps: 6363
+cloud age (yr): 4.870e+06   calc time (s): 1514    nb of steps: 6365
+cloud age (yr): 5.048e+06   calc time (s): 1515    nb of steps: 6368
+cloud age (yr): 5.233e+06   calc time (s): 1515    nb of steps: 6370
+cloud age (yr): 5.425e+06   calc time (s): 1516    nb of steps: 6374
+cloud age (yr): 5.623e+06   calc time (s): 1520    nb of steps: 6378
+cloud age (yr): 5.829e+06   calc time (s): 1521    nb of steps: 6387
+cloud age (yr): 6.043e+06   calc time (s): 1521    nb of steps: 6395
+cloud age (yr): 6.264e+06   calc time (s): 1522    nb of steps: 6399
+cloud age (yr): 6.494e+06   calc time (s): 1522    nb of steps: 6402
+cloud age (yr): 6.732e+06   calc time (s): 1522    nb of steps: 6404
+cloud age (yr): 6.978e+06   calc time (s): 1522    nb of steps: 6407
+cloud age (yr): 7.234e+06   calc time (s): 1522    nb of steps: 6410
+cloud age (yr): 7.499e+06   calc time (s): 1523    nb of steps: 6412
+cloud age (yr): 7.774e+06   calc time (s): 1523    nb of steps: 6415
+cloud age (yr): 8.058e+06   calc time (s): 1523    nb of steps: 6417
+cloud age (yr): 8.354e+06   calc time (s): 1523    nb of steps: 6419
+cloud age (yr): 8.660e+06   calc time (s): 1523    nb of steps: 6421
+cloud age (yr): 8.977e+06   calc time (s): 1524    nb of steps: 6423
+cloud age (yr): 9.306e+06   calc time (s): 1524    nb of steps: 6425
+cloud age (yr): 9.647e+06   calc time (s): 1524    nb of steps: 6427
+cloud age (yr): 1.000e+07   calc time (s): 1524    nb of steps: 6428
+cloud age (yr): 1.037e+07   calc time (s): 1524    nb of steps: 6430
+cloud age (yr): 1.075e+07   calc time (s): 1524    nb of steps: 6432
+cloud age (yr): 1.114e+07   calc time (s): 1525    nb of steps: 6434
+cloud age (yr): 1.155e+07   calc time (s): 1525    nb of steps: 6436
+cloud age (yr): 1.197e+07   calc time (s): 1525    nb of steps: 6438
+cloud age (yr): 1.241e+07   calc time (s): 1525    nb of steps: 6440
+cloud age (yr): 1.286e+07   calc time (s): 1528    nb of steps: 6443
+cloud age (yr): 1.334e+07   calc time (s): 1528    nb of steps: 6445
+cloud age (yr): 1.382e+07   calc time (s): 1528    nb of steps: 6447
+cloud age (yr): 1.433e+07   calc time (s): 1528    nb of steps: 6450
+cloud age (yr): 1.486e+07   calc time (s): 1529    nb of steps: 6452
+cloud age (yr): 1.540e+07   calc time (s): 1529    nb of steps: 6454
+cloud age (yr): 1.596e+07   calc time (s): 1529    nb of steps: 6455
+cloud age (yr): 1.655e+07   calc time (s): 1529    nb of steps: 6457
+cloud age (yr): 1.715e+07   calc time (s): 1529    nb of steps: 6459
+cloud age (yr): 1.778e+07   calc time (s): 1530    nb of steps: 6461
+cloud age (yr): 1.843e+07   calc time (s): 1530    nb of steps: 6462
+cloud age (yr): 1.911e+07   calc time (s): 1530    nb of steps: 6464
+cloud age (yr): 1.981e+07   calc time (s): 1530    nb of steps: 6465
+cloud age (yr): 2.054e+07   calc time (s): 1531    nb of steps: 6467
+cloud age (yr): 2.129e+07   calc time (s): 1531    nb of steps: 6468
+cloud age (yr): 2.207e+07   calc time (s): 1531    nb of steps: 6469
+cloud age (yr): 2.288e+07   calc time (s): 1531    nb of steps: 6470
+cloud age (yr): 2.371e+07   calc time (s): 1531    nb of steps: 6471
+cloud age (yr): 2.458e+07   calc time (s): 1531    nb of steps: 6472
+cloud age (yr): 2.548e+07   calc time (s): 1531    nb of steps: 6473
+cloud age (yr): 2.642e+07   calc time (s): 1531    nb of steps: 6474
+cloud age (yr): 2.738e+07   calc time (s): 1531    nb of steps: 6475
+cloud age (yr): 2.839e+07   calc time (s): 1531    nb of steps: 6477
+cloud age (yr): 2.943e+07   calc time (s): 1531    nb of steps: 6478
+cloud age (yr): 3.051e+07   calc time (s): 1532    nb of steps: 6479
+cloud age (yr): 3.162e+07   calc time (s): 1532    nb of steps: 6480
+cloud age (yr): 3.278e+07   calc time (s): 1532    nb of steps: 6481
+cloud age (yr): 3.398e+07   calc time (s): 1532    nb of steps: 6482
+cloud age (yr): 3.523e+07   calc time (s): 1532    nb of steps: 6483
+cloud age (yr): 3.652e+07   calc time (s): 1532    nb of steps: 6484
+cloud age (yr): 3.786e+07   calc time (s): 1532    nb of steps: 6485
+cloud age (yr): 3.924e+07   calc time (s): 1532    nb of steps: 6486
+cloud age (yr): 4.068e+07   calc time (s): 1532    nb of steps: 6487
+cloud age (yr): 4.217e+07   calc time (s): 1532    nb of steps: 6488
+cloud age (yr): 4.371e+07   calc time (s): 1532    nb of steps: 6490
+cloud age (yr): 4.532e+07   calc time (s): 1532    nb of steps: 6491
+cloud age (yr): 4.698e+07   calc time (s): 1533    nb of steps: 6492
+cloud age (yr): 4.870e+07   calc time (s): 1533    nb of steps: 6493
+cloud age (yr): 5.048e+07   calc time (s): 1533    nb of steps: 6494
+cloud age (yr): 5.233e+07   calc time (s): 1533    nb of steps: 6494
+cloud age (yr): 5.425e+07   calc time (s): 1533    nb of steps: 6495
+cloud age (yr): 5.623e+07   calc time (s): 1533    nb of steps: 6496
+cloud age (yr): 5.829e+07   calc time (s): 1533    nb of steps: 6497
+cloud age (yr): 6.043e+07   calc time (s): 1533    nb of steps: 6498
+cloud age (yr): 6.264e+07   calc time (s): 1533    nb of steps: 6499
+cloud age (yr): 6.494e+07   calc time (s): 1533    nb of steps: 6501
+cloud age (yr): 6.732e+07   calc time (s): 1533    nb of steps: 6502
+cloud age (yr): 6.978e+07   calc time (s): 1533    nb of steps: 6503
+cloud age (yr): 7.234e+07   calc time (s): 1533    nb of steps: 6504
+cloud age (yr): 7.499e+07   calc time (s): 1533    nb of steps: 6505
+cloud age (yr): 7.774e+07   calc time (s): 1533    nb of steps: 6507
+cloud age (yr): 8.058e+07   calc time (s): 1533    nb of steps: 6508
+cloud age (yr): 8.354e+07   calc time (s): 1533    nb of steps: 6509
+cloud age (yr): 8.660e+07   calc time (s): 1533    nb of steps: 6511
+cloud age (yr): 8.977e+07   calc time (s): 1537    nb of steps: 6512
+cloud age (yr): 9.306e+07   calc time (s): 1537    nb of steps: 6513
+cloud age (yr): 9.647e+07   calc time (s): 1537    nb of steps: 6514
+cloud age (yr): 1.000e+08   calc time (s): 1537    nb of steps: 6515
+CVODE Statistics:
+	Nb of internal steps = 6515
+	Nb of r. h. function eval. = 10484
+	Nb of calls to lin. solver setup function = 1098
+	Nb of function eval. for jacobian calc. = 123627
+	Nb of jacobian eval. = 147
+	Nb of nonlinear solver iter. = 10483
+	Nb of nonlinear convergence failures = 0
+	Nb of local error test failures = 456
+	Nb of calls to root function = 0

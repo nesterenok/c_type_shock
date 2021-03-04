@@ -736,7 +736,7 @@ void chem_network::init_network_umistf(const std::string file_name, bool update)
 				ss >> ch;
 			}
 			if (ss.eof() || ss.fail() || ss.bad()) {
-				cout << SOURCE_NAME << ": error ocurred in string stream in file " << file_name << endl
+				cout << SOURCE_NAME << ": error occurred in string stream in file " << file_name << endl
 					<< ss.str();
 				exit(1);
 			}
@@ -989,9 +989,9 @@ void chem_network::init_h2_formation()
 	reaction.parameters = new double [reaction.nb_of_param];
 	memset(reaction.parameters, 0, reaction.nb_of_param*sizeof(double));
 
-	// if H2_FORMATION_MODE = 0, H2 formation is modelled, reaction *H + *H -> *H2 is taken into account;
+	// if H2_FORMATION_MODE = 0, H2 formation is modeled, reaction *H + *H -> *H2 is taken into account;
 	if (H2_FORMATION_MODE == 1) {
-		// here, it is suggested that only half of the accreted atoms form H2 molecule,
+		// here, it is suggested that only half of the acreted atoms form H2 molecule,
 		// another factor 0.5 due to the fact that two H atoms give one H2:
 		reaction.parameters[0] = 0.25*sqrt(8.*BOLTZMANN_CONSTANT/(M_PI*ATOMIC_MASS_UNIT));
 	}
@@ -1443,7 +1443,7 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 
 				// initialization of chemical desorption (Garrod et al., A&A 467, p.1103, 2007):
 				// the parameter energy release may be <, =, > 0, 
-				// but if it is undefined, = 0;
+				// but if it is undefined, it is assumed that E_react (released energy) >> E_D (binding energy);
 				if (reaction.nb_of_products == 1) 
 				{
 					// the number of vibrational modes in the molecule/surface - bond system,
@@ -1487,10 +1487,9 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 						reaction.parameters[0] *= 1. - desorption_prob;
 					}
 				}
-				else 
-{
+				else { // reactive desorption for reactions with multiple products is not allowed (both products are assumed to be neutral);
 					if (species[ reaction.product[0] ].type == "neutral")
-						reaction.parameters[0] = 0.; // reactive desorption for reactions with multiple products is not allowed;
+						reaction.parameters[0] = 0.;  
 				}
 				
                 // perhaps, chemical desorption factors must be redefined here:
@@ -2133,8 +2132,11 @@ int react_type_determ(std::string rcode, const vector<chem_specimen> &species, c
 		if (nb_of_products == 1) {
 			type = 30;
 		}
-		else if (nb_of_products == 2) {
-			if (species[ product[0] ].type == "neutral" && species[ product[1] ].type == "neutral")
+		else if (nb_of_products > 1) {
+			for (i = 0; i < nb_of_products; i++) {
+				if (species[product[i]].type != "neutral") break;
+			}
+			if (i == nb_of_products)
 				type = 31;
 		}
 	}
@@ -2143,8 +2145,11 @@ int react_type_determ(std::string rcode, const vector<chem_specimen> &species, c
 		if (nb_of_products == 1) {	
 			type = 32;
 		}
-		else if (nb_of_products == 2) {
-			if (species[ product[0] ].type == "neutral" && species[ product[1] ].type == "neutral")
+		else if (nb_of_products > 1) {
+			for (i = 0; i < nb_of_products; i++) {
+				if (species[product[i]].type != "neutral") break;
+			}
+			if (i == nb_of_products)
 				type = 33;
 		}
 	}
@@ -2216,21 +2221,21 @@ double get_h_sticking_coeff(double gas_temp, double dust_temp)
 	// Hollenbach & McKee, ApJS, 41, 555 (1979); see also Burke & Hollenbach, ApJ 265, p. 223 (1983);
 	// return 1./(1. + 0.04*sqrt(gas_temp + dust_temp) + 2.e-3*gas_temp + 8.e-6*gas_temp*gas_temp);
 	
-	// Matar et al., J. Chem. Phys. 133, 104507, 2010;
+	// Matar et al., J. Chem. Phys. 133, 104507, 2010;
 	// gas temperature dependent sticking of hydrogen on cold amorphous water ice surfaces, S0 = 1., T0 = 52 K;
 	return (1. + 0.0481*gas_temp)/pow(1. + 0.01923*gas_temp, 2.5);
 }
 
 double get_h2_sticking_coeff(double gas_temp)
 {
-	// Matar et al., J. Chem. Phys. 133, 104507, 2010; S0 = 0.76, T0 = 87 K;
+	// Matar et al., J. Chem. Phys. 133, 104507, 2010; S0 = 0.76, T0 = 87 K;
 	return (0.76 + 0.02184*gas_temp)/pow(1. + 0.01149*gas_temp, 2.5);
 }
 
 // mass is given in g;
 double get_sticking_coeff(double gas_temp, double mass)
 {
-	// Matar et al., J. Chem. Phys. 133, 104507, 2010;
+	// Matar et al., J. Chem. Phys. 133, 104507, 2010;
 	// The critical temperature is set to be proportional to the mass of the particle;
 	// T_0 = 0.5*m[a.m.u.]*T_0,H2; T_0,H2 = 87 K; S0 = 1;
 	mass = 3.817e-26*gas_temp/mass; // = T_g/T_0 = T_g/(0.5*m[a.m.u.]*T_0,H2) = T_g *ATOMIC_MASS_UNIT/(0.5*m[g]*T_0,H2)
@@ -2393,7 +2398,7 @@ double reaction_rate(const vector<chem_specimen> & species, const accretion_rate
 
 	case 26: // "H + H + grain -> H2 + grain"
 		if (H2_FORMATION_MODE == 0) {
-			k = 0.; // H2 formation is modelled as surface reaction;
+			k = 0.; // H2 formation is modeled as surface reaction;
 		}
 		else if (H2_FORMATION_MODE == 1) 
 		{
@@ -2447,15 +2452,9 @@ double reaction_rate(const vector<chem_specimen> & species, const accretion_rate
 
 	// CR induced photodesorption:
 	case 30: // "*A + CRPhoton -> A"
+	case 31: // "*A + CRPhoton -> A + B + C + D", it is important for CH3OH desorption, Bertin et al., ApJL 817, L12 (2016)
 #ifdef COMMON_PHOTODES_YIELD
 		k = COMMON_PHOTODES_YIELD*photodes_factor_cr;
-#else
-		k = reaction.parameters[0]*photodes_factor_cr;
-#endif
-		break;
-	case 31: // "*A + CRPhoton -> A + B"
-#ifdef COMMON_PHOTODES_YIELD
-		k = 0.;
 #else
 		k = reaction.parameters[0]*photodes_factor_cr;
 #endif
@@ -2463,15 +2462,9 @@ double reaction_rate(const vector<chem_specimen> & species, const accretion_rate
 
 	// Stellar UV photodesorption:
 	case 32: // "*A + ISPhoton -> A"
+	case 33: // "*A + ISPhoton -> A + B + C + D"
 #ifdef COMMON_PHOTODES_YIELD
 		k = COMMON_PHOTODES_YIELD*photodes_factor_is;
-#else
-		k = reaction.parameters[0]*photodes_factor_is;
-#endif
-		break;
-	case 33: // "*A + ISPhoton -> A + B"
-#ifdef COMMON_PHOTODES_YIELD
-		k = 0.;
 #else
 		k = reaction.parameters[0]*photodes_factor_is;
 #endif
@@ -2934,7 +2927,7 @@ void init_chem_abund(const std::string fname, const chem_network *network, doubl
 		}
 		
 		if (ss.eof() || ss.fail() || ss.bad()) {
-			cout << "Error ocurred while reading the file " << fname << endl;
+			cout << "Error occurred while reading the file " << fname << endl;
 		}
 	}
 	// the data must be checked that charge_density > 0;

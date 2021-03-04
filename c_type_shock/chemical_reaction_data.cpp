@@ -599,8 +599,6 @@ void construct_gas_grain_reactions(string input_file, string output_path)
 			break;
 
 		ss.clear(); // the problem of the symbol of line end;
-		memmove(text_line, text_line+2, strlen(text_line)-2); // for data by Penteado et al., ApJ 844, p.71 (2017);
-		
 		ss.str(text_line);
 		// only specimen name is needed:
 		ss >> sp_name;
@@ -627,7 +625,8 @@ void construct_gas_grain_reactions(string input_file, string output_path)
 		// the discussion of photodesorption rates:
 		// Hollenbach et al. ApJ 690, p. 1497, 2009; Walsh et al. ApJ 747, p. 114, 2012;
 		// Oberg et al. A&A 496, p. 281, 2009a; Oberg et al. ApJ 693, p. 1209, 2009b;
-		if (sp_name != "O" && sp_name != "H2O" && sp_name != "CO" && sp_name != "CO2" && sp_name != "N2")
+		// Bertin et al. ApJL 817, L12, 2016;
+		if (/*sp_name != "O" && sp_name != "H2O" && sp_name != "CO" && sp_name != "CO2" && sp_name != "N2" &&*/ sp_name !="CH3OH")
 		{
 			out1 << endl << i++ << ":PHD:*" << sp_name << ":PHOTON:" << sp_name << "::::1:" << photodes_yield << ":0.:0.:3:100000:::::";
 			out1 << endl << i++ << ":CRD:*" << sp_name << ":CRPHOT:" << sp_name << "::::1:" << photodes_yield << ":0.:0.:3:100000:::::";
@@ -646,7 +645,7 @@ void construct_gas_grain_reactions(string input_file, string output_path)
 			<< ":CO:::1:0.:0.:0.:3:100000:::::";
 	}
 	// Photodesorption, individually:
-	// Atomic O (Hollenbach et al., 2009);
+/*	// Atomic O (Hollenbach et al., 2009);
 	out1 << endl << i++ << ":PHD:*O:PHOTON:O::::1:1.e-4:0.:0.:3:100000:::\"Hollenbach_ApJ690_1497_2009\"::";
 	out1 << endl << i++ << ":CRD:*O:CRPHOT:O::::1:1.e-4:0.:0.:3:100000:::\"Hollenbach_ApJ690_1497_2009\"::";
 
@@ -673,6 +672,10 @@ void construct_gas_grain_reactions(string input_file, string output_path)
 	// N2 photodesorption (Oberg et al., 2009a), the upper limit is given in the paper;
 	out1 << endl << i++ << ":PHD:*N2:PHOTON:N2::::1:2.e-4:0:0:3:100000:::\"Oberg_A&A496_281_2009\"::";
 	out1 << endl << i++ << ":CRD:*N2:CRPHOT:N2::::1:2.e-4:0:0:3:100000:::\"Oberg_A&A496_281_2009\"::";
+	*/
+	// CH3OH, CO is the main photo-fragment (Bertin et al. ApJL 817, L12, 2016)
+	out1 << endl << i++ << ":PHD:*CH3OH:PHOTON:CO:H2:H2::1:1.e-4:0:0:3:100000:::\"Bertin_ApJL_817_L12_2016\"::";
+	out1 << endl << i++ << ":CRD:*CH3OH:CRPHOT:CO:H2:H2::1:1.e-4:0:0:3:100000:::\"Bertin_ApJL_817_L12_2016\"::";
 
 	out1.close();
 	out2.close();

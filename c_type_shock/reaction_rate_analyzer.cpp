@@ -158,6 +158,7 @@ void add_cosmicray_chemistry(std::vector<string>& specimen_names) {
     specimen_names.push_back("HCO+");
     specimen_names.push_back("NH4+");
     specimen_names.push_back("N2H+");
+	specimen_names.push_back("He+");
 }
 
 void add_oxygen_chemistry(std::vector<string>& specimen_names) {

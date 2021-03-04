@@ -44,7 +44,7 @@
 // alternative approach; Roberts et al., MNRAS 382, 733–742, 2007; 
 // it is assumed that only the volatile species (CO, N2, NO, O2, C2 and CH4) would be desorbed during the transient heating, 
 // check limiting binding energy:
-#define CR_DESORPTION_LIM_BENERGY 1251. // in K;
+#define CR_DESORPTION_LIM_BENERGY 1251. // in K; methane has 1250 K
 // Roberts et al. (2007) used 1.e+5 as a standard value; the yield is estimated based on Bringa, Johnson, ApJ 603, 159, 2004; 
 #define CR_DESORPTION_YIELD 1.e+5
 
@@ -80,7 +80,7 @@
 
 // 230 K - Ruaud et al., MNRAS 459, p. 3756 (2016),
 // 255 K - Wakelam et al., Molecular Astrophysics 9, 1 (2017);
-// if one uses data on binding energy 65O K by Penteado et al., ApJ 844, p.71 (2017), difussion to binding ratio 0.4, this patameter is equal to 260 K;
+// if one uses data on binding energy 65O K by Penteado et al., ApJ 844, p.71 (2017), diffusion to binding ratio 0.4, this parameter is equal to 260 K;
 // #define H_ATOM_DIFF_BARRIER 255. // in K 
 
 // Cuppen, Herbst, ApJ 668, p. 294, 2007; Hincelin et al. A&A, 2014, arXiv:1410.7375v2;
@@ -101,8 +101,9 @@
 
 // Sticking coefficient for neutral species depends on gas and dust temperature; H atom and H2 molecule are special cases; 
 // different workers use different values, usually 0.5 or 1.;
-// Burke & Hollenbach, ApJ 265, p. 223 (1983); 
-#define STICKING_COEFF_NEUTRALS 1.
+// Burke & Hollenbach, ApJ 265, p. 223 (1983);
+// Laffon et al., arXiv:2102.09862 (2021) - the adsorption probability is about 0.2 for small grains 
+#define STICKING_COEFF_NEUTRALS 1.  // ?
 
 // minimal radius of grains that can adsorb chemical species (in cm), 
 // see the discussion by Hollenbach et al., ApJ 690, p. 1497 (2009):
@@ -178,10 +179,10 @@
 #define SAVE_RADIATIVE_FACTORS_OH 0
 
 // Calculate CO levels, 1 - yes
-#define CALCULATE_POPUL_CO 0
+#define CALCULATE_POPUL_CO 1
 
 // Calculate H2O levels, 1 - yes
-#define CALCULATE_POPUL_H2O 0
+#define CALCULATE_POPUL_H2O 1
 
 // Calculate ion levels, 1 - yes
 #define CALCULATE_POPUL_IONS 1
@@ -198,7 +199,7 @@
 
 // 0 - switch off
 // 1 - data on H2-H+ collisions are used by Gonzalez-Lezana & Honvault (2017),
-// the question - are rates for collisions with H+ and H3+ equal?
+// the question - are rates for collisions with H+ and H3+ equal? (H3+ is not taken into account by default)
 // these data change ortho-/para-H2 ratio
 #define H2_IONS_EXCITATION_ON 1
 

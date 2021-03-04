@@ -59,9 +59,10 @@ using namespace std;
 
 enum SHOCK_STATE_ID {
     SHOCK_STATE_NORMAL = 0,
-    SHOCK_STATE_ION_SUPERSONIC,        // ion velocity changed the sign, ion fluid become supersonic
-    SHOCK_STATE_NEUTRAL_SUBSONIC,      // neutral gas velocity changed the sign, neutral fluid become subsonic,
-    SHOCK_STATE_H2_DISSOCIATION        // 99% of H2 is dissociated,
+    SHOCK_STATE_ION_SUPERSONIC,        // ion velocity gradient changes the sign, ion fluid becomes supersonic
+    SHOCK_STATE_NEUTRAL_SUBSONIC,      // neutral gas velocity gradient changes the sign, neutral fluid become subsonic,
+    SHOCK_STATE_H2_DISSOCIATION,       // 99% of H2 is dissociated,
+	SHOCK_STATE_SMTH_IS_WRONG          // the calculation is very slow, the step is negligibly small,
 };
 
 // abc de = abc * 10 ^ (de)
@@ -154,18 +155,18 @@ int main(int argc, char** argv)
 //	reformat_dust_files_PAH(data_path, "dust/draine_data/PAHneut_30.txt", "dust/draine_data/Gra_81.txt", "dust/draine_data/dust_PAHneut_Draine2001.txt");
 //	reformat_chemical_data_Belloche2014(data_path);
 
-//	path = "";
+	path = "";
 //	calc_grain_photoelectron_rates(data_path);
-//	construct_gas_grain_reactions(data_path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt", path);
+	construct_gas_grain_reactions(data_path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt", path);
 //	construct_ion_recomb_grains(path);
 //	analysis_umist_database(data_path);
 
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
     path = "C:/Users/Александр/Documents/Данные и графики/paper Cosmic masers in C-type shocks/";
-    // path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17/";
-	path += "output_data_2e4/";
-//    production_routes(path, path + "shock_cr3-15_15/");
+    //path += "output_data_2e6/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
+	path += "output_data_2e6/";
+    production_routes(path, path + "shock_cr1-16_15/");  //   add to second path: + "shock_cr3-15_15/"
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -354,9 +355,15 @@ int main(int argc, char** argv)
 
                     cout << left << setw(5) << i+1 << ss.str() << endl;
                     shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
-                    cout << "   shock ended with the code " << (int) shock_state << endl;
+					cout << "   shock ended with the code " << (int)shock_state << endl;
 
-					if (shock_vel > 9.999e+5 && shock_vel < 29.999e+5)
+					// repeating the calculations, 
+					if (shock_state == SHOCK_STATE_SMTH_IS_WRONG) {
+						shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
+						cout << "   shock ended with the code " << (int) shock_state << endl;
+					}
+                    
+					if (shock_vel > 9.999e+5 && shock_vel < 24.999e+5)
 						shock_vel += 2.5e+5;
 					else
 						shock_vel += 5.0e+5;
@@ -1136,7 +1143,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
     SHOCK_STATE_ID shock_state = SHOCK_STATE_NORMAL;
 	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg, save_disk_space;
-	int i, nb_saved, nb_not_saved, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
+	int i, nb_saved, nb_not_saved, max_nb_steps, nb_cases_with_max_steps, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
 		nb_lev_ch3oh, nb_lev_oi, nb_lev_ci, nb_lev_cii, nb_of_species, nb_of_equat, nb_of_grain_charges, nb_dct, nb_mhd, flag, 
 		nb_saved_cloud_param, verbosity;
 	long int tot_nb_steps;
@@ -1277,8 +1284,11 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
     dv_to_v_lim = 0.01; 
 
     // relative difference between ion and neutral speeds, at which shock stops;
-    dvel_shock_stop = 0.03; // for studies of chemical evolution of post-shock gas, set 0.001
+    dvel_shock_stop = 0.02; // for studies of chemical evolution of post-shock gas, set 0.001
     
+	// maximal nb of steps in the cycle when trying to reach zout,
+	max_nb_steps = 100;
+
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
 	void *cvode_mem = CVodeCreate(CV_BDF);
 
@@ -1349,6 +1359,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
 
+	nb_cases_with_max_steps = 0;
 	nb_saved = nb_not_saved = tot_nb_steps = 0;
 	nb_saved_cloud_param = -1;
 	is_post_shock = must_be_stopped = false;
@@ -1362,10 +1373,15 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		flag = CV_SUCCESS; 
         zout = z + dz; // updating zout
 
-		while (i < 100 && flag == CV_SUCCESS && z < zout) {
+		while (i < max_nb_steps && flag == CV_SUCCESS && z < zout) {
 			flag = CVode(cvode_mem, zout, y, &z, CV_ONE_STEP); // CV_NORMAL or CV_ONE_STEP     
      	    i++;
 		}
+
+		if (i == max_nb_steps)
+			nb_cases_with_max_steps++;
+		else
+			nb_cases_with_max_steps = 0;
 
         dz += z - zout;
 		if (dz < 10.*DBL_EPSILON*z) // at this moment, dz may be very small or negative due to rounding error;
@@ -1382,7 +1398,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
                 << "calc time (s): " << setw(8) << (int)(time(NULL) - timer) << "nb of steps: " << i << endl;
         }
 
-		// Calculation of velocity gradients, some arbitrary parameter for velocity difference,
+		// Calculation of velocity gradients, some arbitrary parameter for velocity difference dv_to_v_lim
 		// these parameters must be close to the instantaneous velocity gradients
 		dz_arr.push_back(dz);
 		i = (int) dz_arr.size();
@@ -1391,7 +1407,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
         do {
 			i--;
 			a += dz_arr[i];
-        } while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 3) - veln_arr[i]) < dv_to_v_lim *NV_Ith_S(y, nb_mhd + 3));
+        } 
+		while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 3) - veln_arr[i]) < dv_to_v_lim *NV_Ith_S(y, nb_mhd + 3));
         vel_n_grad = (NV_Ith_S(y, nb_mhd+3) - veln_arr[i])/a;
         
         a = 0.;
@@ -1399,7 +1416,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
         do {
             i--;
             a += dz_arr[i];
-        } while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 4) - veli_arr[i]) < dv_to_v_lim *NV_Ith_S(y, nb_mhd + 4));
+        } 
+		while (i > 0 && fabs(NV_Ith_S(y, nb_mhd + 4) - veli_arr[i]) < dv_to_v_lim *NV_Ith_S(y, nb_mhd + 4));
         vel_i_grad = (NV_Ith_S(y, nb_mhd+4) - veli_arr[i])/a;
          
 		veln_arr.push_back( NV_Ith_S(y, nb_mhd+3) );
@@ -1410,7 +1428,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
         // Saving data,
         // second condition - in order to look for the cause of crashes
-        if (z - z_saved > 0.05 * magn_precursor_length || nb_not_saved > 10) {
+		nb_not_saved++;
+        if (z - z_saved > 0.05 * magn_precursor_length || nb_not_saved >= 10) {
             nb_not_saved = 0;
             nb_saved++;
             
@@ -1458,9 +1477,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
             z_saved = z;
         }
-        else {
-            nb_not_saved++;
-        }
+        
 		// first we save, than we break;
 		if (flag != CV_SUCCESS) {
 			cout << "Error ocurred in solver" << flag << endl;
@@ -1481,6 +1498,11 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             shock_state = SHOCK_STATE_H2_DISSOCIATION;
             break;
         }
+		if (nb_cases_with_max_steps > 50) {
+			cout << "The step is very small" << endl;
+			shock_state = SHOCK_STATE_SMTH_IS_WRONG;
+			break;
+		}
 
         a = 0.;
         for (i = nb_mhd; i < nb_of_equat; i++)
@@ -1558,7 +1580,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
             b = fabs(vel_i_grad / user_data.get_veli_grad());
 
 			// this parameter is important for radiative transport modeling (fluctuations of the level populations)
-            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.1 || a < 0.9)) ||
+            if (((fabs(vel_n_grad) > user_data.get_vel_grad_min()) && (a > 1.07 || a < 0.93)) ||
                 ((fabs(vel_i_grad) > user_data.get_vel_grad_min()) && (b > 1.1 || b < 0.9)))
             {
                 is_new_vg = true;

@@ -365,7 +365,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	network->init_network_umistf(path + "chemistry/reactions_ion_neutrals.txt");
 
 	// update (experimental)
-	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update.txt");
+	// network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update.txt");
 
 	if (H2_FORMATION_MODE > 0)
 		network->init_h2_formation();
@@ -844,9 +844,9 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
             case 28: // "*A + grain -> A + grain"
             case 29: // "*A + CR -> A"
             case 30: // "*A + CRPhoton -> A"
-            case 31: // "*A + CRPhoton -> A + B"
+            case 31: // "*A + CRPhoton -> A + B + C + D"
             case 32: // "*A + ISPhoton -> A"
-            case 33: // "*A + ISPhoton -> A + B"			
+            case 33: // "*A + ISPhoton -> A + B + C + D"			
                 k = reaction.reactant[0];
                 rate *= y_data[k] * coverage;
                 arr[k] -= rate;
@@ -1298,8 +1298,8 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
         }
     }
 
-	// here the excitation of H2 by cosmic rays is taken into acccount;
-    // it is dificult to take into account the heating of the gas by this process (H2 may de-excite radiatively)
+	// here the excitation of H2 by cosmic rays is taken into account;
+    // it is difficult to take into account the heating of the gas by this process (H2 may de-excite radiatively)
 	if (H2_CR_EXCITATION_ON) {
 		ioniz_fraction = conc_e/conc_h_tot;
 		// the values of two last parameters are returned (index and derivative for ionization grid)
@@ -1397,7 +1397,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
     neut_heat_chem += h2_h_diss_cooling + h2_h2_diss_cooling;
 	
     // other processes of H2 formation are assumed not to change level populations: molecules are formed
-	// with level population distrubution proportional to the current level population distribution;
+	// with level population distribution proportional to the current level population distribution;
 	c = h2_prod/conc_h2;
 	for (i = nb_of_species; i < nb_of_species + nb_lev_h2; i++) {
 		ydot_data[i] += y_data[i] *c;
@@ -3207,7 +3207,7 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 		ydot_data[i] = (ydot_data[i] - y_data[i] *velg_mhd_i)/vel_i;
 	}
 
-	// the derivative of grain charge distribution/average charge and concentration. Be carefull: vel_ni_diff = vel_n - vel_i;
+	// the derivative of grain charge distribution/average charge and concentration. Be careful: vel_ni_diff = vel_n - vel_i;
 	// gradients are necessary: neutral (3) and ion (4) velocities, neutral temperature (0);
 	nb_e = 0.;
 	e = (velg_mhd_n - velg_mhd_i)/vel_ni_diff;

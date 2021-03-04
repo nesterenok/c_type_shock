@@ -154,6 +154,7 @@ public:
 	void set_gas_param(double temp_neutrals, double el_temp, double he_conc, double ph2_conc, double oh2_conc, double h_conc, 
         double el_conc, double *&concentration, int *&indices) const;
 	
+	// the data on H2 + H+ are only available, the H3+ concentration is not taken into account,
     void set_ion_param(double temp_neutrals, double temp_ions, double hp_conc, double h3p_conc, 
         double *&concentration, int *&indices) const;
 
