@@ -79,7 +79,7 @@ protected:
 	dust_heating_ISRF *dheat_isrf;	
 	
 	// arrays to save radiative transfer factors:
-	// be carefull about dimension of dheat_efficiency,
+	// be careful about dimension of dheat_efficiency,
 	double *gamma_factors, *delta_factors, *dheat_efficiency, *esc_prob_int1, *esc_prob_int2;
 
 public:	
@@ -98,7 +98,7 @@ public:
 		int & nb_lev_ch3oh, int & nb_lev_ci, int & nb_lev_oi, int & nb_lev_cii) const;
 	void get_nbs(int & nb_of_grain_charges, int & nb_of_equat, int & nb_dct, int & nb_mhd) const;
 
-	// the data for grains of i component are located in variable list having numbers nb1 <= i <= nb2;
+	// the data for grains of i component are located in variable list having numbers nb1 <= l < nb2;
 	void get_dust_component_nbs(int i, int & nb1, int & nb2) const;
 	int get_dust_zmin(int i) const { return min_grain_charge[i]; }
 	int get_dust_zmax(int i) const { return max_grain_charge[i]; }

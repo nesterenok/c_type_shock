@@ -75,6 +75,7 @@ void assign_cloud_data(const string &path, evolution_data *user_data, vector<dou
 
 void calc_chem_evolution(const string &data_path, const string &output_path, double conc_h_tot, double op_ratio_h2,
     double visual_extinct, double cr_ioniz_rate, double uv_field_strength, double ir_field_strength, double c_abund_pah);
+
 // path to data files, path to output for dark cloud simulations, path to output for shock simulations;
 SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, const string &output_path2, double shock_vel,
 	double magnetic_field, double c_abund_pah, double evol_time);
@@ -148,7 +149,6 @@ int main(int argc, char** argv)
 //	reformat_h2o_coll_data(data_path, 1);
 //	merge_co_h_coll_data(data_path);
 	
-
 //	reformat_dust_files(data_path, "dust/draine_data/suvSil_81.txt", "dust/draine_data/dust_silicate_Draine2001.txt");
 //	reformat_dust_files(data_path, "dust/draine_data/Gra_81.txt", "dust/draine_data/dust_graphite_Draine1993.txt");
 //	reformat_dust_files_PAH(data_path, "dust/draine_data/PAHion_30.txt", "dust/draine_data/Gra_81.txt", "dust/draine_data/dust_PAHion_Draine2001.txt");
@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 
 	path = "";
 //	calc_grain_photoelectron_rates(data_path);
-	construct_gas_grain_reactions(data_path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt", path);
+//	construct_gas_grain_reactions(data_path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt", path);
 //	construct_ion_recomb_grains(path);
 //	analysis_umist_database(data_path);
 
@@ -165,8 +165,8 @@ int main(int argc, char** argv)
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
     path = "C:/Users/Александр/Documents/Данные и графики/paper Cosmic masers in C-type shocks/";
     //path += "output_data_2e6/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
-	path += "output_data_2e6/";
-    production_routes(path, path + "shock_cr1-16_15/");  //   add to second path: + "shock_cr3-15_15/"
+	path += "output_data_2e5/";
+//    production_routes(path, path + "shock_cr3-15_40/");  //   add to second path: + "shock_cr3-15_15/"
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -337,7 +337,7 @@ int main(int argc, char** argv)
                 max_shock_speed = 120.1e+5; // 30.1e+5; 120.1e+5; for test simulations may be lower
                 shock_state = SHOCK_STATE_NORMAL;
 
-                for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL); i++) {
+                for (i = 0; (shock_vel < max_shock_speed) && (shock_state == SHOCK_STATE_NORMAL || shock_state == SHOCK_STATE_SMTH_IS_WRONG); i++) {
                     ss.clear();
                     ss.str("");
                     ss << output_path;
@@ -355,12 +355,14 @@ int main(int argc, char** argv)
 
                     cout << left << setw(5) << i+1 << ss.str() << endl;
                     shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
-					cout << "   shock ended with the code " << (int)shock_state << endl;
+					cout << left << setw(5) << i + 1 
+						<< "shock ended with the code " << (int) shock_state << endl;
 
 					// repeating the calculations, 
 					if (shock_state == SHOCK_STATE_SMTH_IS_WRONG) {
 						shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
-						cout << "   shock ended with the code " << (int) shock_state << endl;
+						cout << left << setw(5) << i + 1 
+							<< "shock ended with the code " << (int) shock_state << endl;
 					}
                     
 					if (shock_vel > 9.999e+5 && shock_vel < 24.999e+5)
@@ -1143,7 +1145,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
     SHOCK_STATE_ID shock_state = SHOCK_STATE_NORMAL;
 	bool is_post_shock, must_be_stopped, is_new_chd, is_new_vg, save_disk_space;
-	int i, nb_saved, nb_not_saved, max_nb_steps, nb_cases_with_max_steps, nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
+	int i, nb_saved, max_nb_steps, nb_cases_with_max_steps, 
+		nb_lev_h2, nb_lev_h2o, nb_lev_co, nb_vibr_h2o, nb_vibr_co, nb_lev_oh, nb_lev_pnh3, nb_lev_onh3, nb_vibr_ch3oh, 
 		nb_lev_ch3oh, nb_lev_oi, nb_lev_ci, nb_lev_cii, nb_of_species, nb_of_equat, nb_of_grain_charges, nb_dct, nb_mhd, flag, 
 		nb_saved_cloud_param, verbosity;
 	long int tot_nb_steps;
@@ -1245,7 +1248,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	user_data.calc_ion_dens(y, ion_conc, ion_pah_conc, ion_dens, ion_pah_dens, ion_dust_dens);
 	user_data.calc_neutral_dens(y, neut_conc, neut_dens);
 
-	// Assesment of the magnetic precursor length - the distance that characterizes the decrease of the ion velocity, 
+	// Assessment of the magnetic precursor length - the distance that characterizes the decrease of the ion velocity, 
 	// Draine, ApJ 241, p. 1021, 1980; Flower & Pineau des Forets, MNRAS 275, p. 1049, 1995; 
 	// 'Langevin' cross section is approximately equal to sigma*vel = 2.e-9 cm3 s-1;
 	magn_precursor_length = magnetic_field*magnetic_field /(M_PI*neut_dens*shock_vel)
@@ -1360,7 +1363,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #endif
 
 	nb_cases_with_max_steps = 0;
-	nb_saved = nb_not_saved = tot_nb_steps = 0;
+	nb_saved = tot_nb_steps = 0;
 	nb_saved_cloud_param = -1;
 	is_post_shock = must_be_stopped = false;
 	
@@ -1428,9 +1431,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 
         // Saving data,
         // second condition - in order to look for the cause of crashes
-		nb_not_saved++;
-        if (z - z_saved > 0.05 * magn_precursor_length || nb_not_saved >= 10) {
-            nb_not_saved = 0;
+        if (z - z_saved > 0.05 * magn_precursor_length || nb_cases_with_max_steps % 10 == 0) {
             nb_saved++;
             
             save_specimen_abund(output_path2, nb_of_species, y, conc_h_tot, z);
@@ -1623,6 +1624,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #endif
     return shock_state;
 }
+
 
 void calc_cr_dominated_region(const string &data_path, const string &output_path1, const string &output_path2, double c_abund_pah, 
 	double evol_time, double cr_ir_factor, double incr_time)
@@ -2443,8 +2445,8 @@ void save_energy_fluxes(const string &output_path, const evolution_data *user_da
     kin_energy_flux_dust = user_data->calc_dust_kinetic_energy_flux(y);
     kin_energy_flux = kin_energy_flux_neut + kin_energy_flux_ions + kin_energy_flux_dust;
 
-    thermal_energy_flux_neut = 2.5 * BOLTZMANN_CONSTANT * v_n * neut_conc * NV_Ith_S(y, nb_mhd);
-    thermal_energy_flux_ions = 2.5 * BOLTZMANN_CONSTANT * v_i *
+    thermal_energy_flux_neut = 1.5 * BOLTZMANN_CONSTANT * v_n * neut_conc * NV_Ith_S(y, nb_mhd);  // 3/2 nkT*v
+    thermal_energy_flux_ions = 1.5 * BOLTZMANN_CONSTANT * v_i *
         ((ion_conc + ion_pah_conc) * NV_Ith_S(y, nb_mhd + 1) + NV_Ith_S(y, user_data->get_network()->e_nb) * NV_Ith_S(y, nb_mhd + 2));
     thermal_energy_flux = thermal_energy_flux_neut + thermal_energy_flux_ions;
     
@@ -2497,7 +2499,7 @@ void create_file_dust_properties(const string &output_path, const dust_model *du
 		<< "! puv - rate of photoelectron emission by IS UV radiation, [cm-3 s-1]" << endl
 		<< "! pvis - rate of photoelectron emission by IS VIS radiation, [cm-3 s-1]" << endl
 		<< "! pcr - rate of photoelectron emission by CR induced radiation, [cm-3 s-1]" << endl
-		<< "! at the end, T - average dust temperature, grains with radius > MIN_ADSORPTION_RADIUS are taken into acount" << endl;
+		<< "! at the end, T - average dust temperature, grains with radius > MIN_ADSORPTION_RADIUS are taken into account" << endl;
 
 	output << left << "!";
 	for (i = 0; i < 16*dust->nb_of_comp + 3; i++) {

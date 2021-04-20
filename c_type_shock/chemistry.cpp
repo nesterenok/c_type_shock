@@ -649,7 +649,7 @@ void chem_network::init_network_umistf(const std::string file_name, bool update)
 		nb_of_reactants = max_nb_of_reactants;
 		nb_of_products = max_nb_of_products;
 		
-		// comment lines are read, comment lines can be located throught the file:
+		// comment lines are read, comment lines can be located through the file:
 		do
 			input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 		while (text_line[0] == '#');
@@ -884,7 +884,7 @@ void chem_network::init_network_umistf(const std::string file_name, bool update)
 #endif
 					// vibrational frequency of the species in the surface potential well (Hasegawa & Herbst, ApJSS 82, p. 167-195, 1992):
 					reaction.parameters[0] = SURF_VIBR_FREQ*sqrt(b_en *ATOMIC_MASS_UNIT/species[reactant[0]].mass);
-					reaction.parameters[1] = b_en; // modified binding enrgy;
+					reaction.parameters[1] = b_en; // modified binding energy;
 				}
 				// cosmic-ray induced desorption:
 				else if (reaction.type == 29) 
@@ -1455,14 +1455,15 @@ void chem_network::init_grain_surface_chemistry(const string fname)
 
 					// it is assumed that both the neutral and adsorbed species are presented in the specimen list,
 					if (species[reaction.product[0]].type == "neutral") {
-						bind_en = species[find_specimen('*' + species[reaction.product[0]].name)].bind_en * BOLTZMANN_CONSTANT;
+						// conversion of binding energy to erg:
+						bind_en = species[ find_specimen('*' + species[reaction.product[0]].name) ].bind_en * BOLTZMANN_CONSTANT;
 						
 						if (!reaction.is_energy_released_def) {
 							desorption_prob = CHEM_DESORPTION_FACTOR;  // energy released is not defined,
 						}
 						else if (reaction.energy_released > 0.) {
 							desorption_prob = CHEM_DESORPTION_FACTOR
-								* pow(1. - bind_en / (reaction.energy_released + bind_en), n - 1);
+								* pow(1. - bind_en / (reaction.energy_released + bind_en), n - 1);  // reaction energy does not include binding energy of the product
 						}
 						else {
 							desorption_prob = 0.;
@@ -1644,6 +1645,7 @@ void chem_network::check_reactions()
 		for (j = 0; j < reaction_array[i].nb_of_products; j++) {
 			k -= species[ reaction_array[i].product[j] ].charge;
 		}
+		// only positive ions are neutralized on dust grains,
 		if ((k != 0 && i < nb_of_reactions - nb_reactions_ion_grains) || (k != 1 && i >= nb_of_reactions - nb_reactions_ion_grains)) {
 			cout << "Error: no charge conservation in the reaction " << reaction_array[i].name << endl;
 			is_failed = true;
@@ -2927,13 +2929,15 @@ void init_chem_abund(const std::string fname, const chem_network *network, doubl
 		}
 		
 		if (ss.eof() || ss.fail() || ss.bad()) {
-			cout << "Error occurred while reading the file " << fname << endl;
+			cout << "Stringstream error occurred while reading the file " << fname << endl;
 		}
 	}
 	// the data must be checked that charge_density > 0;
 	abundances[network->e_nb] = charge_density;
 	input.close();
 }
+
+
 
 
 struct rdata {

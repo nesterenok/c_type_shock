@@ -105,7 +105,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	// characteristic value for molecular clouds, dv/dz = 1 km s-1 pc-1 = 3.2e-14 cm s-1 cm-1; 
     // 2. Goodman et al. ApJ 406, p.528 (1993), 0.3-4 km s-1 pc-1
 	vel_grad_min = 3.e-14;
-	vel_n_grad = vel_i_grad = - vel_grad_min;
+	vel_n_grad = vel_i_grad = -vel_grad_min;
 
 	// Initialization of cross section data for elastic scattering:
 	// Please, see the paper by Dalgarno 1999 and reference therein (Shimamura et al. 1989),
@@ -212,7 +212,7 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 	h2o_diagram *di = new h2o_diagram(path, ph2o_mol, nb_lev_h2o, nb_vibr_h2o, verbosity);
 	ph2o_di = di;
 	
-	// the pointer to derivative class must be used here (not to base class):
+	// the pointer to derivative class must be used here (not to the base class):
 	ph2o_einst = new h2o_einstein_coeff(path, di, verbosity);
 	ph2o_coll =	new h2o_collisions(path, ph2o_di, false, verbosity);
 
@@ -337,7 +337,6 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 //	network->add_element("F");
 	
 	network->init_gas_phase_species(path + "chemistry/UMIST_2012/species_UMIST2012.txt");
-//	network->init_gmantle_species(path + "chemistry/UMIST_2012/surface_binding_energies_NAUTILUS.txt");
 	network->init_gmantle_species(path + "chemistry/UMIST_2012/surface_binding_energies_Penteado2017.txt");
 	
 	// in order to prevent adsorption of large amount of H2 molecules on grains:
@@ -348,25 +347,24 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 
 	// Main network and updates:
 	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_UMIST2012.txt", update = false);
-	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_CRphoto_Heys2017.txt");
-	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_ISRFphoto_Heys2017.txt");
-	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_Chabot2013.txt");
-	
-	// the photodesorption of CH3OH is accompanied with it destruction - this is not taken into account
-	network->init_network_umistf(path + "chemistry/reactions_adsorp_desorption.txt");
-	network->init_network_umistf(path + "chemistry/reactions_ion_recomb_grains.txt");
-	
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_CRphoto_Heys2017.txt", update = true);
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_ISRFphoto_Heys2017.txt", update = true);
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_Chabot2013.txt", update = true);
+
 	// Palau et al., MNRAS 467, p.2723 (2017), arXiv:1701.04802v1;
-	network->init_network_umistf(path + "chemistry/reactions_COM_Palau2017.txt");
-	// additional collisional dissociation reactions;
-	network->init_network_umistf(path + "chemistry/reactions_colldiss.txt");
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_COM_Palau2017.txt", update = true);
+	// additional collisional dissociation reactions; Nesterenok et al., Astrophys. Space Sci. 363, 151 (2018);
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_colldiss.txt", update = true);
 
 	// ion neutral reactions for CH3O and CH2OH and other neutrals (including updates):
-	network->init_network_umistf(path + "chemistry/reactions_ion_neutrals.txt");
+	network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update_ion_neutrals.txt", update = true);
 
-	// update (experimental)
+	// update (in test)
 	// network->init_network_umistf(path + "chemistry/UMIST_2012/rates_update.txt");
-
+	
+	network->init_network_umistf(path + "chemistry/reactions_adsorp_desorption.txt", update = false);
+	network->init_network_umistf(path + "chemistry/reactions_ion_recomb_grains.txt", update = false);
+	
 	if (H2_FORMATION_MODE > 0)
 		network->init_h2_formation();
 	
@@ -374,14 +372,13 @@ evolution_data::evolution_data(const string &path, const std::string &output_pat
 		network->init_photoreact_surface_chemistry();
 		network->init_grain_surface_chemistry(path + "chemistry/nautilus_networks/bimolecular_gs_reactions.txt");
 	//	network->init_grain_surface_chemistry(path + "chemistry/nautilus_networks/bimolecular_gs_reactions_add.txt");
-	//	network->init_grain_surface_chemistry(path + "chemistry/Belloche_Garrod_2014/bimolecular_gs_reactions.txt");
 	}
 
 	accr_func = new accretion_rate_functions();
 	
 	nb_of_species = network->nb_of_species;
 	nb_of_gmantle_species = network->nb_of_gmantle_species;
-	nb_of_gas_species = nb_of_species - nb_of_gmantle_species;  
+	nb_of_gas_species = nb_of_species - nb_of_gmantle_species;
 	
 	// auxiliary variables that facilitate access to the data;
 	nb_dch = new int [nb_of_dust_comp+1];
@@ -752,7 +749,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 		if (dust->get_grain_radius(i) > MIN_ADSORPTION_RADIUS) 
 		{
 			b += grain_conc[i];
-			a = dust->get_grain_area(i) *grain_conc[i];
+			a = dust->get_grain_area(i) *grain_conc[i];  // area returned by function is pi*radius*radius
 			ads_dust_area += a;
 		
 			temp_d += y_data[nb_dct + i] *a;
@@ -1482,7 +1479,7 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 #if (CALCULATE_POPUL_NH3_OH)
     // different data need different arguments for para- and ortho-H2
 	// oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_h2j0, conc_h2-conc_h2j0, conc_h, conc_e, coll_partn_conc, indices);
-    oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);
+    oh_coll->set_gas_param(temp_n, temp_e, conc_he, conc_ph2, conc_oh2, conc_h, conc_e, coll_partn_conc, indices);  // for hyperfine resolved levels
 
 	specimen_population_derivative(y_data, ydot_data, nb, oh_di, oh_einst, oh_coll, coll_partn_conc, indices, vel_n_grad, 
 		neut_heat_oh, a, a, dust_heat_mline);
@@ -1697,17 +1694,18 @@ int evolution_data::f(realtype t, N_Vector y, N_Vector ydot)
 		ydot_data[nb_dct + i] = dh_isrf_arr[i] - dust->components[i]->get_int_emiss(temp_d);
 		
 		// heating by molecular emission:
-		if (GRAIN_HEATING_BY_MOLECULES_ON) {
+#if (GRAIN_HEATING_BY_MOLECULES_ON)
 			ydot_data[nb_dct + i] += (dust_heat_mline[i] + dust_heat_h2_line[i])*CM_INVERSE_TO_ERG;
-		}
+#endif
 
 		// the heat associated with adsorption-desorption (only binding energy), grain surface chemical reactions may be not included (check);
 		// normalized on one dust particle:
 		if (dust->get_grain_radius(i) > MIN_ADSORPTION_RADIUS ) 
 		{
 			dust_heat_chem[i] = energy_gain_d *dust->get_grain_area(i);
-			if (GRAIN_HEATING_GS_CHEMISTRY)
+#if (GRAIN_HEATING_GS_CHEMISTRY)
 				ydot_data[nb_dct + i] += dust_heat_chem[i];
+#endif
 		}
 
 		// heat due to gas-dust collisions (eq. from Draine, ApJ 241, p.1021, 1980):
@@ -3060,13 +3058,14 @@ mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &outp
         nb_vibr_ch3oh, nb_ch3oh, c_abund_pah, verb),
 	magn_field_energy(0.), add_el_source(0.), velg_mhd_n(0.), velg_mhd_i(0.), ion_vg_denominator(0.), neut_vg_denominator(0.)
 {
+	bool update;
 	// calculation of the number of equations:
 	nb_of_equat = nb_of_species + nb_lev_h2 + 2*nb_lev_h2o + nb_lev_co + nb_lev_oh + nb_lev_pnh3 + nb_lev_onh3 
 		+ 2*nb_lev_ch3oh + nb_lev_ci + nb_lev_oi + nb_lev_cii + nb_of_grain_charges + nb_of_dust_comp + NB_MHD_EQUATIONS;
 
 	// chemical reactions relevant for shock modelling:
 	if (GRAIN_MANTLE_SPUTTERING_ON) {
-		network->init_network_umistf(input_path + "chemistry/reactions_grain_mantle_sputt.txt");
+		network->init_network_umistf(input_path + "chemistry/reactions_grain_mantle_sputt.txt", update = false);
 	}
 	
 	network->check_reactions(); // must be called in all cases;
@@ -3337,34 +3336,3 @@ int mhd_shock_data::f(realtype t, N_Vector y, N_Vector ydot)
 	}
 	return returned_val;
 }
-
-
-/*	// here the excitation of H2 in formation on grains is taken into account:
-h2_excit_gf = new h2_grain_formation(h2_di);
-    h2_excit_gasph = new h2_gasphase_formation(h2_di);
-#if (H2_FORMATION_EXCITATION_ON)
-	oh2_form_gaschem = oh2_form_grains = 0.; 	
-	h2_prod -= h2_prod_gr;
-
-	for (i = 0; i < nb_lev_h2; i++) 
-	{
-		a = h2_prod_gr *h2_excit_gf->get_efficiency(i);
-		ydot_data[nb_of_species + i] += a;
-		
-		if (rounding(h2_di->lev_array[i].spin) == 1)
-			oh2_form_grains += a;
-	}
-	
-	h2_prod -= h2_prod_gas;
-	for (i = 0; i < nb_lev_h2; i++) 
-	{
-		a = h2_prod_gas *h2_excit_gasph->get_efficiency(i, temp_n);
-		ydot_data[nb_of_species + i] += a;
-
-		if (rounding(h2_di->lev_array[i].spin) == 1)
-			oh2_form_gaschem += a;
-	}
-#endif */
-	
-	// H2 dissociation
-	

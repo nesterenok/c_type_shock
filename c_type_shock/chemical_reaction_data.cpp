@@ -626,8 +626,8 @@ void construct_gas_grain_reactions(string input_file, string output_path)
 		// Hollenbach et al. ApJ 690, p. 1497, 2009; Walsh et al. ApJ 747, p. 114, 2012;
 		// Oberg et al. A&A 496, p. 281, 2009a; Oberg et al. ApJ 693, p. 1209, 2009b;
 		// Bertin et al. ApJL 817, L12, 2016;
-		if (/*sp_name != "O" && sp_name != "H2O" && sp_name != "CO" && sp_name != "CO2" && sp_name != "N2" &&*/ sp_name !="CH3OH")
-		{
+		/*sp_name != "O" && sp_name != "H2O" && sp_name != "CO" && sp_name != "CO2" && sp_name != "N2" &&*/ 
+		if (sp_name !="CH3OH") {
 			out1 << endl << i++ << ":PHD:*" << sp_name << ":PHOTON:" << sp_name << "::::1:" << photodes_yield << ":0.:0.:3:100000:::::";
 			out1 << endl << i++ << ":CRD:*" << sp_name << ":CRPHOT:" << sp_name << "::::1:" << photodes_yield << ":0.:0.:3:100000:::::";
 		}

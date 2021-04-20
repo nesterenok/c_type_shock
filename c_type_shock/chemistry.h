@@ -178,7 +178,7 @@ public:
 	void init_gas_phase_species(const std::string file_name);
 
 	// the function must be called after gas-phase species being initialized:
-	// in the file: specimen name, bunding energy in K, comments;
+	// in the file: specimen name, binding energy in K, comments;
 	void init_gmantle_species(const std::string file_name);
 	
 	// the function excludes chemical species from the list, must be called before initialization of chemical reactions
@@ -188,7 +188,7 @@ public:
 	void init_species_nbs();
 	
 	// the full file name with the chemistry network must be given, data in the format of UMIST database:
-	void init_network_umistf(const std::string fname, bool update = true);
+	void init_network_umistf(const std::string fname, bool update);
 	
 	// this routine must be called after gas-phase reactions being initialized,
 	void init_photoreact_surface_chemistry();
