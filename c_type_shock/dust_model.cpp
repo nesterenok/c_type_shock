@@ -7,7 +7,7 @@
 // 01.09.2017. Check for errors.
 // 27.11.2017. Error was found: magnitude = 1.086* optical depth;
 // 29.01.2018. Check for errors.
-// 09.04.2021. Check for errors. Found bug in the calculation of integrated emissivity (two pi);
+// 09.04.2021. Check for errors.
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
@@ -546,9 +546,10 @@ void dust_component::calc_int_emiss()
 	for (i = 0, t = t_min; i < nb_of_temp; i++, t *= t_sc)
 	{
 		temp_arr[i] = t;
-		// the upper limit was chosen to be flexible:
-		int_emiss[i] = qromb<dust_component>(*this, en_min, 40.*t, 1.e-6) 
-			*8*M_PI*M_PI*PLANCK_CONSTANT *SPEED_OF_LIGHT *SPEED_OF_LIGHT;  // Note, two pi, take into account grain area and integration by angle; 
+		// the upper limit was chosen to be flexible,
+		// Note, 4pi - integration by angle, absorption cross section per grain in cm2 is taken into account in the integral; 
+		int_emiss[i] = qromb<dust_component>(*this, en_min, 40.*t, 1.e-6)
+			*8*M_PI*PLANCK_CONSTANT *SPEED_OF_LIGHT *SPEED_OF_LIGHT;  
 	}
 	
 	int_emiss_deriv = new double [nb_of_temp-1];

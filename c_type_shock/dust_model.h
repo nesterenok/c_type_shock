@@ -38,7 +38,7 @@ class size_distribution
 public:
 	// true - the grain size distribution; false - grains have one size; 
 	bool distribution;
-	double norm, rad, rad_min, rad_max;  // radiaus in cm;
+	double norm, rad, rad_min, rad_max;  // radius in cm;
 	
 	// there is no check if radius lies in the given range in the operator():
 	virtual double operator() (double radius) const { return 0.; }
@@ -179,7 +179,7 @@ public:
 	// cross section for absorption of one grain, in [cm2]:
 	double absorption(double energy) const;
 
-	// the amount of energy, that one dust grain emmits [erg s-1]:
+	// the amount of energy, that one dust grain emits [erg s-1]:
 	double get_int_emiss(double temperature) const;
 	
 	// returned parameters: reaction rate in s-1 (rate of electron emission by one grain), electron energy in erg:
@@ -278,7 +278,7 @@ public:
 class dust_heating_ISRF
 {
 protected:
-	int nb_of_comp, nb_ve; // nb of dust components, nb of visiual extinction values;
+	int nb_of_comp, nb_ve; // nb of dust components, nb of visual extinction values;
 	double *extinction, *heating_cr, **heating_ra, **heating_ir, **heating_vis, **heating_uv, **heating_fuv; // extinction in magnitudes;
 	std::string name;
 

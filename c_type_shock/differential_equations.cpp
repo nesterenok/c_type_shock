@@ -3078,8 +3078,11 @@ mhd_shock_data::mhd_shock_data(const string &input_path, const std::string &outp
 	chem_heating_rates_n = new double [network->nb_of_reactions];
 	memset(chem_heating_rates_n, 0, network->nb_of_reactions*sizeof(double));
 	
-	if (verbosity)
-		cout << "Total nb of differential equations " << nb_of_equat << endl;
+	if (verbosity) {
+		cout << "Total nb of gas phase species: " << nb_of_gas_species << endl
+			<< "Total nb of grain mantle species: " << nb_of_gmantle_species << endl
+			<< "Total nb of differential equations: " << nb_of_equat << endl;
+	}
 }
 
 mhd_shock_data::~mhd_shock_data() 

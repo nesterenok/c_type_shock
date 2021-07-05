@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\input_data\mathematics\interpolation.cpp" />
     <ClCompile Include="..\..\input_data\mathematics\linear_algebra.cpp" />
+    <ClCompile Include="..\..\input_data\mathematics\special_functions.cpp" />
     <ClCompile Include="c_type_shock\chemical_reaction_data.cpp" />
     <ClCompile Include="c_type_shock\chemistry.cpp" />
     <ClCompile Include="c_type_shock\coll_rates.cpp" />
@@ -152,7 +153,6 @@
     <ClCompile Include="c_type_shock\photoelectric_emission.cpp" />
     <ClCompile Include="c_type_shock\radiation_field.cpp" />
     <ClCompile Include="c_type_shock\reaction_rate_analyzer.cpp" />
-    <ClCompile Include="c_type_shock\special_functions.cpp" />
     <ClCompile Include="c_type_shock\spectroscopy.cpp" />
     <ClCompile Include="c_type_shock\stdafx.cpp" />
   </ItemGroup>

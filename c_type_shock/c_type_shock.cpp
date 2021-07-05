@@ -164,9 +164,9 @@ int main(int argc, char** argv)
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
     path = "C:/Users/Александр/Documents/Данные и графики/paper Cosmic masers in C-type shocks/";
-    //path += "output_data_2e6/dark_cloud_BEPent_B15A_DB035_QT_CR1-15/";
-	path += "output_data_2e5/";
-//    production_routes(path, path + "shock_cr3-15_40/");  //   add to second path: + "shock_cr3-15_15/"
+    //path += "output_data_2e6/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
+	path += "output_data_2e4/";
+//    production_routes(path, path + "shock_cr1-15_35/");  //   add to second path in the case of shock data: + "shock_cr3-15_15/"
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -362,7 +362,7 @@ int main(int argc, char** argv)
 					if (shock_state == SHOCK_STATE_SMTH_IS_WRONG) {
 						shock_state = calc_shock(data_path, input_path, ss.str(), shock_vel, magnetic_field, c_abund_pah, ty);
 						cout << left << setw(5) << i + 1 
-							<< "shock ended with the code " << (int) shock_state << endl;
+							<< "shock ended with the code (second attempt) " << (int) shock_state << endl;
 					}
                     
 					if (shock_vel > 9.999e+5 && shock_vel < 24.999e+5)
@@ -1281,22 +1281,12 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 	rel_tol = REL_ERROR_SOLVER;
 	user_data.set_tolerances(abs_tol);
 	
-    ty = z = z_saved = zout = 0.;
-    dz = 0.01*magn_precursor_length; // cm
-    zfin = 1000.*magn_precursor_length;
-    dv_to_v_lim = 0.01; 
-
-    // relative difference between ion and neutral speeds, at which shock stops;
-    dvel_shock_stop = 0.02; // for studies of chemical evolution of post-shock gas, set 0.001
-    
-	// maximal nb of steps in the cycle when trying to reach zout,
-	max_nb_steps = 100;
-
 	// Call CVodeCreate to create the solver memory and specify the Backward Differentiation Formula and the use of a Newton iteration 
 	void *cvode_mem = CVodeCreate(CV_BDF);
 
 	// Call CVodeInit to initialize the integrator memory and specify the user's right hand side function in y'=f(t,y), 
-	// the inital time z, and the initial dependent variable vector y:
+	// the initial time z, and the initial dependent variable vector y:
+	z = 0.;
 	flag = CVodeInit(cvode_mem, f_mhd, z, y);
 
 	// Call CVodeSVtolerances to specify the scalar tolerances:
@@ -1361,6 +1351,17 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 #if (SAVE_RADIATIVE_FACTORS)
 	user_data.create_file_radiative_transfer(output_path2);
 #endif
+
+	ty = z_saved = zout = 0.;
+	dz = 0.01 * magn_precursor_length; // cm
+	zfin = 1000. * magn_precursor_length;  
+	dv_to_v_lim = 0.01;
+
+	// relative difference between ion and neutral speeds, at which shock stops;
+	dvel_shock_stop = 0.02; // for studies of chemical evolution of post-shock gas, set 0.001
+
+	// maximal nb of steps in the cycle when trying to reach zout,
+	max_nb_steps = 100;
 
 	nb_cases_with_max_steps = 0;
 	nb_saved = tot_nb_steps = 0;
@@ -1430,8 +1431,8 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		h2_form_const = user_data.get_h2_form_grains()/(conc_h_tot *NV_Ith_S(y, network->h_nb));
 
         // Saving data,
-        // second condition - in order to look for the cause of crashes
-        if (z - z_saved > 0.05 * magn_precursor_length || nb_cases_with_max_steps % 10 == 0) {
+		// last condition - in order to look for the cause of crashes
+        if (z_saved < DBL_EPSILON || z - z_saved > 0.05 * magn_precursor_length || (nb_cases_with_max_steps + 1) % 10 == 0) {
             nb_saved++;
             
             save_specimen_abund(output_path2, nb_of_species, y, conc_h_tot, z);

@@ -2247,7 +2247,7 @@ double get_sticking_coeff(double gas_temp, double mass)
 double get_sticking_coeff_he2016(double bind_en, double dust_temp, double beta, double gamma)
 {
 	// He et al., ApJ 823, p.56 (2016);
-	// binding energies at low coverage must be used, but in the UMIST database binding energies 
+	// binding energies at low coverage must be used,  
 	// at monolayer coverage are given (He et al., ApJ, 825, p.89, 2016), the ratio E_LC/E_ML = 1.5 is adopted;
 	double x = exp(2.*beta*(dust_temp - 1.5*gamma*bind_en));
 	return 0.5*(1. - (x - 1.)/(x + 1.));
