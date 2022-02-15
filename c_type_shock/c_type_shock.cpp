@@ -163,10 +163,10 @@ int main(int argc, char** argv)
 
 //    path = "C:/Users/Александр/Александр/Данные и графики/paper Chemical evolution in molecular clouds in the vicinity of supernova remnants/";    
 //    path += "output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR1-17_mult100/";
-    path = "C:/Users/Александр/Documents/Данные и графики/paper Cosmic masers in C-type shocks/";
-    //path += "output_data_2e6/dark_cloud_BEPent_B15A_DB035_QT_CR1-16/";
-	path += "output_data_2e4/";
-//    production_routes(path, path + "shock_cr1-15_35/");  //   add to second path in the case of shock data: + "shock_cr3-15_15/"
+    path = "C:/Users/Александр/Documents/Данные и графики/paper Modelling masers in C-type shocks - coexistence of CH3OH and OH/";
+//    path += "output_data_2e5/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
+	path += "output_data_2e5/";
+//    production_routes(path, path + "shock_cr3-15_40/");  //   add to second path in the case of shock data: + "shock_cr3-15_15/"
 
 	path = "./output_data_2e4/dark_cloud_BEPent_B15A_DB035_QT_CR3-17/";
 //	nautilus_comparison(path);
@@ -1235,7 +1235,7 @@ SHOCK_STATE_ID calc_shock(const string &data_path, const string &output_path1, c
 		NV_Ith_S(y, i) = new_y[i];
 	}
 	NV_Ith_S(y, nb_mhd + 3) = shock_vel;
-	NV_Ith_S(y, nb_mhd + 4) = 0.9995*shock_vel; // 
+	NV_Ith_S(y, nb_mhd + 4) = 0.999*shock_vel;  // for densities =< 2e+6 cm-3 the value 0.9995 is enough
 	
 	temp_n = NV_Ith_S(y, nb_mhd);
 	temp_i = NV_Ith_S(y, nb_mhd + 1);

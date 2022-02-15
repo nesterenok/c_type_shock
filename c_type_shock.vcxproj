@@ -157,10 +157,10 @@
     <ClCompile Include="c_type_shock\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\input_data\mathematics\integration.h" />
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\interpolation.h" />
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\linear_algebra.h" />
     <ClInclude Include="..\..\input_data\mathematics\constants.h" />
+    <ClInclude Include="..\..\input_data\mathematics\integration.h" />
     <ClInclude Include="c_type_shock\chemical_reaction_data.h" />
     <ClInclude Include="c_type_shock\chemistry.h" />
     <ClInclude Include="c_type_shock\coll_rates.h" />

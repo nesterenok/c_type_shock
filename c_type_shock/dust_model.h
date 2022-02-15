@@ -6,8 +6,8 @@
 #define NB_OF_DUST_MODELS_WD 3
 
 // Draine & Li, ApJ 551, p.807, 2001;
-#define GRAPHITE_DEBYE_TEMP 950 // in K
-#define SILICATE_DEBYE_TEMP 500 
+#define GRAPHITE_DEBYE_TEMP 950. // in K
+#define SILICATE_DEBYE_TEMP 500. 
 
 // density of dust material (for large grains), graphite - 2.24 g/cm3, silicate - 3.5 g/cm3, in g/cm3,
 // the models on dust optical properties by prof. B.T. Draine are used, 

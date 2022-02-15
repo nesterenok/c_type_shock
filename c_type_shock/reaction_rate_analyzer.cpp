@@ -182,6 +182,7 @@ void add_carbon_chemistry(std::vector<string>& specimen_names) {
     specimen_names.push_back("CH4");
 	specimen_names.push_back("CH3");
     specimen_names.push_back("CH");
+	specimen_names.push_back("CH3CHO");
 }
 
 void add_nitrogen_chemistry(std::vector<string>& specimen_names) {

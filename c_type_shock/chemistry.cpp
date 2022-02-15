@@ -1212,7 +1212,7 @@ void chem_network::init_photoreact_surface_chemistry()
 	}
 	
 	for (i = 0; i < (int) new_reactions.size(); i++) { 
-		// scaling factor is applied for all photodissociation reactions:
+		// scaling factor is applied for all photo-dissociation (and photo-ionization) reactions:
 		new_reactions[i].parameters[0] *= ICE_PHOTODISS_EFFICIENCY;
 		reaction_array.push_back(new_reactions[i]);
 	}

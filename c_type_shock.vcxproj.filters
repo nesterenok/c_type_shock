@@ -152,9 +152,6 @@
     <ClInclude Include="c_type_shock\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\input_data\mathematics\integration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\input_data\mathematics\interpolation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -165,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="c_type_shock\coll_rates_h2co.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\input_data\mathematics\integration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
