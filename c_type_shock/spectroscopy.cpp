@@ -23,6 +23,10 @@
 		new member "electronic_state" is added to the class "energy_diagram", 
 		new constructor is added to the class "h2_diagram" (to load the electronic excited levels),
 		the Einstein coefficient and cross section parameters are added to the class "transition", new constructor is added in this class;
+	25.11.2022. The ro-vibrational levels of H2 were added to the input file, the nb of comment lines was increased in the file;
+	02.12.2022. The integer member nb was added to the transition class;
+	26.12.2024. The data on H2 radiative transitions of the ground electronic states were added, 
+		reference - Roueff et al., A&A 630, A58 (2019);
 */
 
 #ifndef _USE_MATH_DEFINES
@@ -98,6 +102,8 @@ h2_diagram::h2_diagram(const string &data_path, molecule m, int &n_l, int verb) 
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	
 	nb = i = 0;
 	input >> i_max;
@@ -157,8 +163,17 @@ h2_diagram::h2_diagram(int el_state, const string& data_path, molecule m, int& n
 	else if (electronic_state == 3) { // C- state
 		fname = "h2_cloudy_data/energy_C_minus.dat";
 	}
+	else if (electronic_state == 4) { // Bp state
+		fname = "h2_cloudy_data/energy_B_primed.dat";
+	}
+	else if (electronic_state == 5) { // D+ state
+		fname = "h2_cloudy_data/energy_D_plus.dat";
+	}
+	else if (electronic_state == 6) { // D- state
+		fname = "h2_cloudy_data/energy_D_minus.dat";
+	}
 	else {
-		cout << "Error in " << SOURCE_NAME << ": the unknown electronic state of H2 molecule" << endl;
+		cout << "Error in " << SOURCE_NAME << ": the unknown excited electronic state of H2 molecule" << endl;
 		exit(1);
 	}
 	
@@ -188,8 +203,9 @@ h2_diagram::h2_diagram(int el_state, const string& data_path, molecule m, int& n
 		level.j = j;
 		level.energy = energy;  // energy in cm-1 in the files
 
-		// determining ortho-/para- state, 
-		if (electronic_state == 0 || electronic_state == 3)  // for C- is the same as for ground X state,
+		// determining ortho-/para- state,  
+		// states D-, C- are connected with the ground X state with dj = 0, +-2, +-4;
+		if (electronic_state == 0 || electronic_state == 3 || electronic_state == 6)  //
 			level.spin = j % 2;
 		else 
 			level.spin = (j + 1) % 2;
@@ -211,6 +227,75 @@ h2_diagram::h2_diagram(int el_state, const string& data_path, molecule m, int& n
 	for (i = 0; i < nb_lev; i++) {
 		lev_array[i].nb = i;
 	}
+	report(fname);
+}
+
+
+int h2_diagram_roueff2019::get_nb(int v, double j) const
+{
+	for (int i = 0; i < nb_lev; i++) {
+		if (lev_array[i].v == v && rounding(lev_array[i].j) == rounding(j))
+			return i;
+	}
+	return -1;
+}
+
+h2_diagram_roueff2019::h2_diagram_roueff2019(const std::string& data_path, molecule m, int& n_l, int verb) : energy_diagram(m, verb)
+{
+	char text_line[MAX_TEXT_LINE_WIDTH];
+	int i, i_max, v, j, nb;
+	double energy;
+
+	string fname;
+	ifstream input;
+	stringstream ss;
+	energy_level level;
+
+	fname = data_path + "spectroscopy/levels_h2_roueff2019.txt";
+	input.open(fname.c_str(), ios_base::in);
+
+	if (!input.is_open()) {
+		cout << "Error in " << SOURCE_NAME << ": can't open " << fname << endl;
+		exit(1);
+	}
+
+	// Comment lines:
+	do
+		input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+	while (text_line[0] == '#');
+
+	ss.clear();
+	ss.str(text_line);
+	ss >> i_max;
+
+	nb = i = 0;
+	while (nb < n_l && i < i_max) 
+	{
+		input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+		if (text_line[0] == '\0')
+			break;
+		
+		ss.clear();
+		ss.str(text_line);
+		ss >> v >> j >> energy;
+
+		if (j % 2 == rounding(mol.spin) || rounding(mol.spin) == -1)
+		{
+			level.v = v;
+			level.j = j;
+			level.energy = energy;
+
+			level.spin = j % 2; // mol.spin value can be undefined
+			level.g = (2 * j + 1) * (2 * (j % 2) + 1);
+			level.nb = nb;
+
+			lev_array.push_back(level);
+			nb++;
+		}
+		i++;
+	}
+	input.close();
+	nb_lev = n_l = (int)lev_array.size();
 	report(fname);
 }
 
@@ -422,6 +507,7 @@ ion_diagram::ion_diagram(const std::string &path, molecule m, int &n_l, int verb
 	
 	for (i = 0; i < nb_lev; i++)
 	{
+		// total angular momentum J of the term is saved in the variable spin,
 		input >> level.spin >> level.energy >> level.name >> str;
 		level.name += str;
 		level.nb = i;
@@ -812,6 +898,82 @@ h2_einstein_coeff::h2_einstein_coeff(const string &path, const energy_diagram* h
 	}
 	delete [] check;
 }
+
+h2_einstein_coeff_roueff2019::h2_einstein_coeff_roueff2019(const string& path, const energy_diagram* h2_di, int verbosity) : einstein_coeff(h2_di)
+{
+	char text_line[MAX_TEXT_LINE_WIDTH];
+	int	i, k, i_max, v, j, up, low;
+	int* check;
+	double coeff;
+
+	string file_name;
+	ifstream input;
+	stringstream ss;
+
+	if (verbosity)
+		cout << "H2 molecule radiative coefficients are being initializing..." << endl;
+
+	file_name = path + "spectroscopy/radiative_h2_roueff2019.txt";
+	input.open(file_name.c_str(), ios_base::in);
+
+	if (!input) {
+		cout << "Error in " << SOURCE_NAME << ": can't open " << file_name << endl;
+		exit(1);
+	}
+	
+	do
+		input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+	while (text_line[0] == '#');
+
+	ss.clear();
+	ss.str(text_line);
+	ss >> i_max;
+
+	check = new int[nb_lev];
+	memset(check, 0, nb_lev * sizeof(int));
+
+	for (i = 0; i < i_max; i++) 
+	{
+		input.getline(text_line, MAX_TEXT_LINE_WIDTH);	
+		if (text_line[0] == '\0')
+			break;
+
+		ss.clear();
+		ss.str(text_line);
+		
+		ss >> v >> j;
+		up = h2_di->get_nb(v, j);
+
+		ss >> v >> j;
+		low = h2_di->get_nb(v, j);
+
+		for (k = 0; k < 7; k++) {
+			ss >> coeff;
+		}
+
+		if (low != -1 && up != -1)
+		{
+			arr[up][low] = coeff;
+			arr[low][up] = h2_di->lev_array[up].g * coeff / ((double)h2_di->lev_array[low].g);
+			check[up] = 1;
+		}
+	}
+	input.close();
+
+	if (verbosity)
+	{
+		cout << "  data have been read from file " << file_name << endl;
+		for (i = 0; i < nb_lev; i++)
+		{
+			if (check[i] == 0) {
+				cout << left << "H2 level has not radiative decay coefficient, (v,j): " << setw(5) << h2_di->lev_array[i].v
+					<< setw(5) << h2_di->lev_array[i].j << endl;
+			}
+		}
+	}
+	delete[] check;
+}
+
 
 h2o_einstein_coeff::h2o_einstein_coeff(const string &path, const h2o_diagram* h2o_di, int verbosity) : einstein_coeff(h2o_di)
 {
@@ -1222,7 +1384,7 @@ h2co_einstein_coeff::h2co_einstein_coeff(const std::string& path, const energy_d
 //
 
 transition::transition(energy_level lowl, energy_level upl)
-: low_lev(lowl), up_lev(upl), einst_coeff(0.), cross_section(0.)
+: nb(0), low_lev(lowl), up_lev(upl), einst_coeff(0.), cross_section(0.)
 {
 	energy = up_lev.energy - low_lev.energy;
 	// the frequency in Hz, energy in cm-1, speed in cm/s
@@ -1230,11 +1392,11 @@ transition::transition(energy_level lowl, energy_level upl)
 }
 
 transition::transition(energy_level lowl, energy_level upl, double ec)
-	: low_lev(lowl), up_lev(upl), einst_coeff(ec)
+	: nb(0), low_lev(lowl), up_lev(upl), einst_coeff(ec)
 {
 	energy = up_lev.energy - low_lev.energy;
 	freq = SPEED_OF_LIGHT * energy;
-	cross_section = einst_coeff *up_lev.g /(EIGHT_PI*energy*energy *low_lev.g);
+	cross_section = einst_coeff * up_lev.g / (EIGHT_PI * energy * energy * low_lev.g);  // [cm2 s-1]
 }
 
 

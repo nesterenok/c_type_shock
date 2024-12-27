@@ -425,6 +425,7 @@ int main(int argc, char** argv)
 				}
 			}
 		}
+		input.close();
 	}
 	return 0;
 }

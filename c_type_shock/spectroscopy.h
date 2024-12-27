@@ -16,6 +16,9 @@
 // collisional data for rovibrational transitions for CO-H collisions is given by Song et al., ApJ 813, 96, (2015);
 #define NB_VIBR_EXCIT_CO 5
 
+// Maximal nb of vibrationally excited states of H2 (v = 1, 2,.., nb), of the ground electronic state,
+#define NB_VIBR_EXCIT_H2 14
+
 class energy_diagram;
 class einstein_coeff;
 
@@ -86,17 +89,33 @@ public:
 	virtual ~energy_diagram();
 };
 
-// H2 molecule (Dabrowski I., Can. J. Phys. 62, p. 1639, 1984); maximal value of rovibrational levels is 318;
+// H2 molecule 
+// 301 levels in the ground electronic state; Dabrowski I., Can. J. Phys. 62, p.1639 (1984); Shaw et al., Astrophysical J. 624, p.794 (2005) 
+// corrections according to CLOUDY data, level energy corrections are minor, levels are added (v,j) = (0,30), (0,31), (1,30) 
 class h2_diagram : public energy_diagram
 {
 public:
+	// levels of the ground electronic state S1g+(X),
+	// Dabrowski, Can. J. Phys. 62, p. 1639 (1984);
 	h2_diagram(const std::string &path, molecule m, int &n_l, int verbosity = 1);
-	// for excited electronic states, electronic state notation: B 1, C+ 2, C- 3,
+	
+	// for excited electronic states, electronic state notation: B 1, C+ 2, C- 3, B' 4, D+ 5, D- 6
 	// the data from CLOUDY code (all comments must contain #, no empty line at the file end), 
 	// B 1 - 882 levels, C+ 248 levels, C- 251 levels
 	h2_diagram(int electronic_state, const std::string& path, molecule m, int& n_l, int verbosity = 1);
 	int get_nb(int v, double j) const;
 };
+
+//
+// Roueff et al., The full infrared spectrum of molecular hydrogen, A&A 630, A58 (2019);
+// the H2 molecule in its electronic ground state accommodates 302 bound states;
+class h2_diagram_roueff2019 : public energy_diagram
+{
+public:
+	h2_diagram_roueff2019(const std::string& path, molecule m, int& n_l, int verbosity = 1);
+	int get_nb(int v, double j) const;
+};
+
 
 // H2O molecule (HITRAN2012 database);
 // if nb of vibrationally excited states equals 4, maximal nb of levels is 411, equals 1 - 271 levels, equals 0 - 164 levels;
@@ -189,13 +208,21 @@ public:
 	virtual ~einstein_coeff();
 };
 
-// H2 molecule (Wolniewicz et al., Astroph. J. Suppl. Ser. 115, p. 293, 1998); (must be checked)
-// only first 298 levels have one of the radiative transitions calculated by Wolniewicz et al. (1998);
+// H2 molecule, Wolniewicz et al., Astroph. J. Suppl. Ser. 115, p. 293 (1998); (must be checked)
+// first 301 levels have one of the radiative transitions calculated by Wolniewicz et al. (1998);
 class h2_einstein_coeff : public einstein_coeff
 {
 public:
-	h2_einstein_coeff(const std::string &path, const energy_diagram *di, int verbosity =1);
+	h2_einstein_coeff(const std::string &path, const energy_diagram *di, int verbosity = 1);
 };
+
+// H2 molecule, Roueff et al., The full infrared spectrum of molecular hydrogen, A&A 630, A58 (2019);
+class h2_einstein_coeff_roueff2019 : public einstein_coeff
+{
+public:
+	h2_einstein_coeff_roueff2019(const std::string& path, const energy_diagram* di, int verbosity = 1);
+};
+
 
 // H2O molecule (HITRAN2012 database);
 class h2o_einstein_coeff : public einstein_coeff
@@ -258,8 +285,9 @@ public:
 class transition
 {
 public:
+	int nb;
 	// frequency in Hz, energy in cm-1, einst_coeff in s-1 (A, from upper to lower), 
-	// cross_section is in [cm2] (for UV pumping simulations), see book by Draine (2011), p.56, eq. (6.18)
+	// cross_section is in [cm2 s-1] (for UV pumping simulations), see book by Draine (2011), p.56, eq. (6.18)
 	double energy, freq, einst_coeff, cross_section;  
 	energy_level low_lev, up_lev;
 

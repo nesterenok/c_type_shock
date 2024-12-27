@@ -1,6 +1,8 @@
 //
 // 10.03.2017. Check for errors.
 // 04.09.2017. Check for errors.
+// 15.04.2022. Number of comment lines in the files with momentum transfer cross sections was changed,
+//    new data points were added in the H2-e file.
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
@@ -52,7 +54,7 @@ elastic_cross_section_table::elastic_cross_section_table(const std::string &data
 {
 	char text_line[MAX_TEXT_LINE_WIDTH];
 	int i;
-	double energy, cs, reduced_mass;
+	double energy, cs, reduced_mass, g;
 	
 	string file_name;
 	ifstream input;
@@ -67,9 +69,10 @@ elastic_cross_section_table::elastic_cross_section_table(const std::string &data
 	// comment lines are read:
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
+	input.getline(text_line, MAX_TEXT_LINE_WIDTH);
 
-	// reduced mass is necessary for convertion from energy units to velocity:
-	input >> reduced_mass >> nb_cs;
+	// reduced mass is necessary for conversion from energy units to velocity:
+	input >> g >> reduced_mass >> nb_cs;
 
 	vel_arr = new double [nb_cs];
 	cs_arr = new double [nb_cs];
